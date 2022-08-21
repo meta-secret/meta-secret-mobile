@@ -29,7 +29,7 @@ final class LoginSceneViewModel: Signable, Alertable {
         }
         signData(user.publicKey, for: user)
         
-        Register(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+        Register(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == .Registered {
@@ -53,7 +53,7 @@ final class LoginSceneViewModel: Signable, Alertable {
 private extension LoginSceneViewModel {
     //MARK: - GETTING VAULT
     func getVault(user: User) {
-        GetVault(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+        GetVault(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
             switch result {
             case .success(let vault):
                 print(vault)

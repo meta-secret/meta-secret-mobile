@@ -8,12 +8,14 @@
 import Foundation
 
 struct Constants {
+    //MARK: - LOGIN
     struct LoginScreen {
         static let title = "MetaSecret"
         static let userNameLabel = "Your user name"
         static let letsGoButton = "Let's go"
     }
     
+    //MARK: - ALERTS
     struct Alert {
         static let ok = "Ok"
         static let cancel = "Cancel"
@@ -25,5 +27,10 @@ struct Constants {
         static let userNameMesasge = "This user name is already taken. Do you wanna login?"
         static let enterName = "Please, enter your name"
         static let swwError = "Something went wrong"
+    }
+    
+    //MARK: - TAGS
+    struct ViewTags {
+        static let loaderTag = 1001
     }
 }

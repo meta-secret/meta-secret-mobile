@@ -9,16 +9,18 @@ import Foundation
 import CryptoKit
 import Security
 
-protocol Signable: Alertable {
+protocol Signable: Alertable, Loaderable {
     func generateKeys(for userName: String) -> User?
     func signData(_ data: Data, for user: User?)
     func checkSign(_ dataToSign: Data)
-    func encryptData(_ data: Data)
+    func encryptData(_ data: Data, for user: User?)
     func checkEncryptedData()
 }
 
 extension Signable {
     func generateKeys(for userName: String) -> User? {
+        showLoader()
+        
         let privateKey = Curve25519.Signing.PrivateKey()
         let publicKey = privateKey.publicKey
         
@@ -26,7 +28,7 @@ extension Signable {
         let publicKeyData = publicKey.rawRepresentation
         
         
-        guard let keyPairRSA = getRSAKeyPairs(for: userName) else {
+        guard let keyPairRSA = try? getRSAKeyPairs(for: userName) else {
             showCommonError(nil)
             return nil
         }
@@ -42,6 +44,8 @@ extension Signable {
         }
         
         let user = User(userName: userName, publicKey: publicKeyData, privateKey: privateKeyData, publicRSAKey: publicRSAKeyData, privateRSAKey: privateRSAKeyData)
+        
+        hideLoader()
         return user
     }
     
@@ -61,21 +65,18 @@ extension Signable {
     }
     
     //MARK: - RSA
-    func getRSAKeyPairs(for userName: String) -> (privateRSAKey: SecKey, publicRSAkey: SecKey)? {
+    private func getRSAKeyPairs(for userName: String) throws -> (privateRSAKey: SecKey, publicRSAkey: SecKey)? {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String           : kSecAttrKeyTypeRSA,
             kSecAttrKeySizeInBits as String     : 4096,
-            kSecAttrTokenID as String           : kSecAttrTokenIDSecureEnclave,
             kSecPrivateKeyAttrs as String : [
                 kSecAttrIsPermanent as String       : true,
-                kSecAttrApplicationTag as String    : userName,
-                kSecAttrAccessControl as String     : access
+                kSecAttrApplicationTag as String    : userName.data(using: .utf8)!
             ]
         ]
-                
-        var error: Unmanaged<CFError>?
-        guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-            showCommonError(error.debugDescription)
+        
+        guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, nil) else {
+            showCommonError(nil)
             return nil
         }
         
@@ -91,11 +92,9 @@ extension Signable {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String           : kSecAttrKeyTypeRSA,
             kSecAttrKeySizeInBits as String     : 4096,
-            kSecAttrTokenID as String           : kSecAttrTokenIDSecureEnclave,
             kSecPrivateKeyAttrs as String : [
                 kSecAttrIsPermanent as String       : true,
-                kSecAttrApplicationTag as String    : user?.userName ?? "",
-                kSecAttrAccessControl as String     : access
+                kSecAttrApplicationTag as String    : (user?.userName ?? "").data(using: .utf8)!
             ]
         ]
         

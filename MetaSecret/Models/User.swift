@@ -13,8 +13,8 @@ final class User: Codable {
     let publicKey: Data
     let privateKey: Data
     
-    let publicRSAKey: Data?
-    let privateRSAKey: Data?
+    let publicRSAKey: Data
+    let privateRSAKey: Data
     
     private(set) var signature: Data? = nil
     private(set) var signatureRSA: Data? = nil

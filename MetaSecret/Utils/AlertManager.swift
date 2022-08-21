@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol Alertable {
+protocol Alertable: Loaderable {
     func showCommonError(_ message: String?)
     func showCommonAlert(_ model: AlertModel)
 }
@@ -36,20 +36,12 @@ extension Alertable {
             }))
         }
         
+        hideLoader()
         presentAlert(alertController)
     }
     
     private func presentAlert(_ alert: UIAlertController) {
-        let appDelegate  = UIApplication.shared.delegate as? AppDelegate
-        var rootViewController = appDelegate?.window?.rootViewController
-        if let navigationController = rootViewController as? UINavigationController {
-            rootViewController = navigationController.viewControllers.first
-        }
-        if let tabBarController = rootViewController as? UITabBarController {
-            rootViewController = tabBarController.selectedViewController
-        }
-
-        rootViewController?.present(alert, animated: true, completion: nil)
+        findRoot()?.present(alert, animated: true, completion: nil)
     }
 }
 

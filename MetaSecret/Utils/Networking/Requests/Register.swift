@@ -12,11 +12,13 @@ class Register: HTTPRequest {
     var params: [String : Any]?
     var path: String = "register"
     
-    init(vaultName: String, publicKey: String, signature: String) {
+    init(vaultName: String, publicKey: String, rsaPublicKey: String, signature: String) {
         self.params = [
             "vaultName": vaultName,
             "publicKey": publicKey,
+            "rsaPublicKey": rsaPublicKey,
             "signature": signature
+            
         ]
     }
 }
