@@ -9,18 +9,29 @@ import Foundation
 
 final class User: Codable {
     let userName: String
+    
     let publicKey: Data
     let privateKey: Data
-    private(set) var signature: Data?
     
-    init(userName: String, publicKey: Data, privateKey: Data, signature: Data? = nil) {
+    let publicRSAKey: Data?
+    let privateRSAKey: Data?
+    
+    private(set) var signature: Data? = nil
+    private(set) var signatureRSA: Data? = nil
+    
+    init(userName: String, publicKey: Data, privateKey: Data, publicRSAKey: Data, privateRSAKey: Data) {
         self.userName = userName
         self.publicKey = publicKey
         self.privateKey = privateKey
-        self.signature = signature
+        self.publicRSAKey = publicRSAKey
+        self.privateRSAKey = privateRSAKey
     }
     
     func addSignature(_ signature: Data) {
         self.signature = signature
+    }
+    
+    func addRSASignature(_ signature: Data) {
+        self.signatureRSA = signature
     }
 }

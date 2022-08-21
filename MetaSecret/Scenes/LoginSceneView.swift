@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginSceneView: UIViewController {
+class LoginSceneView: UIViewController, LoginSceneProtocol {
     //MARK: - OUTLETS
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userNameTextField: UITextField!
@@ -26,18 +26,12 @@ class LoginSceneView: UIViewController {
     //MARK: - ACTIONS
     @IBAction func letsGoAction(_ sender: Any) {
         guard var userName = userNameTextField.text, !userName.isEmpty, userName != "@" else {
-            let alertModel = AlertModel(presenter: self, title: Constants.Errors.error, message: Constants.Errors.enterName)
-            AlertManager.shared.showAlert(alertModel)
+            viewModel?.showAlert(message: Constants.Errors.enterName)
             return
         }
         
         userName = userName.replacingOccurrences(of: "@", with: "")
-        guard let user = viewModel?.generateKeys(for: userName) else {
-            AlertManager.shared.showCommonError(self, message: nil)
-            return
-        }
-        
-        viewModel?.register(user: user)
+        viewModel?.register(userName)
     }
 }
 
@@ -60,11 +54,5 @@ private extension LoginSceneView {
             letsGoButton.isUserInteractionEnabled = false
             letsGoButton.backgroundColor = .systemGray5
         }
-    }
-}
-
-extension LoginSceneView: LoginSceneProtocol {
-    func showAlert(error: String?) {
-        AlertManager.shared.showCommonError(self, message: error)
     }
 }

@@ -12,8 +12,10 @@ class GetVault: HTTPRequest {
     var params: [String : Any]?
     var path: String = "getVault"
     
-    init(signature: String) {
+    init(vaultName: String, publicKey: String, signature: String) {
         self.params = [
+            "vaultName": vaultName,
+            "publicKey": publicKey,
             "signature": signature
         ]
     }

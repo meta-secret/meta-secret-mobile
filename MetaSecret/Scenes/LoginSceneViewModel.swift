@@ -9,11 +9,9 @@ import Foundation
 import UIKit
 import CryptoKit
 
-protocol LoginSceneProtocol {
-    func showAlert(error: String?)
-}
+protocol LoginSceneProtocol {}
 
-final class LoginSceneViewModel: Signable {
+final class LoginSceneViewModel: Signable, Alertable {
     private var user: User? = nil
     private var vault: Vault? = nil
     private var delegate: LoginSceneProtocol? = nil
@@ -24,31 +22,43 @@ final class LoginSceneViewModel: Signable {
     }
     
     //MARK: - REGISTRATION
-    func register(user: User) {
+    func register(_ userName: String) {
+        guard let user = generateKeys(for: userName) else {
+            showCommonError(nil)
+            return
+        }
+        signData(user.publicKey, for: user)
+        
         Register(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == .Registered {
-                    self?.getVault()
+                    self?.getVault(user: user)
                 } else {
                     //TODO: Check and accept
                 }
             case .failure(let error):
-                self?.delegate?.showAlert(error: error.localizedDescription)
+                self?.showCommonError(error.localizedDescription)
             }
         }
+    }
+    
+    //MARK: - ALERTS
+    func showAlert(title: String = Constants.Errors.error, message: String = Constants.Errors.swwError) {
+        let alertModel = AlertModel(title: Constants.Errors.error, message: Constants.Errors.enterName)
+        showCommonAlert(alertModel)
     }
 }
 
 private extension LoginSceneViewModel {
     //MARK: - GETTING VAULT
-    func getVault() {
-        GetVault(signature: (user?.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+    func getVault(user: User) {
+        GetVault(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
             switch result {
             case .success(let vault):
                 print(vault)
             case .failure(let error):
-                self?.delegate?.showAlert(error: error.localizedDescription)
+                self?.showCommonError(error.localizedDescription)
             }
         }
     }

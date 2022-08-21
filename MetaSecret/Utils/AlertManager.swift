@@ -8,16 +8,18 @@
 import Foundation
 import UIKit
 
+protocol Alertable {
+    func showCommonError(_ message: String?)
+    func showCommonAlert(_ model: AlertModel)
+}
 
-final class AlertManager {
-    static let shared = AlertManager()
-    
-    func showCommonError(_ presenter: UIViewController, message: String?) {
-        let errorModel = AlertModel(presenter: presenter, title: Constants.Errors.error, message: message ?? Constants.Errors.swwError)
-        showAlert(errorModel)
+extension Alertable {
+    func showCommonError(_ message: String?) {
+        let errorModel = AlertModel(title: Constants.Errors.error, message: message ?? Constants.Errors.swwError)
+        showCommonAlert(errorModel)
     }
     
-    func showAlert(_ model: AlertModel) {
+    func showCommonAlert(_ model: AlertModel) {
         let alertController = UIAlertController(title: model.title,
                                                 message: model.message,
                                                 preferredStyle: .alert)
@@ -34,6 +36,20 @@ final class AlertManager {
             }))
         }
         
-        model.presenter.present(alertController, animated: true)
+        presentAlert(alertController)
+    }
+    
+    private func presentAlert(_ alert: UIAlertController) {
+        let appDelegate  = UIApplication.shared.delegate as? AppDelegate
+        var rootViewController = appDelegate?.window?.rootViewController
+        if let navigationController = rootViewController as? UINavigationController {
+            rootViewController = navigationController.viewControllers.first
+        }
+        if let tabBarController = rootViewController as? UITabBarController {
+            rootViewController = tabBarController.selectedViewController
+        }
+
+        rootViewController?.present(alert, animated: true, completion: nil)
     }
 }
+

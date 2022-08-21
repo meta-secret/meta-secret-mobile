@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 struct AlertModel {
-    let presenter: UIViewController
     let title: String
     let message: String
     let okButton: String?
@@ -18,8 +17,7 @@ struct AlertModel {
     let okHandler: (()->())?
     let cancelHandler: (()->())?
     
-    init(presenter: UIViewController, title: String, message: String, tintColor: UIColor? = .black, okButton: String? = Constants.Alert.ok, cancelButton: String? = Constants.Alert.cancel, okHandler: (()->())? = nil, cancelHandler: (()->())? = nil) {
-        self.presenter = presenter
+    init(title: String, message: String, tintColor: UIColor? = .black, okButton: String? = Constants.Alert.ok, cancelButton: String? = Constants.Alert.cancel, okHandler: (()->())? = nil, cancelHandler: (()->())? = nil) {
         self.title = title
         self.message = message
         self.okButton = okButton
