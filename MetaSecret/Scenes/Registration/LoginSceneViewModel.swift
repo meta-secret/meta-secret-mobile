@@ -11,9 +11,7 @@ import CryptoKit
 
 protocol LoginSceneProtocol {}
 
-final class LoginSceneViewModel: Signable, Alertable {
-    private var user: User? = nil
-    private var vault: Vault? = nil
+final class LoginSceneViewModel: Signable, Alertable, Routerable {
     private var delegate: LoginSceneProtocol? = nil
     
     //MARK: - INIT
@@ -27,15 +25,18 @@ final class LoginSceneViewModel: Signable, Alertable {
             showCommonError(nil)
             return
         }
-        signData(user.publicKey, for: user)
+        let userNameData = user.userName.data(using: .utf8) ?? Data()
+        signData(userNameData, for: user)
         
-        Register(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+        //TODO: Register(User)
+        Register(vaultName: user.userName, deviceName: user.deviceName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == .Registered {
-                    self?.getVault(user: user)
+                    self?.saveCustom(object: user, key: UDKeys.localVault)
+                    self?.routeTo(.main, presentAs: .push)
                 } else {
-                    //TODO: Check and accept
+                    self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted))
                 }
             case .failure(let error):
                 self?.showCommonError(error.localizedDescription)
@@ -49,18 +50,3 @@ final class LoginSceneViewModel: Signable, Alertable {
         showCommonAlert(alertModel)
     }
 }
-
-private extension LoginSceneViewModel {
-    //MARK: - GETTING VAULT
-    func getVault(user: User) {
-        GetVault(vaultName: user.userName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
-            switch result {
-            case .success(let vault):
-                print(vault)
-            case .failure(let error):
-                self?.showCommonError(error.localizedDescription)
-            }
-        }
-    }
-}
-        

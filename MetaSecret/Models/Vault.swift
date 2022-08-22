@@ -9,8 +9,10 @@ import Foundation
 
 final class Vault: Codable {
     var vaultName: String?
+    var deviceName: String?
     var publicKey: String?
+    var rsaPublicKey: String?
     var signature: String?
-    var signatures: [Vault] = []
     var pendingJoins: [Vault] = []
+    var signatures: [Vault] = []
 }

@@ -8,12 +8,14 @@
 import Foundation
 
 protocol UD {
-    func saveCustom<T: Encodable>(object: T, key: String)
-    func readCustom<T: Decodable>(object: T, key: String) -> T?
+    func saveCustom<T: Codable>(object: T, key: String)
+    func readCustom<T: Codable>(object: T.Type, key: String) -> T?
+    
+    var mainUser: User? { get }
 }
 
 extension UD {
-    func saveCustom<T: Encodable>(object: T, key: String) {
+    func saveCustom<T: Codable>(object: T, key: String) {
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(object)
@@ -23,7 +25,7 @@ extension UD {
         }
     }
     
-    func readCustom<T: Decodable>(object: T, key: String) -> T? {
+    func readCustom<T: Codable>(object: T.Type, key: String) -> T? {
         if let data = UserDefaults.standard.data(forKey: key) {
             do {
                 let decoder = JSONDecoder()
@@ -36,6 +38,11 @@ extension UD {
         return nil
     }
     
+    var mainUser: User? {
+        get {
+            return readCustom(object: User.self, key: UDKeys.localVault)
+        }
+    }
 }
 
 struct UDKeys {

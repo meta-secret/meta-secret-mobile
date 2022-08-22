@@ -14,12 +14,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let navigationController = UINavigationController()
-        let rootViewController = LoginSceneView(nibName: "LoginSceneView", bundle: nil)
+        let rootViewController = SplashSceneView(nibName: "SplashSceneView", bundle: nil)
         navigationController.viewControllers = [rootViewController]
         self.window?.rootViewController = navigationController
         return true
     }
-
-    // MARK: UISceneSession Lifecycle
 }
 

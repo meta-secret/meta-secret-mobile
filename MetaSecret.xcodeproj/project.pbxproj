@@ -14,6 +14,14 @@
 		E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227A28B05ACE00F5F02B /* GetVault.swift */; };
 		E55A227D28B0611800F5F02B /* Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227C28B0611800F5F02B /* Accept.swift */; };
 		E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */; };
+		E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */; };
+		E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */; };
+		E57E6B5728B3F00900906DBD /* MainSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5628B3F00900906DBD /* MainSceneViewModel.swift */; };
+		E57E6B5A28B3F04B00906DBD /* SplashSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5828B3F04B00906DBD /* SplashSceneView.swift */; };
+		E57E6B5B28B3F04B00906DBD /* SplashSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57E6B5928B3F04B00906DBD /* SplashSceneView.xib */; };
+		E57E6B6028B3F09300906DBD /* SplashSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5F28B3F09300906DBD /* SplashSceneViewModel.swift */; };
+		E57E6B6328B3F79B00906DBD /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B6228B3F79B00906DBD /* Router.swift */; };
+		E57E6B6528B4199000906DBD /* Decline.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B6428B4198F00906DBD /* Decline.swift */; };
 		E580002A288CA4D000E1135C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5800029288CA4D000E1135C /* AppDelegate.swift */; };
 		E5800031288CA4D000E1135C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E580002F288CA4D000E1135C /* Main.storyboard */; };
 		E5800033288CA4D200E1135C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5800032288CA4D200E1135C /* Assets.xcassets */; };
@@ -61,6 +69,14 @@
 		E55A227A28B05ACE00F5F02B /* GetVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVault.swift; sourceTree = "<group>"; };
 		E55A227C28B0611800F5F02B /* Accept.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accept.swift; sourceTree = "<group>"; };
 		E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningManager.swift; sourceTree = "<group>"; };
+		E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneView.swift; sourceTree = "<group>"; };
+		E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainSceneView.xib; sourceTree = "<group>"; };
+		E57E6B5628B3F00900906DBD /* MainSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneViewModel.swift; sourceTree = "<group>"; };
+		E57E6B5828B3F04B00906DBD /* SplashSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashSceneView.swift; sourceTree = "<group>"; };
+		E57E6B5928B3F04B00906DBD /* SplashSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SplashSceneView.xib; sourceTree = "<group>"; };
+		E57E6B5F28B3F09300906DBD /* SplashSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashSceneViewModel.swift; sourceTree = "<group>"; };
+		E57E6B6228B3F79B00906DBD /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		E57E6B6428B4198F00906DBD /* Decline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decline.swift; sourceTree = "<group>"; };
 		E5800026288CA4D000E1135C /* MetaSecret.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetaSecret.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5800029288CA4D000E1135C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5800030288CA4D000E1135C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -137,6 +153,7 @@
 				E55A226E28B0357900F5F02B /* Register.swift */,
 				E55A227A28B05ACE00F5F02B /* GetVault.swift */,
 				E55A227C28B0611800F5F02B /* Accept.swift */,
+				E57E6B6428B4198F00906DBD /* Decline.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -144,11 +161,49 @@
 		E57BDA7628A79A1B00DB27BD /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				E57E6B5E28B3F07400906DBD /* Splash */,
+				E57E6B5D28B3F06200906DBD /* Main */,
+				E57E6B5C28B3F04F00906DBD /* Registration */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		E57E6B5C28B3F04F00906DBD /* Registration */ = {
+			isa = PBXGroup;
+			children = (
 				E5F0C3FB28A82E0700902310 /* LoginSceneView.swift */,
 				E5F0C3FC28A82E0700902310 /* LoginSceneView.xib */,
 				E5F0C3FF28A82E1900902310 /* LoginSceneViewModel.swift */,
 			);
-			path = Scenes;
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		E57E6B5D28B3F06200906DBD /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */,
+				E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */,
+				E57E6B5628B3F00900906DBD /* MainSceneViewModel.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		E57E6B5E28B3F07400906DBD /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				E57E6B5828B3F04B00906DBD /* SplashSceneView.swift */,
+				E57E6B5928B3F04B00906DBD /* SplashSceneView.xib */,
+				E57E6B5F28B3F09300906DBD /* SplashSceneViewModel.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		E57E6B6128B3F78200906DBD /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				E57E6B6228B3F79B00906DBD /* Router.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 		E580001D288CA4D000E1135C = {
@@ -176,6 +231,7 @@
 		E5800028288CA4D000E1135C /* MetaSecret */ = {
 			isa = PBXGroup;
 			children = (
+				E57E6B6128B3F78200906DBD /* Router */,
 				E5F0C40428A839AE00902310 /* Utils */,
 				E5F0C40128A8369800902310 /* Resources */,
 				E5F0C3F628A82B3B00902310 /* Models */,
@@ -361,6 +417,8 @@
 			files = (
 				E5800036288CA4D200E1135C /* LaunchScreen.storyboard in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
+				E57E6B5B28B3F04B00906DBD /* SplashSceneView.xib in Resources */,
+				E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */,
 				E5800033288CA4D200E1135C /* Assets.xcassets in Resources */,
 				E5800031288CA4D000E1135C /* Main.storyboard in Resources */,
 			);
@@ -389,12 +447,17 @@
 			files = (
 				E5F0C40828A83ECC00902310 /* AlertManager.swift in Sources */,
 				E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */,
+				E57E6B6328B3F79B00906DBD /* Router.swift in Sources */,
+				E57E6B5728B3F00900906DBD /* MainSceneViewModel.swift in Sources */,
 				E580002A288CA4D000E1135C /* AppDelegate.swift in Sources */,
 				E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */,
 				E5F0C40028A82E1900902310 /* LoginSceneViewModel.swift in Sources */,
 				E55A226F28B0357900F5F02B /* Register.swift in Sources */,
 				E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */,
 				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
+				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
+				E57E6B6028B3F09300906DBD /* SplashSceneViewModel.swift in Sources */,
+				E57E6B5A28B3F04B00906DBD /* SplashSceneView.swift in Sources */,
 				E5F0C40E28A9878D00902310 /* AppColors.swift in Sources */,
 				E5F0C3FA28A82D0800902310 /* Vault.swift in Sources */,
 				E5F0C3F828A82B5500902310 /* User.swift in Sources */,
@@ -402,6 +465,7 @@
 				E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */,
 				E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */,
 				E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */,
+				E57E6B6528B4199000906DBD /* Decline.swift in Sources */,
 				E55A227D28B0611800F5F02B /* Accept.swift in Sources */,
 				E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */,
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
