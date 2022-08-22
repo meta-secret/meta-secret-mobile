@@ -8,7 +8,7 @@
 import Foundation
 
 class GetVault: HTTPRequest {
-    typealias ResponseType = Vault
+    typealias ResponseType = GetVaultResult
     var params: [String : Any]?
     var path: String = "getVault"
     
@@ -21,4 +21,10 @@ class GetVault: HTTPRequest {
             "signature": signature
         ]
     }
+}
+
+struct GetVaultResult: Codable {
+    var vaultName: String?
+    var signatures: [Vault]?
+    var pendingJoins: [Vault]?
 }

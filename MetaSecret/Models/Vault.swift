@@ -13,6 +13,4 @@ final class Vault: Codable {
     var publicKey: String?
     var rsaPublicKey: String?
     var signature: String?
-    var pendingJoins: [Vault] = []
-    var signatures: [Vault] = []
 }
