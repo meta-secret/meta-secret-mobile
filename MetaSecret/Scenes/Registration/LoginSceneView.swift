@@ -33,6 +33,10 @@ class LoginSceneView: UIViewController, LoginSceneProtocol {
         userName = userName.replacingOccurrences(of: "@", with: "")
         viewModel?.register(userName)
     }
+    
+    func resetTextField() {
+        userNameTextField.text = "@"
+    }
 }
 
 private extension LoginSceneView {

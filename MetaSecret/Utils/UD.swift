@@ -10,11 +10,15 @@ import Foundation
 protocol UD {
     func saveCustom<T: Codable>(object: T, key: String)
     func readCustom<T: Codable>(object: T.Type, key: String) -> T?
+    mutating func resetAll()
+    func saveRegisterStatus(_ status: RegisterStatusResult)
     
-    var mainUser: User? { get }
+    var mainUser: User? { get set }
+    var registerStatus: RegisterStatusResult { get }
 }
 
 extension UD {
+    //MARK: - SAVE/LOAD CUSTOM
     func saveCustom<T: Codable>(object: T, key: String) {
         do {
             let encoder = JSONEncoder()
@@ -38,13 +42,46 @@ extension UD {
         return nil
     }
     
+    //MARK: - RESET
+    mutating func resetAll() {
+        mainUser = nil
+        saveRegisterStatus(.None)
+    }
+    
+    //MARK: - VARIABLES
     var mainUser: User? {
         get {
             return readCustom(object: User.self, key: UDKeys.localVault)
         }
+        set {}
+    }
+    
+    var registerStatus: RegisterStatusResult {
+        get {
+            guard let status = UDManager.read(key: UDKeys.registerStatus) as? String else { return .None }
+            return RegisterStatusResult(rawValue: status) ?? .None
+        }
+    }
+    
+    func saveRegisterStatus(_ status: RegisterStatusResult) {
+        UDManager.save(value: status.rawValue, key: UDKeys.registerStatus)
     }
 }
 
 struct UDKeys {
     static let localVault = "localVault"
+    static let registerStatus = "registerStatus"
+}
+
+fileprivate class UDManager {
+    static let defaults = UserDefaults.standard
+    
+    //MARK: - DEFAULTS SAVE LOAD
+    static func save<T>(value: T, key: String) {
+        Self.defaults.set(value, forKey: key)
+    }
+    
+    static func read(key: String) -> Any? {
+        return Self.defaults.object(forKey: key)
+    }
 }

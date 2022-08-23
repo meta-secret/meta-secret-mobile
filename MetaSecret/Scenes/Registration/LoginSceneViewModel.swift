@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 import CryptoKit
 
-protocol LoginSceneProtocol {}
+protocol LoginSceneProtocol {
+    func resetTextField()
+}
 
 final class LoginSceneViewModel: Signable, Alertable, Routerable {
     private var delegate: LoginSceneProtocol? = nil
@@ -21,8 +23,16 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
     
     //MARK: - REGISTRATION
     func register(_ userName: String) {
+        showLoader()
+        if registerStatus == .AlreadyExists {
+            showAwaitingAlert()
+            hideLoader()
+            return
+        }
+        
         guard let user = generateKeys(for: userName) else {
             showCommonError(nil)
+            hideLoader()
             return
         }
         let userNameData = user.userName.data(using: .utf8) ?? Data()
@@ -33,12 +43,16 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
             switch result {
             case .success(let response):
                 if response.status == .Registered {
+                    self?.saveRegisterStatus(.Registered)
                     self?.saveCustom(object: user, key: UDKeys.localVault)
                     self?.routeTo(.main, presentAs: .push)
                 } else {
+                    self?.saveRegisterStatus(.AlreadyExists)
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted))
                 }
+                self?.hideLoader()
             case .failure(let error):
+                self?.hideLoader()
                 self?.showCommonError(error.localizedDescription)
             }
         }
@@ -48,5 +62,16 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
     func showAlert(title: String = Constants.Errors.error, message: String = Constants.Errors.swwError) {
         let alertModel = AlertModel(title: Constants.Errors.error, message: Constants.Errors.enterName)
         showCommonAlert(alertModel)
+    }
+}
+
+private extension LoginSceneViewModel {
+    func showAwaitingAlert() {
+        showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.LoginScreen.renameYourAccount, okButton: Constants.LoginScreen.renameOk, okHandler: { [weak self] in
+            self?.resetAll()
+            self?.delegate?.resetTextField()
+        }, cancelHandler: {
+            return
+        }))
     }
 }

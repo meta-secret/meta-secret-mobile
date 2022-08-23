@@ -32,4 +32,5 @@ struct RegisterResult: Codable {
 enum RegisterStatusResult: String, Codable {
     case Registered = "registered"
     case AlreadyExists = "alreadyExists"
+    case None = "none"
 }

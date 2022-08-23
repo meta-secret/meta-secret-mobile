@@ -14,6 +14,8 @@ struct Constants {
         static let userNameLabel = "Your user name"
         static let letsGoButton = "Let's go"
         static let alreadyExisted = "We found this name is already existed. Is it yours? Please pair your devices"
+        static let renameYourAccount = "We found this name is already existed. You can pair it on your main device or choose another name. Do you wanna choose another one?"
+        static let renameOk = "Rename"
     }
     
     struct MainScreen {
