@@ -42,6 +42,8 @@
 		E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C40B28A9877C00902310 /* Color+extension.swift */; };
 		E5F0C40E28A9878D00902310 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C40D28A9878D00902310 /* AppColors.swift */; };
 		E5F0C41028A9958100902310 /* UD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C40F28A9958100902310 /* UD.swift */; };
+		E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF621B28B5957F00A794F3 /* ClusterDeviceCell.swift */; };
+		E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5FF621C28B5957F00A794F3 /* ClusterDeviceCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +103,8 @@
 		E5F0C40B28A9877C00902310 /* Color+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+extension.swift"; sourceTree = "<group>"; };
 		E5F0C40D28A9878D00902310 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		E5F0C40F28A9958100902310 /* UD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UD.swift; sourceTree = "<group>"; };
+		E5FF621B28B5957F00A794F3 /* ClusterDeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterDeviceCell.swift; sourceTree = "<group>"; };
+		E5FF621C28B5957F00A794F3 /* ClusterDeviceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClusterDeviceCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +185,7 @@
 		E57E6B5D28B3F06200906DBD /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				E5FF621A28B5952900A794F3 /* Cells */,
 				E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */,
 				E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */,
 				E57E6B5628B3F00900906DBD /* MainSceneViewModel.swift */,
@@ -309,6 +314,15 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		E5FF621A28B5952900A794F3 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E5FF621B28B5957F00A794F3 /* ClusterDeviceCell.swift */,
+				E5FF621C28B5957F00A794F3 /* ClusterDeviceCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -416,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5800036288CA4D200E1135C /* LaunchScreen.storyboard in Resources */,
+				E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
 				E57E6B5B28B3F04B00906DBD /* SplashSceneView.xib in Resources */,
 				E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */,
@@ -469,6 +484,7 @@
 				E55A227D28B0611800F5F02B /* Accept.swift in Sources */,
 				E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */,
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
+				E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */,
 				E5F0C40A28A83FFA00902310 /* AlertModel.swift in Sources */,
 				E5F0C40328A836B000902310 /* Constants.swift in Sources */,
 			);

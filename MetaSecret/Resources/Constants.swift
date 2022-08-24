@@ -8,6 +8,7 @@
 import Foundation
 
 struct Constants {
+    
     //MARK: - LOGIN
     struct LoginScreen {
         static let title = "MetaSecret"
@@ -19,6 +20,7 @@ struct Constants {
     }
     
     struct MainScreen {
+        static let title = "MetaSecret"
         static let joinPendings = "You have some devices waiting for your approve! Do you wanna accept?"
         static let ok = "Accept"
         static let cancel = "Decline"

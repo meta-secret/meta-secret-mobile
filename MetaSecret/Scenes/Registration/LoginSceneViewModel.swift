@@ -45,7 +45,7 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
                 if response.status == .Registered {
                     self?.saveRegisterStatus(.Registered)
                     self?.saveCustom(object: user, key: UDKeys.localVault)
-                    self?.routeTo(.main, presentAs: .push)
+                    self?.routeTo(.main, presentAs: .root)
                 } else {
                     self?.saveRegisterStatus(.AlreadyExists)
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted))

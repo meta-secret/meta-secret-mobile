@@ -8,12 +8,13 @@
 import Foundation
 
 protocol MainSceneProtocol {
-    
+    func reloadData(pendings: [Vault])
 }
 
 final class MainSceneViewModel: Alertable, Routerable, UD {
     private var delegate: MainSceneProtocol? = nil
     private var timer: Timer? = nil
+    private var pendings: [Vault]? = nil
     
     //MARK: - INIT
     init(delegate: MainSceneProtocol) {
@@ -35,6 +36,7 @@ private extension MainSceneViewModel {
             case .success(let result):
                 if !(result.pendingJoins ?? []).isEmpty {
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.MainScreen.joinPendings, okButton: Constants.MainScreen.ok, cancelButton: Constants.MainScreen.cancel, okHandler: { [weak self] in
+                        self?.pendings = result.pendingJoins
                         self?.accept()
                     }, cancelHandler: { [weak self] in
                         self?.cancel()
@@ -47,16 +49,22 @@ private extension MainSceneViewModel {
     }
     
     func accept() {
-        
+        stopTimer()
+        delegate?.reloadData(pendings: pendings ?? [])
     }
     
     func cancel() {
-        
+        stopTimer()
     }
     
     //MARK: - TIMER
     func createTimer() {
         timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+    }
+    
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
     }
     
     @objc func fireTimer() {
