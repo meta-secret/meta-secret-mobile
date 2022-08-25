@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainSceneView" customModule="MetaSecret" customModuleProvider="target">
             <connections>
+                <outlet property="selector" destination="CGS-Uk-7NY" id="FPo-Aa-LHc"/>
                 <outlet property="tableView" destination="Znh-Ur-afD" id="UY3-jZ-iA3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -19,8 +20,37 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Ur-afD">
-                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="CGS-Uk-7NY">
+                    <rect key="frame" x="16" y="44" width="382" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="akd-v8-LKv"/>
+                    </constraints>
+                    <segments>
+                        <segment title="Vaults"/>
+                        <segment title="Devices"/>
+                    </segments>
+                    <connections>
+                        <action selector="selectorPressed:" destination="-1" eventType="valueChanged" id="PqI-UW-WSt"/>
+                    </connections>
+                </segmentedControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baV-Kf-AJq">
+                    <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Secrets Yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mt8-wi-9KD">
+                            <rect key="frame" x="139.5" y="375" width="135" height="24"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="Mt8-wi-9KD" firstAttribute="centerX" secondItem="baV-Kf-AJq" secondAttribute="centerX" id="2ve-l6-DmF"/>
+                        <constraint firstItem="Mt8-wi-9KD" firstAttribute="centerY" secondItem="baV-Kf-AJq" secondAttribute="centerY" id="GQf-mQ-nnY"/>
+                    </constraints>
+                </view>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Ur-afD">
+                    <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="pFt-gg-fbp"/>
@@ -32,11 +62,18 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Znh-Ur-afD" secondAttribute="bottom" id="6lY-Jl-rRf"/>
-                <constraint firstItem="Znh-Ur-afD" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="KGt-Gl-Cl2"/>
+                <constraint firstItem="CGS-Uk-7NY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="D5Y-1W-HcI"/>
+                <constraint firstItem="Znh-Ur-afD" firstAttribute="top" secondItem="CGS-Uk-7NY" secondAttribute="bottom" id="OU9-Wq-KlF"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="baV-Kf-AJq" secondAttribute="trailing" id="XDG-fr-lqy"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="baV-Kf-AJq" secondAttribute="bottom" id="Y83-5C-ms9"/>
+                <constraint firstItem="baV-Kf-AJq" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="icA-v9-cx6"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Znh-Ur-afD" secondAttribute="trailing" id="og4-u3-ukc"/>
+                <constraint firstItem="baV-Kf-AJq" firstAttribute="top" secondItem="CGS-Uk-7NY" secondAttribute="bottom" id="opV-o7-Hxh"/>
                 <constraint firstItem="Znh-Ur-afD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qKt-8h-G3h"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CGS-Uk-7NY" secondAttribute="trailing" constant="16" id="vjf-IV-OPJ"/>
+                <constraint firstItem="CGS-Uk-7NY" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="xbe-XQ-Beb"/>
             </constraints>
-            <point key="canvasLocation" x="139" y="62"/>
+            <point key="canvasLocation" x="137.68115942028987" y="61.607142857142854"/>
         </view>
     </objects>
     <resources>

@@ -17,10 +17,12 @@ struct Constants {
         static let alreadyExisted = "We found this name is already existed. Is it yours? Please pair your devices"
         static let renameYourAccount = "We found this name is already existed. You can pair it on your main device or choose another name. Do you wanna choose another one?"
         static let renameOk = "Rename"
+        static let declined = "This name is already taken. And user declined your request. Please rename your Vault."
     }
     
     struct MainScreen {
-        static let title = "MetaSecret"
+        static let secrets = "Secrets"
+        static let devices = "Devices"
         static let joinPendings = "You have some devices waiting for your approve! Do you wanna accept?"
         static let ok = "Accept"
         static let cancel = "Decline"

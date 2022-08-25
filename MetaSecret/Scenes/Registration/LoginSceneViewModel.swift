@@ -19,12 +19,13 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
     //MARK: - INIT
     init(delegate: LoginSceneProtocol) {
         self.delegate = delegate
+        checkStatus()
     }
     
     //MARK: - REGISTRATION
     func register(_ userName: String) {
         showLoader()
-        if registerStatus == .AlreadyExists {
+        if deviceStatus == .pending {
             showAwaitingAlert()
             hideLoader()
             return
@@ -35,19 +36,22 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
             hideLoader()
             return
         }
+        
         let userNameData = user.userName.data(using: .utf8) ?? Data()
         signData(userNameData, for: user)
+        
+        mainUser = user
         
         //TODO: Register(User)
         Register(vaultName: user.userName, deviceName: user.deviceName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == .Registered {
-                    self?.saveRegisterStatus(.Registered)
-                    self?.saveCustom(object: user, key: UDKeys.localVault)
+                    self?.deviceStatus = .member
+                    self?.mainUser = user
                     self?.routeTo(.main, presentAs: .root)
                 } else {
-                    self?.saveRegisterStatus(.AlreadyExists)
+                    self?.deviceStatus = .pending
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted))
                 }
                 self?.hideLoader()
@@ -73,5 +77,25 @@ private extension LoginSceneViewModel {
         }, cancelHandler: {
             return
         }))
+    }
+    
+    func checkStatus() {
+        if deviceStatus == .pending {
+            guard let user = mainUser else { return }
+            
+            GetVault(vaultName: user.userName, deviceName: user.deviceName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+                switch result {
+                case .success(let result):
+                    if result.status == .member {
+                        self?.routeTo(.main, presentAs: .root)
+                    } else if result.status == .declined {
+                        self?.resetAll()
+                        self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
+                    }
+                case .failure(let error):
+                    self?.showCommonError(error.localizedDescription)
+                }
+            }
+        }
     }
 }

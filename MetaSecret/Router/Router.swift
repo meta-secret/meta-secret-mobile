@@ -11,6 +11,7 @@ import UIKit
 enum SceneName {
     case login
     case main
+    case split
 }
 
 enum PresentType {
@@ -44,6 +45,8 @@ extension Routerable {
             return LoginSceneView(nibName: "LoginSceneView", bundle: nil)
         case .main:
             return MainSceneView(nibName: "MainSceneView", bundle: nil)
+        case .split:
+            return AddSecretSceneView(nibName: "AddSecretSceneView", bundle: nil)
         }
     }
 }

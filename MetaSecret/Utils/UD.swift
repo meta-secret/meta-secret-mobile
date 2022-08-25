@@ -7,70 +7,45 @@
 
 import Foundation
 
-protocol UD {
-    func saveCustom<T: Codable>(object: T, key: String)
-    func readCustom<T: Codable>(object: T.Type, key: String) -> T?
-    mutating func resetAll()
-    func saveRegisterStatus(_ status: RegisterStatusResult)
+protocol UD: AnyObject {
+    func resetAll()
     
     var mainUser: User? { get set }
-    var registerStatus: RegisterStatusResult { get }
+    var deviceStatus: VaultInfoStatus { get set }
 }
 
 extension UD {
-    //MARK: - SAVE/LOAD CUSTOM
-    func saveCustom<T: Codable>(object: T, key: String) {
-        do {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(object)
-            UserDefaults.standard.set(data, forKey: key)
-        } catch {
-            print("Unable to Encode \(T.self)")
-        }
-    }
-    
-    func readCustom<T: Codable>(object: T.Type, key: String) -> T? {
-        if let data = UserDefaults.standard.data(forKey: key) {
-            do {
-                let decoder = JSONDecoder()
-                let object = try decoder.decode(T.self, from: data)
-                return object
-            } catch {
-                print("Unable to Decode \(T.self)")
-            }
-        }
-        return nil
-    }
-    
     //MARK: - RESET
-    mutating func resetAll() {
+    func resetAll() {
         mainUser = nil
-        saveRegisterStatus(.None)
+        deviceStatus = .unknown
     }
     
     //MARK: - VARIABLES
     var mainUser: User? {
         get {
-            return readCustom(object: User.self, key: UDKeys.localVault)
+            return UDManager.readCustom(object: User.self, key: UDKeys.localVault)
         }
-        set {}
+        set {
+            UDManager.saveCustom(object: newValue, key: UDKeys.localVault)
+        }
     }
     
-    var registerStatus: RegisterStatusResult {
+    var deviceStatus: VaultInfoStatus {
         get {
-            guard let status = UDManager.read(key: UDKeys.registerStatus) as? String else { return .None }
-            return RegisterStatusResult(rawValue: status) ?? .None
+            guard let status = UDManager.read(key: UDKeys.deviceStatus) as? String else { return .unknown }
+            return VaultInfoStatus(rawValue: status) ?? .unknown
         }
-    }
-    
-    func saveRegisterStatus(_ status: RegisterStatusResult) {
-        UDManager.save(value: status.rawValue, key: UDKeys.registerStatus)
+        
+        set {
+            UDManager.save(value: newValue.rawValue, key: UDKeys.deviceStatus)
+        }
     }
 }
 
 struct UDKeys {
     static let localVault = "localVault"
-    static let registerStatus = "registerStatus"
+    static let deviceStatus = "deviceStatus"
 }
 
 fileprivate class UDManager {
@@ -83,5 +58,29 @@ fileprivate class UDManager {
     
     static func read(key: String) -> Any? {
         return Self.defaults.object(forKey: key)
+    }
+    
+    //MARK: - SAVE/LOAD CUSTOM
+    static func saveCustom<T: Codable>(object: T, key: String) {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(object)
+            UserDefaults.standard.set(data, forKey: key)
+        } catch {
+            print("Unable to Encode \(T.self)")
+        }
+    }
+    
+    static func readCustom<T: Codable>(object: T.Type, key: String) -> T? {
+        if let data = UserDefaults.standard.data(forKey: key) {
+            do {
+                let decoder = JSONDecoder()
+                let object = try decoder.decode(T.self, from: data)
+                return object
+            } catch {
+                print("Unable to Decode \(T.self)")
+            }
+        }
+        return nil
     }
 }

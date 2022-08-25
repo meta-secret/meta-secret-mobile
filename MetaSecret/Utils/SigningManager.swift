@@ -44,7 +44,6 @@ extension Signable {
         }
         
         let user = User(userName: userName, deviceName: UIDevice.current.name, publicKey: publicKeyData, privateKey: privateKeyData, publicRSAKey: publicRSAKeyData, privateRSAKey: privateRSAKeyData)
-        saveCustom(object: user, key: UDKeys.localVault)
         
         hideLoader()
         return user
@@ -57,7 +56,7 @@ extension Signable {
     }
     
     func check(_ signature: Data) -> Bool {
-        guard let user = readCustom(object: User.self, key: UDKeys.localVault) else {
+        guard let user = mainUser else {
             showCommonError(nil)
             return false
         }
@@ -94,7 +93,7 @@ extension Signable {
     }
     
     func encryptData(_ data: Data) {
-        guard let user = readCustom(object: User.self, key: UDKeys.localVault) else {
+        guard let user = mainUser else {
             showCommonError(nil)
             return
         }

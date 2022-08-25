@@ -8,25 +8,42 @@
 import Foundation
 
 protocol MainSceneProtocol {
-    func reloadData(pendings: [Vault])
+    func reloadData(source: MainScreenSource)
 }
 
 final class MainSceneViewModel: Alertable, Routerable, UD {
     private var delegate: MainSceneProtocol? = nil
     private var timer: Timer? = nil
     private var pendings: [Vault]? = nil
+    private var source: MainScreenSource? = nil
     
     //MARK: - INIT
     init(delegate: MainSceneProtocol) {
         self.delegate = delegate
-        createTimer()
+//        createTimer()
     }
-}
-
-private extension MainSceneViewModel {
-    //MARK: - GETTING VAULT
+    
+    //MARK: - PUBLIC METHODS
+    func getAllSecrets() {
+        guard let user = mainUser else {
+            showCommonError(nil)
+            return
+        }
+        
+        showLoader()
+        FindShares(user: user).execute() { [weak self] result in
+            switch result {
+            case .success(let result):
+                break
+                
+            case .failure(let error):
+                self?.showCommonError(error.localizedDescription)
+            }
+        }
+    }
+    
     func getVault() {
-        guard let user = readCustom(object: User.self, key: UDKeys.localVault) else {
+        guard let user = mainUser else {
             showCommonError(nil)
             return
         }
@@ -34,23 +51,33 @@ private extension MainSceneViewModel {
         GetVault(vaultName: user.userName, deviceName: user.deviceName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
             switch result {
             case .success(let result):
-                if !(result.pendingJoins ?? []).isEmpty {
-                    self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.MainScreen.joinPendings, okButton: Constants.MainScreen.ok, cancelButton: Constants.MainScreen.cancel, okHandler: { [weak self] in
-                        self?.pendings = result.pendingJoins
-                        self?.accept()
-                    }, cancelHandler: { [weak self] in
-                        self?.cancel()
-                    }))
-                }
+                guard let vault = result.vault else { return }
+                self?.source = DevicesDataSource().getDataSource(for: vault)
+                
+                guard var source = self?.source else { return }
+                self?.delegate?.reloadData(source: source)
             case .failure(let error):
                 self?.showCommonError(error.localizedDescription)
             }
         }
     }
     
+    func getNewDataSource(type: MainScreenSourceType) {
+        switch type {
+        case .Vaults:
+            getAllSecrets()
+        case .Devices:
+            getVault()
+        default:
+            break
+        }
+    }
+    
+}
+
+private extension MainSceneViewModel {
     func accept() {
         stopTimer()
-        delegate?.reloadData(pendings: pendings ?? [])
     }
     
     func cancel() {

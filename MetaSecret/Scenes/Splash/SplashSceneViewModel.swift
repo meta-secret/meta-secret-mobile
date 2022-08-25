@@ -21,7 +21,7 @@ final class SplashSceneViewModel: Alertable, UD, Routerable {
     
     //MARK: - PUBLIC METHODS
     func chooseStartingScreen() {
-        if (mainUser == nil) || (registerStatus == .AlreadyExists) {
+        guard deviceStatus == .member else {
             routeTo(.login, presentAs: .root)
             return
         }

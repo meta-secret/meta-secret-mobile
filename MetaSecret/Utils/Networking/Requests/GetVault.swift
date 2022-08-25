@@ -24,7 +24,13 @@ class GetVault: HTTPRequest {
 }
 
 struct GetVaultResult: Codable {
-    var vaultName: String?
-    var signatures: [Vault]?
-    var pendingJoins: [Vault]?
+    var status: VaultInfoStatus = .unknown
+    var vault: Vault?
+}
+
+enum VaultInfoStatus: String, Codable {
+    case member
+    case pending
+    case declined
+    case unknown
 }

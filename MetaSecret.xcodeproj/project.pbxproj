@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E51ADE9028B7F6D700C6A87B /* CellSetupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */; };
+		E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9128B8109400C6A87B /* FindShares.swift */; };
+		E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */; };
+		E51ADE9728B8193D00C6A87B /* AddSecretSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */; };
+		E548679E28B6E37B00A1E5DB /* VaultsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */; };
+		E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */; };
+		E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */; };
+		E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A428B6E94800A1E5DB /* MainScreenSource.swift */; };
 		E55A226F28B0357900F5F02B /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A226E28B0357900F5F02B /* Register.swift */; };
 		E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227028B0399A00F5F02B /* HTTPRequest.swift */; };
 		E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */; };
@@ -64,6 +72,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSetupable.swift; sourceTree = "<group>"; };
+		E51ADE9128B8109400C6A87B /* FindShares.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindShares.swift; sourceTree = "<group>"; };
+		E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretSceneView.swift; sourceTree = "<group>"; };
+		E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSecretSceneView.xib; sourceTree = "<group>"; };
+		E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultsDataSource.swift; sourceTree = "<group>"; };
+		E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
+		E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreeSourcable.swift; sourceTree = "<group>"; };
+		E54867A428B6E94800A1E5DB /* MainScreenSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenSource.swift; sourceTree = "<group>"; };
 		E55A226E28B0357900F5F02B /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		E55A227028B0399A00F5F02B /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
 		E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HTTPDispatcher.swift; path = MetaSecret/HTTPDispatcher.swift; sourceTree = SOURCE_ROOT; };
@@ -132,6 +148,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E51ADE8E28B7F69300C6A87B /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		E51ADE9328B8191600C6A87B /* AddSecret */ = {
+			isa = PBXGroup;
+			children = (
+				E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */,
+				E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */,
+			);
+			path = AddSecret;
+			sourceTree = "<group>";
+		};
+		E548679F28B6E38500A1E5DB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */,
+				E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */,
+				E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		E55A226D28B0355B00F5F02B /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +201,7 @@
 				E55A227A28B05ACE00F5F02B /* GetVault.swift */,
 				E55A227C28B0611800F5F02B /* Accept.swift */,
 				E57E6B6428B4198F00906DBD /* Decline.swift */,
+				E51ADE9128B8109400C6A87B /* FindShares.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -165,6 +209,7 @@
 		E57BDA7628A79A1B00DB27BD /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				E51ADE9328B8191600C6A87B /* AddSecret */,
 				E57E6B5E28B3F07400906DBD /* Splash */,
 				E57E6B5D28B3F06200906DBD /* Main */,
 				E57E6B5C28B3F04F00906DBD /* Registration */,
@@ -185,6 +230,7 @@
 		E57E6B5D28B3F06200906DBD /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				E548679F28B6E38500A1E5DB /* Sources */,
 				E5FF621A28B5952900A794F3 /* Cells */,
 				E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */,
 				E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */,
@@ -284,9 +330,11 @@
 		E5F0C3F628A82B3B00902310 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E51ADE8E28B7F69300C6A87B /* Protocols */,
 				E5F0C40928A83FFA00902310 /* AlertModel.swift */,
 				E5F0C3F728A82B5500902310 /* User.swift */,
 				E5F0C3F928A82D0800902310 /* Vault.swift */,
+				E54867A428B6E94800A1E5DB /* MainScreenSource.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -436,6 +484,7 @@
 				E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */,
 				E5800033288CA4D200E1135C /* Assets.xcassets in Resources */,
 				E5800031288CA4D000E1135C /* Main.storyboard in Resources */,
+				E51ADE9728B8193D00C6A87B /* AddSecretSceneView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,23 +515,30 @@
 				E57E6B5728B3F00900906DBD /* MainSceneViewModel.swift in Sources */,
 				E580002A288CA4D000E1135C /* AppDelegate.swift in Sources */,
 				E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */,
+				E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */,
 				E5F0C40028A82E1900902310 /* LoginSceneViewModel.swift in Sources */,
+				E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */,
+				E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */,
 				E55A226F28B0357900F5F02B /* Register.swift in Sources */,
 				E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */,
 				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
 				E57E6B6028B3F09300906DBD /* SplashSceneViewModel.swift in Sources */,
 				E57E6B5A28B3F04B00906DBD /* SplashSceneView.swift in Sources */,
+				E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */,
 				E5F0C40E28A9878D00902310 /* AppColors.swift in Sources */,
 				E5F0C3FA28A82D0800902310 /* Vault.swift in Sources */,
 				E5F0C3F828A82B5500902310 /* User.swift in Sources */,
+				E51ADE9028B7F6D700C6A87B /* CellSetupable.swift in Sources */,
 				E5F0C41028A9958100902310 /* UD.swift in Sources */,
 				E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */,
+				E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */,
 				E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */,
 				E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */,
 				E57E6B6528B4199000906DBD /* Decline.swift in Sources */,
 				E55A227D28B0611800F5F02B /* Accept.swift in Sources */,
 				E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */,
+				E548679E28B6E37B00A1E5DB /* VaultsDataSource.swift in Sources */,
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
 				E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */,
 				E5F0C40A28A83FFA00902310 /* AlertModel.swift in Sources */,

@@ -13,8 +13,10 @@ class ClusterDeviceCell: UITableViewCell {
     @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
 
-    func setupCell(vault: Vault) {
-        deviceNameLabel.text = vault.deviceName
+    func setupCell(content: CellSetupable) {
+        deviceNameLabel.text = content.title
+        statusLabel.isHidden = content.intValue == nil
+        statusLabel.text = content.subtitle
     }
     
 }
