@@ -42,8 +42,7 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
         
         mainUser = user
         
-        //TODO: Register(User)
-        Register(vaultName: user.userName, deviceName: user.deviceName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+        Register(user: user).execute() { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == .Registered {
@@ -83,7 +82,7 @@ private extension LoginSceneViewModel {
         if deviceStatus == .pending {
             guard let user = mainUser else { return }
             
-            GetVault(vaultName: user.userName, deviceName: user.deviceName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+            GetVault(user: user).execute() { [weak self] result in
                 switch result {
                 case .success(let result):
                     if result.status == .member {

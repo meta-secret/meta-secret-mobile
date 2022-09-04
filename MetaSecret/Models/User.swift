@@ -17,13 +17,15 @@ final class User: Codable {
     let privateRSAKey: Data
     
     let deviceName: String
+    let deviceID: String
     
     private(set) var signature: Data? = nil
     private(set) var signatureRSA: Data? = nil
     
-    init(userName: String, deviceName: String, publicKey: Data, privateKey: Data, publicRSAKey: Data, privateRSAKey: Data) {
+    init(userName: String, deviceName: String, deviceID: String, publicKey: Data, privateKey: Data, publicRSAKey: Data, privateRSAKey: Data) {
         self.userName = userName
         self.deviceName = deviceName
+        self.deviceID = deviceID
         self.publicKey = publicKey
         self.privateKey = privateKey
         self.publicRSAKey = publicRSAKey

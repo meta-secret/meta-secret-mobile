@@ -9,31 +9,38 @@ import Foundation
 
 final class VaultsDataSource: MainScreeSourcable {
     func getDataSource(for vault: Vault) -> MainScreenSource {
-        var sourceItems = [CellSetupable]()
+        var sourceItems = [[CellSetupDate]]()
+        var pendingItems = [CellSetupDate]()
+        var declinedItems = [CellSetupDate]()
+        var memberItems = [CellSetupDate]()
         
         for item in vault.pendingJoins ?? [] {
-            var cellSource = CellSetupDataSoure()
             
-            cellSource.setupCellSource(title: item.deviceName, subtitle: VaultInfoStatus.pending.rawValue, intValue: MainScreenSourceType.Vaults.rawValue)
-            sourceItems.append(cellSource)
+            let cellSource = CellSetupDate()
+            
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.pending.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .pending, boolValue: true)
+            pendingItems.append(cellSource)
         }
+        sourceItems.append(pendingItems)
         
         for item in vault.declinedJoins ?? [] {
-            var cellSource = CellSetupDataSoure()
+            let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.deviceName, subtitle: VaultInfoStatus.declined.rawValue, intValue: MainScreenSourceType.Vaults.rawValue)
-            sourceItems.append(cellSource)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.declined.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .declined)
+            declinedItems.append(cellSource)
         }
+        sourceItems.append(declinedItems)
         
         for item in vault.signatures ?? [] {
-            var cellSource = CellSetupDataSoure()
+            let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.deviceName, subtitle: VaultInfoStatus.member.rawValue, intValue: MainScreenSourceType.Vaults.rawValue)
-            sourceItems.append(cellSource)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.member.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .member)
+            memberItems.append(cellSource)
         }
+        sourceItems.append(memberItems)
         
         let source = MainScreenSource()
-        source.items.append(contentsOf: sourceItems)
+        source.items = sourceItems
         return source
     }
 }

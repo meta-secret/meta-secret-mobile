@@ -16,13 +16,18 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable {
     private var viewModel: MainSceneViewModel? = nil
     private var selectedSegment: MainScreenSourceType = .Vaults
     private var source: MainScreenSource? = nil
+    private var currentTab: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
         self.viewModel = MainSceneViewModel(delegate: self)
-//        selectTab(index: MainScreenSourceType.Vaults.rawValue)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        selectTab(index: currentTab)
     }
 
     func reloadData(source: MainScreenSource) {
@@ -34,7 +39,8 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable {
     }
     
     @IBAction func selectorPressed(_ sender: UISegmentedControl) {
-        selectTab(index: sender.numberOfSegments - 1)
+        currentTab = sender.selectedSegmentIndex
+        selectTab(index: currentTab)
     }
     
 }
@@ -47,7 +53,6 @@ private extension MainSceneView {
         tableView.estimatedRowHeight = 60
 
         setupNavBar()
-        selectTab(index: 0)
     }
     
     func selectTab(index: Int) {
@@ -74,12 +79,41 @@ private extension MainSceneView {
 extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClusterDeviceCell", for: indexPath) as! ClusterDeviceCell
-        guard let items = source?.items else { return UITableViewCell()}
-        cell.setupCell(content: items[indexPath.row])
+        guard let content = source?.items[indexPath.section][indexPath.row] else {
+            return UITableViewCell()
+        }
+        cell.setupCell(content: content)
+
         return cell
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = .lightGray
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return source?.items[section].isEmpty ?? true ? 0 : 33
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return source?.items[section].count ?? 0
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return source?.items.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let content = source?.items[indexPath.section][indexPath.row], content.boolValue else {
+            return
+        }
+        
+        let flattenArray = (viewModel?.vault?.declinedJoins ?? []) + (viewModel?.vault?.pendingJoins ?? []) + (viewModel?.vault?.signatures ?? [])
+        let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
+
+        routeTo(.deviceInfo, presentAs: .push, with: selectedVault)
     }
 }

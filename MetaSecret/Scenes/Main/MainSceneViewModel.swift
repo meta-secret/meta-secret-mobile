@@ -16,6 +16,7 @@ final class MainSceneViewModel: Alertable, Routerable, UD {
     private var timer: Timer? = nil
     private var pendings: [Vault]? = nil
     private var source: MainScreenSource? = nil
+    var vault: Vault? = nil
     
     //MARK: - INIT
     init(delegate: MainSceneProtocol) {
@@ -48,13 +49,14 @@ final class MainSceneViewModel: Alertable, Routerable, UD {
             return
         }
         
-        GetVault(vaultName: user.userName, deviceName: user.deviceName, publicKey: user.publicKey.base64EncodedString(), rsaPublicKey: user.publicRSAKey.base64EncodedString(), signature: (user.signature ?? Data()).base64EncodedString()).execute() { [weak self] result in
+        GetVault(user: user).execute() { [weak self] result in
             switch result {
             case .success(let result):
-                guard let vault = result.vault else { return }
+                self?.vault = result.vault
+                guard let vault = self?.vault else { return }
                 self?.source = DevicesDataSource().getDataSource(for: vault)
                 
-                guard var source = self?.source else { return }
+                guard let source = self?.source else { return }
                 self?.delegate?.reloadData(source: source)
             case .failure(let error):
                 self?.showCommonError(error.localizedDescription)

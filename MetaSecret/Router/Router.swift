@@ -12,6 +12,7 @@ enum SceneName {
     case login
     case main
     case split
+    case deviceInfo
 }
 
 enum PresentType {
@@ -21,20 +22,23 @@ enum PresentType {
 }
 
 protocol Routerable: RootFindable {
-    func routeTo(_ screen: SceneName, presentAs: PresentType)
+    func routeTo(_ screen: SceneName, presentAs: PresentType, with data: Any?)
 }
 
 extension Routerable {
-    func routeTo(_ screen: SceneName, presentAs: PresentType = .push) {
+    func routeTo(_ screen: SceneName, presentAs: PresentType = .push, with data: Any? = nil) {
         let nextScene = getNextScreen(screen)
         let root = findRoot()
         
         switch presentAs {
         case .push:
+            (nextScene as? DataSendable)?.dataSent = data
             root?.navigationController?.pushViewController(nextScene, animated: true)
         case .present:
+            (nextScene as? DataSendable)?.dataSent = data
             root?.navigationController?.present(nextScene, animated: true)
         case .root:
+            (nextScene as? DataSendable)?.dataSent = data
             root?.navigationController?.setViewControllers([nextScene], animated: true)
         }
     }
@@ -47,6 +51,12 @@ extension Routerable {
             return MainSceneView(nibName: "MainSceneView", bundle: nil)
         case .split:
             return AddSecretSceneView(nibName: "AddSecretSceneView", bundle: nil)
+        case .deviceInfo:
+            return DeviceInfoSceneView(nibName: "DeviceInfoSceneView", bundle: nil)
         }
     }
+}
+
+protocol DataSendable: AnyObject {
+    var dataSent: Any? { get set }
 }

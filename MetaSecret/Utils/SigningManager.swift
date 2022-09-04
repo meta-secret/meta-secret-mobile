@@ -43,7 +43,7 @@ extension Signable {
             return nil
         }
         
-        let user = User(userName: userName, deviceName: UIDevice.current.name, publicKey: publicKeyData, privateKey: privateKeyData, publicRSAKey: publicRSAKeyData, privateRSAKey: privateRSAKeyData)
+        let user = User(userName: userName, deviceName: UIDevice.current.name, deviceID: UIDevice.current.identifierForVendor?.uuidString ?? "", publicKey: publicKeyData, privateKey: privateKeyData, publicRSAKey: publicRSAKeyData, privateRSAKey: privateRSAKeyData)
         
         hideLoader()
         return user

@@ -12,11 +12,15 @@ class ClusterDeviceCell: UITableViewCell {
     //MARK: - OUTLETS
     @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
-
-    func setupCell(content: CellSetupable) {
+    @IBOutlet weak var chevroneImage: UIImageView!
+    
+    func setupCell(content: CellSetupDate) {
         deviceNameLabel.text = content.title
-        statusLabel.isHidden = content.intValue == nil
         statusLabel.text = content.subtitle
+        
+        chevroneImage.isHidden = !content.boolValue
+        
+        statusLabel.textColor = content.boolValue ? AppColors.mainRed : AppColors.mainGreen
     }
     
 }

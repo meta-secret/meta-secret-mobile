@@ -1,16 +1,16 @@
 //
-//  FindShares.swift
+//  Distribute.swift
 //  MetaSecret
 //
-//  Created by Dmitry Kuklin on 25.08.2022.
+//  Created by Dmitry Kuklin on 29.08.2022.
 //
 
 import Foundation
 
-class FindShares: HTTPRequest {
-    typealias ResponseType = FindSharesResult
+class Distribute: HTTPRequest {
+    typealias ResponseType = DistributeResult
     var params: [String : Any]?
-    var path: String = "findShares"
+    var path: String = "distribute"
     
     init(user: User) {
         self.params = [
@@ -23,7 +23,6 @@ class FindShares: HTTPRequest {
     }
 }
 
-struct FindSharesResult: Codable {
-    var status: VaultInfoStatus = .unknown
-    var vault: Vault?
+struct DistributeResult: Codable {
+    var status: String
 }

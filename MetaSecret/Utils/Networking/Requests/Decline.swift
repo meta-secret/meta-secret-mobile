@@ -8,18 +8,22 @@
 import Foundation
 
 class Decline: HTTPRequest {
-    typealias ResponseType = Vault
+    typealias ResponseType = DeclineResult
     var params: [String : Any]?
     var path: String = "decline"
     
-    init(member: User, candidate: User) {
+    init(member: User, candidate: Vault) {
         self.params = ["member": ["vaultName": member.userName,
                                   "publicKey": member.publicKey.base64EncodedString(),
                                   "rsaPublicKey": member.publicRSAKey.base64EncodedString(),
                                   "signature": member.signature?.base64EncodedString() ?? ""],
-                       "candidate": ["vaultName": candidate.userName,
-                                     "publicKey": candidate.publicKey.base64EncodedString(),
-                                     "rsaPublicKey": candidate.publicRSAKey.base64EncodedString(),
-                                     "signature": candidate.signature?.base64EncodedString() ?? ""]]
+                       "candidate": ["vaultName": candidate.vaultName,
+                                     "publicKey": candidate.publicKey,
+                                     "rsaPublicKey": candidate.rsaPublicKey,
+                                     "signature": candidate.signature]]
     }
+}
+
+struct DeclineResult: Codable {
+    var status: String?
 }

@@ -67,6 +67,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="chevroneImage" destination="Z00-OL-wqV" id="Bov-EL-92v"/>
                 <outlet property="deviceNameLabel" destination="Tot-jI-Yqz" id="k8b-cF-Arz"/>
                 <outlet property="statusLabel" destination="IPa-Je-Vvi" id="dlp-hM-Eht"/>
             </connections>

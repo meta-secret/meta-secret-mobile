@@ -12,13 +12,13 @@ class GetVault: HTTPRequest {
     var params: [String : Any]?
     var path: String = "getVault"
     
-    init(vaultName: String, deviceName: String, publicKey: String, rsaPublicKey: String, signature: String) {
+    init(user: User) {
         self.params = [
-            "vaultName": vaultName,
-            "deviceName": deviceName,
-            "publicKey": publicKey,
-            "rsaPublicKey": rsaPublicKey,
-            "signature": signature
+            "vaultName": user.userName,
+            "device": ["deviceName": user.deviceName, "deviceId": user.deviceID],
+            "publicKey": user.publicKey.base64EncodedString(),
+            "rsaPublicKey": user.publicRSAKey.base64EncodedString(),
+            "signature": user.signature?.base64EncodedString() ?? ""
         ]
     }
 }

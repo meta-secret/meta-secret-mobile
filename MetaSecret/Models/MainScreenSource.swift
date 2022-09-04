@@ -8,7 +8,7 @@
 import Foundation
 
 class MainScreenSource {
-    var items: [CellSetupable] = []
+    var items: [[CellSetupDate]] = []
 }
 
 enum MainScreenSourceType: Int {

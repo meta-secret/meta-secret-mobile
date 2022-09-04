@@ -8,18 +8,24 @@
 import Foundation
 
 class Accept: HTTPRequest {
-    typealias ResponseType = Vault
+    typealias ResponseType = AcceptResult
     var params: [String : Any]?
     var path: String = "accept"
     
-    init(member: User, candidate: User) {
+    init(member: User, candidate: Vault) {
         self.params = ["member": ["vaultName": member.userName,
+                                  "device": ["deviceName": member.deviceName, "deviceId": member.deviceID],
                                   "publicKey": member.publicKey.base64EncodedString(),
                                   "rsaPublicKey": member.publicRSAKey.base64EncodedString(),
                                   "signature": member.signature?.base64EncodedString() ?? ""],
-                       "candidate": ["vaultName": candidate.userName,
-                                     "publicKey": candidate.publicKey.base64EncodedString(),
-                                     "rsaPublicKey": candidate.publicRSAKey.base64EncodedString(),
-                                     "signature": candidate.signature?.base64EncodedString() ?? ""]]
+                       "candidate": ["vaultName": candidate.vaultName ?? "",
+                                     "device": ["deviceName": candidate.device?.deviceName, "deviceId": candidate.device?.deviceId],
+                                     "publicKey": candidate.publicKey ?? "",
+                                     "rsaPublicKey": candidate.rsaPublicKey ?? "",
+                                     "signature": candidate.signature ?? ""]]
     }
+}
+
+struct AcceptResult: Codable {
+    var status: String?
 }

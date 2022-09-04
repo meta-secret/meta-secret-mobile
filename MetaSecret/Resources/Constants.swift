@@ -26,6 +26,9 @@ struct Constants {
         static let joinPendings = "You have some devices waiting for your approve! Do you wanna accept?"
         static let ok = "Accept"
         static let cancel = "Decline"
+        static let pendingTitle = "Pending"
+        static let declineTitle = "Declined"
+        static let memberTitle = "Member"
     }
     
     //MARK: - ALERTS

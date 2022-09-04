@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5108B4828BD38680067207A /* Distribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4728BD38680067207A /* Distribute.swift */; };
+		E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */; };
 		E51ADE9028B7F6D700C6A87B /* CellSetupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */; };
 		E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9128B8109400C6A87B /* FindShares.swift */; };
 		E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */; };
@@ -39,6 +41,9 @@
 		E580004D288CA4D300E1135C /* MetaSecretUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580004C288CA4D300E1135C /* MetaSecretUITestsLaunchTests.swift */; };
 		E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2828B26208007982BD /* LoaderManager.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
+		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
+		E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */; };
+		E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */; };
 		E5F0C3F828A82B5500902310 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C3F728A82B5500902310 /* User.swift */; };
 		E5F0C3FA28A82D0800902310 /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C3F928A82D0800902310 /* Vault.swift */; };
 		E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C3FB28A82E0700902310 /* LoginSceneView.swift */; };
@@ -72,6 +77,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E5108B4728BD38680067207A /* Distribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distribute.swift; sourceTree = "<group>"; };
+		E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretViewModel.swift; sourceTree = "<group>"; };
 		E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSetupable.swift; sourceTree = "<group>"; };
 		E51ADE9128B8109400C6A87B /* FindShares.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindShares.swift; sourceTree = "<group>"; };
 		E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretSceneView.swift; sourceTree = "<group>"; };
@@ -108,6 +115,9 @@
 		E580004C288CA4D300E1135C /* MetaSecretUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		E5A64F2828B26208007982BD /* LoaderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderManager.swift; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
+		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
+		E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceInfoSceneView.xib; sourceTree = "<group>"; };
+		E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneViewModel.swift; sourceTree = "<group>"; };
 		E5F0C3F728A82B5500902310 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E5F0C3F928A82D0800902310 /* Vault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault.swift; sourceTree = "<group>"; };
 		E5F0C3FB28A82E0700902310 /* LoginSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSceneView.swift; sourceTree = "<group>"; };
@@ -161,6 +171,7 @@
 			children = (
 				E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */,
 				E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */,
+				E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */,
 			);
 			path = AddSecret;
 			sourceTree = "<group>";
@@ -202,6 +213,7 @@
 				E55A227C28B0611800F5F02B /* Accept.swift */,
 				E57E6B6428B4198F00906DBD /* Decline.swift */,
 				E51ADE9128B8109400C6A87B /* FindShares.swift */,
+				E5108B4728BD38680067207A /* Distribute.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -209,6 +221,7 @@
 		E57BDA7628A79A1B00DB27BD /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				E5C7116828BE9DA600D53CA8 /* PairingRequest */,
 				E51ADE9328B8191600C6A87B /* AddSecret */,
 				E57E6B5E28B3F07400906DBD /* Splash */,
 				E57E6B5D28B3F06200906DBD /* Main */,
@@ -318,6 +331,16 @@
 			children = (
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		E5C7116828BE9DA600D53CA8 /* PairingRequest */ = {
+			isa = PBXGroup;
+			children = (
+				E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */,
+				E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */,
+				E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */,
+			);
+			path = PairingRequest;
 			sourceTree = "<group>";
 		};
 		E5DFC1A2288CB8E100031F0D /* Frameworks */ = {
@@ -478,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5800036288CA4D200E1135C /* LaunchScreen.storyboard in Resources */,
+				E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */,
 				E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
 				E57E6B5B28B3F04B00906DBD /* SplashSceneView.xib in Resources */,
@@ -523,6 +547,7 @@
 				E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */,
 				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
+				E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */,
 				E57E6B6028B3F09300906DBD /* SplashSceneViewModel.swift in Sources */,
 				E57E6B5A28B3F04B00906DBD /* SplashSceneView.swift in Sources */,
 				E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */,
@@ -534,10 +559,13 @@
 				E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */,
 				E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */,
 				E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */,
+				E5108B4828BD38680067207A /* Distribute.swift in Sources */,
 				E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */,
 				E57E6B6528B4199000906DBD /* Decline.swift in Sources */,
 				E55A227D28B0611800F5F02B /* Accept.swift in Sources */,
 				E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */,
+				E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */,
+				E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */,
 				E548679E28B6E37B00A1E5DB /* VaultsDataSource.swift in Sources */,
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
 				E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */,
