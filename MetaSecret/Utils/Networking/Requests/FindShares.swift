@@ -15,10 +15,10 @@ class FindShares: HTTPRequest {
     init(user: User) {
         self.params = [
             "vaultName": user.userName,
-            "deviceName": user.deviceName,
+            "device": ["deviceName": user.deviceName, "deviceId": user.deviceID],
             "publicKey": user.publicKey.base64EncodedString(),
             "rsaPublicKey": user.publicRSAKey.base64EncodedString(),
-            "signature": user.signature?.base64EncodedString()
+            "signature": user.signature?.base64EncodedString() ?? ""
         ]
     }
 }
