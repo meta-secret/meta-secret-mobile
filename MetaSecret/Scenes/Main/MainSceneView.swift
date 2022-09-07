@@ -30,10 +30,13 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable {
         selectTab(index: currentTab)
     }
 
-    func reloadData(source: MainScreenSource) {
+    func reloadData(source: MainScreenSource?) {
         self.source = source
-        if !source.items.isEmpty {
+        if !(source?.items.isEmpty ?? true) {
             tableView.isHidden = false
+            tableView.reloadData()
+        } else {
+            tableView.isHidden = true
             tableView.reloadData()
         }
     }
@@ -51,11 +54,17 @@ private extension MainSceneView {
         tableView.register(UINib(nibName: "ClusterDeviceCell", bundle: nil), forCellReuseIdentifier: "ClusterDeviceCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 60
-
-        setupNavBar()
     }
     
     func selectTab(index: Int) {
+        reloadData(source: nil)
+        
+        if index == 0 {
+            setupNavBar()
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+        
         selectedSegment = MainScreenSourceType(rawValue: index) ?? .None
         setTitle()
         

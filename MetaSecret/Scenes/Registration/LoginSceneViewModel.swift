@@ -42,7 +42,7 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
         
         mainUser = user
         
-        Register(user: user).execute() { [weak self] result in
+        Register().execute() { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == .Registered {
@@ -80,9 +80,7 @@ private extension LoginSceneViewModel {
     
     func checkStatus() {
         if deviceStatus == .pending {
-            guard let user = mainUser else { return }
-            
-            GetVault(user: user).execute() { [weak self] result in
+            GetVault().execute() { [weak self] result in
                 switch result {
                 case .success(let result):
                     if result.status == .member {

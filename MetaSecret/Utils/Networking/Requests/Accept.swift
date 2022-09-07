@@ -7,12 +7,14 @@
 
 import Foundation
 
-class Accept: HTTPRequest {
+class Accept: HTTPRequest, UD {
     typealias ResponseType = AcceptResult
     var params: [String : Any]?
     var path: String = "accept"
     
-    init(member: User, candidate: Vault) {
+    init(candidate: Vault) {
+        guard let member = mainUser else { return }
+        
         self.params = ["member": ["vaultName": member.userName,
                                   "device": ["deviceName": member.deviceName, "deviceId": member.deviceID],
                                   "publicKey": member.publicKey.base64EncodedString(),

@@ -7,12 +7,14 @@
 
 import Foundation
 
-class Register: HTTPRequest {
+class Register: HTTPRequest, UD {
     typealias ResponseType = RegisterResult
     var params: [String : Any]?
     var path: String = "register"
     
-    init(user: User) {
+    init() {
+        guard let user = mainUser else { return }
+        
         self.params = [
             "vaultName": user.userName,
             "device": ["deviceName": user.deviceName, "deviceId": user.deviceID],

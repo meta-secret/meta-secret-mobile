@@ -13,6 +13,7 @@
 		E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9128B8109400C6A87B /* FindShares.swift */; };
 		E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */; };
 		E51ADE9728B8193D00C6A87B /* AddSecretSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */; };
+		E52E651828C8021E0028213A /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E651728C8021E0028213A /* Secret.swift */; };
 		E548679E28B6E37B00A1E5DB /* VaultsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */; };
 		E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */; };
 		E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */; };
@@ -23,6 +24,8 @@
 		E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227528B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift */; };
 		E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227A28B05ACE00F5F02B /* GetVault.swift */; };
 		E55A227D28B0611800F5F02B /* Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227C28B0611800F5F02B /* Accept.swift */; };
+		E55AC12528C7DFB000757C0C /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55AC12428C7DFB000757C0C /* DBManager.swift */; };
+		E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55AC12628C7EB5300757C0C /* String+Extension.swift */; };
 		E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */; };
 		E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */; };
 		E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */; };
@@ -44,6 +47,9 @@
 		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
 		E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */; };
 		E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */; };
+		E5CE3D0528C92B880022A06F /* SelectDeviceSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */; };
+		E5CE3D0628C92B880022A06F /* SelectDeviceSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */; };
+		E5CE3D0828C92B9A0022A06F /* SelectDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */; };
 		E5F0C3F828A82B5500902310 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C3F728A82B5500902310 /* User.swift */; };
 		E5F0C3FA28A82D0800902310 /* Vault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C3F928A82D0800902310 /* Vault.swift */; };
 		E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C3FB28A82E0700902310 /* LoginSceneView.swift */; };
@@ -57,6 +63,7 @@
 		E5F0C41028A9958100902310 /* UD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C40F28A9958100902310 /* UD.swift */; };
 		E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF621B28B5957F00A794F3 /* ClusterDeviceCell.swift */; };
 		E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5FF621C28B5957F00A794F3 /* ClusterDeviceCell.xib */; };
+		ED99C34A213D9E6F01E7CCC8 /* Pods_MetaSecret.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,12 +84,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		661A42FDDF38EBE81840D342 /* Pods-MetaSecret.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetaSecret.debug.xcconfig"; path = "Target Support Files/Pods-MetaSecret/Pods-MetaSecret.debug.xcconfig"; sourceTree = "<group>"; };
+		99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetaSecret.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5108B4728BD38680067207A /* Distribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distribute.swift; sourceTree = "<group>"; };
 		E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretViewModel.swift; sourceTree = "<group>"; };
 		E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSetupable.swift; sourceTree = "<group>"; };
 		E51ADE9128B8109400C6A87B /* FindShares.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindShares.swift; sourceTree = "<group>"; };
 		E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretSceneView.swift; sourceTree = "<group>"; };
 		E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSecretSceneView.xib; sourceTree = "<group>"; };
+		E52E651728C8021E0028213A /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultsDataSource.swift; sourceTree = "<group>"; };
 		E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
 		E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreeSourcable.swift; sourceTree = "<group>"; };
@@ -93,6 +103,8 @@
 		E55A227528B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionNetworkDispatcher.swift; path = MetaSecret/Utils/URLSessionNetworkDispatcher.swift; sourceTree = SOURCE_ROOT; };
 		E55A227A28B05ACE00F5F02B /* GetVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVault.swift; sourceTree = "<group>"; };
 		E55A227C28B0611800F5F02B /* Accept.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accept.swift; sourceTree = "<group>"; };
+		E55AC12428C7DFB000757C0C /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
+		E55AC12628C7EB5300757C0C /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningManager.swift; sourceTree = "<group>"; };
 		E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneView.swift; sourceTree = "<group>"; };
 		E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainSceneView.xib; sourceTree = "<group>"; };
@@ -118,6 +130,9 @@
 		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
 		E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceInfoSceneView.xib; sourceTree = "<group>"; };
 		E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneViewModel.swift; sourceTree = "<group>"; };
+		E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDeviceSceneView.swift; sourceTree = "<group>"; };
+		E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectDeviceSceneView.xib; sourceTree = "<group>"; };
+		E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDeviceViewModel.swift; sourceTree = "<group>"; };
 		E5F0C3F728A82B5500902310 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E5F0C3F928A82D0800902310 /* Vault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault.swift; sourceTree = "<group>"; };
 		E5F0C3FB28A82E0700902310 /* LoginSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSceneView.swift; sourceTree = "<group>"; };
@@ -131,6 +146,7 @@
 		E5F0C40F28A9958100902310 /* UD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UD.swift; sourceTree = "<group>"; };
 		E5FF621B28B5957F00A794F3 /* ClusterDeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterDeviceCell.swift; sourceTree = "<group>"; };
 		E5FF621C28B5957F00A794F3 /* ClusterDeviceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClusterDeviceCell.xib; sourceTree = "<group>"; };
+		F718EE19A5066D4F057922FB /* Pods-MetaSecret.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetaSecret.release.xcconfig"; path = "Target Support Files/Pods-MetaSecret/Pods-MetaSecret.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED99C34A213D9E6F01E7CCC8 /* Pods_MetaSecret.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +175,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD6B3CFB716953A3749C61D0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				661A42FDDF38EBE81840D342 /* Pods-MetaSecret.debug.xcconfig */,
+				F718EE19A5066D4F057922FB /* Pods-MetaSecret.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E51ADE8E28B7F69300C6A87B /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +195,7 @@
 		E51ADE9328B8191600C6A87B /* AddSecret */ = {
 			isa = PBXGroup;
 			children = (
+				E5CE3D0228C92B040022A06F /* SelectDeviceScene */,
 				E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */,
 				E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */,
 				E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */,
@@ -279,6 +306,7 @@
 				E5800049288CA4D300E1135C /* MetaSecretUITests */,
 				E5800027288CA4D000E1135C /* Products */,
 				E5DFC1A2288CB8E100031F0D /* Frameworks */,
+				CD6B3CFB716953A3749C61D0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -343,9 +371,20 @@
 			path = PairingRequest;
 			sourceTree = "<group>";
 		};
+		E5CE3D0228C92B040022A06F /* SelectDeviceScene */ = {
+			isa = PBXGroup;
+			children = (
+				E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */,
+				E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */,
+				E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */,
+			);
+			path = SelectDeviceScene;
+			sourceTree = "<group>";
+		};
 		E5DFC1A2288CB8E100031F0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -358,6 +397,7 @@
 				E5F0C3F728A82B5500902310 /* User.swift */,
 				E5F0C3F928A82D0800902310 /* Vault.swift */,
 				E54867A428B6E94800A1E5DB /* MainScreenSource.swift */,
+				E52E651728C8021E0028213A /* Secret.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -368,6 +408,7 @@
 				E5F0C40228A836B000902310 /* Constants.swift */,
 				E5F0C40B28A9877C00902310 /* Color+extension.swift */,
 				E5F0C40D28A9878D00902310 /* AppColors.swift */,
+				E55AC12628C7EB5300757C0C /* String+Extension.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -381,6 +422,7 @@
 				E5F0C40F28A9958100902310 /* UD.swift */,
 				E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */,
 				E5A64F2A28B26283007982BD /* RootControllerManager.swift */,
+				E55AC12428C7DFB000757C0C /* DBManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -401,17 +443,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E5800050288CA4D300E1135C /* Build configuration list for PBXNativeTarget "MetaSecret" */;
 			buildPhases = (
+				A96E69A33516B06EBB45536B /* [CP] Check Pods Manifest.lock */,
 				E5800022288CA4D000E1135C /* Sources */,
 				E5800023288CA4D000E1135C /* Frameworks */,
 				E5800024288CA4D000E1135C /* Resources */,
+				90C3FCBFDC2585EC3BCA9EDB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = MetaSecret;
-			packageProductDependencies = (
-			);
 			productName = MetaSecret;
 			productReference = E5800026288CA4D000E1135C /* MetaSecret.app */;
 			productType = "com.apple.product-type.application";
@@ -501,6 +543,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5800036288CA4D200E1135C /* LaunchScreen.storyboard in Resources */,
+				E5CE3D0628C92B880022A06F /* SelectDeviceSceneView.xib in Resources */,
 				E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */,
 				E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
@@ -528,11 +571,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		90C3FCBFDC2585EC3BCA9EDB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetaSecret/Pods-MetaSecret-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetaSecret/Pods-MetaSecret-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetaSecret/Pods-MetaSecret-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A96E69A33516B06EBB45536B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MetaSecret-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E5800022288CA4D000E1135C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E52E651828C8021E0028213A /* Secret.swift in Sources */,
 				E5F0C40828A83ECC00902310 /* AlertManager.swift in Sources */,
 				E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */,
 				E57E6B6328B3F79B00906DBD /* Router.swift in Sources */,
@@ -541,14 +627,18 @@
 				E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */,
 				E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */,
 				E5F0C40028A82E1900902310 /* LoginSceneViewModel.swift in Sources */,
+				E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */,
 				E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */,
 				E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */,
 				E55A226F28B0357900F5F02B /* Register.swift in Sources */,
+				E5CE3D0528C92B880022A06F /* SelectDeviceSceneView.swift in Sources */,
 				E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */,
+				E5CE3D0828C92B9A0022A06F /* SelectDeviceViewModel.swift in Sources */,
 				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
 				E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */,
 				E57E6B6028B3F09300906DBD /* SplashSceneViewModel.swift in Sources */,
+				E55AC12528C7DFB000757C0C /* DBManager.swift in Sources */,
 				E57E6B5A28B3F04B00906DBD /* SplashSceneView.swift in Sources */,
 				E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */,
 				E5F0C40E28A9878D00902310 /* AppColors.swift in Sources */,
@@ -742,6 +832,7 @@
 		};
 		E5800051288CA4D300E1135C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 661A42FDDF38EBE81840D342 /* Pods-MetaSecret.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -770,6 +861,7 @@
 		};
 		E5800052288CA4D300E1135C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F718EE19A5066D4F057922FB /* Pods-MetaSecret.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

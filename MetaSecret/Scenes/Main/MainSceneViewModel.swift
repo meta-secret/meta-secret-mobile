@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MainSceneProtocol {
-    func reloadData(source: MainScreenSource)
+    func reloadData(source: MainScreenSource?)
 }
 
 final class MainSceneViewModel: Alertable, Routerable, UD {
@@ -26,13 +26,8 @@ final class MainSceneViewModel: Alertable, Routerable, UD {
     
     //MARK: - PUBLIC METHODS
     func getAllSecrets() {
-        guard let user = mainUser else {
-            showCommonError(nil)
-            return
-        }
-        
         showLoader()
-        FindShares(user: user).execute() { [weak self] result in
+        FindShares().execute() { [weak self] result in
             switch result {
             case .success(let result):
                 break
@@ -44,12 +39,7 @@ final class MainSceneViewModel: Alertable, Routerable, UD {
     }
     
     func getVault() {
-        guard let user = mainUser else {
-            showCommonError(nil)
-            return
-        }
-        
-        GetVault(user: user).execute() { [weak self] result in
+        GetVault().execute() { [weak self] result in
             switch result {
             case .success(let result):
                 self?.vault = result.vault

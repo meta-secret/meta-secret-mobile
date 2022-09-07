@@ -23,10 +23,7 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
     
     //MARK: - PUBLIC METHODS
     func acceptUser(candidate: Vault) {
-        guard let member = mainUser else {
-            showCommonError(nil)
-            return }
-        Accept(member: member, candidate: candidate).execute { [weak self] result in
+        Accept(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == "finished" {
@@ -41,10 +38,7 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
     }
     
     func declineUser(candidate: Vault) {
-        guard let member = mainUser else {
-            showCommonError(nil)
-            return }
-        Decline(member: member, candidate: candidate).execute { [weak self] result in
+        Decline(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == "Successful" {

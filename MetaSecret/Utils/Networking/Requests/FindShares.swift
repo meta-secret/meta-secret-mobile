@@ -7,12 +7,14 @@
 
 import Foundation
 
-class FindShares: HTTPRequest {
+class FindShares: HTTPRequest, UD {
     typealias ResponseType = FindSharesResult
     var params: [String : Any]?
     var path: String = "findShares"
     
-    init(user: User) {
+    init() {
+        guard let user = mainUser else { return }
+        
         self.params = [
             "vaultName": user.userName,
             "device": ["deviceName": user.deviceName, "deviceId": user.deviceID],

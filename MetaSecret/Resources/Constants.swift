@@ -31,6 +31,10 @@ struct Constants {
         static let memberTitle = "Member"
     }
     
+    struct AddSecret {
+        static let title = "Add a secret"
+    }
+    
     //MARK: - ALERTS
     struct Alert {
         static let emptyTitle = ""
@@ -44,6 +48,7 @@ struct Constants {
         static let userNameMesasge = "This user name is already taken. Do you wanna login?"
         static let enterName = "Please, enter your name"
         static let swwError = "Something went wrong"
+        static let notEnoughtMembers = "You have not enought devices to save your secrets. It would be better to have at least 3 devices in your cluster. Now we can create virtual members on your device. But it's not secure."
     }
     
     //MARK: - TAGS

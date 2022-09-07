@@ -14,7 +14,7 @@ protocol Signable: Alertable, UD {
     func generateKeys(for userName: String) -> User?
     func signData(_ data: Data, for user: User)
     func check(_ signature: Data) -> Bool
-    func encryptData(_ data: Data)
+    func encryptData(_ data: Data, key: Data, name: String) -> Data?
     func checkEncryptedData()
 }
 
@@ -92,31 +92,27 @@ extension Signable {
         return (privateKey, publicKey)
     }
     
-    func encryptData(_ data: Data) {
-        guard let user = mainUser else {
-            showCommonError(nil)
-            return
-        }
-        
+    func encryptData(_ data: Data, key: Data, name: String) -> Data? {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String           : kSecAttrKeyTypeRSA,
             kSecAttrKeySizeInBits as String     : 4096,
             kSecPrivateKeyAttrs as String : [
                 kSecAttrIsPermanent as String       : true,
-                kSecAttrApplicationTag as String    : user.userName.data(using: .utf8) ?? Data()
+                kSecAttrApplicationTag as String    : name.data(using: .utf8) ?? Data()
             ]
         ]
         
-        guard let privateKeyRSA = SecKeyCreateWithData(user.privateRSAKey as CFData, attributes as CFDictionary, nil) else {
+        guard let privateKeyRSA = SecKeyCreateWithData(key as CFData, attributes as CFDictionary, nil) else {
             showCommonError(nil)
-            return
+            return nil
         }
        
-        guard let signatureRSA = SecKeyCreateEncryptedData(privateKeyRSA, .ecdhKeyExchangeCofactorX963SHA1, data as CFData, nil) else {
+        guard let encryptedData = SecKeyCreateEncryptedData(privateKeyRSA, .ecdhKeyExchangeCofactorX963SHA1, data as CFData, nil) else {
             showCommonError(nil)
-            return
+            return nil
         }
-        user.addRSASignature(signatureRSA as Data)
+        
+        return encryptedData as Data
     }
     
     func checkEncryptedData() {

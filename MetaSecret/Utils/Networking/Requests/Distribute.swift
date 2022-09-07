@@ -7,18 +7,20 @@
 
 import Foundation
 
-class Distribute: HTTPRequest {
+class Distribute: HTTPRequest, UD {
     typealias ResponseType = DistributeResult
     var params: [String : Any]?
     var path: String = "distribute"
     
-    init(user: User) {
+    init() {
+        guard let user = mainUser else { return }
+        
         self.params = [
             "vaultName": user.userName,
             "deviceName": user.deviceName,
             "publicKey": user.publicKey.base64EncodedString(),
             "rsaPublicKey": user.publicRSAKey.base64EncodedString(),
-            "signature": user.signature?.base64EncodedString()
+            "signature": user.signature?.base64EncodedString() ?? ""
         ]
     }
 }

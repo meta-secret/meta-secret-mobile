@@ -20,7 +20,6 @@ final class User: Codable {
     let deviceID: String
     
     private(set) var signature: Data? = nil
-    private(set) var signatureRSA: Data? = nil
     
     init(userName: String, deviceName: String, deviceID: String, publicKey: Data, privateKey: Data, publicRSAKey: Data, privateRSAKey: Data) {
         self.userName = userName
@@ -34,9 +33,5 @@ final class User: Codable {
     
     func addSignature(_ signature: Data) {
         self.signature = signature
-    }
-    
-    func addRSASignature(_ signature: Data) {
-        self.signatureRSA = signature
     }
 }

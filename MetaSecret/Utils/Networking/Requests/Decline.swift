@@ -7,12 +7,14 @@
 
 import Foundation
 
-class Decline: HTTPRequest {
+class Decline: HTTPRequest, UD {
     typealias ResponseType = DeclineResult
     var params: [String : Any]?
     var path: String = "decline"
     
-    init(member: User, candidate: Vault) {
+    init(candidate: Vault) {
+        guard let member = mainUser else { return }
+        
         self.params = ["member": ["vaultName": member.userName,
                                   "publicKey": member.publicKey.base64EncodedString(),
                                   "rsaPublicKey": member.publicRSAKey.base64EncodedString(),

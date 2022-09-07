@@ -7,12 +7,14 @@
 
 import Foundation
 
-class GetVault: HTTPRequest {
+class GetVault: HTTPRequest, UD {
     typealias ResponseType = GetVaultResult
     var params: [String : Any]?
     var path: String = "getVault"
     
-    init(user: User) {
+    init() {
+        guard let user = mainUser else { return }
+        
         self.params = [
             "vaultName": user.userName,
             "device": ["deviceName": user.deviceName, "deviceId": user.deviceID],
