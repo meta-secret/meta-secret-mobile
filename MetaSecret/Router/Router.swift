@@ -13,6 +13,7 @@ enum SceneName {
     case main
     case split
     case deviceInfo
+    case selectDevice
 }
 
 enum PresentType {
@@ -53,6 +54,8 @@ extension Routerable {
             return AddSecretSceneView(nibName: "AddSecretSceneView", bundle: nil)
         case .deviceInfo:
             return DeviceInfoSceneView(nibName: "DeviceInfoSceneView", bundle: nil)
+        case  .selectDevice:
+            return SelectDeviceSceneView(nibName: "SelectDeviceSceneView", bundle: nil)
         }
     }
 }

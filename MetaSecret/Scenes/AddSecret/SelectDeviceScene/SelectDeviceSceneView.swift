@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SelectDeviceSceneView: UIViewController, SelectDeviceProtocol, Loaderable, Alertable {
+class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtocol, Loaderable, Alertable {
     
     //MARK: - Outlets
     @IBOutlet weak var searchBar: UISearchBar!
@@ -16,9 +16,10 @@ class SelectDeviceSceneView: UIViewController, SelectDeviceProtocol, Loaderable,
     //MARK: - PROPERTIES
     private var viewModel: SelectDeviceViewModel? = nil
     private var source = [Vault]()
+    private var shares = [String]()
+    private var note = ""
     
-    var shares = [String]()
-    var note = ""
+    var dataSent: Any? = nil
     
     //MARK: - LIFE CICLE
     override func viewDidLoad() {

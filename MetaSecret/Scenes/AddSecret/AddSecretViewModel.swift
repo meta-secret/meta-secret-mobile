@@ -49,7 +49,7 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
         let pass = secret
         let count = pass.count / 3
         
-        let components = pass.components(withMaxLength: count)
+        var components = pass.components(withMaxLength: count)
         
         guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey, let myPartOfSecret = components.first else { return }
         let encryptedPartOfCode = encryptData(Data(myPartOfSecret.utf8), key: key, name: name)
@@ -59,6 +59,9 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
         secret.secretPart = encryptedPartOfCode
         
         DBManager.shared.saveSecret(secret)
+        components.removeFirst()
+        
+        routeTo(.selectDevice, presentAs: .present, with: (note, components))
     }
     
     func createVirtualDevices() {
