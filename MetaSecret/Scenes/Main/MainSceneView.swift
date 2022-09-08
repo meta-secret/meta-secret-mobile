@@ -60,7 +60,7 @@ private extension MainSceneView {
         reloadData(source: nil)
         
         if index == 0 {
-            setupNavBar()
+            //setupNavBar()
         } else {
             navigationItem.rightBarButtonItem = nil
         }

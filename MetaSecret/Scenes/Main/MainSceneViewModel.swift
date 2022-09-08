@@ -57,7 +57,8 @@ final class MainSceneViewModel: Alertable, Routerable, UD {
     func getNewDataSource(type: MainScreenSourceType) {
         switch type {
         case .Vaults:
-            getAllSecrets()
+            break
+//            getAllSecrets()
         case .Devices:
             getVault()
         default:
