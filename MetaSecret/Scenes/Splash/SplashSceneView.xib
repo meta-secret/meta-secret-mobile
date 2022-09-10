@@ -3,8 +3,8 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,21 +19,30 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.10000000149011612" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MainBG" translatesAutoresizingMaskIntoConstraints="NO" id="FYh-b7-rud">
+                    <rect key="frame" x="-147" y="551" width="561" height="533"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="561" id="MHa-zN-Rs3"/>
+                        <constraint firstAttribute="height" constant="533" id="h0p-qQ-IFZ"/>
+                    </constraints>
+                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meta Secret" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nrd-4i-k5x">
-                    <rect key="frame" x="72" y="420.5" width="270" height="65"/>
-                    <fontDescription key="fontDescription" name="NotoSansKannada-Bold" family="Noto Sans Kannada" pointSize="48"/>
-                    <nil key="textColor"/>
+                    <rect key="frame" x="69" y="420" width="276.5" height="66"/>
+                    <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="48"/>
+                    <color key="textColor" name="MainBlack"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="sem-gr-41h">
-                    <rect key="frame" x="188.5" y="582" width="37" height="37"/>
+                    <rect key="frame" x="188.5" y="244" width="37" height="37"/>
                 </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <color key="backgroundColor" name="MainYellow"/>
             <constraints>
+                <constraint firstItem="sem-gr-41h" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="200" id="AdN-fy-b2r"/>
+                <constraint firstItem="FYh-b7-rud" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="BGF-tL-nHE"/>
+                <constraint firstItem="FYh-b7-rud" firstAttribute="top" secondItem="Nrd-4i-k5x" secondAttribute="bottom" constant="65" id="Cqw-U7-UkC"/>
                 <constraint firstItem="Nrd-4i-k5x" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="PgL-KM-26c"/>
-                <constraint firstItem="sem-gr-41h" firstAttribute="top" secondItem="Nrd-4i-k5x" secondAttribute="bottom" constant="96.5" id="Ref-Lk-qsX"/>
                 <constraint firstItem="Nrd-4i-k5x" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="cmz-Ki-adT"/>
                 <constraint firstItem="sem-gr-41h" firstAttribute="centerX" secondItem="Nrd-4i-k5x" secondAttribute="centerX" id="w0X-Se-VUB"/>
             </constraints>
@@ -41,8 +50,12 @@
         </view>
     </objects>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="MainBG" width="596" height="842"/>
+        <namedColor name="MainBlack">
+            <color red="0.14117647058823529" green="0.16470588235294117" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MainYellow">
+            <color red="0.99607843137254903" green="0.83137254901960789" blue="0.16078431372549021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

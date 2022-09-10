@@ -21,7 +21,7 @@ extension Loaderable {
         guard !isAlreadyLoader else { return }
         
         let bgView = UIView(frame: window?.frame ?? CGRect.zero)
-        bgView.backgroundColor = AppColors.alphaBlack40
+        bgView.backgroundColor = AppColors.mainBlack40
         
         let loginSpinner = UIActivityIndicatorView(style: .medium)
         loginSpinner.translatesAutoresizingMaskIntoConstraints = false

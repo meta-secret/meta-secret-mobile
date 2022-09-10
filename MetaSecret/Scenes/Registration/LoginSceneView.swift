@@ -9,7 +9,13 @@ import UIKit
 
 class LoginSceneView: UIViewController, LoginSceneProtocol {
     //MARK: - OUTLETS
-    @IBOutlet weak var userNameLabel: UILabel!
+    private struct Config {
+        static let cornerRadius = 16
+    }
+    
+    @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var letsGoButton: UIButton!
     
@@ -19,31 +25,39 @@ class LoginSceneView: UIViewController, LoginSceneProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        showLoading()
         setupUI()
         self.viewModel = LoginSceneViewModel(delegate: self)
     }
     
     //MARK: - ACTIONS
     @IBAction func letsGoAction(_ sender: Any) {
-        guard var userName = userNameTextField.text, !userName.isEmpty, userName != "@" else {
+        showLoading()
+        
+        guard let userName = userNameTextField.text, !userName.isEmpty else {
             viewModel?.showAlert(message: Constants.Errors.enterName)
+            hideLoading()
             return
         }
         
-        userName = userName.replacingOccurrences(of: "@", with: "")
         viewModel?.register(userName)
     }
     
+    //MARK: - VM DELEGATE
     func resetTextField() {
-        userNameTextField.text = "@"
+        userNameTextField.text = nil
+    }
+    
+    func processFinished() {
+        hideLoading()
     }
 }
 
 private extension LoginSceneView {
     //MARK: - UI SETUP
     func setupUI() {
-        self.title = Constants.LoginScreen.title
-        userNameLabel.text = Constants.LoginScreen.userNameLabel
+        topView.roundCorners(corners: [.topLeft, .topRight], radius: Config.cornerRadius)
+        containerView.dropShadow()
         letsGoButton.setTitle(Constants.LoginScreen.letsGoButton, for: .normal)
         userNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textFieldDidChange(userNameTextField)
@@ -51,12 +65,26 @@ private extension LoginSceneView {
     
     //MARK: - TEXT FIELD DELEGATE
     @objc func textFieldDidChange(_ textField: UITextField) {
-        if let text = textField.text, !text.isEmpty, text != "@" {
+        if let text = textField.text, !text.isEmpty {
             letsGoButton.isUserInteractionEnabled = true
-            letsGoButton.backgroundColor = AppColors.mainRed
+            letsGoButton.backgroundColor = AppColors.mainBlack
         } else {
             letsGoButton.isUserInteractionEnabled = false
-            letsGoButton.backgroundColor = .systemGray5
+            letsGoButton.backgroundColor = AppColors.mainGray
         }
+    }
+    
+    func showLoading() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        userNameTextField.isUserInteractionEnabled = false
+        letsGoButton.isUserInteractionEnabled = false
+        letsGoButton.backgroundColor = AppColors.mainGray
+    }
+    
+    func hideLoading() {
+        activityIndicator.isHidden = true
+        userNameTextField.isUserInteractionEnabled = true
+        textFieldDidChange(userNameTextField)
     }
 }

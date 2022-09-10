@@ -52,7 +52,7 @@ private extension AddSecretSceneView {
     @objc func textFieldDidChange(_ textField: UITextField) {
         if let pass = passwordTextField.text, !pass.isEmpty, let note = noteTextField.text, !note.isEmpty {
             splitButton.isUserInteractionEnabled = true
-            splitButton.backgroundColor = AppColors.mainRed
+            splitButton.backgroundColor = AppColors.mainOrange
         } else {
             splitButton.isUserInteractionEnabled = false
             splitButton.backgroundColor = .systemGray5

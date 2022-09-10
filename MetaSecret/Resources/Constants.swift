@@ -6,14 +6,19 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constants {
+    //MARK: - COMMON
+    struct Common {
+        static let animationTime: CGFloat = 0.3
+    }
     
     //MARK: - LOGIN
     struct LoginScreen {
         static let title = "MetaSecret"
         static let userNameLabel = "Your user name"
-        static let letsGoButton = "Let's go"
+        static let letsGoButton = "LET'S GO"
         static let alreadyExisted = "We found this name is already existed. Is it yours? Please pair your devices"
         static let renameYourAccount = "We found this name is already existed. You can pair it on your main device or choose another name. Do you wanna choose another one?"
         static let renameOk = "Rename"

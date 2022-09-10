@@ -11,6 +11,7 @@ import CryptoKit
 
 protocol LoginSceneProtocol {
     func resetTextField()
+    func processFinished()
 }
 
 final class LoginSceneViewModel: Signable, Alertable, Routerable {
@@ -24,16 +25,15 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
     
     //MARK: - REGISTRATION
     func register(_ userName: String) {
-        showLoader()
         if deviceStatus == .pending {
             showAwaitingAlert()
-            hideLoader()
+            delegate?.processFinished()
             return
         }
         
         guard let user = generateKeys(for: userName) else {
             showCommonError(nil)
-            hideLoader()
+            delegate?.processFinished()
             return
         }
         
@@ -53,9 +53,9 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
                     self?.deviceStatus = .pending
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted))
                 }
-                self?.hideLoader()
+                self?.delegate?.processFinished()
             case .failure(let error):
-                self?.hideLoader()
+                self?.delegate?.processFinished()
                 self?.showCommonError(error.localizedDescription)
             }
         }
@@ -89,10 +89,13 @@ private extension LoginSceneViewModel {
                         self?.resetAll()
                         self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
                     }
+                    self?.delegate?.processFinished()
                 case .failure(let error):
+                    self?.delegate?.processFinished()
                     self?.showCommonError(error.localizedDescription)
                 }
             }
         }
+        delegate?.processFinished()
     }
 }

@@ -19,6 +19,7 @@ enum SceneName {
 enum PresentType {
     case push
     case present
+    case presentFullScreen
     case root
 }
 
@@ -37,7 +38,11 @@ extension Routerable {
             root?.navigationController?.pushViewController(nextScene, animated: true)
         case .present:
             (nextScene as? DataSendable)?.dataSent = data
-            root?.navigationController?.present(nextScene, animated: true)
+            root?.present(nextScene, animated: true)
+        case .presentFullScreen:
+            (nextScene as? DataSendable)?.dataSent = data
+            nextScene.modalPresentationStyle = .overFullScreen
+            root?.present(nextScene, animated: true, completion: nil)
         case .root:
             (nextScene as? DataSendable)?.dataSent = data
             root?.navigationController?.setViewControllers([nextScene], animated: true)

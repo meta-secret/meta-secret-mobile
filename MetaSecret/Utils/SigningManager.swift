@@ -20,7 +20,10 @@ protocol Signable: Alertable, UD {
 
 extension Signable {
     func generateKeys(for userName: String) -> User? {
-        showLoader()
+        guard mainUser == nil else {
+            print("MetaLoger: User already created for this device")
+            return mainUser
+        }
         
         let privateKey = Curve25519.Signing.PrivateKey()
         let publicKey = privateKey.publicKey
@@ -44,8 +47,7 @@ extension Signable {
         }
         
         let user = User(userName: userName, deviceName: UIDevice.current.name, deviceID: UIDevice.current.identifierForVendor?.uuidString ?? "", publicKey: publicKeyData, privateKey: privateKeyData, publicRSAKey: publicRSAKeyData, privateRSAKey: privateRSAKeyData)
-        
-        hideLoader()
+
         return user
     }
     
