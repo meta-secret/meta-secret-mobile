@@ -39,8 +39,10 @@ class LoginSceneView: UIViewController, LoginSceneProtocol {
             hideLoading()
             return
         }
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.viewModel?.register(userName)
+        }
         
-        viewModel?.register(userName)
     }
     
     //MARK: - VM DELEGATE
@@ -62,6 +64,9 @@ private extension LoginSceneView {
         letsGoButton.setTitle(Constants.LoginScreen.letsGoButton, for: .normal)
         userNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textFieldDidChange(userNameTextField)
+        
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        self.view.addGestureRecognizer(tapGR)
     }
     
     //MARK: - TEXT FIELD DELEGATE
@@ -87,6 +92,10 @@ private extension LoginSceneView {
         activityIndicator.isHidden = true
         userNameTextField.isUserInteractionEnabled = true
         textFieldDidChange(userNameTextField)
+    }
+    
+    @objc func hideKeyboard() {
+        userNameTextField.resignFirstResponder()
     }
 }
 

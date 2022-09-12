@@ -20,7 +20,9 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
     //MARK: - INIT
     init(delegate: LoginSceneProtocol) {
         self.delegate = delegate
-        checkStatus()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.checkStatus()
+        }
     }
     
     //MARK: - REGISTRATION
@@ -48,18 +50,26 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
                 if response.status == .Registered {
                     self?.deviceStatus = .member
                     self?.mainUser = user
-                    self?.routeTo(.main, presentAs: .root)
+                    DispatchQueue.main.async {
+                        self?.routeTo(.main, presentAs: .root)
+                    }
                 } else {
                     self?.deviceStatus = .pending
-                    self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, cancelHandler: { [weak self] in
-                        self?.mainUser = nil
-                        self?.deviceStatus = .unknown
-                    }))
+                    DispatchQueue.main.async {
+                        self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, cancelHandler: { [weak self] in
+                            self?.mainUser = nil
+                            self?.deviceStatus = .unknown
+                        }))
+                    }
                 }
-                self?.delegate?.processFinished()
+                DispatchQueue.main.async {
+                    self?.delegate?.processFinished()
+                }
             case .failure(let error):
-                self?.delegate?.processFinished()
-                self?.showCommonError(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self?.delegate?.processFinished()
+                    self?.showCommonError(error.localizedDescription)
+                }
             }
         }
     }
@@ -88,18 +98,26 @@ private extension LoginSceneViewModel {
                 switch result {
                 case .success(let result):
                     if result.status == .member {
-                        self?.routeTo(.main, presentAs: .root)
+                        DispatchQueue.main.async {
+                            self?.routeTo(.main, presentAs: .root)
+                        }
                     } else if result.status == .declined {
                         self?.resetAll()
-                        self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
+                        DispatchQueue.main.async {
+                            self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
+                        }
                     }
                     self?.delegate?.processFinished()
                 case .failure(let error):
-                    self?.delegate?.processFinished()
-                    self?.showCommonError(error.localizedDescription)
+                    DispatchQueue.main.async {
+                        self?.delegate?.processFinished()
+                        self?.showCommonError(error.localizedDescription)
+                    }
                 }
             }
         }
-        delegate?.processFinished()
+        DispatchQueue.main.async {
+            self.delegate?.processFinished()
+        }
     }
 }

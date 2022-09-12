@@ -32,7 +32,6 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
         setupUI()
         self.viewModel = MainSceneViewModel(delegate: self)
         viewModel?.getAllSecrets()
-        showFirstTimePopupHint()
     }
 
     //MARK: - VM DELEGATION
@@ -41,9 +40,8 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
         if (source?.items.isEmpty ?? true ) && selectedSegment == .Secrets {
             selectedSegment = .Devices
             selectTab(index: selectedSegment.rawValue)
-            if firstAppLaunch {
+            if shouldShowVirtualHint {
                 showFirstTimePopupHint()
-                firstAppLaunch = false
             }
             return
         }
@@ -112,6 +110,7 @@ private extension MainSceneView {
     //MARK: - HINTS
     func showFirstTimePopupHint() {
         let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint, buttonHandler: { [weak self] in
+            self?.shouldShowVirtualHint = false
             self?.viewModel?.generateVirtualVaults()
         })
         routeTo(.popupHint, presentAs: .presentFullScreen, with: model)

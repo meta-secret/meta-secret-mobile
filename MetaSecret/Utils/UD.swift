@@ -12,7 +12,7 @@ protocol UD: AnyObject {
     
     var mainUser: User? { get set }
     var deviceStatus: VaultInfoStatus { get set }
-    var firstAppLaunch: Bool {get set}
+    var shouldShowVirtualHint: Bool {get set}
     var vUsers: [User] {get set}
 }
 
@@ -54,7 +54,7 @@ extension UD {
         }
     }
     
-    var firstAppLaunch: Bool {
+    var shouldShowVirtualHint: Bool {
         get {
             guard let status = UDManager.read(key: UDKeys.firstAppLaunch) as? Bool else { return true }
             return status
