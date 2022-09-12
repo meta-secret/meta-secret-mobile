@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MainScreeSourcable {
-    func getDataSource(for result: Vault) -> MainScreenSource
+    func getDataSource<T>(for result: T) -> MainScreenSource?
 }

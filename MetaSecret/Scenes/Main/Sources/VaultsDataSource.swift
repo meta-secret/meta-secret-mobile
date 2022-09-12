@@ -8,36 +8,23 @@
 import Foundation
 
 final class VaultsDataSource: MainScreeSourcable {
-    func getDataSource(for vault: Vault) -> MainScreenSource {
+    func getDataSource<T>(for secrets: T) -> MainScreenSource? {
+        guard let secrets = secrets as? [Secret] else {
+            return nil
+        }
+        
         var sourceItems = [[CellSetupDate]]()
-        var pendingItems = [CellSetupDate]()
-        var declinedItems = [CellSetupDate]()
-        var memberItems = [CellSetupDate]()
-        
-        for item in vault.pendingJoins ?? [] {
-            
+        var items = [CellSetupDate]()
+        for item in secrets {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.pending.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .pending, boolValue: true)
-            pendingItems.append(cellSource)
+            cellSource.setupCellSource(title: item.secretID)
+            items.append(cellSource)
         }
-        sourceItems.append(pendingItems)
         
-        for item in vault.declinedJoins ?? [] {
-            let cellSource = CellSetupDate()
-            
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.declined.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .declined)
-            declinedItems.append(cellSource)
+        if !items.isEmpty {
+            sourceItems.append(items)
         }
-        sourceItems.append(declinedItems)
-        
-        for item in vault.signatures ?? [] {
-            let cellSource = CellSetupDate()
-            
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.member.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .member)
-            memberItems.append(cellSource)
-        }
-        sourceItems.append(memberItems)
         
         let source = MainScreenSource()
         source.items = sourceItems

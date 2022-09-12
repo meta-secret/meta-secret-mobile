@@ -7,30 +7,47 @@
 
 import UIKit
 
-class MainSceneView: UIViewController, MainSceneProtocol, Routerable {
+class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable, UD {
     //MARK: - OUTLETS
+    private struct Config {
+        static let cellID = "ClusterDeviceCell"
+        static let cellHeight: CGFloat = 60
+        static let titleSize: CGFloat = 18
+    }
+    
     @IBOutlet weak var selector: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var emptyLabel: UILabel!
     
     //MARK: - PROPERTIES
     private var viewModel: MainSceneViewModel? = nil
-    private var selectedSegment: MainScreenSourceType = .Vaults
+    private var selectedSegment: MainScreenSourceType = .Secrets
     private var source: MainScreenSource? = nil
     private var currentTab: Int = 0
 
+    //MARK: - LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
         self.viewModel = MainSceneViewModel(delegate: self)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        selectTab(index: currentTab)
+        viewModel?.getAllSecrets()
+        showFirstTimePopupHint()
     }
 
+    //MARK: - VM DELEGATION
     func reloadData(source: MainScreenSource?) {
+        hideLoader()
+        if (source?.items.isEmpty ?? true ) && selectedSegment == .Secrets {
+            selectedSegment = .Devices
+            selectTab(index: selectedSegment.rawValue)
+            if firstAppLaunch {
+                showFirstTimePopupHint()
+                firstAppLaunch = false
+            }
+            return
+        }
+        
         self.source = source
         if !(source?.items.isEmpty ?? true) {
             tableView.isHidden = false
@@ -41,6 +58,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable {
         }
     }
     
+    //MARK: - IBACTIONS
     @IBAction func selectorPressed(_ sender: UISegmentedControl) {
         currentTab = sender.selectedSegmentIndex
         selectTab(index: currentTab)
@@ -48,19 +66,34 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable {
     
 }
 
+//MARK: - PRIVATE METHODS
 private extension MainSceneView {
+    //MARK: - SETUP UI
     func setupUI() {
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.avenirMedium(size: Config.titleSize)]
+        
         tableView.separatorStyle = .none
-        tableView.register(UINib(nibName: "ClusterDeviceCell", bundle: nil), forCellReuseIdentifier: "ClusterDeviceCell")
+        tableView.register(UINib(nibName: Config.cellID, bundle: nil), forCellReuseIdentifier: Config.cellID)
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 60
+        tableView.estimatedRowHeight = Config.cellHeight
     }
     
+    func setTitle() {
+        emptyLabel.text = selectedSegment.rawValue == 0 ? Constants.MainScreen.noSecrets : Constants.MainScreen.noDevices
+        self.title = selectedSegment.rawValue == 0 ? Constants.MainScreen.secrets : Constants.MainScreen.devices
+    }
+    
+    func setupNavBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+    }
+    
+    //MARK: - TAB SELECTING
     func selectTab(index: Int) {
+        selector.selectedSegmentIndex = selectedSegment.rawValue
         reloadData(source: nil)
         
         if index == 0 {
-            //setupNavBar()
+//            setupNavBar()
         } else {
             navigationItem.rightBarButtonItem = nil
         }
@@ -71,20 +104,21 @@ private extension MainSceneView {
         viewModel?.getNewDataSource(type: selectedSegment)
     }
     
-    func setTitle() {
-        self.title = selectedSegment.rawValue == 0 ? Constants.MainScreen.secrets : Constants.MainScreen.devices
-    }
-    
-    func setupNavBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
-    }
-    
+    //MARK: - ROUTING
     @objc func addTapped() {
         routeTo(.split, presentAs: .push)
     }
+    
+    //MARK: - HINTS
+    func showFirstTimePopupHint() {
+        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint, buttonHandler: { [weak self] in
+            self?.viewModel?.generateVirtualVaults()
+        })
+        routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
+    }
 }
 
-
+//MARK: - TABLE VIEW DELEGATE DATA SOURCE
 extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClusterDeviceCell", for: indexPath) as! ClusterDeviceCell
@@ -98,12 +132,12 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = .lightGray
+        headerView.backgroundColor = .clear
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return source?.items[section].isEmpty ?? true ? 0 : 33
+        return source?.items[section].isEmpty ?? true ? 0 : 12
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -51,7 +51,10 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
                     self?.routeTo(.main, presentAs: .root)
                 } else {
                     self?.deviceStatus = .pending
-                    self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted))
+                    self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, cancelHandler: { [weak self] in
+                        self?.mainUser = nil
+                        self?.deviceStatus = .unknown
+                    }))
                 }
                 self?.delegate?.processFinished()
             case .failure(let error):
@@ -73,7 +76,8 @@ private extension LoginSceneViewModel {
         showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.LoginScreen.renameYourAccount, okButton: Constants.LoginScreen.renameOk, okHandler: { [weak self] in
             self?.resetAll()
             self?.delegate?.resetTextField()
-        }, cancelHandler: {
+        }, cancelHandler: { [weak self] in
+            self?.deviceStatus = .unknown
             return
         }))
     }

@@ -21,4 +21,15 @@ class DBManager: Alertable {
             showCommonError(error.localizedDescription.description)
         }
     }
+    
+    func getAllSecrets() -> [Secret] {
+        do {
+            let realm = try Realm()
+            let objs = realm.objects(Secret.self)
+            return Array(objs)
+        } catch {
+            showCommonError(error.localizedDescription.description)
+        }
+        return []
+    }
 }

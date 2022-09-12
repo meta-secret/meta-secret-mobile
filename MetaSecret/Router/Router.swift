@@ -14,6 +14,7 @@ enum SceneName {
     case split
     case deviceInfo
     case selectDevice
+    case popupHint
 }
 
 enum PresentType {
@@ -42,7 +43,7 @@ extension Routerable {
         case .presentFullScreen:
             (nextScene as? DataSendable)?.dataSent = data
             nextScene.modalPresentationStyle = .overFullScreen
-            root?.present(nextScene, animated: true, completion: nil)
+            root?.present(nextScene, animated: false, completion: nil)
         case .root:
             (nextScene as? DataSendable)?.dataSent = data
             root?.navigationController?.setViewControllers([nextScene], animated: true)
@@ -61,6 +62,8 @@ extension Routerable {
             return DeviceInfoSceneView(nibName: "DeviceInfoSceneView", bundle: nil)
         case  .selectDevice:
             return SelectDeviceSceneView(nibName: "SelectDeviceSceneView", bundle: nil)
+        case .popupHint:
+            return PopupHintViewScene(nibName: "PopupHintViewScene", bundle: nil)
         }
     }
 }

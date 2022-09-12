@@ -34,6 +34,11 @@ struct Constants {
         static let pendingTitle = "Pending"
         static let declineTitle = "Declined"
         static let memberTitle = "Member"
+        static let noSecrets = "There is no Secrets YET!"
+        static let noDevices = "Hmmmm.... no devices... are you magician?"
+        static let titleFirstTimeHint = "Create your cluster to keep secrets safety."
+        static let messageFirstTimeHint = "To keep your secrets safety you have to create your own cluster. Just install this application on two more devices and pair it for this. While you don't have more devices we created two virtual devices. It's not safety as it could be."
+        static let virtual = "Virtual"
     }
     
     struct AddSecret {

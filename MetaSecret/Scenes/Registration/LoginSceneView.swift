@@ -56,6 +56,7 @@ class LoginSceneView: UIViewController, LoginSceneProtocol {
 private extension LoginSceneView {
     //MARK: - UI SETUP
     func setupUI() {
+        userNameTextField.delegate = self
         topView.roundCorners(corners: [.topLeft, .topRight], radius: Config.cornerRadius)
         containerView.dropShadow()
         letsGoButton.setTitle(Constants.LoginScreen.letsGoButton, for: .normal)
@@ -86,5 +87,13 @@ private extension LoginSceneView {
         activityIndicator.isHidden = true
         userNameTextField.isUserInteractionEnabled = true
         textFieldDidChange(userNameTextField)
+    }
+}
+
+//MARK: - TEXT FIELD DELEGATE
+extension LoginSceneView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

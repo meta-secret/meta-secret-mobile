@@ -20,11 +20,6 @@ protocol Signable: Alertable, UD {
 
 extension Signable {
     func generateKeys(for userName: String) -> User? {
-        guard mainUser == nil else {
-            print("MetaLoger: User already created for this device")
-            return mainUser
-        }
-        
         let privateKey = Curve25519.Signing.PrivateKey()
         let publicKey = privateKey.publicKey
         

@@ -34,5 +34,6 @@ enum VaultInfoStatus: String, Codable {
     case member
     case pending
     case declined
+    case virtual
     case unknown
 }

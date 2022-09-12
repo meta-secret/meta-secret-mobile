@@ -10,6 +10,7 @@ import UIKit
 class ClusterDeviceCell: UITableViewCell {
     
     //MARK: - OUTLETS
+    @IBOutlet weak var deviceIDLabel: UILabel!
     @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var chevroneImage: UIImageView!
@@ -17,10 +18,10 @@ class ClusterDeviceCell: UITableViewCell {
     func setupCell(content: CellSetupDate) {
         deviceNameLabel.text = content.title
         statusLabel.text = content.subtitle
+        deviceIDLabel.text = content.id
         
         chevroneImage.isHidden = !content.boolValue
-        
-        statusLabel.textColor = content.boolValue ? AppColors.mainOrange : AppColors.mainBlack
+        statusLabel.textColor = AppColors.mainOrange
     }
     
 }

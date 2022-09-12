@@ -7,18 +7,23 @@
 
 import Foundation
 
-final class DevicesDataSource: MainScreeSourcable {
-    func getDataSource(for vault: Vault) -> MainScreenSource {
+final class DevicesDataSource: MainScreeSourcable, UD {
+    func getDataSource<T>(for vault: T) -> MainScreenSource? {
+        guard let vault = vault as? Vault else {
+            return nil
+        }
+        
         var sourceItems = [[CellSetupDate]]()
         var pendingItems = [CellSetupDate]()
         var declinedItems = [CellSetupDate]()
         var memberItems = [CellSetupDate]()
+        var virtualVaults = [CellSetupDate]()
         
         for item in vault.pendingJoins ?? [] {
             
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.pending.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .pending, boolValue: true, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.pending.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .pending, boolValue: true, id: item.device?.deviceId)
             pendingItems.append(cellSource)
         }
         sourceItems.append(pendingItems)
@@ -26,7 +31,7 @@ final class DevicesDataSource: MainScreeSourcable {
         for item in vault.declinedJoins ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.declined.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .declined, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.declined.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .declined, id: item.device?.deviceId)
             declinedItems.append(cellSource)
         }
         sourceItems.append(declinedItems)
@@ -34,13 +39,22 @@ final class DevicesDataSource: MainScreeSourcable {
         for item in vault.signatures ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.member.rawValue, intValue: MainScreenSourceType.Vaults.rawValue, status: .member, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.member.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .member, id: item.device?.deviceId)
             memberItems.append(cellSource)
         }
         sourceItems.append(memberItems)
+        
+        for item in vUsers {
+            let cellSource = CellSetupDate()
+            
+            cellSource.setupCellSource(title: item.deviceName, subtitle: VaultInfoStatus.virtual.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .virtual, id: item.deviceID)
+            virtualVaults.append(cellSource)
+        }
+        sourceItems.append(virtualVaults)
         
         let source = MainScreenSource()
         source.items = sourceItems
         return source
     }
+    
 }

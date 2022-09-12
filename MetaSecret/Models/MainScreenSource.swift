@@ -12,7 +12,7 @@ class MainScreenSource {
 }
 
 enum MainScreenSourceType: Int {
-    case Vaults
+    case Secrets
     case Devices
     case None
 }

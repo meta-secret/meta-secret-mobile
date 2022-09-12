@@ -32,6 +32,9 @@
 		E55A227D28B0611800F5F02B /* Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227C28B0611800F5F02B /* Accept.swift */; };
 		E55AC12528C7DFB000757C0C /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55AC12428C7DFB000757C0C /* DBManager.swift */; };
 		E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55AC12628C7EB5300757C0C /* String+Extension.swift */; };
+		E55B514228CD43A000373959 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B514128CD43A000373959 /* UIFont+Extension.swift */; };
+		E55B514528CE92F300373959 /* PopupHintViewScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B514328CE92F300373959 /* PopupHintViewScene.swift */; };
+		E55B514628CE92F300373959 /* PopupHintViewScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55B514428CE92F300373959 /* PopupHintViewScene.xib */; };
 		E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */; };
 		E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */; };
 		E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */; };
@@ -117,6 +120,9 @@
 		E55A227C28B0611800F5F02B /* Accept.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accept.swift; sourceTree = "<group>"; };
 		E55AC12428C7DFB000757C0C /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 		E55AC12628C7EB5300757C0C /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		E55B514128CD43A000373959 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		E55B514328CE92F300373959 /* PopupHintViewScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupHintViewScene.swift; sourceTree = "<group>"; };
+		E55B514428CE92F300373959 /* PopupHintViewScene.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopupHintViewScene.xib; sourceTree = "<group>"; };
 		E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningManager.swift; sourceTree = "<group>"; };
 		E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneView.swift; sourceTree = "<group>"; };
 		E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainSceneView.xib; sourceTree = "<group>"; };
@@ -202,6 +208,8 @@
 				E5061CE928CD197400E2787B /* BottomInfoSheetViewScene.swift */,
 				E5061CEA28CD197400E2787B /* BottomInfoSheetViewScene.xib */,
 				E5061CED28CD198B00E2787B /* BottomInfoViewModel.swift */,
+				E55B514328CE92F300373959 /* PopupHintViewScene.swift */,
+				E55B514428CE92F300373959 /* PopupHintViewScene.xib */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -212,6 +220,7 @@
 				E5F0C40B28A9877C00902310 /* Color+extension.swift */,
 				E55AC12628C7EB5300757C0C /* String+Extension.swift */,
 				E5061CF028CD20C500E2787B /* UIView+Extension.swift */,
+				E55B514128CD43A000373959 /* UIFont+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -583,6 +592,7 @@
 				E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */,
 				E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
+				E55B514628CE92F300373959 /* PopupHintViewScene.xib in Resources */,
 				E57E6B5B28B3F04B00906DBD /* SplashSceneView.xib in Resources */,
 				E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */,
 				E5800033288CA4D200E1135C /* Assets.xcassets in Resources */,
@@ -664,6 +674,7 @@
 				E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */,
 				E5F0C40028A82E1900902310 /* LoginSceneViewModel.swift in Sources */,
 				E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */,
+				E55B514528CE92F300373959 /* PopupHintViewScene.swift in Sources */,
 				E5061CF128CD20C500E2787B /* UIView+Extension.swift in Sources */,
 				E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */,
 				E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */,
@@ -684,6 +695,7 @@
 				E51ADE9028B7F6D700C6A87B /* CellSetupable.swift in Sources */,
 				E5F0C41028A9958100902310 /* UD.swift in Sources */,
 				E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */,
+				E55B514228CD43A000373959 /* UIFont+Extension.swift in Sources */,
 				E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */,
 				E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */,
 				E5108B4828BD38680067207A /* Distribute.swift in Sources */,

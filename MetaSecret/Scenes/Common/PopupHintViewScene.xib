@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PopupHintViewScene" customModule="MetaSecret" customModuleProvider="target">
+            <connections>
+                <outlet property="bgView" destination="7fP-aJ-1bl" id="BSu-qY-dam"/>
+                <outlet property="closeButton" destination="aht-Iv-dUW" id="PKm-kf-6Er"/>
+                <outlet property="containerView" destination="Mv1-vt-edW" id="ylU-fy-CKQ"/>
+                <outlet property="messageLabel" destination="Kip-yo-UTp" id="a7F-Tm-g7q"/>
+                <outlet property="titleLabel" destination="iV6-33-Xf2" id="zXw-Jr-JBn"/>
+                <outlet property="topView" destination="n4k-wV-ieQ" id="vCF-J7-Jgh"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7fP-aJ-1bl">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" name="MainBlack"/>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mv1-vt-edW">
+                    <rect key="frame" x="32" y="189" width="350" height="518"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n4k-wV-ieQ">
+                            <rect key="frame" x="0.0" y="0.0" width="350" height="200"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iV6-33-Xf2">
+                                    <rect key="frame" x="16" y="16" width="244" height="168"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="28"/>
+                                    <color key="textColor" name="MainBlack"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aht-Iv-dUW">
+                                    <rect key="frame" x="302" y="16" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="hmh-3p-gk4"/>
+                                        <constraint firstAttribute="height" constant="32" id="rT9-ui-Ajb"/>
+                                    </constraints>
+                                    <color key="tintColor" name="MainBlack"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="clear" catalog="system"/>
+                                    <connections>
+                                        <action selector="closeTapped:" destination="-1" eventType="touchUpInside" id="hbN-Je-1xG"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" name="MainYellow"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="iV6-33-Xf2" secondAttribute="bottom" constant="16" id="3Tn-to-dL7"/>
+                                <constraint firstAttribute="height" constant="200" id="5Fx-wE-lNN"/>
+                                <constraint firstAttribute="trailing" secondItem="aht-Iv-dUW" secondAttribute="trailing" constant="16" id="7ns-O5-hkp"/>
+                                <constraint firstItem="iV6-33-Xf2" firstAttribute="top" secondItem="n4k-wV-ieQ" secondAttribute="top" constant="16" id="BR8-Vt-1PM"/>
+                                <constraint firstAttribute="trailing" secondItem="iV6-33-Xf2" secondAttribute="trailing" constant="90" id="RT5-Nc-LNx"/>
+                                <constraint firstItem="aht-Iv-dUW" firstAttribute="top" secondItem="n4k-wV-ieQ" secondAttribute="top" constant="16" id="VYE-o5-D6l"/>
+                                <constraint firstItem="iV6-33-Xf2" firstAttribute="leading" secondItem="n4k-wV-ieQ" secondAttribute="leading" constant="16" id="Wsp-xh-ilD"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kip-yo-UTp">
+                            <rect key="frame" x="16" y="232" width="318" height="254"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                            <color key="textColor" name="MainBlack"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="MainGray"/>
+                    <constraints>
+                        <constraint firstItem="Kip-yo-UTp" firstAttribute="leading" secondItem="Mv1-vt-edW" secondAttribute="leading" constant="16" id="1KC-qi-He9"/>
+                        <constraint firstAttribute="width" constant="350" id="2a7-1i-7f4"/>
+                        <constraint firstItem="n4k-wV-ieQ" firstAttribute="leading" secondItem="Mv1-vt-edW" secondAttribute="leading" id="6Yv-rO-PO9"/>
+                        <constraint firstItem="n4k-wV-ieQ" firstAttribute="top" secondItem="Mv1-vt-edW" secondAttribute="top" id="Cik-Hk-Csv"/>
+                        <constraint firstAttribute="trailing" secondItem="n4k-wV-ieQ" secondAttribute="trailing" id="FZK-16-dL8"/>
+                        <constraint firstAttribute="bottom" secondItem="Kip-yo-UTp" secondAttribute="bottom" constant="32" id="JKb-rQ-QXf"/>
+                        <constraint firstItem="Kip-yo-UTp" firstAttribute="top" secondItem="n4k-wV-ieQ" secondAttribute="bottom" constant="32" id="bcG-1A-ADh"/>
+                        <constraint firstAttribute="trailing" secondItem="Kip-yo-UTp" secondAttribute="trailing" constant="16" id="cdy-Y8-AjR"/>
+                        <constraint firstAttribute="height" constant="518" id="rZu-nD-wNw"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="7fP-aJ-1bl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="1mO-IN-w2d"/>
+                <constraint firstItem="7fP-aJ-1bl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="LCS-Wa-2mo"/>
+                <constraint firstItem="Mv1-vt-edW" firstAttribute="centerY" secondItem="7fP-aJ-1bl" secondAttribute="centerY" id="UQS-xJ-Wyq"/>
+                <constraint firstItem="Mv1-vt-edW" firstAttribute="centerX" secondItem="7fP-aJ-1bl" secondAttribute="centerX" id="VgD-FU-P7n"/>
+                <constraint firstAttribute="trailing" secondItem="7fP-aJ-1bl" secondAttribute="trailing" id="dP1-Co-0f6"/>
+                <constraint firstAttribute="bottom" secondItem="7fP-aJ-1bl" secondAttribute="bottom" id="gKt-rI-nBu"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="70"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="clear" catalog="system" width="128" height="114"/>
+        <namedColor name="MainBlack">
+            <color red="0.14117647058823529" green="0.16470588235294117" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MainGray">
+            <color red="0.94509803921568625" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MainYellow">
+            <color red="0.99607843137254903" green="0.83137254901960789" blue="0.16078431372549021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
