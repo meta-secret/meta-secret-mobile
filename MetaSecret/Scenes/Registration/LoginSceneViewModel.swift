@@ -28,14 +28,19 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
     //MARK: - REGISTRATION
     func register(_ userName: String) {
         if deviceStatus == .pending {
-            showAwaitingAlert()
-            delegate?.processFinished()
+            DispatchQueue.main.async { [weak self] in
+                self?.showAwaitingAlert()
+                self?.delegate?.processFinished()
+            }
             return
         }
         
         guard let user = generateKeys(for: userName) else {
-            showCommonError(nil)
-            delegate?.processFinished()
+            DispatchQueue.main.async { [weak self] in
+                self?.showCommonError(nil)
+                self?.delegate?.processFinished()
+            }
+
             return
         }
         
@@ -50,6 +55,7 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
                 if response.status == .Registered {
                     self?.deviceStatus = .member
                     self?.mainUser = user
+                    self?.isOwner = true //TODO: Need it on Server
                     DispatchQueue.main.async {
                         self?.routeTo(.main, presentAs: .root)
                     }

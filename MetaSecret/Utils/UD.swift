@@ -15,6 +15,7 @@ protocol UD: AnyObject {
     var shouldShowVirtualHint: Bool {get set}
     var isFirstAppLaunch: Bool {get set}
     var vUsers: [User] {get set}
+    var isOwner: Bool {get set}
 }
 
 extension UD {
@@ -76,6 +77,17 @@ extension UD {
             UDManager.save(value: newValue, key: UDKeys.isFirstAppLaunch)
         }
     }
+    
+    var isOwner: Bool {
+        get {
+            guard let status = UDManager.read(key: UDKeys.isOwner) as? Bool else { return false }
+            return status
+        }
+        
+        set {
+            UDManager.save(value: newValue, key: UDKeys.isOwner)
+        }
+    }
 }
 
 struct UDKeys {
@@ -84,6 +96,7 @@ struct UDKeys {
     static let shouldShowVirtualHint = "shouldShowVirtualHint"
     static let vUsers = "vUsers"
     static let isFirstAppLaunch = "isFirstAppLaunch"
+    static let isOwner = "isOwner"
 }
 
 fileprivate class UDManager {

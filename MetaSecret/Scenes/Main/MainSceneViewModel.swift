@@ -88,7 +88,10 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
             }
             
             self?.vUsers = virtualUsers
-            self?.hideLoader()
+            DispatchQueue.main.async { [weak self] in
+                self?.hideLoader()
+            }
+            
         }
     }
     

@@ -46,7 +46,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
             isFirstAppLaunch = false
             selectedSegment = .Devices
             selectTab(index: selectedSegment.rawValue)
-            if shouldShowVirtualHint {
+            if shouldShowVirtualHint && isOwner {
                 showFirstTimePopupHint()
             }
             return
@@ -65,8 +65,15 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
             remainigLabel.text = Constants.MainScreen.addDevices(memberCounts: filteredArr?.count ?? 0)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.animationTime) { [weak self] in
-                self?.remainingNotificationContainer.isHidden = self?.selectedSegment == .Secrets
-                self?.remainingNotification.showShadow()
+                guard let `self` = self else { return }
+                
+                if (self.selectedSegment == .Secrets) || (!self.isOwner) {
+                    self.remainingNotificationContainer.isHidden = true
+                } else {
+                    self.remainingNotificationContainer.isHidden = false
+                }
+                
+                self.remainingNotification.showShadow()
             }
         } else {
             tableView.isHidden = true
