@@ -44,14 +44,6 @@ final class DevicesDataSource: MainScreeSourcable, UD {
         }
         sourceItems.append(memberItems)
         
-        for item in vUsers {
-            let cellSource = CellSetupDate()
-            
-            cellSource.setupCellSource(title: item.deviceName, subtitle: VaultInfoStatus.virtual.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .virtual, id: item.deviceID)
-            virtualVaults.append(cellSource)
-        }
-        sourceItems.append(virtualVaults)
-        
         let source = MainScreenSource()
         source.items = sourceItems
         return source

@@ -20,6 +20,7 @@
 		E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */; };
 		E51ADE9728B8193D00C6A87B /* AddSecretSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */; };
 		E52E651828C8021E0028213A /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E651728C8021E0028213A /* Secret.swift */; };
+		E54205E928D123D300E763DB /* SceneSendDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54205E828D123D300E763DB /* SceneSendDataModel.swift */; };
 		E548679E28B6E37B00A1E5DB /* VaultsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */; };
 		E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */; };
 		E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */; };
@@ -108,6 +109,7 @@
 		E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretSceneView.swift; sourceTree = "<group>"; };
 		E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSecretSceneView.xib; sourceTree = "<group>"; };
 		E52E651728C8021E0028213A /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		E54205E828D123D300E763DB /* SceneSendDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSendDataModel.swift; sourceTree = "<group>"; };
 		E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultsDataSource.swift; sourceTree = "<group>"; };
 		E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
 		E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreeSourcable.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 				E54867A428B6E94800A1E5DB /* MainScreenSource.swift */,
 				E52E651728C8021E0028213A /* Secret.swift */,
 				E5061CF228CD258D00E2787B /* BottomInfoSheetModel.swift */,
+				E54205E828D123D300E763DB /* SceneSendDataModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -712,6 +715,7 @@
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
 				E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */,
 				E5F0C40A28A83FFA00902310 /* AlertModel.swift in Sources */,
+				E54205E928D123D300E763DB /* SceneSendDataModel.swift in Sources */,
 				E5F0C40328A836B000902310 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

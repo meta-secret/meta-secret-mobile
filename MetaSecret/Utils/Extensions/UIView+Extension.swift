@@ -17,23 +17,21 @@ extension UIView {
         maskLayer1.frame = bounds
         maskLayer1.path = maskPath1.cgPath
         layer.mask = maskLayer1
-        layer.masksToBounds = true
+//        layer.masksToBounds = true
     }
     
-    func dropShadow(color: UIColor = AppColors.mainBlack, fillColor: UIColor = .white, opacity: Float = 0.5, offSet: CGSize = CGSize(width: 1, height: -1), radius: CGFloat = 10, cornerRadius: CGFloat = 16, scale: Bool = true) {
-        
-        let shadowLayer = CAShapeLayer()
-        
-        shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath
-        shadowLayer.shadowColor = color.cgColor
-        shadowLayer.fillColor = fillColor.cgColor
-        shadowLayer.shadowPath = shadowLayer.path
-        shadowLayer.shadowOffset = offSet
-        shadowLayer.shadowOpacity = opacity
-        shadowLayer.shadowRadius = radius
-        layer.insertSublayer(shadowLayer, at: 0)
-        
-        layer.shouldRasterize = true
-        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    func showShadow(shadowColor: UIColor = AppColors.mainBlack,
+                    shadowOffset: CGSize = CGSize(width: 1, height: 1),
+                    shadowRadius: CGFloat = 5,
+                    shadowOpacity: Float = 0.5,
+                    cornerRadius: CGFloat = 16) {
+
+        self.layer.masksToBounds = false
+        self.layer.cornerRadius = cornerRadius
+        self.layer.shadowColor = shadowColor.cgColor
+        self.layer.shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius).cgPath
+        self.layer.shadowOffset = shadowOffset
+        self.layer.shadowOpacity = shadowOpacity
+        self.layer.shadowRadius = shadowRadius
     }
 }

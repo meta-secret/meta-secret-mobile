@@ -13,6 +13,7 @@ protocol UD: AnyObject {
     var mainUser: User? { get set }
     var deviceStatus: VaultInfoStatus { get set }
     var shouldShowVirtualHint: Bool {get set}
+    var isFirstAppLaunch: Bool {get set}
     var vUsers: [User] {get set}
 }
 
@@ -56,12 +57,23 @@ extension UD {
     
     var shouldShowVirtualHint: Bool {
         get {
-            guard let status = UDManager.read(key: UDKeys.firstAppLaunch) as? Bool else { return true }
+            guard let status = UDManager.read(key: UDKeys.shouldShowVirtualHint) as? Bool else { return true }
             return status
         }
         
         set {
-            UDManager.save(value: newValue, key: UDKeys.firstAppLaunch)
+            UDManager.save(value: newValue, key: UDKeys.shouldShowVirtualHint)
+        }
+    }
+    
+    var isFirstAppLaunch: Bool {
+        get {
+            guard let status = UDManager.read(key: UDKeys.isFirstAppLaunch) as? Bool else { return true }
+            return status
+        }
+        
+        set {
+            UDManager.save(value: newValue, key: UDKeys.isFirstAppLaunch)
         }
     }
 }
@@ -69,8 +81,9 @@ extension UD {
 struct UDKeys {
     static let localVault = "localVault"
     static let deviceStatus = "deviceStatus"
-    static let firstAppLaunch = "firstAppLaunch"
+    static let shouldShowVirtualHint = "shouldShowVirtualHint"
     static let vUsers = "vUsers"
+    static let isFirstAppLaunch = "isFirstAppLaunch"
 }
 
 fileprivate class UDManager {

@@ -5,13 +5,15 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainSceneView" customModule="MetaSecret" customModuleProvider="target">
             <connections>
                 <outlet property="emptyLabel" destination="Mt8-wi-9KD" id="QWA-NE-N6u"/>
+                <outlet property="remainigLabel" destination="5In-g3-XBU" id="Kuv-8B-HZR"/>
+                <outlet property="remainingNotification" destination="Lir-Rf-Tmk" id="pjv-rn-pu0"/>
+                <outlet property="remainingNotificationContainer" destination="8td-kl-x7J" id="BBS-sB-pom"/>
                 <outlet property="selector" destination="CGS-Uk-7NY" id="FPo-Aa-LHc"/>
                 <outlet property="tableView" destination="Znh-Ur-afD" id="UY3-jZ-iA3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -28,7 +30,7 @@
                         <constraint firstAttribute="height" constant="44" id="akd-v8-LKv"/>
                     </constraints>
                     <segments>
-                        <segment title="Vaults"/>
+                        <segment title="Secrets"/>
                         <segment title="Devices"/>
                     </segments>
                     <color key="tintColor" name="MainGray"/>
@@ -40,7 +42,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baV-Kf-AJq">
                     <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO SECRETS YET!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mt8-wi-9KD">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO SECRETS YET!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mt8-wi-9KD">
                             <rect key="frame" x="122" y="373.5" width="170" height="27.5"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="170" id="NxW-kz-O2e"/>
@@ -50,33 +52,75 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" name="MainGray"/>
                     <constraints>
                         <constraint firstItem="Mt8-wi-9KD" firstAttribute="centerX" secondItem="baV-Kf-AJq" secondAttribute="centerX" id="2ve-l6-DmF"/>
                         <constraint firstItem="Mt8-wi-9KD" firstAttribute="centerY" secondItem="baV-Kf-AJq" secondAttribute="centerY" id="GQf-mQ-nnY"/>
                     </constraints>
                 </view>
-                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Ur-afD">
-                    <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                    <color key="backgroundColor" name="MainGray"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="pFt-gg-fbp"/>
-                        <outlet property="delegate" destination="-1" id="SN7-Ll-rjg"/>
-                    </connections>
-                </tableView>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2dk-2P-Edx">
+                    <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                    <subviews>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8td-kl-x7J">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lir-Rf-Tmk">
+                                    <rect key="frame" x="16" y="16" width="382" height="68"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please, install this app on two more devices to keep your secrets safety!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5In-g3-XBU">
+                                            <rect key="frame" x="16" y="15" width="350" height="38.5"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                            <color key="textColor" name="MainBlack"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" name="MainOrange"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="5In-g3-XBU" secondAttribute="trailing" constant="16" id="2cx-va-jmN"/>
+                                        <constraint firstItem="5In-g3-XBU" firstAttribute="leading" secondItem="Lir-Rf-Tmk" secondAttribute="leading" constant="16" id="6ma-Ds-xTj"/>
+                                        <constraint firstItem="5In-g3-XBU" firstAttribute="centerY" secondItem="Lir-Rf-Tmk" secondAttribute="centerY" id="niT-g8-rBd"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Lir-Rf-Tmk" secondAttribute="trailing" constant="16" id="3Ct-LB-jM5"/>
+                                <constraint firstAttribute="bottom" secondItem="Lir-Rf-Tmk" secondAttribute="bottom" constant="16" id="52p-0j-IoG"/>
+                                <constraint firstItem="Lir-Rf-Tmk" firstAttribute="leading" secondItem="8td-kl-x7J" secondAttribute="leading" constant="16" id="PDD-Rp-s28"/>
+                                <constraint firstAttribute="height" constant="100" id="YQ2-L4-8tY"/>
+                                <constraint firstItem="Lir-Rf-Tmk" firstAttribute="top" secondItem="8td-kl-x7J" secondAttribute="top" constant="16" id="xoP-bK-1V3"/>
+                            </constraints>
+                        </view>
+                        <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Ur-afD">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
+                            <color key="backgroundColor" name="MainGray"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="pFt-gg-fbp"/>
+                                <outlet property="delegate" destination="-1" id="SN7-Ll-rjg"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Znh-Ur-afD" firstAttribute="leading" secondItem="2dk-2P-Edx" secondAttribute="leading" id="MWe-o8-wWO"/>
+                        <constraint firstAttribute="trailing" secondItem="Znh-Ur-afD" secondAttribute="trailing" id="O48-xz-ze0"/>
+                        <constraint firstAttribute="trailing" secondItem="8td-kl-x7J" secondAttribute="trailing" id="V9t-W0-uol"/>
+                        <constraint firstItem="8td-kl-x7J" firstAttribute="leading" secondItem="2dk-2P-Edx" secondAttribute="leading" id="vV8-Ev-Y6I"/>
+                    </constraints>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="MainGray"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Znh-Ur-afD" secondAttribute="bottom" id="6lY-Jl-rRf"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2dk-2P-Edx" secondAttribute="trailing" id="11E-uI-Dk9"/>
+                <constraint firstItem="2dk-2P-Edx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="CI8-nU-Oiv"/>
                 <constraint firstItem="CGS-Uk-7NY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="D5Y-1W-HcI"/>
-                <constraint firstItem="Znh-Ur-afD" firstAttribute="top" secondItem="CGS-Uk-7NY" secondAttribute="bottom" id="OU9-Wq-KlF"/>
+                <constraint firstAttribute="bottom" secondItem="2dk-2P-Edx" secondAttribute="bottom" id="Foi-Xr-Ioo"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="baV-Kf-AJq" secondAttribute="trailing" id="XDG-fr-lqy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="baV-Kf-AJq" secondAttribute="bottom" id="Y83-5C-ms9"/>
+                <constraint firstItem="2dk-2P-Edx" firstAttribute="top" secondItem="CGS-Uk-7NY" secondAttribute="bottom" id="bIg-MA-uXq"/>
                 <constraint firstItem="baV-Kf-AJq" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="icA-v9-cx6"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Znh-Ur-afD" secondAttribute="trailing" id="og4-u3-ukc"/>
                 <constraint firstItem="baV-Kf-AJq" firstAttribute="top" secondItem="CGS-Uk-7NY" secondAttribute="bottom" id="opV-o7-Hxh"/>
-                <constraint firstItem="Znh-Ur-afD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qKt-8h-G3h"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CGS-Uk-7NY" secondAttribute="trailing" constant="16" id="vjf-IV-OPJ"/>
                 <constraint firstItem="CGS-Uk-7NY" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="xbe-XQ-Beb"/>
             </constraints>
@@ -93,8 +137,5 @@
         <namedColor name="MainOrange">
             <color red="1" green="0.56470588235294117" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

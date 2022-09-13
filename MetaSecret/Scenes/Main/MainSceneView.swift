@@ -9,21 +9,25 @@ import UIKit
 
 class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable, UD {
     //MARK: - OUTLETS
-    private struct Config {
-        static let cellID = "ClusterDeviceCell"
-        static let cellHeight: CGFloat = 60
-        static let titleSize: CGFloat = 18
-    }
     
     @IBOutlet weak var selector: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var remainingNotificationContainer: UIView!
+    @IBOutlet weak var remainingNotification: UIView!
     @IBOutlet weak var emptyLabel: UILabel!
+    @IBOutlet weak var remainigLabel: UILabel!
     
     //MARK: - PROPERTIES
     private var viewModel: MainSceneViewModel? = nil
     private var selectedSegment: MainScreenSourceType = .Secrets
     private var source: MainScreenSource? = nil
     private var currentTab: Int = 0
+    
+    private struct Config {
+        static let cellID = "ClusterDeviceCell"
+        static let cellHeight: CGFloat = 60
+        static let titleSize: CGFloat = 18
+    }
 
     //MARK: - LIFECYCLE
     override func viewDidLoad() {
@@ -31,13 +35,15 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
 
         setupUI()
         self.viewModel = MainSceneViewModel(delegate: self)
+        showLoader()
         viewModel?.getAllSecrets()
     }
 
     //MARK: - VM DELEGATION
     func reloadData(source: MainScreenSource?) {
         hideLoader()
-        if (source?.items.isEmpty ?? true ) && selectedSegment == .Secrets {
+        if (source?.items.isEmpty ?? true ) && selectedSegment == .Secrets && isFirstAppLaunch {
+            isFirstAppLaunch = false
             selectedSegment = .Devices
             selectTab(index: selectedSegment.rawValue)
             if shouldShowVirtualHint {
@@ -50,6 +56,18 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
         if !(source?.items.isEmpty ?? true) {
             tableView.isHidden = false
             tableView.reloadData()
+            
+            let flatArr = source?.items.flatMap { $0 }
+            let filteredArr = flatArr?.filter({$0.subtitle == VaultInfoStatus.member.rawValue})
+            
+            guard filteredArr?.count ?? 0 < 3 else { return }
+            
+            remainigLabel.text = Constants.MainScreen.addDevices(memberCounts: filteredArr?.count ?? 0)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.animationTime) { [weak self] in
+                self?.remainingNotificationContainer.isHidden = self?.selectedSegment == .Secrets
+                self?.remainingNotification.showShadow()
+            }
         } else {
             tableView.isHidden = true
             tableView.reloadData()
@@ -58,6 +76,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
     
     //MARK: - IBACTIONS
     @IBAction func selectorPressed(_ sender: UISegmentedControl) {
+        remainingNotificationContainer.isHidden = true
         currentTab = sender.selectedSegmentIndex
         selectTab(index: currentTab)
     }
@@ -74,6 +93,8 @@ private extension MainSceneView {
         tableView.register(UINib(nibName: Config.cellID, bundle: nil), forCellReuseIdentifier: Config.cellID)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Config.cellHeight
+        
+        setTitle()
     }
     
     func setTitle() {
@@ -87,7 +108,7 @@ private extension MainSceneView {
     
     //MARK: - TAB SELECTING
     func selectTab(index: Int) {
-        selector.selectedSegmentIndex = selectedSegment.rawValue
+        selector.selectedSegmentIndex = index
         reloadData(source: nil)
         
         if index == 0 {
@@ -98,7 +119,6 @@ private extension MainSceneView {
         
         selectedSegment = MainScreenSourceType(rawValue: index) ?? .None
         setTitle()
-        
         viewModel?.getNewDataSource(type: selectedSegment)
     }
     
@@ -149,13 +169,17 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let content = source?.items[indexPath.section][indexPath.row], content.boolValue else {
+        guard let content = source?.items[indexPath.section][indexPath.row] else {
             return
         }
         
         let flattenArray = (viewModel?.vault?.declinedJoins ?? []) + (viewModel?.vault?.pendingJoins ?? []) + (viewModel?.vault?.signatures ?? [])
         let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
-
-        routeTo(.deviceInfo, presentAs: .push, with: selectedVault)
+        
+        let model = SceneSendDataModel(vault: selectedVault) { [weak self] in
+            self?.vUsers.removeFirst()
+            self?.viewModel?.getVault()
+        }
+        routeTo(.deviceInfo, presentAs: .push, with: model)
     }
 }

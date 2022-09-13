@@ -14,6 +14,7 @@ class LoginSceneView: UIViewController, LoginSceneProtocol {
     }
     
     @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var userNameTextField: UITextField!
@@ -60,7 +61,9 @@ private extension LoginSceneView {
     func setupUI() {
         userNameTextField.delegate = self
         topView.roundCorners(corners: [.topLeft, .topRight], radius: Config.cornerRadius)
-        containerView.dropShadow()
+        
+        containerView.showShadow()
+        
         letsGoButton.setTitle(Constants.LoginScreen.letsGoButton, for: .normal)
         userNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textFieldDidChange(userNameTextField)

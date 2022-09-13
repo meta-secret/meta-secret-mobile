@@ -143,7 +143,7 @@
                 <constraint firstItem="ziE-L1-oCC" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="jH1-vW-1YO"/>
                 <constraint firstItem="ziE-L1-oCC" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="zZI-F6-eby"/>
             </constraints>
-            <point key="canvasLocation" x="137.68115942028987" y="92.410714285714278"/>
+            <point key="canvasLocation" x="136.80000000000001" y="92.364532019704441"/>
         </view>
     </objects>
     <resources>

@@ -27,22 +27,34 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     //MARK: - PUBLIC METHODS
     func getAllSecrets() {
         showLoader()
-        self.source = VaultsDataSource().getDataSource(for: DBManager.shared.getAllSecrets())
-        delegate?.reloadData(source: source)
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.source = VaultsDataSource().getDataSource(for: DBManager.shared.getAllSecrets())
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                self.delegate?.reloadData(source: self.source)
+            }
+        }
     }
     
     func getVault() {
-        GetVault().execute() { [weak self] result in
-            switch result {
-            case .success(let result):
-                self?.vault = result.vault
-                guard let vault = self?.vault else { return }
-                self?.source = DevicesDataSource().getDataSource(for: vault)
-                
-                guard let source = self?.source else { return }
-                self?.delegate?.reloadData(source: source)
-            case .failure(let error):
-                self?.showCommonError(error.localizedDescription)
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let `self` = self else { return }
+            GetVault().execute() { [weak self] result in
+                switch result {
+                case .success(let result):
+                    self?.vault = result.vault
+                    guard let vault = self?.vault else { return }
+                    self?.source = DevicesDataSource().getDataSource(for: vault)
+                    
+                    guard let source = self?.source else { return }
+                    DispatchQueue.main.async { [weak self] in
+                        self?.delegate?.reloadData(source: source)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async { [weak self] in
+                        self?.showCommonError(error.localizedDescription)
+                    }
+                }
             }
         }
     }
@@ -59,21 +71,25 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     }
     
     func generateVirtualVaults() {
-        guard let mainUser = mainUser else {
-            showCommonError(nil)
-            return
-        }
+        showLoader()
         
-        var virtualUsers = [User]()
-        
-        for i in 0..<2 {
-            if let vUser = generateKeys(for: "\(mainUser.userName)\(Constants.MainScreen.virtual)\(i+1)") {
-                virtualUsers.append(vUser)
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let mainUser = self?.mainUser else {
+                self?.showCommonError(nil)
+                return
             }
+            
+            var virtualUsers = [User]()
+            
+            for i in 0..<2 {
+                if let vUser = self?.generateKeys(for: "\(mainUser.userName)\(Constants.MainScreen.virtual)\(i+1)") {
+                    virtualUsers.append(vUser)
+                }
+            }
+            
+            self?.vUsers = virtualUsers
+            self?.hideLoader()
         }
-        
-        vUsers = virtualUsers
-        getVault()
     }
     
 }
