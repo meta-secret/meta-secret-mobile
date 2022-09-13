@@ -176,7 +176,7 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let content = source?.items[indexPath.section][indexPath.row] else {
+        guard let content = source?.items[indexPath.section][indexPath.row], content.boolValue else {
             return
         }
         

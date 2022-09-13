@@ -36,12 +36,12 @@ struct Constants {
         static let memberTitle = "Member"
         static let noSecrets = "There are no Secrets YET! Comming SOON!"
         static let noDevices = "Hmmmm.... no devices... are you magician?"
-        static let titleFirstTimeHint = "Create your cluster to keep secrets safety."
-        static let messageFirstTimeHint = "To keep your secrets safety you have to create your own cluster. Just install this application on two more devices and enter same account name. Virtual magic will store your ENCRIPTED password on three different devices. While you don't have more devices we'll created two virtual devices. It's not safety enough as it could be. In this case your password will be stored on your only phisical device and could be lost with your device."
+        static let titleFirstTimeHint = "Create your cluster to keep secrets securely."
+        static let messageFirstTimeHint = "To keep your secrets securely you have to create your own cluster. Just install this application on two more devices and enter same account name. Virtual magic will store your ENCRYPTED secrets on three different devices. While you don't have more devices we'll created two virtual devices. It's not safety enough as it could be. In this case your secrets will be stored on your phisical device only and could be lost with your device."
         static let virtual = "Virtual"
         static func addDevices(memberCounts: Int) -> String {
             let neededDevicesCount = 3 - memberCounts
-            return "Please, install this app on \(neededDevicesCount) more devices to keep your secrets safety!"
+            return "Please, install this app on \(neededDevicesCount) more devices to keep your secrets securely!"
         }
     }
     
