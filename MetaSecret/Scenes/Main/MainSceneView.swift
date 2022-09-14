@@ -10,6 +10,7 @@ import UIKit
 class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable, UD {
     //MARK: - OUTLETS
     
+    @IBOutlet weak var addDeviceView: UIView!
     @IBOutlet weak var selector: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var remainingNotificationContainer: UIView!
@@ -101,6 +102,9 @@ private extension MainSceneView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Config.cellHeight
         
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(addDeviceTapped))
+        addDeviceView.addGestureRecognizer(tapGR)
+        
         setTitle()
     }
     
@@ -125,6 +129,14 @@ private extension MainSceneView {
         }
         
         selectedSegment = MainScreenSourceType(rawValue: index) ?? .None
+        
+        let flatArr = source?.items.flatMap { $0 }
+        let filteredArr = flatArr?.filter({$0.subtitle == VaultInfoStatus.member.rawValue})
+        
+        if filteredArr?.count ?? 0 < 3 {
+            addDeviceView.isHidden = selectedSegment == .Secrets
+        }
+        
         setTitle()
         viewModel?.getNewDataSource(type: selectedSegment)
     }
@@ -134,9 +146,16 @@ private extension MainSceneView {
         routeTo(.split, presentAs: .push)
     }
     
+    @objc func addDeviceTapped() {
+        let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction, isClosable: true)
+        routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
+        
+    }
+    
     //MARK: - HINTS
     func showFirstTimePopupHint() {
-        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint, buttonHandler: { [weak self] in
+        let attributedTitle = Constants.MainScreen.titleFirstTimeHint.withBoldText(boldPartsOfString: (Constants.MainScreen.titleFirstTimeHintBoldComponents as Array<NSString>), font: UIFont.avenirMedium(size: 28), boldFont: UIFont.avenirBold(size: 28))
+        let model = BottomInfoSheetModel(attributedTitle: attributedTitle, message: Constants.MainScreen.messageFirstTimeHint, buttonHandler: { [weak self] in
             self?.shouldShowVirtualHint = false
             self?.viewModel?.generateVirtualVaults()
         })

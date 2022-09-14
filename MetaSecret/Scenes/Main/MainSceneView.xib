@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -10,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainSceneView" customModule="MetaSecret" customModuleProvider="target">
             <connections>
+                <outlet property="addDeviceView" destination="OEd-xV-TVH" id="TLb-gr-6bf"/>
                 <outlet property="emptyLabel" destination="Mt8-wi-9KD" id="QWA-NE-N6u"/>
                 <outlet property="remainigLabel" destination="5In-g3-XBU" id="Kuv-8B-HZR"/>
                 <outlet property="remainingNotification" destination="Lir-Rf-Tmk" id="pjv-rn-pu0"/>
@@ -108,14 +110,39 @@
                         <constraint firstItem="8td-kl-x7J" firstAttribute="leading" secondItem="2dk-2P-Edx" secondAttribute="leading" id="vV8-Ev-Y6I"/>
                     </constraints>
                 </stackView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OEd-xV-TVH">
+                    <rect key="frame" x="296" y="744" width="86" height="86"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bis-w4-Ixk">
+                            <rect key="frame" x="24.5" y="5" width="37.5" height="76.5"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="56"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="MainOrange"/>
+                    <constraints>
+                        <constraint firstItem="Bis-w4-Ixk" firstAttribute="centerY" secondItem="OEd-xV-TVH" secondAttribute="centerY" id="5TZ-Kh-c2C"/>
+                        <constraint firstAttribute="height" constant="86" id="9Qj-6U-kyF"/>
+                        <constraint firstAttribute="width" constant="86" id="Oxe-zG-Z24"/>
+                        <constraint firstItem="Bis-w4-Ixk" firstAttribute="centerX" secondItem="OEd-xV-TVH" secondAttribute="centerX" id="Sie-is-VAt"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="43"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="MainGray"/>
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2dk-2P-Edx" secondAttribute="trailing" id="11E-uI-Dk9"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="OEd-xV-TVH" secondAttribute="trailing" constant="32" id="1oz-yi-aLF"/>
                 <constraint firstItem="2dk-2P-Edx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="CI8-nU-Oiv"/>
                 <constraint firstItem="CGS-Uk-7NY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="D5Y-1W-HcI"/>
                 <constraint firstAttribute="bottom" secondItem="2dk-2P-Edx" secondAttribute="bottom" id="Foi-Xr-Ioo"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="OEd-xV-TVH" secondAttribute="bottom" constant="32" id="Qaz-Ym-Uk8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="baV-Kf-AJq" secondAttribute="trailing" id="XDG-fr-lqy"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="baV-Kf-AJq" secondAttribute="bottom" id="Y83-5C-ms9"/>
                 <constraint firstItem="2dk-2P-Edx" firstAttribute="top" secondItem="CGS-Uk-7NY" secondAttribute="bottom" id="bIg-MA-uXq"/>

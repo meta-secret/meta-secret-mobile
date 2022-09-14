@@ -51,12 +51,23 @@ private extension PopupHintViewScene {
             return
         }
         
-        titleLabel.text = model.title
-        messageLabel.text = model.message
+        if let title = model.title {
+            titleLabel.text = title
+        }
         
-        let tapGR = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
-        bgView.addGestureRecognizer(tapGR)
-        callBack = model.buttonHandler
+        if let attributedTitle = model.attributedTitle {
+            titleLabel.attributedText = attributedTitle
+        }
+        
+        messageLabel.text = model.message ?? ""
+        closeButton.isHidden = !model.isClosable
+        messageLabel.sizeToFit()
+        
+        if model.isClosable {
+            let tapGR = UITapGestureRecognizer(target: self, action: #selector(tapOutside))
+            bgView.addGestureRecognizer(tapGR)
+            callBack = model.buttonHandler
+        }
         showHint()
     }
     

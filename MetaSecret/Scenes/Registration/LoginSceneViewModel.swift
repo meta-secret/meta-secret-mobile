@@ -12,6 +12,7 @@ import CryptoKit
 protocol LoginSceneProtocol {
     func resetTextField()
     func processFinished()
+    func showPendingPopup()
 }
 
 final class LoginSceneViewModel: Signable, Alertable, Routerable {
@@ -62,7 +63,9 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
                 } else {
                     self?.deviceStatus = .pending
                     DispatchQueue.main.async {
-                        self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, cancelHandler: { [weak self] in
+                        self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
+                            self?.delegate?.showPendingPopup()
+                        }, cancelHandler: { [weak self] in
                             self?.mainUser = nil
                             self?.deviceStatus = .unknown
                         }))
@@ -112,6 +115,8 @@ private extension LoginSceneViewModel {
                         DispatchQueue.main.async {
                             self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
                         }
+                    } else {
+                        self?.delegate?.showPendingPopup()
                     }
                     self?.delegate?.processFinished()
                 case .failure(let error):

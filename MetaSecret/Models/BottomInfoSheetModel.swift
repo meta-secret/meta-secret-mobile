@@ -9,13 +9,17 @@ import Foundation
 import UIKit
 
 struct BottomInfoSheetModel {
-    let title: String
-    let message: String
+    let title: String?
+    let attributedTitle: NSAttributedString?
+    let message: String?
+    let isClosable: Bool
     let buttonHandler: (()->())?
     
-    init(title: String, message: String, buttonHandler: (()->())? = nil) {
+    init(title: String? = nil, attributedTitle: NSAttributedString? = nil, message: String? = nil, isClosable: Bool = true, buttonHandler: (()->())? = nil) {
         self.title = title
+        self.attributedTitle = attributedTitle
         self.message = message
         self.buttonHandler = buttonHandler
+        self.isClosable = isClosable
     }
 }

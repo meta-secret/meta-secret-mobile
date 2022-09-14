@@ -7,10 +7,11 @@
 
 import UIKit
 
-class LoginSceneView: UIViewController, LoginSceneProtocol {
+class LoginSceneView: UIViewController, LoginSceneProtocol, Routerable, UD {
     //MARK: - OUTLETS
     private struct Config {
         static let cornerRadius = 16
+        static let fontSizePopup: CGFloat = 28
     }
     
     @IBOutlet weak var topView: UIView!
@@ -53,6 +54,13 @@ class LoginSceneView: UIViewController, LoginSceneProtocol {
     
     func processFinished() {
         hideLoading()
+    }
+    
+    func showPendingPopup() {
+        let attributedTitle = Constants.LoginScreen.awaitingTitle.withBoldText(boldPartsOfString: (Constants.LoginScreen.awaitingTitleBoldComponents as Array<NSString>), font: UIFont.avenirMedium(size: Config.fontSizePopup), boldFont: UIFont.avenirBold(size: Config.fontSizePopup))
+        
+        let model = BottomInfoSheetModel(attributedTitle: attributedTitle, message: Constants.LoginScreen.awaitingMessage, isClosable: false)
+        routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
     }
 }
 

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -29,7 +30,7 @@
                     <color key="backgroundColor" name="MainBlack"/>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mv1-vt-edW">
-                    <rect key="frame" x="32" y="189" width="350" height="518"/>
+                    <rect key="frame" x="32" y="173" width="350" height="550"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n4k-wV-ieQ">
                             <rect key="frame" x="0.0" y="0.0" width="350" height="200"/>
@@ -66,7 +67,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kip-yo-UTp">
-                            <rect key="frame" x="16" y="232" width="318" height="254"/>
+                            <rect key="frame" x="16" y="224" width="318" height="302"/>
                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                             <color key="textColor" name="MainBlack"/>
                             <nil key="highlightedColor"/>
@@ -79,10 +80,10 @@
                         <constraint firstItem="n4k-wV-ieQ" firstAttribute="leading" secondItem="Mv1-vt-edW" secondAttribute="leading" id="6Yv-rO-PO9"/>
                         <constraint firstItem="n4k-wV-ieQ" firstAttribute="top" secondItem="Mv1-vt-edW" secondAttribute="top" id="Cik-Hk-Csv"/>
                         <constraint firstAttribute="trailing" secondItem="n4k-wV-ieQ" secondAttribute="trailing" id="FZK-16-dL8"/>
-                        <constraint firstAttribute="bottom" secondItem="Kip-yo-UTp" secondAttribute="bottom" constant="32" id="JKb-rQ-QXf"/>
-                        <constraint firstItem="Kip-yo-UTp" firstAttribute="top" secondItem="n4k-wV-ieQ" secondAttribute="bottom" constant="32" id="bcG-1A-ADh"/>
+                        <constraint firstAttribute="bottom" secondItem="Kip-yo-UTp" secondAttribute="bottom" constant="24" id="JKb-rQ-QXf"/>
+                        <constraint firstItem="Kip-yo-UTp" firstAttribute="top" secondItem="n4k-wV-ieQ" secondAttribute="bottom" constant="24" id="bcG-1A-ADh"/>
                         <constraint firstAttribute="trailing" secondItem="Kip-yo-UTp" secondAttribute="trailing" constant="16" id="cdy-Y8-AjR"/>
-                        <constraint firstAttribute="height" constant="518" id="rZu-nD-wNw"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="550" id="rZu-nD-wNw"/>
                     </constraints>
                 </view>
             </subviews>
