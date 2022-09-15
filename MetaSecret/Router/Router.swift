@@ -15,6 +15,7 @@ enum SceneName {
     case deviceInfo
     case selectDevice
     case popupHint
+    case onboarding
 }
 
 enum PresentType {
@@ -64,6 +65,8 @@ extension Routerable {
             return SelectDeviceSceneView(nibName: "SelectDeviceSceneView", bundle: nil)
         case .popupHint:
             return PopupHintViewScene(nibName: "PopupHintViewScene", bundle: nil)
+        case .onboarding:
+            return OnboardingSceneView(nibName: "OnboardingSceneView", bundle: nil)
         }
     }
 }

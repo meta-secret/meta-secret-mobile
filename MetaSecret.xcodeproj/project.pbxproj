@@ -52,6 +52,12 @@
 		E5800041288CA4D300E1135C /* MetaSecretTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5800040288CA4D300E1135C /* MetaSecretTests.swift */; };
 		E580004B288CA4D300E1135C /* MetaSecretUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580004A288CA4D300E1135C /* MetaSecretUITests.swift */; };
 		E580004D288CA4D300E1135C /* MetaSecretUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580004C288CA4D300E1135C /* MetaSecretUITestsLaunchTests.swift */; };
+		E588252228D3A62600FB01B0 /* OnboardingSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252028D3A62600FB01B0 /* OnboardingSceneView.swift */; };
+		E588252328D3A62600FB01B0 /* OnboardingSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E588252128D3A62600FB01B0 /* OnboardingSceneView.xib */; };
+		E588252728D3B53400FB01B0 /* OnboardingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252528D3B53400FB01B0 /* OnboardingCollectionViewCell.swift */; };
+		E588252828D3B53400FB01B0 /* OnboardingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E588252628D3B53400FB01B0 /* OnboardingCollectionViewCell.xib */; };
+		E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252928D3B5E100FB01B0 /* UICollectionView+Extension.swift */; };
+		E588252C28D3D97000FB01B0 /* AppImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252B28D3D97000FB01B0 /* AppImages.swift */; };
 		E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2828B26208007982BD /* LoaderManager.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
 		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
@@ -145,6 +151,12 @@
 		E5800046288CA4D300E1135C /* MetaSecretUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetaSecretUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E580004A288CA4D300E1135C /* MetaSecretUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretUITests.swift; sourceTree = "<group>"; };
 		E580004C288CA4D300E1135C /* MetaSecretUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E588252028D3A62600FB01B0 /* OnboardingSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingSceneView.swift; sourceTree = "<group>"; };
+		E588252128D3A62600FB01B0 /* OnboardingSceneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingSceneView.xib; sourceTree = "<group>"; };
+		E588252528D3B53400FB01B0 /* OnboardingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingCollectionViewCell.swift; sourceTree = "<group>"; };
+		E588252628D3B53400FB01B0 /* OnboardingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingCollectionViewCell.xib; sourceTree = "<group>"; };
+		E588252928D3B5E100FB01B0 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
+		E588252B28D3D97000FB01B0 /* AppImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppImages.swift; sourceTree = "<group>"; };
 		E5A64F2828B26208007982BD /* LoaderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderManager.swift; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
 		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
@@ -223,6 +235,7 @@
 				E55AC12628C7EB5300757C0C /* String+Extension.swift */,
 				E5061CF028CD20C500E2787B /* UIView+Extension.swift */,
 				E55B514128CD43A000373959 /* UIFont+Extension.swift */,
+				E588252928D3B5E100FB01B0 /* UICollectionView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -291,6 +304,7 @@
 		E57BDA7628A79A1B00DB27BD /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				E588251F28D3A55A00FB01B0 /* Onboarding */,
 				E5061CE828CD193200E2787B /* Common */,
 				E5C7116828BE9DA600D53CA8 /* PairingRequest */,
 				E51ADE9328B8191600C6A87B /* AddSecret */,
@@ -406,6 +420,25 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
+		E588251F28D3A55A00FB01B0 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				E588252428D3B52000FB01B0 /* Cells */,
+				E588252028D3A62600FB01B0 /* OnboardingSceneView.swift */,
+				E588252128D3A62600FB01B0 /* OnboardingSceneView.xib */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		E588252428D3B52000FB01B0 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E588252528D3B53400FB01B0 /* OnboardingCollectionViewCell.swift */,
+				E588252628D3B53400FB01B0 /* OnboardingCollectionViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		E5C7116828BE9DA600D53CA8 /* PairingRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +487,7 @@
 			children = (
 				E5F0C40228A836B000902310 /* Constants.swift */,
 				E5F0C40D28A9878D00902310 /* AppColors.swift */,
+				E588252B28D3D97000FB01B0 /* AppImages.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -592,6 +626,7 @@
 				E5800036288CA4D200E1135C /* LaunchScreen.storyboard in Resources */,
 				E5CE3D0628C92B880022A06F /* SelectDeviceSceneView.xib in Resources */,
 				E5061CE728CD116700E2787B /* Colors.xcassets in Resources */,
+				E588252328D3A62600FB01B0 /* OnboardingSceneView.xib in Resources */,
 				E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */,
 				E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
@@ -601,6 +636,7 @@
 				E5800033288CA4D200E1135C /* Assets.xcassets in Resources */,
 				E5800031288CA4D000E1135C /* Main.storyboard in Resources */,
 				E51ADE9728B8193D00C6A87B /* AddSecretSceneView.xib in Resources */,
+				E588252828D3B53400FB01B0 /* OnboardingCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -684,6 +720,7 @@
 				E55A226F28B0357900F5F02B /* Register.swift in Sources */,
 				E5CE3D0528C92B880022A06F /* SelectDeviceSceneView.swift in Sources */,
 				E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */,
+				E588252228D3A62600FB01B0 /* OnboardingSceneView.swift in Sources */,
 				E5CE3D0828C92B9A0022A06F /* SelectDeviceViewModel.swift in Sources */,
 				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
@@ -703,10 +740,13 @@
 				E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */,
 				E5108B4828BD38680067207A /* Distribute.swift in Sources */,
 				E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */,
+				E588252C28D3D97000FB01B0 /* AppImages.swift in Sources */,
 				E5061CEE28CD198B00E2787B /* BottomInfoViewModel.swift in Sources */,
 				E57E6B6528B4199000906DBD /* Decline.swift in Sources */,
+				E588252728D3B53400FB01B0 /* OnboardingCollectionViewCell.swift in Sources */,
 				E55A227D28B0611800F5F02B /* Accept.swift in Sources */,
 				E5061CF328CD258D00E2787B /* BottomInfoSheetModel.swift in Sources */,
+				E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */,
 				E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */,
 				E5061CEB28CD197400E2787B /* BottomInfoSheetViewScene.swift in Sources */,
 				E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */,
@@ -894,10 +934,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MetaSecret/Info.plist;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "App would like to access IDFA for tracking the performance of our marketing campaigns";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -926,10 +967,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MetaSecret/Info.plist;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "App would like to access IDFA for tracking the performance of our marketing campaigns";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

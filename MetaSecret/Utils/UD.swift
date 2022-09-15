@@ -16,6 +16,7 @@ protocol UD: AnyObject {
     var isFirstAppLaunch: Bool {get set}
     var vUsers: [User] {get set}
     var isOwner: Bool {get set}
+    var shouldShowOnboarding: Bool {get set}
 }
 
 extension UD {
@@ -88,8 +89,20 @@ extension UD {
             UDManager.save(value: newValue, key: UDKeys.isOwner)
         }
     }
+    
+    var shouldShowOnboarding: Bool {
+        get {
+            guard let status = UDManager.read(key: UDKeys.shouldShowOnboarding) as? Bool else { return true }
+            return status
+        }
+        
+        set {
+            UDManager.save(value: newValue, key: UDKeys.shouldShowOnboarding)
+        }
+    }
 }
 
+//MARK: - KEYS
 struct UDKeys {
     static let localVault = "localVault"
     static let deviceStatus = "deviceStatus"
@@ -97,8 +110,10 @@ struct UDKeys {
     static let vUsers = "vUsers"
     static let isFirstAppLaunch = "isFirstAppLaunch"
     static let isOwner = "isOwner"
+    static let shouldShowOnboarding = "shouldShowOnboarding"
 }
 
+//MARK: - UDMANAGER
 fileprivate class UDManager {
     static let defaults = UserDefaults.standard
     

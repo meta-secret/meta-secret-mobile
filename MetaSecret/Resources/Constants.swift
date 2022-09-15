@@ -14,6 +14,24 @@ struct Constants {
         static let animationTime: CGFloat = 0.3
     }
     
+    //MARK: - ONBOARDING
+    struct Onboarding {
+        static let whatIsMetaTitle = "What is MetaSecret?"
+        static let whatIsMetaSubTitleComponents = ["Distributed", "vault", "No", "single", "point"]
+        static let whatIsMetaSubTitle = "Distributed self hosted vault for your secrets. No single point of failure. \nWith great power comes great resposibility"
+        static let whatIsMetaMessage = "What does it mean? Only you is responsible for keeping your secrets secure on your own network consistents of your devices."
+        
+        static let howItWorksTitle = "How it works?"
+        static let howItWorksSubTitleComponents = [String]()
+        static let howItWorksSubTitle = ""
+        static let howItWorksMessage = "You need to build a network of your devices to secure your secrets storage OR to protect yourself from losing access to your secret storage."
+        
+        static let problemsTitle = "Problems we solves!"
+        static let problemsSubTitleComponents = ["Secret", "Zero", "Problem"]
+        static let problemsSubTitle = "Solving The Secret Zero Problem"
+        static let problemsMessage = "• Passwordless! Managing secrets without a master password \n\n• Distributed network of your devices that enables you to get access to your secrets from any of them and losing any device doesn't mean you lose you secret \n\n• Replication and redundancy ensures the reliability of password recovery"
+    }
+    
     //MARK: - LOGIN
     struct LoginScreen {
         static let title = "MetaSecret"
@@ -41,7 +59,7 @@ struct Constants {
         static let noDevices = "Hmmmm.... no devices... are you magician?"
         static let titleFirstTimeHintBoldComponents = ["cluster", "keep", "securely"]
         static let titleFirstTimeHint = "Create your cluster to keep secrets securely."
-        static let messageFirstTimeHint = "Only once device registered! \n• If you lose this device you will lose all your secrets. As a best practice, we recommend you assign multiple devices to be able to use our recovery mechanism. \n• Just install this application on two more devices and enter the SAME account name. Virtual magic will store your ENCRYPTED secrets on three different devices. \n• Undeline We'll create virtual devices for you, you don't need to worry about technical details this piece of work on us. It's not safe as it could be."
+        static let messageFirstTimeHint = "Only once device registered! \n• If you lose this device you will lose all your secrets. As a best practice, we recommend you assign multiple devices to be able to use our recovery mechanism. \n• Just install this application on two more devices and enter the SAME account name. Virtual magic will store your ENCRYPTED secrets on three different devices."
         static let virtual = "Virtual"
         static func addDevices(memberCounts: Int) -> String {
             let neededDevicesCount = 3 - memberCounts
