@@ -40,6 +40,17 @@ class PopupHintViewScene: UIViewController, DataSendable {
     @IBAction func closeTapped(_ sender: Any) {
         closeHint()
     }
+    
+    func closeHint() {
+        containerView.isHidden = true
+        
+        UIView.animate(withDuration: Constants.Common.animationTime) {
+            self.bgView.alpha = 0
+        } completion: { _ in
+            self.callBack?()
+            self.dismiss(animated: true)
+        }
+    }
 }
 
 private extension PopupHintViewScene {
@@ -76,17 +87,6 @@ private extension PopupHintViewScene {
             self.bgView.alpha = 0.4
         } completion: { _ in
             self.containerView.isHidden = false
-        }
-    }
-    
-    func closeHint() {
-        containerView.isHidden = true
-        
-        UIView.animate(withDuration: Constants.Common.animationTime) {
-            self.bgView.alpha = 0
-        } completion: { _ in
-            self.callBack?()
-            self.dismiss(animated: true)
         }
     }
     

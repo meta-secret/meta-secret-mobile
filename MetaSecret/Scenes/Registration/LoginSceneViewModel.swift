@@ -15,8 +15,9 @@ protocol LoginSceneProtocol {
     func showPendingPopup()
 }
 
-final class LoginSceneViewModel: Signable, Alertable, Routerable {
+final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
     private var delegate: LoginSceneProtocol? = nil
+    private var tempTimer: Timer? = nil
     
     //MARK: - INIT
     init(delegate: LoginSceneProtocol) {
@@ -64,7 +65,12 @@ final class LoginSceneViewModel: Signable, Alertable, Routerable {
                     self?.deviceStatus = .pending
                     DispatchQueue.main.async {
                         self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
-                            self?.delegate?.showPendingPopup()
+                            guard let `self` = self else { return }
+                            
+                            if self.tempTimer == nil {
+                                self.delegate?.showPendingPopup()
+                                self.tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
+                            }
                         }, cancelHandler: { [weak self] in
                             self?.mainUser = nil
                             self?.deviceStatus = .unknown
@@ -107,16 +113,23 @@ private extension LoginSceneViewModel {
                 switch result {
                 case .success(let result):
                     if result.status == .member {
+                        self?.closePopup()
                         DispatchQueue.main.async {
                             self?.routeTo(.main, presentAs: .root)
                         }
                     } else if result.status == .declined {
+                        self?.closePopup()
                         self?.resetAll()
                         DispatchQueue.main.async {
                             self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
                         }
                     } else {
-                        self?.delegate?.showPendingPopup()
+                        guard let `self` = self else { return }
+                        
+                        if self.tempTimer == nil {
+                            self.delegate?.showPendingPopup()
+                            self.tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
+                        }
                     }
                     self?.delegate?.processFinished()
                 case .failure(let error):
@@ -130,5 +143,19 @@ private extension LoginSceneViewModel {
         DispatchQueue.main.async {
             self.delegate?.processFinished()
         }
+    }
+    
+    @objc func fireTimer() {
+        checkStatus()
+    }
+    
+    func closePopup() {
+        tempTimer?.invalidate()
+        tempTimer = nil
+        
+        guard let vc = findTop(), let popupVC = vc as? PopupHintViewScene else {
+            return
+        }
+        popupVC.closeHint()
     }
 }
