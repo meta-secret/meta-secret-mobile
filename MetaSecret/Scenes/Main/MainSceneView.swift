@@ -10,6 +10,9 @@ import UIKit
 class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable, UD {
     //MARK: - OUTLETS
     
+    @IBOutlet weak var deviceNameContainer: UIView!
+    @IBOutlet weak var nickNameTitleLabel: UILabel!
+    @IBOutlet weak var nickNameLabel: UILabel!
     @IBOutlet weak var addDeviceView: UIView!
     @IBOutlet weak var selector: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
@@ -65,7 +68,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
             
             remainigLabel.text = Constants.MainScreen.addDevices(memberCounts: filteredArr?.count ?? 0)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.animationTime) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime) { [weak self] in
                 guard let `self` = self else { return }
                 
                 if (self.selectedSegment == .Secrets) || (!self.isOwner) {
@@ -97,19 +100,29 @@ private extension MainSceneView {
     func setupUI() {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.avenirMedium(size: Config.titleSize)]
         
+        selector.setTitle(Constants.MainScreen.secrets, forSegmentAt: 0)
+        selector.setTitle(Constants.MainScreen.devices, forSegmentAt: 1)
+        
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: Config.cellID, bundle: nil), forCellReuseIdentifier: Config.cellID)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Config.cellHeight
+        tableView.contentInset.top = .zero
         
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(addDeviceTapped))
         addDeviceView.addGestureRecognizer(tapGR)
         
+        let labelTapGR = UITapGestureRecognizer(target: self, action: #selector(remainigLabelTapped))
+        remainingNotification.addGestureRecognizer(labelTapGR)
+        
         setTitle()
+        
+        nickNameTitleLabel.text = Constants.MainScreen.yourNick
+        nickNameLabel.text = mainUser?.userName ?? ""
     }
     
     func setTitle() {
-        emptyLabel.text = selectedSegment.rawValue == 0 ? Constants.MainScreen.noSecrets : Constants.MainScreen.noDevices
+        emptyLabel.text = selectedSegment.rawValue == 0 ? Constants.MainScreen.noSecrets : ""
         self.title = selectedSegment.rawValue == 0 ? Constants.MainScreen.secrets : Constants.MainScreen.devices
     }
     
@@ -146,18 +159,23 @@ private extension MainSceneView {
         routeTo(.split, presentAs: .push)
     }
     
+    @objc func remainigLabelTapped() {
+        showFirstTimePopupHint()
+    }
+    
     @objc func addDeviceTapped() {
-        let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction, isClosable: true)
+        let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.userName ?? ""), isClosable: true)
         routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
         
     }
     
     //MARK: - HINTS
     func showFirstTimePopupHint() {
-        let attributedTitle = Constants.MainScreen.titleFirstTimeHint.withBoldText(boldPartsOfString: (Constants.MainScreen.titleFirstTimeHintBoldComponents as Array<NSString>), font: UIFont.avenirMedium(size: 28), boldFont: UIFont.avenirBold(size: 28))
-        let model = BottomInfoSheetModel(attributedTitle: attributedTitle, message: Constants.MainScreen.messageFirstTimeHint, buttonHandler: { [weak self] in
+        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.userName ?? ""), buttonHandler: { [weak self] in
             self?.shouldShowVirtualHint = false
-            self?.viewModel?.generateVirtualVaults()
+            if self?.vUsers.isEmpty ?? true {
+                self?.viewModel?.generateVirtualVaults()
+            }
         })
         routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
     }

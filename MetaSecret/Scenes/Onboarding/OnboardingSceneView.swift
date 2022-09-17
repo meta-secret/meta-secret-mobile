@@ -13,16 +13,19 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     enum CellType {
         case whatIsMeta
         case howItWorks
+        case whySoMany
         case problems
         
-        var title: NSAttributedString {
+        var title: String {
             switch self {
             case .whatIsMeta:
-                return NSAttributedString(string: Constants.Onboarding.whatIsMetaTitle)
+                return Constants.Onboarding.whatIsMetaTitle
             case .howItWorks:
-                return NSAttributedString(string:Constants.Onboarding.howItWorksTitle)
+                return Constants.Onboarding.howItWorksTitle
+            case .whySoMany:
+                return Constants.Onboarding.whySoManyDeviceTitle
             case .problems:
-                return NSAttributedString(string:Constants.Onboarding.problemsTitle)
+                return Constants.Onboarding.problemsTitle
             }
         }
         
@@ -32,19 +35,23 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
                 return AppImages.vault
             case .howItWorks:
                 return UIImage()
+            case .whySoMany:
+                return UIImage()
             case .problems:
                 return UIImage()
             }
         }
         
-        var subTitle: NSAttributedString {
+        var subTitle: String {
             switch self {
             case .whatIsMeta:
-                return Constants.Onboarding.whatIsMetaSubTitle.withBoldText(boldPartsOfString: (Constants.Onboarding.whatIsMetaSubTitleComponents as Array<NSString>), font: UIFont.avenirMedium(size: Config.subtitleFont), boldFont: UIFont.avenirBold(size: Config.subtitleFont))
+                return Constants.Onboarding.whatIsMetaSubTitle
             case .howItWorks:
-                return Constants.Onboarding.howItWorksSubTitle.withBoldText(boldPartsOfString: (Constants.Onboarding.howItWorksSubTitleComponents as Array<NSString>), font: UIFont.avenirMedium(size: Config.subtitleFont), boldFont: UIFont.avenirBold(size: Config.subtitleFont))
+                return Constants.Onboarding.howItWorksSubTitle
+            case .whySoMany:
+                return Constants.Onboarding.whySoManyDeviceSubTitle
             case .problems:
-                return Constants.Onboarding.problemsSubTitle.withBoldText(boldPartsOfString: (Constants.Onboarding.problemsSubTitleComponents as Array<NSString>), font: UIFont.avenirMedium(size: Config.subtitleFont), boldFont: UIFont.avenirBold(size: Config.subtitleFont))
+                return Constants.Onboarding.problemsSubTitle
             }
         }
         
@@ -54,6 +61,8 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
                 return Constants.Onboarding.whatIsMetaMessage
             case .howItWorks:
                 return Constants.Onboarding.howItWorksMessage
+            case .whySoMany:
+                return Constants.Onboarding.whySoManyDeviceMessage
             case .problems:
                 return Constants.Onboarding.problemsMessage
             }
@@ -69,7 +78,7 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     @IBOutlet weak var pageControl: UIPageControl!
     
     // MARK: - Properties
-    private let cells: [CellType] = [.whatIsMeta, .howItWorks, .problems]
+    private let cells: [CellType] = [.whatIsMeta, .howItWorks, .whySoMany, .problems]
     
     private struct Config {
         static let subtitleFont: CGFloat = 20
@@ -79,6 +88,8 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         super.viewDidLoad()
         setupCollectionView()
         
+        setupButtonAvailability(isAvailable: false)
+        connectButton.setTitle(Constants.Onboarding.getStartedButtonTitle, for: .normal)
         pageControl.numberOfPages = cells.count
         checkButtonsAvailability()
         collectionView.reloadData()
@@ -121,6 +132,9 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     @IBAction func nextPageButtonTapped(_ sender: Any) {
         let nextPage = pageControl.currentPage + 1
         guard nextPage < pageControl.numberOfPages else { return }
+        if nextPage == pageControl.numberOfPages - 1 {
+            setupButtonAvailability(isAvailable: true)
+        }
         collectionView.scrollToItem(at: IndexPath(row: nextPage, section: 0), at: .left, animated: true)
     }
     
@@ -187,5 +201,15 @@ private extension OnboardingSceneView {
             routeTo(.login, presentAs: .root)
         }
         shouldShowOnboarding = false
+    }
+    
+    func setupButtonAvailability(isAvailable: Bool) {
+        if isAvailable {
+            connectButton.isUserInteractionEnabled = true
+            connectButton.backgroundColor = AppColors.mainYellow
+        } else {
+            connectButton.isUserInteractionEnabled = false
+            connectButton.backgroundColor = AppColors.mainGray
+        }
     }
 }

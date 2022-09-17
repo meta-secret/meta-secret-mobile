@@ -98,7 +98,7 @@ final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
 
 private extension LoginSceneViewModel {
     func showAwaitingAlert() {
-        showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.LoginScreen.renameYourAccount, okButton: Constants.LoginScreen.renameOk, okHandler: { [weak self] in
+        showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.LoginScreen.chooseAnotherName, okButton: Constants.LoginScreen.renameOk, okHandler: { [weak self] in
             self?.resetAll()
             self?.delegate?.resetTextField()
         }, cancelHandler: { [weak self] in

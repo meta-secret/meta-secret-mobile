@@ -40,7 +40,7 @@
                     <subviews>
                         <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Gw8-4R-Adt">
                             <rect key="frame" x="149.5" y="-8" width="115.5" height="26"/>
-                            <color key="pageIndicatorTintColor" name="MainGray"/>
+                            <color key="pageIndicatorTintColor" name="MainBlack"/>
                             <color key="currentPageIndicatorTintColor" name="MainOrange"/>
                         </pageControl>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QfJ-kv-1YM">
@@ -83,10 +83,10 @@
                                 <constraint firstAttribute="height" constant="32" id="Pau-Xe-a7Z"/>
                                 <constraint firstAttribute="width" constant="70" id="wef-ie-s9K"/>
                             </constraints>
-                            <color key="tintColor" name="MainGray"/>
+                            <color key="tintColor" name="MainBlack"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="arrowshape.turn.up.left.fill" catalog="system">
-                                <color key="titleColor" name="SecondaryOldLavender"/>
+                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
                                 <action selector="previousPageButtonTapped:" destination="-1" eventType="touchUpInside" id="V5o-uZ-foy"/>
@@ -123,7 +123,7 @@
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="MainBlack"/>
+            <color key="backgroundColor" name="MainGray"/>
             <constraints>
                 <constraint firstItem="VyG-Es-qt5" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="AV0-Fy-bNI"/>
                 <constraint firstItem="T8b-Ld-Jj9" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="GBJ-XG-Aqq"/>
@@ -152,9 +152,6 @@
         </namedColor>
         <namedColor name="PrimaryYellow">
             <color red="0.96862745098039216" green="0.76470588235294112" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="SecondaryOldLavender">
-            <color red="0.38823529411764707" green="0.38823529411764707" blue="0.46274509803921571" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

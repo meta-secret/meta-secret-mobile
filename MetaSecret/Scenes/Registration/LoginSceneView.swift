@@ -15,7 +15,8 @@ class LoginSceneView: UIViewController, LoginSceneProtocol, Routerable, UD {
     }
     
     @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var shadowView: UIView!
+
+    @IBOutlet weak var loginTitle: UILabel!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var userNameTextField: UITextField!
@@ -57,9 +58,7 @@ class LoginSceneView: UIViewController, LoginSceneProtocol, Routerable, UD {
     }
     
     func showPendingPopup() {
-        let attributedTitle = Constants.LoginScreen.awaitingTitle.withBoldText(boldPartsOfString: (Constants.LoginScreen.awaitingTitleBoldComponents as Array<NSString>), font: UIFont.avenirMedium(size: Config.fontSizePopup), boldFont: UIFont.avenirBold(size: Config.fontSizePopup))
-        
-        let model = BottomInfoSheetModel(attributedTitle: attributedTitle, message: Constants.LoginScreen.awaitingMessage, isClosable: false)
+        let model = BottomInfoSheetModel(title: Constants.LoginScreen.awaitingTitle, message: Constants.LoginScreen.awaitingMessage, isClosable: false)
         routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
     }
 }
@@ -72,7 +71,10 @@ private extension LoginSceneView {
         
         containerView.showShadow()
         
+        userNameTextField.placeholder = Constants.LoginScreen.userNameLabel
+        loginTitle.text = Constants.LoginScreen.loginTitle
         letsGoButton.setTitle(Constants.LoginScreen.letsGoButton, for: .normal)
+        letsGoButton.setTitle(Constants.LoginScreen.letsGoButton, for: .disabled)
         userNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textFieldDidChange(userNameTextField)
         

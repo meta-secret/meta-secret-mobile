@@ -20,9 +20,9 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
     // MARK: - Functions
     func setup(cellType: OnboardingSceneView.CellType) {
 //        imageView.image = cellType.image
-        titleLabel.attributedText = cellType.title
-        subTitleLabel.attributedText = cellType.subTitle
-        subTitleLabel.isHidden = cellType.subTitle.string.isEmpty
+        titleLabel.text = cellType.title
+        subTitleLabel.text = cellType.subTitle
+        subTitleLabel.isHidden = cellType.subTitle.isEmpty
         descriptionLabel.text = cellType.description
     }
 }

@@ -12,7 +12,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainSceneView" customModule="MetaSecret" customModuleProvider="target">
             <connections>
                 <outlet property="addDeviceView" destination="OEd-xV-TVH" id="TLb-gr-6bf"/>
+                <outlet property="deviceNameContainer" destination="NyO-hc-jQ9" id="6jd-7j-UXu"/>
                 <outlet property="emptyLabel" destination="Mt8-wi-9KD" id="QWA-NE-N6u"/>
+                <outlet property="nickNameLabel" destination="ggl-YM-gJa" id="9Mp-Nv-ib5"/>
+                <outlet property="nickNameTitleLabel" destination="KRl-z0-v2v" id="cz2-jr-5y1"/>
                 <outlet property="remainigLabel" destination="5In-g3-XBU" id="Kuv-8B-HZR"/>
                 <outlet property="remainingNotification" destination="Lir-Rf-Tmk" id="pjv-rn-pu0"/>
                 <outlet property="remainingNotificationContainer" destination="8td-kl-x7J" id="BBS-sB-pom"/>
@@ -64,7 +67,7 @@
                     <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                     <subviews>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8td-kl-x7J">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                            <rect key="frame" x="0.0" y="-100" width="414" height="100"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lir-Rf-Tmk">
                                     <rect key="frame" x="16" y="16" width="382" height="68"/>
@@ -93,19 +96,60 @@
                                 <constraint firstItem="Lir-Rf-Tmk" firstAttribute="top" secondItem="8td-kl-x7J" secondAttribute="top" constant="16" id="xoP-bK-1V3"/>
                             </constraints>
                         </view>
-                        <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Ur-afD">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="0.0"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NyO-hc-jQ9">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your nick name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KRl-z0-v2v">
+                                    <rect key="frame" x="16" y="24" width="132" height="25"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="25" id="KQc-Wg-1gi"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                    <color key="textColor" name="MainBlack"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NICKNAME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggl-YM-gJa">
+                                    <rect key="frame" x="16" y="57" width="134.5" height="19"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="19" id="CFN-eI-WCd"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="24"/>
+                                    <color key="textColor" name="MainBlack"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
                             <color key="backgroundColor" name="MainGray"/>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="pFt-gg-fbp"/>
-                                <outlet property="delegate" destination="-1" id="SN7-Ll-rjg"/>
-                            </connections>
-                        </tableView>
+                            <constraints>
+                                <constraint firstItem="KRl-z0-v2v" firstAttribute="top" secondItem="NyO-hc-jQ9" secondAttribute="top" constant="24" id="FwD-aI-jYR"/>
+                                <constraint firstItem="KRl-z0-v2v" firstAttribute="leading" secondItem="NyO-hc-jQ9" secondAttribute="leading" constant="16" id="Mrj-Ma-zOs"/>
+                                <constraint firstItem="ggl-YM-gJa" firstAttribute="leading" secondItem="KRl-z0-v2v" secondAttribute="leading" id="TnY-v8-sdo"/>
+                                <constraint firstItem="ggl-YM-gJa" firstAttribute="top" secondItem="KRl-z0-v2v" secondAttribute="bottom" constant="8" id="ldX-GA-pr3"/>
+                                <constraint firstAttribute="bottom" secondItem="ggl-YM-gJa" secondAttribute="bottom" constant="24" id="rVv-hg-9hp"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJw-9I-bQQ">
+                            <rect key="frame" x="0.0" y="100" width="414" height="708"/>
+                            <subviews>
+                                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Ur-afD">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="708"/>
+                                    <color key="backgroundColor" name="MainGray"/>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="pFt-gg-fbp"/>
+                                        <outlet property="delegate" destination="-1" id="SN7-Ll-rjg"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Znh-Ur-afD" secondAttribute="trailing" id="Q4P-Nk-UQh"/>
+                                <constraint firstItem="Znh-Ur-afD" firstAttribute="top" secondItem="hJw-9I-bQQ" secondAttribute="top" id="Xud-0m-7SO"/>
+                                <constraint firstAttribute="bottom" secondItem="Znh-Ur-afD" secondAttribute="bottom" id="c5j-rn-afk"/>
+                                <constraint firstItem="Znh-Ur-afD" firstAttribute="leading" secondItem="hJw-9I-bQQ" secondAttribute="leading" id="e5X-NX-xVI"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="Znh-Ur-afD" firstAttribute="leading" secondItem="2dk-2P-Edx" secondAttribute="leading" id="MWe-o8-wWO"/>
-                        <constraint firstAttribute="trailing" secondItem="Znh-Ur-afD" secondAttribute="trailing" id="O48-xz-ze0"/>
                         <constraint firstAttribute="trailing" secondItem="8td-kl-x7J" secondAttribute="trailing" id="V9t-W0-uol"/>
                         <constraint firstItem="8td-kl-x7J" firstAttribute="leading" secondItem="2dk-2P-Edx" secondAttribute="leading" id="vV8-Ev-Y6I"/>
                     </constraints>

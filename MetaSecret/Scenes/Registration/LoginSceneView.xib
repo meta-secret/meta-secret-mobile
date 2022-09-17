@@ -14,6 +14,7 @@
                 <outlet property="activityIndicator" destination="RRU-fT-Ok8" id="cPN-tu-BGz"/>
                 <outlet property="containerView" destination="ziE-L1-oCC" id="Tq1-tK-MA6"/>
                 <outlet property="letsGoButton" destination="mvH-JN-2ca" id="kbo-Pl-5F0"/>
+                <outlet property="loginTitle" destination="AUf-Xv-6dj" id="zhT-Ht-Vi2"/>
                 <outlet property="topView" destination="SM7-bP-VMx" id="VSF-AS-M7Y"/>
                 <outlet property="userNameTextField" destination="uSm-oD-niL" id="K1I-Rr-uL3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -30,55 +31,17 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SM7-bP-VMx">
                             <rect key="frame" x="0.0" y="0.0" width="350" height="200"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUf-Xv-6dj">
-                                    <rect key="frame" x="16" y="16" width="254" height="168"/>
-                                    <attributedString key="attributedText">
-                                        <fragment content="To start ">
-                                            <attributes>
-                                                <color key="NSColor" name="MainBlack"/>
-                                                <font key="NSFont" size="28" name="AvenirNext-Medium"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content="keeping secrets">
-                                            <attributes>
-                                                <color key="NSColor" name="MainBlack"/>
-                                                <font key="NSFont" size="28" name="AvenirNext-Bold"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content=", please ">
-                                            <attributes>
-                                                <color key="NSColor" name="MainBlack"/>
-                                                <font key="NSFont" size="28" name="AvenirNext-Medium"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content="choose">
-                                            <attributes>
-                                                <color key="NSColor" name="MainBlack"/>
-                                                <font key="NSFont" size="28" name="AvenirNext-Bold"/>
-                                                <font key="NSOriginalFont" size="28" name="AvenirNext-Bold"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content=" your ">
-                                            <attributes>
-                                                <color key="NSColor" name="MainBlack"/>
-                                                <font key="NSFont" size="28" name="AvenirNext-Medium"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content="name">
-                                            <attributes>
-                                                <color key="NSColor" name="MainBlack"/>
-                                                <font key="NSFont" size="28" name="AvenirNext-Bold"/>
-                                                <font key="NSOriginalFont" size="28" name="AvenirNext-Bold"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To start keeping secrets, please choose your name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AUf-Xv-6dj">
+                                    <rect key="frame" x="16" y="16" width="284" height="168"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="28"/>
+                                    <color key="textColor" name="MainBlack"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" name="MainYellow"/>
                             <constraints>
                                 <constraint firstItem="AUf-Xv-6dj" firstAttribute="leading" secondItem="SM7-bP-VMx" secondAttribute="leading" constant="16" id="IMQ-sL-dcp"/>
-                                <constraint firstAttribute="trailing" secondItem="AUf-Xv-6dj" secondAttribute="trailing" constant="80" id="J6Q-1G-rRL"/>
+                                <constraint firstAttribute="trailing" secondItem="AUf-Xv-6dj" secondAttribute="trailing" constant="50" id="J6Q-1G-rRL"/>
                                 <constraint firstAttribute="height" constant="200" id="LbC-9W-lKT"/>
                                 <constraint firstItem="AUf-Xv-6dj" firstAttribute="top" secondItem="SM7-bP-VMx" secondAttribute="top" constant="16" id="Nf7-9a-JjD"/>
                                 <constraint firstAttribute="bottom" secondItem="AUf-Xv-6dj" secondAttribute="bottom" constant="16" id="Ryx-9P-aTb"/>

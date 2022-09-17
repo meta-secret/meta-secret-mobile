@@ -82,7 +82,7 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
             var virtualUsers = [User]()
             
             for i in 0..<2 {
-                if let vUser = self?.generateKeys(for: "\(mainUser.userName)\(Constants.MainScreen.virtual)\(i+1)") {
+                if let vUser = self?.generateKeys(for: "\(mainUser.userName)_\(Constants.Common.virtual)\(i+1)") {
                     virtualUsers.append(vUser)
                 }
             }
