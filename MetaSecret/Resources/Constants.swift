@@ -47,7 +47,7 @@ struct Constants {
         static let renameOk = NSLocalizedString("rename", comment: "")
         static let declined = NSLocalizedString("declinedRequest", comment: "")
         static let awaitingTitle = NSLocalizedString("waitingForApproval", comment: "")
-        static let awaitingMessage = NSLocalizedString("whatDoesItMean", comment: "")
+        static let awaitingMessage = NSLocalizedString("pleaseAcceptRequest", comment: "")
         static let chooseAnotherName = NSLocalizedString("pleaseAcceptRequest", comment: "")
     }
     

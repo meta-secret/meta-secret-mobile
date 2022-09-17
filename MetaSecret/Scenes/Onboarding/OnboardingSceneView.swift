@@ -90,6 +90,7 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         
         setupButtonAvailability(isAvailable: false)
         connectButton.setTitle(Constants.Onboarding.getStartedButtonTitle, for: .normal)
+        connectButton.layer.borderColor = AppColors.mainYellow.cgColor
         pageControl.numberOfPages = cells.count
         checkButtonsAvailability()
         collectionView.reloadData()
