@@ -18,21 +18,17 @@ struct Constants {
     
     //MARK: - ONBOARDING
     struct Onboarding {
-        static let whatIsMetaTitle = NSLocalizedString("whatIs", comment: "")
-        static let whatIsMetaSubTitle = NSLocalizedString("whatIsStep1", comment: "")
-        static let whatIsMetaMessage = NSLocalizedString("whatDoesItMean", comment: "")
+        static let welcome = NSLocalizedString("welcome", comment: "")
+        static let whatIs = NSLocalizedString("whatIs", comment: "")
         
-        static let howItWorksTitle = NSLocalizedString("howItWorks", comment: "")
-        static let howItWorksSubTitle = ""
-        static let howItWorksMessage = NSLocalizedString("buildNetwork", comment: "")
+        static let personalCloud = NSLocalizedString("personalCloud", comment: "")
+        static let personalCloudDescription = NSLocalizedString("personalCloudDescription", comment: "")
         
-        static let whySoManyDeviceTitle = NSLocalizedString("whyDevices", comment: "")
-        static let whySoManyDeviceSubTitle = ""
-        static let whySoManyDeviceMessage = NSLocalizedString("whyDevicesAnswer", comment: "")
+        static let distributedStorage = NSLocalizedString("distributedStorage", comment: "")
+        static let distributedStorageDescription = NSLocalizedString("distributedStorageDescription", comment: "")
         
-        static let problemsTitle = NSLocalizedString("problemSolves", comment: "")
-        static let problemsSubTitle = ""
-        static let problemsMessage = NSLocalizedString("problemsList", comment: "")
+        static let passwordLess = NSLocalizedString("passwordLess", comment: "")
+        static let passwordLessDescription = NSLocalizedString("passwordLessDescription", comment: "")
         
         static let getStartedButtonTitle = NSLocalizedString("getStarted", comment: "")
     }

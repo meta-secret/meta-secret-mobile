@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "blockchain.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

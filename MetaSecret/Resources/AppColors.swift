@@ -14,6 +14,7 @@ struct AppColors {
     
     static let mainGray = UIColor(named: "MainGray") ?? .gray
     static let secondaryGray = UIColor(named: "SecondaryGray") ?? .gray
+    static let mainDarkGray = UIColor(named: "MainDarkGray") ?? .gray
     
     static let mainBlack = UIColor(named: "MainBlack") ?? .black
     static let mainBlack40 = UIColor(named: "MainBlack")?.withAlphaComponent(0.4) ?? .black.withAlphaComponent(0.4)

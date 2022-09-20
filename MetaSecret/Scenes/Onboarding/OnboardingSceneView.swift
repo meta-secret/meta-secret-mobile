@@ -11,60 +11,47 @@ import AppTrackingTransparency
 class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     enum CellType {
-        case whatIsMeta
-        case howItWorks
-        case whySoMany
-        case problems
+        case welcome
+        case cloud
+        case distributed
+        case backup
         
         var title: String {
             switch self {
-            case .whatIsMeta:
-                return Constants.Onboarding.whatIsMetaTitle
-            case .howItWorks:
-                return Constants.Onboarding.howItWorksTitle
-            case .whySoMany:
-                return Constants.Onboarding.whySoManyDeviceTitle
-            case .problems:
-                return Constants.Onboarding.problemsTitle
+            case .welcome:
+                return Constants.Onboarding.welcome
+            case .cloud:
+                return Constants.Onboarding.personalCloud
+            case .distributed:
+                return Constants.Onboarding.distributedStorage
+            case .backup:
+                return Constants.Onboarding.passwordLess
             }
         }
         
         var image: UIImage {
             switch self {
-            case .whatIsMeta:
-                return AppImages.vault
-            case .howItWorks:
-                return UIImage()
-            case .whySoMany:
-                return UIImage()
-            case .problems:
-                return UIImage()
-            }
-        }
-        
-        var subTitle: String {
-            switch self {
-            case .whatIsMeta:
-                return Constants.Onboarding.whatIsMetaSubTitle
-            case .howItWorks:
-                return Constants.Onboarding.howItWorksSubTitle
-            case .whySoMany:
-                return Constants.Onboarding.whySoManyDeviceSubTitle
-            case .problems:
-                return Constants.Onboarding.problemsSubTitle
+            case .welcome:
+                return AppImages.metaLogo
+            case .cloud:
+                return AppImages.distributedNetwork
+            case .distributed:
+                return AppImages.cloud
+            case .backup:
+                return AppImages.backup
             }
         }
         
         var description: String {
             switch self {
-            case .whatIsMeta:
-                return Constants.Onboarding.whatIsMetaMessage
-            case .howItWorks:
-                return Constants.Onboarding.howItWorksMessage
-            case .whySoMany:
-                return Constants.Onboarding.whySoManyDeviceMessage
-            case .problems:
-                return Constants.Onboarding.problemsMessage
+            case .welcome:
+                return Constants.Onboarding.whatIs
+            case .cloud:
+                return Constants.Onboarding.personalCloudDescription
+            case .distributed:
+                return Constants.Onboarding.distributedStorageDescription
+            case .backup:
+                return Constants.Onboarding.passwordLessDescription
             }
         }
     }
@@ -72,13 +59,11 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var skipButton: UIButton!
-    @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var nextPageButton: UIButton!
-    @IBOutlet weak var previousPageButton: UIButton!
     @IBOutlet weak var pageControl: UIPageControl!
     
     // MARK: - Properties
-    private let cells: [CellType] = [.whatIsMeta, .howItWorks, .whySoMany, .problems]
+    private let cells: [CellType] = [.welcome, .cloud, .distributed, .backup]
     
     private struct Config {
         static let subtitleFont: CGFloat = 20
@@ -88,11 +73,7 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         super.viewDidLoad()
         setupCollectionView()
         
-        setupButtonAvailability(isAvailable: false)
-        connectButton.setTitle(Constants.Onboarding.getStartedButtonTitle, for: .normal)
-        connectButton.layer.borderColor = AppColors.mainYellow.cgColor
         pageControl.numberOfPages = cells.count
-        checkButtonsAvailability()
         collectionView.reloadData()
     }
     
@@ -120,23 +101,13 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         finishOnboarding()
     }
     
-    @IBAction func connectButtonTapped(_ sender: Any) {
-        finishOnboarding()
-    }
-    
-    @IBAction func previousPageButtonTapped(_ sender: Any) {
-        let prevPage = pageControl.currentPage - 1
-        guard prevPage >= 0 else { return }
-        collectionView.scrollToItem(at: IndexPath(row: prevPage, section: 0), at: .right, animated: true)
-    }
-    
     @IBAction func nextPageButtonTapped(_ sender: Any) {
         let nextPage = pageControl.currentPage + 1
-        guard nextPage < pageControl.numberOfPages else { return }
-        if nextPage == pageControl.numberOfPages - 1 {
-            setupButtonAvailability(isAvailable: true)
+        if nextPage < pageControl.numberOfPages {
+            collectionView.scrollToItem(at: IndexPath(row: nextPage, section: 0), at: .left, animated: true)
+        } else {
+            finishOnboarding()
         }
-        collectionView.scrollToItem(at: IndexPath(row: nextPage, section: 0), at: .left, animated: true)
     }
     
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -171,26 +142,10 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let page = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
         pageControl.currentPage = page
-        checkButtonsAvailability()
     }
 }
 
 private extension OnboardingSceneView {
-    func checkButtonsAvailability() {
-        let page = pageControl.currentPage
-        switch page {
-        case cells.count - 1:
-            nextPageButton.isHidden = true
-            previousPageButton.isHidden = false
-        case 0:
-            nextPageButton.isHidden = false
-            previousPageButton.isHidden = true
-        default:
-            nextPageButton.isHidden = false
-            previousPageButton.isHidden = false
-        }
-    }
-    
     func finishOnboarding() {
         if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
             ATTrackingManager.requestTrackingAuthorization() { _ in
@@ -202,15 +157,5 @@ private extension OnboardingSceneView {
             routeTo(.login, presentAs: .root)
         }
         shouldShowOnboarding = false
-    }
-    
-    func setupButtonAvailability(isAvailable: Bool) {
-        if isAvailable {
-            connectButton.isUserInteractionEnabled = true
-            connectButton.backgroundColor = AppColors.mainYellow
-        } else {
-            connectButton.isUserInteractionEnabled = false
-            connectButton.backgroundColor = AppColors.mainGray
-        }
     }
 }
