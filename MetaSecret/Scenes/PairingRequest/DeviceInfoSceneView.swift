@@ -17,6 +17,7 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
     @IBOutlet weak var deviceNameLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var deviceIdLabel: UILabel!
+    @IBOutlet weak var warningMessageLabel: UILabel!
     
     //MARK: - PROPERTIES
     private struct Config {
@@ -60,6 +61,9 @@ private extension DeviceInfoSceneView {
     func setupUI() {
         guard let data = dataSent as? SceneSendDataModel, let vault = data.vault else { return }
         
+        acceptButton.setTitle(Constants.PairingDeveice.accept, for: .normal)
+        declineButton.setTitle(Constants.PairingDeveice.decline, for: .normal)
+        warningMessageLabel.text = Constants.PairingDeveice.warningMessage
         callBack = data.callBack
         
         // Title

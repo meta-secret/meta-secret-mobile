@@ -36,4 +36,17 @@ enum VaultInfoStatus: String, Codable {
     case declined
     case virtual
     case unknown
+    
+    func title() -> String {
+        switch self {
+        case .member:
+            return Constants.Devices.member
+        case .pending:
+            return Constants.Devices.pending
+        case .declined:
+            return Constants.Devices.declined
+        default:
+            return ""
+        }
+    }
 }

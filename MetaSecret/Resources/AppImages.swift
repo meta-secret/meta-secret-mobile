@@ -14,6 +14,6 @@ struct AppImages {
     static let distributedNetwork = UIImage(named: "DistributedNetwork") ?? UIImage()
     static let cloud = UIImage(named: "Cloud") ?? UIImage()
     static let backup = UIImage(named: "Backup") ?? UIImage()
-    
+    static let chain = UIImage(named: "Chain") ?? UIImage()
     
 }

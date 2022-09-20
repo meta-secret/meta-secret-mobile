@@ -10,7 +10,6 @@ import UIKit
 class OnboardingCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Outlets
-    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
@@ -18,7 +17,6 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Functions
     func setup(cellType: OnboardingSceneView.CellType) {
-        imageView.image = cellType.image
         titleLabel.text = cellType.title
         descriptionLabel.text = cellType.description
     }

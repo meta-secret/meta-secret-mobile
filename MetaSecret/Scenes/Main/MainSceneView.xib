@@ -22,6 +22,7 @@
                 <outlet property="selector" destination="CGS-Uk-7NY" id="FPo-Aa-LHc"/>
                 <outlet property="tableView" destination="Znh-Ur-afD" id="UY3-jZ-iA3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="yourDevicesTitleLabel" destination="V9h-7e-ouJ" id="Z0G-w1-uUs"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -97,7 +98,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NyO-hc-jQ9">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="128.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your nick name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KRl-z0-v2v">
                                     <rect key="frame" x="16" y="24" width="132" height="25"/>
@@ -117,21 +118,29 @@
                                     <color key="textColor" name="MainBlack"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your devices:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9h-7e-ouJ">
+                                    <rect key="frame" x="16" y="100" width="110.5" height="20.5"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                    <color key="textColor" name="MainBlack"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" name="MainGray"/>
                             <constraints>
+                                <constraint firstItem="V9h-7e-ouJ" firstAttribute="top" secondItem="ggl-YM-gJa" secondAttribute="bottom" constant="24" id="2ch-8v-8ia"/>
+                                <constraint firstAttribute="bottom" secondItem="V9h-7e-ouJ" secondAttribute="bottom" constant="8" id="3Jr-O4-Gu5"/>
                                 <constraint firstItem="KRl-z0-v2v" firstAttribute="top" secondItem="NyO-hc-jQ9" secondAttribute="top" constant="24" id="FwD-aI-jYR"/>
                                 <constraint firstItem="KRl-z0-v2v" firstAttribute="leading" secondItem="NyO-hc-jQ9" secondAttribute="leading" constant="16" id="Mrj-Ma-zOs"/>
                                 <constraint firstItem="ggl-YM-gJa" firstAttribute="leading" secondItem="KRl-z0-v2v" secondAttribute="leading" id="TnY-v8-sdo"/>
                                 <constraint firstItem="ggl-YM-gJa" firstAttribute="top" secondItem="KRl-z0-v2v" secondAttribute="bottom" constant="8" id="ldX-GA-pr3"/>
-                                <constraint firstAttribute="bottom" secondItem="ggl-YM-gJa" secondAttribute="bottom" constant="24" id="rVv-hg-9hp"/>
+                                <constraint firstItem="V9h-7e-ouJ" firstAttribute="leading" secondItem="ggl-YM-gJa" secondAttribute="leading" id="tcY-Q3-k52"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJw-9I-bQQ">
-                            <rect key="frame" x="0.0" y="100" width="414" height="708"/>
+                            <rect key="frame" x="0.0" y="128.5" width="414" height="679.5"/>
                             <subviews>
                                 <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Ur-afD">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="708"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="679.5"/>
                                     <color key="backgroundColor" name="MainGray"/>
                                     <connections>
                                         <outlet property="dataSource" destination="-1" id="pFt-gg-fbp"/>

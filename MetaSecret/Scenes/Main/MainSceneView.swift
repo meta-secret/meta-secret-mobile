@@ -20,6 +20,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
     @IBOutlet weak var remainingNotification: UIView!
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var remainigLabel: UILabel!
+    @IBOutlet weak var yourDevicesTitleLabel: UILabel!
     
     //MARK: - PROPERTIES
     private var viewModel: MainSceneViewModel? = nil
@@ -117,6 +118,7 @@ private extension MainSceneView {
         
         setTitle()
         
+        yourDevicesTitleLabel.text = Constants.MainScreen.yourSecrets
         nickNameTitleLabel.text = Constants.MainScreen.yourNick
         nickNameLabel.text = mainUser?.userName ?? ""
     }
@@ -149,6 +151,8 @@ private extension MainSceneView {
         if filteredArr?.count ?? 0 < 3 {
             addDeviceView.isHidden = selectedSegment == .Secrets
         }
+        
+        yourDevicesTitleLabel.text = selectedSegment == .Secrets ? Constants.MainScreen.yourSecrets : Constants.MainScreen.yourDevices
         
         setTitle()
         viewModel?.getNewDataSource(type: selectedSegment)
@@ -193,15 +197,15 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = .clear
-        return headerView
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return source?.items[section].isEmpty ?? true ? 0 : 12
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let headerView = UIView()
+//        headerView.backgroundColor = .clear
+//        return headerView
+//    }
+//    
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return source?.items[section].isEmpty ?? true ? 0 : 0
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return source?.items[section].count ?? 0
@@ -213,7 +217,7 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let content = source?.items[indexPath.section][indexPath.row], content.boolValue else {
+        guard let content = source?.items[indexPath.section][indexPath.row] else {
             return
         }
         

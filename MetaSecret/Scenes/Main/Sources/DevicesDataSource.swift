@@ -23,7 +23,7 @@ final class DevicesDataSource: MainScreeSourcable, UD {
             
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.pending.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .pending, boolValue: true, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.pending.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .pending, boolValue: true, id: item.device?.deviceId)
             pendingItems.append(cellSource)
         }
         sourceItems.append(pendingItems)
@@ -31,7 +31,7 @@ final class DevicesDataSource: MainScreeSourcable, UD {
         for item in vault.declinedJoins ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.declined.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .declined, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.declined.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .declined, id: item.device?.deviceId)
             declinedItems.append(cellSource)
         }
         sourceItems.append(declinedItems)
@@ -39,7 +39,7 @@ final class DevicesDataSource: MainScreeSourcable, UD {
         for item in vault.signatures ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.member.rawValue, intValue: MainScreenSourceType.Secrets.rawValue, status: .member, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.member.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .member, id: item.device?.deviceId)
             memberItems.append(cellSource)
         }
         sourceItems.append(memberItems)

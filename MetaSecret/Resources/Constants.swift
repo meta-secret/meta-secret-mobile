@@ -73,9 +73,14 @@ struct Constants {
             return wantedString
         }
         static let yourNick = NSLocalizedString("yourNick", comment: "")
+        static let yourDevices = NSLocalizedString("yourDevices", comment: "")
+        static let yourSecrets = NSLocalizedString("yourSecrets", comment: "")
     }
     
     struct Devices {
+        static let member = NSLocalizedString("member", comment: "")
+        static let declined = NSLocalizedString("declined", comment: "")
+        static let pending = NSLocalizedString("pending", comment: "")
         static let istallInstructionTitle = NSLocalizedString("howToAdd", comment: "")
         static func istallInstruction(name: String) -> String {
             return String(format: NSLocalizedString("stepsToAdd", comment: ""), name)
@@ -84,6 +89,9 @@ struct Constants {
     
     struct PairingDeveice {
         static let title = NSLocalizedString("deviceAdding", comment: "")
+        static let accept = NSLocalizedString("accept", comment: "")
+        static let decline = NSLocalizedString("decline", comment: "")
+        static let warningMessage = NSLocalizedString("pleaseApprove", comment: "")
     }
     
     struct AddSecret {

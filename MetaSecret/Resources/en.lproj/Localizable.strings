@@ -6,18 +6,17 @@
  
  */
 //MARK: - ONBOARDING
-"whatIs" = "What is MetaSecret?";
-"whatIsStep1" = "Unique, secure storage For your secrets. Secrets could be as passwords, pins, credit card numbers.";
-"whatDoesItMean" = "You don't need to keep your password in your head anymore! All you need is to choose unique user name during registraition and place your Skeleton in the closet with one button!";
+"welcome" = "Welcome to Meta Secret!";
+"whatIs" = "";
 
-"howItWorks" = "How it works?";
-"buildNetwork" = "It's strongly reccommended to install this app on few devices (phone, smart watches, notebook), but for the first time you can use one device only. Выбрав никнейм, необходимо использовать его везде. In case of no extra devices, we can hel you. (coming soon!)";
+"personalCloud" = "Personal storage.";
+"personalCloudDescription" = "Все ваши пароли и секреты надежно зашифрованы по стандартам безопасности алгоритмом RSA с длинной ключа 4096 бит и хранятся ТОЛЬКО на ваших устройствах.";
 
-"whyDevices" = "Why so many devices?";
-"whyDevicesAnswer" = "Ваш секрет будет разделен на несколько частей. Все части будут зашифрованы и распределены по устройствам. В случае потери одного из устройств, вы сможете получить доступ к своим секретам с оставшихся устройств. Именно поэтому не рекомендуется использовать одно устройство.";
+"distributedStorage" = "Распределенное хранилище.";
+"distributedStorageDescription" = "Подключая дополнительные устройства вы создаете персональное облако, доступ к которому есть только у вас.";
 
-"problemSolves" = "What problems do we solve";
-"problemsList" = "• Вы не можете забыть пароль если его нет! \n\n• Ваше собственное распределенное, зашифрованное хранилище \n\n• Сохранение и восстановление одной кнопкой!";
+"passwordLess" = "Беспарольное восстановление.";
+"passwordLessDescription" = "И даже при утере одного из устройств, вы и только вы сможете восстановить данные без каких-либо паролей и секретных фраз";
 
 "getStarted" = "Get started!";
 
@@ -25,38 +24,41 @@
 //MARK: - LOGIN
 
 "metaSecret" = "MetaSecret";
-"loginTitle" = "Choose your unique nickname to start keeping secrets.";
+"loginTitle" = "Чтобы начать работу, выберите уникальное имя (никнейм).";
 "yourName" = "Your unique nickname";
-"letsgo" = "Let's go!";
-"wannaJoin" = "We've found this name is already taken! Is it yours? Please, add this device to your network.";
-"chooseAnotherName" = "We've found this name is already taken! Is it yours? If not, please rename it!";
-"rename" = "Rename";
-"declinedRequest" = "We've found this name is already taken! Request has been declined. Please, choose another one.";
-"waitingForApproval" = "This device is waiting to be added in the network.";
-"pleaseAcceptRequest" = "This device is waiting to be added in the network. Please, start this app on the first app and accept the request.";
+"letsgo" = "Let's start!";
+"wannaJoin" = "Мы обнаружили, что это имя уже занято.Если оно ваше, то добавьте устройство в свою сеть.";
+"chooseAnotherName" = "Мы обнаружили, что это имя уже занято. Вы можете добавить его в свою сеть или выбрать другое имя. Сменить?";
+"rename" = "Переименовать";
+"declinedRequest" = "Мы обнаружили, что это имя уже занято. И запрос на присоединение отклонен. Пожалуйста, выберите другое.";
+"waitingForApproval" = "Это устройство ожидает присоединения в вашу сеть.";
+"pleaseAcceptRequest" = "Это устройство ожидает присоединения. Пожалуйста, запустите приложение на первом девайсе и одобрите запрос присоединения.";
 
 //MARK: - MAIN
 "secrets" = "Secrets";
 "devices" = "Devices";
-"doYouWannaAccept" = "Few devices are waiting to be added. Would you like to add?";
+"doYouWannaAccept" = "Несколько устройств ожидают подтверждения на присоединение. Хотите разрешить?";
 "accept" = "Accept";
 "decline" = "Decline";
-"pending" = "Pending";
+"pending" = "Pending...";
 "declined" = "Declined";
 "member" = "Member";
-"noSecrets" = "You don't have secrets yet! Coming soon!";
+"noSecrets" = "You don't have secrets yet! Coming Soon!";
 "hmmm" = "Hmmm.... no devices... Are you magican?";
-"yourNick" = "Your nickname";
+"yourNick" = "Your nickname:";
+"yourDevices" = "Your devices:";
+"yourSecrets" = "Your secrets:";
 
-"createCluster" = "Create your own decentralised network of devices to secure storage your secrets!";
-"onlyOneDevice" = "Only one device is registered! \n• If you lose this device you will lose all your secrets. As a best practice, we recommend you assign multiple devices to be able to use our recovery mechanism. \n• Just install this application on two more devices and enter your account name: %@.";
-"pleaseInstall" = "Please, install this app on %@ more devices!";
+"createCluster" = "Создайте собственную распределенную сеть устройств для безопасного хранения секретов.";
+"onlyOneDevice" = "Зарегистрировано лишь одно устройство!\n\n• При потере этого устройства, вы потеряете доступ ко всем своим паролям! Мы рекомендуем подключить еще несколько устройств, чтобы иметь возможность получить доступ к своим паролям с оставшихся устройств \n\n• Просто установите приложение еще на 2х устройствах и введите ваше уникальное имя: %@";
+"pleaseInstall" = "Пожалуйста, установите это приложение еще на %@ устройствах!";
 
-"howToAdd" = "How to add device to the network?";
-"stepsToAdd" = "1. Download and istall the app MetaSecret on new device. \n\n2. Enter your name: %@ there. \n\n 3. Accept joining request using this device. \n\n4. Repeat this steps on other new devices.";
+"howToAdd" = "How to add device?";
+"stepsToAdd" = "1. Скачать программу MetaSecret на новом устройстве. \n\n2. При авторизации введите ваше имя: %@ \n\n 3. Принять запрос на подключение с этого устройства. \n\n4. Повторите еще раз на третьем устройстве.";
 
 //MARK: - Pending device
 "deviceAdding" = "Device adding";
+"pleaseApprove" = "If it's your device, please aprove this request.";
 
 //MARK: - AddSecret
 "addSecret" = "Add secret";
@@ -68,7 +70,7 @@
 //MARK: - Errors
 "error" = "Error";
 "warning" = "Warning";
-"wannaLogin" = "This nickname is already taken. Would you like to login?";
+"wannaLogin" = "This name is already taken. Would you like to login?";
 "enterName" = "Please, enter your nickname";
 "sww" = "Something went wrong";
-"atLeast3" = "You have not enought devices to save your secrets. It would be better to have at least 3 devices in your network.";
+"atLeast3" = "Подключено недостаточное количество устройств. Желательно создать собственную сеть из трех устройств, чтобы исключить риск потери всех данных при утери единственного устройства.";

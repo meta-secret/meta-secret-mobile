@@ -29,19 +29,6 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
             }
         }
         
-        var image: UIImage {
-            switch self {
-            case .welcome:
-                return AppImages.metaLogo
-            case .cloud:
-                return AppImages.distributedNetwork
-            case .distributed:
-                return AppImages.cloud
-            case .backup:
-                return AppImages.backup
-            }
-        }
-        
         var description: String {
             switch self {
             case .welcome:
@@ -61,9 +48,16 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var nextPageButton: UIButton!
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var mobileImage: UIImageView!
+    @IBOutlet weak var mobileMainImage: UIImageView!
+    @IBOutlet weak var computerImage: UIImageView!
+    @IBOutlet weak var animationOnboardingContainer: UIView!
+    @IBOutlet weak var logoImage: UIImageView!
+    @IBOutlet weak var cloudImage: UIImageView!
+    @IBOutlet weak var missingImage: UIImageView!
     
     // MARK: - Properties
-    private let cells: [CellType] = [.welcome, .cloud, .distributed, .backup]
+    private let cells: [CellType] = [.cloud, .distributed, .backup]
     
     private struct Config {
         static let subtitleFont: CGFloat = 20
@@ -82,11 +76,17 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupUI()
+    }
+    
     // MARK: - Functions
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
         
+        collectionView.isScrollEnabled = false
         collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
@@ -103,6 +103,18 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     
     @IBAction func nextPageButtonTapped(_ sender: Any) {
         let nextPage = pageControl.currentPage + 1
+        
+        switch nextPage {
+        case 0:
+            setupFirstAnimatedStep()
+        case 1:
+            setupSecondAnimatedStep()
+        case 2:
+            setupThirdAnimatedStep()
+        default:
+            break
+        }
+        
         if nextPage < pageControl.numberOfPages {
             collectionView.scrollToItem(at: IndexPath(row: nextPage, section: 0), at: .left, animated: true)
         } else {
@@ -146,6 +158,12 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
 }
 
 private extension OnboardingSceneView {
+    func setupUI() {
+        mobileMainImage.center = logoImage.center
+        mobileImage.center = mobileMainImage.center
+        computerImage.center = computerImage.center
+    }
+    
     func finishOnboarding() {
         if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
             ATTrackingManager.requestTrackingAuthorization() { _ in
@@ -157,5 +175,62 @@ private extension OnboardingSceneView {
             routeTo(.login, presentAs: .root)
         }
         shouldShowOnboarding = false
+    }
+    
+    func setupFirstAnimatedStep() {
+        mobileMainImage.isHidden = false
+        UIView.animate(withDuration: Constants.Common.animationTime,  animations: {
+            self.logoImage.alpha = 0
+        }, completion: nil)
+    }
+    
+    func setupSecondAnimatedStep() {
+        mobileImage.center = mobileMainImage.center
+        computerImage.center = mobileMainImage.center
+        
+        mobileImage.isHidden = false
+        computerImage.isHidden = false
+        
+        let originMainMobileTransform = mobileMainImage.transform
+        let scaledMainMobileTransform = originMainMobileTransform.scaledBy(x: 0.65, y: 0.65)
+        let finalMainMobileY = animationOnboardingContainer.frame.height - mobileMainImage.frame.height - mobileMainImage.frame.height/2
+        let mainMobileDeltaY = mobileMainImage.frame.origin.y + finalMainMobileY
+        let scaledAndTranslatedMainMobileTransform = scaledMainMobileTransform.translatedBy(x: 0.0, y: mainMobileDeltaY)
+        
+        let originMobileTransform = mobileImage.transform
+        let finalMobileY = animationOnboardingContainer.frame.height - mobileImage.frame.height - 16
+        let mobileDeltaY = mobileImage.frame.origin.y - finalMobileY
+        let finalMobileX = animationOnboardingContainer.frame.width - mobileImage.frame.width - 16
+        let mobileDeltaX = mobileImage.frame.origin.x - finalMobileX
+        let translatedMobileTransform = originMobileTransform.translatedBy(x: mobileDeltaX, y: mobileDeltaY)
+        
+        let originComputerTransform = computerImage.transform
+        let finalComputerY = animationOnboardingContainer.frame.height - computerImage.frame.height - 16
+        let computerDeltaY = computerImage.frame.origin.y - finalComputerY
+        let finalComputerX = animationOnboardingContainer.frame.width - mobileImage.frame.width - 16
+        let computerDeltaX = finalComputerX - mobileImage.frame.origin.x
+        let translatedComputerTransform = originComputerTransform.translatedBy(x: computerDeltaX, y: computerDeltaY)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.mobileMainImage.transform = scaledAndTranslatedMainMobileTransform
+            self.mobileImage.transform = translatedMobileTransform
+            self.computerImage.transform = translatedComputerTransform
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.cloudImage.alpha = 1
+            })
+        }
+    }
+    
+    func setupThirdAnimatedStep() {
+        missingImage.frame.origin = mobileImage.frame.origin
+        
+        UIView.animate(withDuration: 0.3) {
+            self.mobileImage.alpha = 0
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3, animations: {
+                self.missingImage.alpha = 1
+            })
+        }
     }
 }

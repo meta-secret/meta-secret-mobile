@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -19,6 +20,7 @@
                 <outlet property="stackView" destination="PXZ-pY-uhb" id="kZT-qT-JfD"/>
                 <outlet property="userNameLabel" destination="WxL-LH-gYc" id="wYZ-iL-uCQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="warningMessageLabel" destination="eMN-Qi-TRa" id="L0b-aK-RXm"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -26,8 +28,27 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QKI-tm-A90">
+                    <rect key="frame" x="0.0" y="44" width="414" height="54"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please approve if it's your secondary device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMN-Qi-TRa">
+                            <rect key="frame" x="16" y="16" width="382" height="22"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="16"/>
+                            <color key="textColor" name="MainBlack"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="MainOrange"/>
+                    <constraints>
+                        <constraint firstItem="eMN-Qi-TRa" firstAttribute="leading" secondItem="QKI-tm-A90" secondAttribute="leading" constant="16" id="Gaq-O2-gyd"/>
+                        <constraint firstItem="eMN-Qi-TRa" firstAttribute="centerY" secondItem="QKI-tm-A90" secondAttribute="centerY" id="cn7-0F-zRC"/>
+                        <constraint firstAttribute="trailing" secondItem="eMN-Qi-TRa" secondAttribute="trailing" constant="16" id="ghY-1O-Poq"/>
+                        <constraint firstItem="eMN-Qi-TRa" firstAttribute="top" secondItem="QKI-tm-A90" secondAttribute="top" constant="16" id="siz-1Z-8ar"/>
+                        <constraint firstAttribute="bottom" secondItem="eMN-Qi-TRa" secondAttribute="bottom" constant="16" id="ugY-OP-hC0"/>
+                    </constraints>
+                </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="PXZ-pY-uhb">
-                    <rect key="frame" x="0.0" y="95.5" width="414" height="180"/>
+                    <rect key="frame" x="0.0" y="114" width="414" height="180"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Wr-Mf-Sxm">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
@@ -143,25 +164,6 @@
                         <constraint firstItem="0OB-KX-vAW" firstAttribute="top" secondItem="V1k-yN-ebF" secondAttribute="top" constant="32" id="cRT-vN-HNK"/>
                         <constraint firstAttribute="trailing" secondItem="0OB-KX-vAW" secondAttribute="trailing" constant="16" id="hfz-bC-Tgh"/>
                         <constraint firstAttribute="height" constant="200" id="hsj-dT-h5d"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QKI-tm-A90">
-                    <rect key="frame" x="0.0" y="44" width="414" height="35.5"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please approve if it's your secondary device" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMN-Qi-TRa">
-                            <rect key="frame" x="16" y="8" width="382" height="19.5"/>
-                            <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="14"/>
-                            <color key="textColor" name="MainBlack"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" name="MainOrange"/>
-                    <constraints>
-                        <constraint firstItem="eMN-Qi-TRa" firstAttribute="leading" secondItem="QKI-tm-A90" secondAttribute="leading" constant="16" id="Gaq-O2-gyd"/>
-                        <constraint firstItem="eMN-Qi-TRa" firstAttribute="top" secondItem="QKI-tm-A90" secondAttribute="top" constant="8" id="YJq-9B-qbq"/>
-                        <constraint firstItem="eMN-Qi-TRa" firstAttribute="centerY" secondItem="QKI-tm-A90" secondAttribute="centerY" id="cn7-0F-zRC"/>
-                        <constraint firstAttribute="trailing" secondItem="eMN-Qi-TRa" secondAttribute="trailing" constant="16" id="ghY-1O-Poq"/>
-                        <constraint firstAttribute="bottom" secondItem="eMN-Qi-TRa" secondAttribute="bottom" constant="8" id="ugY-OP-hC0"/>
                     </constraints>
                 </view>
             </subviews>
