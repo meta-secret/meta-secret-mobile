@@ -176,8 +176,10 @@ private extension MainSceneView {
     //MARK: - HINTS
     func showFirstTimePopupHint() {
         let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.userName ?? ""), buttonHandler: { [weak self] in
+            Date().logDate(name: "Close popup")
             self?.shouldShowVirtualHint = false
             if self?.vUsers.isEmpty ?? true {
+                Date().logDate(name: "Start generateVirtualVaults")
                 self?.viewModel?.generateVirtualVaults()
             }
         })

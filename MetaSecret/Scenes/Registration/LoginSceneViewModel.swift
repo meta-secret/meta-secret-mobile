@@ -22,48 +22,48 @@ final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
     //MARK: - INIT
     init(delegate: LoginSceneProtocol) {
         self.delegate = delegate
-        DispatchQueue.global(qos: .background).async { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
             self?.checkStatus()
-        }
+        })
     }
     
     //MARK: - REGISTRATION
     func register(_ userName: String) {
-        if deviceStatus == .pending {
-            DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
+            if self?.deviceStatus == .pending {
                 self?.showAwaitingAlert()
                 self?.delegate?.processFinished()
+                return
             }
-            return
-        }
-        
-        guard let user = generateKeys(for: userName) else {
-            DispatchQueue.main.async { [weak self] in
+            
+            guard let user = self?.generateKeys(for: userName) else {
                 self?.showCommonError(nil)
                 self?.delegate?.processFinished()
+                return
             }
-
-            return
-        }
-        
-        let userNameData = user.userName.data(using: .utf8) ?? Data()
-        signData(userNameData, for: user)
-        
-        mainUser = user
-        
-        Register().execute() { [weak self] result in
-            switch result {
-            case .success(let response):
-                if response.status == .Registered {
-                    self?.deviceStatus = .member
-                    self?.mainUser = user
-                    self?.isOwner = true //TODO: Need it on Server
-                    DispatchQueue.main.async {
+            
+            let userNameData = user.userName.data(using: .utf8) ?? Data()
+            self?.signData(userNameData, for: user)
+            
+            self?.mainUser = user
+            
+            Date().logDate(name: "Start register API")
+            Register().execute() { [weak self] result in
+                Date().logDate(name: "Get register result")
+                switch result {
+                case .success(let response):
+                    Date().logDate(name: "Entered to success")
+                    if response.status == .Registered {
+                        self?.deviceStatus = .member
+                        self?.mainUser = user
+                        self?.isOwner = true //TODO: Need it on Server
+                        Date().logDate(name: "Pre routing")
                         self?.routeTo(.main, presentAs: .root)
-                    }
-                } else {
-                    self?.deviceStatus = .pending
-                    DispatchQueue.main.async {
+                        Date().logDate(name: "Post routing")
+                    } else {
+                        self?.deviceStatus = .pending
+                        Date().logDate(name: "GOT PENDING STATUS")
+                        Date().logDate(name: "Alert")
                         self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
                             guard let `self` = self else { return }
                             
@@ -76,17 +76,14 @@ final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
                             self?.deviceStatus = .unknown
                         }))
                     }
-                }
-                DispatchQueue.main.async {
+                    Date().logDate(name: "Finish")
                     self?.delegate?.processFinished()
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
+                case .failure(let error):
                     self?.delegate?.processFinished()
                     self?.showCommonError(error.localizedDescription)
                 }
             }
-        }
+        })
     }
     
     //MARK: - ALERTS
@@ -114,15 +111,12 @@ private extension LoginSceneViewModel {
                 case .success(let result):
                     if result.status == .member {
                         self?.closePopup()
-                        DispatchQueue.main.async {
-                            self?.routeTo(.main, presentAs: .root)
-                        }
+                        self?.routeTo(.main, presentAs: .root)
                     } else if result.status == .declined {
                         self?.closePopup()
                         self?.resetAll()
-                        DispatchQueue.main.async {
-                            self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
-                        }
+
+                        self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
                     } else {
                         guard let `self` = self else { return }
                         
@@ -133,16 +127,13 @@ private extension LoginSceneViewModel {
                     }
                     self?.delegate?.processFinished()
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.delegate?.processFinished()
-                        self?.showCommonError(error.localizedDescription)
-                    }
+                    self?.delegate?.processFinished()
+                    self?.showCommonError(error.localizedDescription)
                 }
             }
         }
-        DispatchQueue.main.async {
-            self.delegate?.processFinished()
-        }
+
+        self.delegate?.processFinished()
     }
     
     @objc func fireTimer() {

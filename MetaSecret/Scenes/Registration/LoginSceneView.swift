@@ -30,22 +30,21 @@ class LoginSceneView: UIViewController, LoginSceneProtocol, Routerable, UD {
         
         showLoading()
         setupUI()
+        
         self.viewModel = LoginSceneViewModel(delegate: self)
     }
     
     //MARK: - ACTIONS
     @IBAction func letsGoAction(_ sender: Any) {
-        showLoading()
-        
+        self.showLoading()
+
         guard let userName = userNameTextField.text, !userName.isEmpty else {
             viewModel?.showAlert(message: Constants.Errors.enterName)
             hideLoading()
             return
         }
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.viewModel?.register(userName)
-        }
         
+        viewModel?.register(userName)
     }
     
     //MARK: - VM DELEGATE

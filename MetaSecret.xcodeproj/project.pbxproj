@@ -59,6 +59,7 @@
 		E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252928D3B5E100FB01B0 /* UICollectionView+Extension.swift */; };
 		E588252C28D3D97000FB01B0 /* AppImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252B28D3D97000FB01B0 /* AppImages.swift */; };
 		E588253728D5448E00FB01B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E588253928D5448E00FB01B0 /* Localizable.strings */; };
+		E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */; };
 		E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2828B26208007982BD /* LoaderManager.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
 		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
@@ -162,6 +163,7 @@
 		E588253428D5440A00FB01B0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E588253828D5448E00FB01B0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E588253A28D5449000FB01B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extenson.swift"; sourceTree = "<group>"; };
 		E5A64F2828B26208007982BD /* LoaderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderManager.swift; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
 		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				E5061CF028CD20C500E2787B /* UIView+Extension.swift */,
 				E55B514128CD43A000373959 /* UIFont+Extension.swift */,
 				E588252928D3B5E100FB01B0 /* UICollectionView+Extension.swift */,
+				E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -753,6 +756,7 @@
 				E57E6B6528B4199000906DBD /* Decline.swift in Sources */,
 				E588252728D3B53400FB01B0 /* OnboardingCollectionViewCell.swift in Sources */,
 				E55A227D28B0611800F5F02B /* Accept.swift in Sources */,
+				E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */,
 				E5061CF328CD258D00E2787B /* BottomInfoSheetModel.swift in Sources */,
 				E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */,
 				E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */,
