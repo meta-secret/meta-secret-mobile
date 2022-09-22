@@ -14,6 +14,10 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
     @IBOutlet weak var noteTextField: UITextField!
     
     //MARK: - PROPERTIES
+    private struct Config {
+        static let titleSize: CGFloat = 18
+    }
+    
     private var viewModel: AddSecretViewModel? = nil
     
     //MARK: - LIFE CICLE
@@ -43,7 +47,14 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
 private extension AddSecretSceneView {
     //MARK: - UI SETUP
     func setupUI() {
+        
+        // Title
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.avenirMedium(size: Config.titleSize)]
         self.title = Constants.AddSecret.title
+        
+        // Back button
+        navigationController?.navigationBar.tintColor = AppColors.mainOrange
+        
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         noteTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }

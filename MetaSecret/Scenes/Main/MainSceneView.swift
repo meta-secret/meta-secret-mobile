@@ -117,7 +117,7 @@ private extension MainSceneView {
         remainingNotification.addGestureRecognizer(labelTapGR)
         
         setTitle()
-        
+        setupNavBar()
         yourDevicesTitleLabel.text = Constants.MainScreen.yourSecrets
         nickNameTitleLabel.text = Constants.MainScreen.yourNick
         nickNameLabel.text = mainUser?.userName ?? ""
@@ -129,7 +129,8 @@ private extension MainSceneView {
     }
     
     func setupNavBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.MainScreen.add, style: .plain, target: self, action: #selector(addTapped))
+        navigationItem.rightBarButtonItem?.tintColor = AppColors.mainOrange
     }
     
     //MARK: - TAB SELECTING
@@ -138,7 +139,7 @@ private extension MainSceneView {
         reloadData(source: nil)
         
         if index == 0 {
-//            setupNavBar()
+            setupNavBar()
         } else {
             navigationItem.rightBarButtonItem = nil
         }
@@ -199,16 +200,6 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let headerView = UIView()
-//        headerView.backgroundColor = .clear
-//        return headerView
-//    }
-//    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return source?.items[section].isEmpty ?? true ? 0 : 0
-//    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return source?.items[section].count ?? 0
     }
@@ -219,7 +210,7 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let content = source?.items[indexPath.section][indexPath.row] else {
+        guard let content = source?.items[indexPath.section][indexPath.row], content.boolValue else {
             return
         }
         

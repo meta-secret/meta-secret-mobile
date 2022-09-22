@@ -75,6 +75,7 @@ struct Constants {
         static let yourNick = NSLocalizedString("yourNick", comment: "")
         static let yourDevices = NSLocalizedString("yourDevices", comment: "")
         static let yourSecrets = NSLocalizedString("yourSecrets", comment: "")
+        static let add = NSLocalizedString("add", comment: "")
     }
     
     struct Devices {

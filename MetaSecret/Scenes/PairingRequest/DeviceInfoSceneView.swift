@@ -74,7 +74,7 @@ private extension DeviceInfoSceneView {
         stackView.showShadow()
         
         // Back button
-        navigationController?.navigationBar.tintColor = AppColors.mainBlack
+        navigationController?.navigationBar.tintColor = AppColors.mainOrange
         
         //Buttons
         acceptButton.layer.cornerRadius = CGFloat(Config.cornerRadius)
