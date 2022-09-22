@@ -63,6 +63,15 @@
 
 //MARK: - AddSecret
 "addSecret" = "Add secret";
+"addDescription" = "Add description for secret";
+"description" = "Description";
+"addPassword" = "Add password";
+"password" = "Password";
+"splitInstruction" = "We splited your secret on three parts. Encrypted each one and already stored the first part on this device.";
+"selectSecond" = "Select device to store the second part";
+"selectSecondButton" = "Select second device";
+"selectThird" = "Select device to store the third part";
+"selectThirdButton" = "Select third device";
 
 //MARK: - ALERTS
 "ok" = "Ok";
