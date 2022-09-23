@@ -35,7 +35,7 @@
 "rename" = "Rename";
 "declinedRequest" = "The Join request declined. Please choose another name.";
 "waitingForApproval" = "This device is waiting for approval to join the network.";
-"pleaseAcceptRequest" = "Waiting for approval. Please accept the join request or the other device."
+"pleaseAcceptRequest" = "Waiting for approval. Please accept the join request or the other device.";
 
 //MARK: - MAIN
 "secrets" = "Secrets";
