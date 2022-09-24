@@ -10,9 +10,13 @@ import Foundation
 struct SceneSendDataModel {
     let vault: Vault?
     let callBack: (()->())?
+    let mainStringValue: String?
+    let stringValue: String?
     
-    init(vault: Vault? = nil, callBack: (()->())? = nil) {
+    init(vault: Vault? = nil, mainStringValue: String, stringValue: String, callBack: (()->())? = nil) {
         self.vault = vault
         self.callBack = callBack
+        self.mainStringValue = mainStringValue
+        self.stringValue = stringValue
     }
 }

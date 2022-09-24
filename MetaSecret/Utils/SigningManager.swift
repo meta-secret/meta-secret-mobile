@@ -92,15 +92,16 @@ extension Signable {
     func encryptData(_ data: Data, key: Data, name: String) -> Data? {
         let attributes: [String: Any] = [
             kSecAttrKeyType as String           : kSecAttrKeyTypeRSA,
-            kSecAttrKeySizeInBits as String     : 4096,
+            kSecAttrKeySizeInBits as String     : 2048,
             kSecPrivateKeyAttrs as String : [
                 kSecAttrIsPermanent as String       : true,
                 kSecAttrApplicationTag as String    : name.data(using: .utf8) ?? Data()
             ]
         ]
         
-        guard let privateKeyRSA = SecKeyCreateWithData(key as CFData, attributes as CFDictionary, nil) else {
-            showCommonError(nil)
+        var error: Unmanaged<CFError>? = nil
+        guard let privateKeyRSA = SecKeyCreateWithData(key as CFData, attributes as CFDictionary, &error) else {
+            showCommonError(error.debugDescription)
             return nil
         }
        

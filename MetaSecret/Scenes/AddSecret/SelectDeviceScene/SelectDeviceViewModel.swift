@@ -22,7 +22,7 @@ final class SelectDeviceViewModel: Alertable, Signable {
     }
     
     //MARK: - PUBLIC METHODS
-    func send(_ share: String, to member: Vault, with note: String) {
+    func send(_ share: String, to member: Vault, with note: String, callback: (()->())?) {
         guard let key = member.rsaPublicKey?.data(using: .utf8), let name = member.vaultName else {
             showCommonError(nil)
             return
@@ -34,8 +34,14 @@ final class SelectDeviceViewModel: Alertable, Signable {
         secret.secretID = note
         secret.secretPart = encryptedPartOfCode
 
-        Distribute().execute() { _ in 
-            
+        Distribute().execute() { [weak self] result in
+            switch result {
+            case .success(_):
+                callback?()
+            case .failure(let error):
+                self?.showCommonError(error.localizedDescription)
+            }
+            self?.hideLoader()
         }
     }
 }

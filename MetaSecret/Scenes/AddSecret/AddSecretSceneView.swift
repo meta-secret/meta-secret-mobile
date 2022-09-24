@@ -64,7 +64,7 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
     }
     
     @IBAction func selectSecondTapped(_ sender: Any) {
-        viewModel?.showDeviceLists(description: noteTextField.text)
+//        viewModel?.showDeviceLists(description: noteTextField.text ?? "")
     }
     
     @IBAction func selectThirdTapped(_ sender: Any) {

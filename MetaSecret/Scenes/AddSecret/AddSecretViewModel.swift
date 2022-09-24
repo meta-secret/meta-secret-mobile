@@ -75,7 +75,10 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
 
     func showDeviceLists(description: String) {
-        guard let part = components.first else { return }
-        routeTo(.selectDevice, presentAs: .present, with: (description, part))
+        guard let component = components.first else { return }
+        let model = SceneSendDataModel(mainStringValue: description, stringValue: component, callBack: { [weak self] in
+            
+        })
+        routeTo(.selectDevice, presentAs: .present, with: model)
     }
 }
