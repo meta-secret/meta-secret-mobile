@@ -13,7 +13,7 @@ struct SceneSendDataModel {
     let mainStringValue: String?
     let stringValue: String?
     
-    init(vault: Vault? = nil, mainStringValue: String, stringValue: String, callBack: (()->())? = nil) {
+    init(vault: Vault? = nil, mainStringValue: String? = nil, stringValue: String? = nil, callBack: (()->())? = nil) {
         self.vault = vault
         self.callBack = callBack
         self.mainStringValue = mainStringValue

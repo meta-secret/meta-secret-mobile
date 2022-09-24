@@ -30,6 +30,9 @@ struct Constants {
         static let passwordLess = NSLocalizedString("passwordLess", comment: "")
         static let passwordLessDescription = NSLocalizedString("passwordLessDescription", comment: "")
         
+        static let backup = NSLocalizedString("backup", comment: "")
+        static let backupDescription = NSLocalizedString("backupDescription", comment: "")
+        
         static let getStartedButtonTitle = NSLocalizedString("getStarted", comment: "")
     }
     

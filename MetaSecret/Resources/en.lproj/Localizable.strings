@@ -15,11 +15,11 @@
 "distributedStorage" = "Distributed Storage";
 "distributedStorageDescription" = "By adding more devices, you create your own personal cloud to manage passwords and secrets that consists of your devices";
 
-"passwordLess" = "Passwordless Login";
-"passwordLessDescription" = "instant access to your application by using Public Key Cryptography instead of passwords. It's impossible to forget your login password because there is no password!";
-
 "backup" = "Easy access and reliable backup";
 "backupDescription" = "Even if you lose one of the devices, you can always get access to your passwords from the rest of the devices in your network.";
+
+"passwordLess" = "Passwordless Login";
+"passwordLessDescription" = "Your secret is acessed with your defined authentication method like: FingerPrint, FaceID or PIN-code";
 
 "getStarted" = "Get started!";
 
