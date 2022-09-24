@@ -43,6 +43,11 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
         showLoader()
         viewModel?.getAllSecrets()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
 
     //MARK: - VM DELEGATION
     func reloadData(source: MainScreenSource?) {

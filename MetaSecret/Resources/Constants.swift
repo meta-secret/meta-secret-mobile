@@ -107,6 +107,7 @@ struct Constants {
         static let selectThird = NSLocalizedString("selectThird", comment: "")
         static let selectSecondButton = NSLocalizedString("selectSecondButton", comment: "")
         static let selectThirdButton = NSLocalizedString("selectThirdButton", comment: "")
+        static let split = NSLocalizedString("split", comment: "")
     }
     
     //MARK: - ALERTS

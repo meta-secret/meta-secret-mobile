@@ -18,6 +18,7 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     
     private var delegate: AddSecretProtocol? = nil
     private var components: [String] = [String]()
+    private var description: String = ""
     
     //MARK: - INIT
     init(delegate: AddSecretProtocol) {
@@ -25,18 +26,17 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     //MARK: - PUBLIC METHODS
-    func saveMySecret(part: String, description: String, callBack: (()-())? = nil) {
-        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey, let myPartOfSecret = components.first else { return }
-        let encryptedPartOfCode = encryptData(Data(myPartOfSecret.utf8), key: key, name: name)
+    func saveMySecret(part: String, description: String, callBack: (()->())? = nil) {
+        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey else { return }
+        let encryptedPartOfCode = encryptData(Data(part.utf8), key: key, name: name)
 
         let secret = Secret()
         secret.secretID = description
         secret.secretPart = encryptedPartOfCode
 
         DBManager.shared.saveSecret(secret)
-        components.removeFirst()
-//        
-//        routeTo(.selectDevice, presentAs: .present, with: (note, components))
+        
+        callBack?()
     }
     
     func getVault(completion: ((Bool)->())?) {
@@ -71,11 +71,11 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
             return
         }
         saveMySecret(part: firstPart, description: description)
+        components.removeFirst()
     }
-}
 
-private extension AddSecretViewModel {
-    func showDeviceLists() {
-        
+    func showDeviceLists(description: String) {
+        guard let part = components.first else { return }
+        routeTo(.selectDevice, presentAs: .present, with: (description, part))
     }
 }

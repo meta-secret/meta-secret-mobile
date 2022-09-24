@@ -40,6 +40,7 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
     //MARK: - ACTIONS
     @IBAction func splitPressed(_ sender: Any) {
         showLoader()
+        hideKeyboard()
         
         viewModel?.getVault(completion: { [weak self] isEnoughMembers in
             if isEnoughMembers {
@@ -51,19 +52,23 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
                 
                 self?.viewModel?.split(secret: self?.passwordTextField.text ?? "", description: self?.noteTextField.text ?? "")
             } else {
-                let model = AlertModel(title: Constants.Errors.warning, message: Constants.Errors.notEnoughtMembers)
-                self?.showCommonAlert(model)
                 self?.viewModel?.saveMySecret(part: self?.passwordTextField.text ?? "", description: self?.noteTextField.text ?? "", callBack: { [weak self] in
-                        break
+                    self?.resetScreen()
+                    self?.hideLoader()
+                    
+                    let model = AlertModel(title: Constants.Errors.warning, message: Constants.Errors.notEnoughtMembers)
+                    self?.showCommonAlert(model)
                 })
             }
         })
     }
     
     @IBAction func selectSecondTapped(_ sender: Any) {
+        viewModel?.showDeviceLists(description: noteTextField.text)
     }
     
     @IBAction func selectThirdTapped(_ sender: Any) {
+        
     }
     
 }
@@ -71,6 +76,9 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
 private extension AddSecretSceneView {
     //MARK: - UI SETUP
     func setupUI() {
+        //TapGR
+        let globalTapGR = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        self.view.addGestureRecognizer(globalTapGR)
         
         // Title
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.avenirMedium(size: Config.titleSize)]
@@ -80,11 +88,7 @@ private extension AddSecretSceneView {
         navigationController?.navigationBar.tintColor = AppColors.mainOrange
         
         // Buttons
-        selectSecondButton.isUserInteractionEnabled = false
-        selectSecondButton.backgroundColor = .systemGray5
-        
-        selectThirdButton.isUserInteractionEnabled = false
-        selectThirdButton.backgroundColor = .systemGray5
+        resetScreen()
         
         // Texts
         addDescriptionTitle.text = Constants.AddSecret.addDescriptionTitle
@@ -97,13 +101,34 @@ private extension AddSecretSceneView {
         selectThirdLabel.text = Constants.AddSecret.selectThird
         selectSecondButton.setTitle(Constants.AddSecret.selectSecondButton, for: .normal)
         selectThirdButton.setTitle(Constants.AddSecret.selectThirdButton, for: .normal)
+        splitButton.setTitle(Constants.AddSecret.split, for: .normal)
         
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         noteTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
+    func resetScreen() {
+        passwordTextField.text = ""
+        noteTextField.text = ""
+        
+        splitButton.isUserInteractionEnabled = false
+        splitButton.backgroundColor = .systemGray5
+        
+        selectSecondButton.isUserInteractionEnabled = false
+        selectSecondButton.backgroundColor = .systemGray5
+        
+        selectThirdButton.isUserInteractionEnabled = false
+        selectThirdButton.backgroundColor = .systemGray5
+    }
+    
+    @objc func hideKeyboard() {
+        passwordTextField.resignFirstResponder()
+        noteTextField.resignFirstResponder()
+    }
+    
     //MARK: - TEXT FIELD DELEGATE
     @objc func textFieldDidChange(_ textField: UITextField) {
+        instructionLabel.isHidden = true
         if let pass = passwordTextField.text, !pass.isEmpty, let note = noteTextField.text, !note.isEmpty {
             splitButton.isUserInteractionEnabled = true
             splitButton.backgroundColor = AppColors.mainOrange
