@@ -75,7 +75,10 @@
 "selectSecondButton" = "Select second device";
 "selectThird" = "Select device to store the third part";
 "selectThirdButton" = "Select third device";
+"selectDevice" = "Select devices to store other parts";
+"selectDeviceButton" = "Select devices";
 "split" = "SPLIT";
+"notSplitedMessage" = "Split process has not been completed. We gonna save your secret locally only. There is a big chance of data loss. Would like to quick?";
 
 //MARK: - ALERTS
 "ok" = "Ок";
@@ -88,3 +91,7 @@
 "enterName" = "Enter your nickname";
 "sww" = "Something wrong";
 "atLeast3" = "Not enough devices connected. It's recommended to have several devices in your network, to reduce the risk of data loss.";
+
+//MARK: - Select device
+"sentShareTitle" = "Share has been sent!";
+"sentShareMessage" = "Secind share has been sent successfully on device %@";

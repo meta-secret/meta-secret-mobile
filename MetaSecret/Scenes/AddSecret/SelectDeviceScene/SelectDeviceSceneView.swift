@@ -9,9 +9,16 @@ import UIKit
 
 class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtocol, Loaderable, Alertable {
     
+    private struct Config {
+        static let cellID = "ClusterDeviceCell"
+        static let cellHeight: CGFloat = 60
+        static let devicesCountToDistribute = 2
+    }
+    
     //MARK: - Outlets
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var distributeButton: UIButton!
     
     //MARK: - PROPERTIES
     private var viewModel: SelectDeviceViewModel? = nil
@@ -20,14 +27,19 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     private var note: String?
     private var callback: (()->())?
     
+    private var selectedCellIndexes: [IndexPath] = [IndexPath]()
+    
     var dataSent: Any? = nil
     
     //MARK: - LIFE CICLE
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupUI()
+        
         self.viewModel = SelectDeviceViewModel(delegate: self)
         guard let model = dataSent as? SceneSendDataModel else { return }
+        
         share = model.stringValue
         note = model.mainStringValue
         callback = model.callBack
@@ -45,16 +57,23 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
         }
         hideLoader()
     }
+    
+    @IBAction func distributeButtonPressed(_ sender: Any) {
+        
+    }
 }
 
 //MARK: - TABLE VIEW DELEGATE DATA SOURCE
 extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ClusterDeviceCell", for: indexPath) as! ClusterDeviceCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Config.cellID, for: indexPath) as! ClusterDeviceCell
         
         let cellSource = CellSetupDate()
         let member = source[indexPath.row]
-        cellSource.setupCellSource(title: member.device?.deviceName ?? "", subtitle: member.device?.deviceId ?? "")
+        
+        let isSelected = selectedCellIndexes.contains(where: {$0 == indexPath})
+        
+        cellSource.setupCellSource(title: member.device?.deviceName ?? "", subtitle: member.device?.deviceId ?? "", boolValue: isSelected )
         
         cell.setupCell(content: cellSource)
 
@@ -68,16 +87,18 @@ extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let member = source[indexPath.row]
-        guard let share = share, let note = note else {
-            showCommonError(nil)
+        if let selectedItemIndex = selectedCellIndexes.firstIndex(where: {$0 == indexPath}) {
+            selectedCellIndexes.remove(at: selectedItemIndex)
+            tableView.reloadData()
             return
         }
-        showLoader()
-        viewModel?.send(share, to: member, with: note, callback: { [weak self] in
-            self?.dismiss(animated: true)
-            self?.callback?()
-        })
+        
+        if selectedCellIndexes.count >= Config.devicesCountToDistribute {
+            selectedCellIndexes.removeFirst()
+        }
+        
+        selectedCellIndexes.append(indexPath)
+        tableView.reloadData()
     }
 }
 
@@ -85,8 +106,19 @@ extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
 private extension SelectDeviceSceneView {
     func setupUI() {
         tableView.separatorStyle = .none
-        tableView.register(UINib(nibName: "ClusterDeviceCell", bundle: nil), forCellReuseIdentifier: "ClusterDeviceCell")
+        tableView.register(UINib(nibName: Config.cellID, bundle: nil), forCellReuseIdentifier: Config.cellID)
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 60
+        tableView.estimatedRowHeight = Config.cellHeight
+        tableView.contentInset.top = .zero
+    }
+    
+    func checkButtonAvailability() {
+        if selectedCellIndexes.count < Config.devicesCountToDistribute {
+            distributeButton.isUserInteractionEnabled = false
+            distributeButton.backgroundColor = .systemGray5
+        } else {
+            distributeButton.isUserInteractionEnabled = true
+            distributeButton.backgroundColor = AppColors.mainOrange
+        }
     }
 }

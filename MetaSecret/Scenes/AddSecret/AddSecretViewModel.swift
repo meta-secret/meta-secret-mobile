@@ -26,19 +26,6 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     //MARK: - PUBLIC METHODS
-    func saveMySecret(part: String, description: String, callBack: (()->())? = nil) {
-        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey else { return }
-        let encryptedPartOfCode = encryptData(Data(part.utf8), key: key, name: name)
-
-        let secret = Secret()
-        secret.secretID = description
-        secret.secretPart = encryptedPartOfCode
-
-        DBManager.shared.saveSecret(secret)
-        
-        callBack?()
-    }
-    
     func getVault(completion: ((Bool)->())?) {
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
             
@@ -60,7 +47,24 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
         })
     }
     
-    func split(secret: String, description: String) {
+    func saveMySecret(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
+        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey else { return }
+        let encryptedPartOfCode = encryptData(Data(part.utf8), key: key, name: name)
+
+        self.description = description
+        
+        let secret = Secret()
+        secret.secretID = description
+        secret.secretPart = encryptedPartOfCode
+        secret.isSavedLocaly = !isSplited
+
+        DBManager.shared.saveSecret(secret)
+        
+        callBack?()
+    }
+    
+    func split(secret: String, description: String, callBack: ((Bool)->())?) {
+        //TODO: REPLACE FROM HERE
         let pass = secret
         let count = pass.count / 3
         
@@ -70,13 +74,18 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
             showCommonError(nil)
             return
         }
-        saveMySecret(part: firstPart, description: description)
-        components.removeFirst()
+        
+        //TODO: REPLACE TO HERE
+        
+        saveMySecret(part: firstPart, description: description, isSplited: true) { [weak self] in
+            self?.components.removeFirst()
+            callBack?(true)
+        }
     }
 
-    func showDeviceLists(description: String) {
-        guard let component = components.first else { return }
-        let model = SceneSendDataModel(mainStringValue: description, stringValue: component, callBack: { [weak self] in
+    func showDeviceLists() {
+//        guard let component = components.first else { return }
+        let model = SceneSendDataModel(mainStringValue: description, stringValue: "component", callBack: { [weak self] in
             
         })
         routeTo(.selectDevice, presentAs: .present, with: model)

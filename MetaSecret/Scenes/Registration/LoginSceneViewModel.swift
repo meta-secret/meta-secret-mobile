@@ -47,23 +47,16 @@ final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
             
             self?.mainUser = user
             
-            Date().logDate(name: "Start register API")
             Register().execute() { [weak self] result in
-                Date().logDate(name: "Get register result")
                 switch result {
                 case .success(let response):
-                    Date().logDate(name: "Entered to success")
                     if response.status == .Registered {
                         self?.deviceStatus = .member
                         self?.mainUser = user
                         self?.isOwner = true //TODO: Need it on Server
-                        Date().logDate(name: "Pre routing")
                         self?.routeTo(.main, presentAs: .root)
-                        Date().logDate(name: "Post routing")
                     } else {
                         self?.deviceStatus = .pending
-                        Date().logDate(name: "GOT PENDING STATUS")
-                        Date().logDate(name: "Alert")
                         self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
                             guard let `self` = self else { return }
                             
@@ -76,7 +69,6 @@ final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
                             self?.deviceStatus = .unknown
                         }))
                     }
-                    Date().logDate(name: "Finish")
                     self?.delegate?.processFinished()
                 case .failure(let error):
                     self?.delegate?.processFinished()

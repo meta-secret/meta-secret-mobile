@@ -22,6 +22,12 @@ class ClusterDeviceCell: UITableViewCell {
         
         chevroneImage.isHidden = !content.boolValue
         statusLabel.textColor = AppColors.mainOrange
+        
+        if content.boolValue {
+            self.backgroundColor = AppColors.mainYellow.withAlphaComponent(0.2)
+        } else {
+            self.backgroundColor = .clear
+        }
     }
     
 }

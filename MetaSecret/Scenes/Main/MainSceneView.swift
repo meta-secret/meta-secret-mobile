@@ -46,7 +46,15 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        
+        switch selectedSegment {
+        case .Secrets:
+            viewModel?.getAllSecrets()
+        case .Devices:
+            viewModel?.getVault()
+        case .None:
+            break
+        }
     }
 
     //MARK: - VM DELEGATION
@@ -68,7 +76,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
             tableView.reloadData()
             
             let flatArr = source?.items.flatMap { $0 }
-            let filteredArr = flatArr?.filter({$0.subtitle == VaultInfoStatus.member.rawValue})
+            let filteredArr = flatArr?.filter({$0.subtitle?.lowercased() == VaultInfoStatus.member.rawValue})
             
             guard filteredArr?.count ?? 0 < 3 else { return }
             
@@ -134,6 +142,7 @@ private extension MainSceneView {
     }
     
     func setupNavBar() {
+        navigationController?.isNavigationBarHidden = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.MainScreen.add, style: .plain, target: self, action: #selector(addTapped))
         navigationItem.rightBarButtonItem?.tintColor = AppColors.mainOrange
     }
@@ -196,7 +205,7 @@ private extension MainSceneView {
 //MARK: - TABLE VIEW DELEGATE DATA SOURCE
 extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ClusterDeviceCell", for: indexPath) as! ClusterDeviceCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Config.cellID, for: indexPath) as! ClusterDeviceCell
         guard let content = source?.items[indexPath.section][indexPath.row] else {
             return UITableViewCell()
         }
