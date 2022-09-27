@@ -95,3 +95,4 @@
 //MARK: - Select device
 "sentShareTitle" = "Share has been sent!";
 "sentShareMessage" = "Secind share has been sent successfully on device %@";
+"chooseDevices" = "Please, select device to distribute other parts of your secret";

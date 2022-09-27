@@ -43,7 +43,6 @@ final class SelectDeviceViewModel: Alertable, Signable {
                 case .failure(let error):
                     self?.showCommonError(error.localizedDescription)
                 }
-                self?.hideLoader()
             }
         })
     }
@@ -54,16 +53,15 @@ private extension SelectDeviceViewModel {
         GetVault().execute() { [weak self] result in
             switch result {
             case .success(let vaults):
-                guard let members = vaults.vault?.signatures else { return }
+                guard var members = vaults.vault?.signatures else { return }
+                if let ownIndex = members.firstIndex(where: {$0.device?.deviceId == self?.mainUser?.deviceID}) {
+                    members.remove(at: ownIndex)
+                }
                 self?.delegate?.reloadData(source: members)
             case .failure(let error):
                 self?.showCommonError(error.localizedDescription)
             }
             
         }
-    }
-    
-    func shareSentAlert(deviceName: String) {
-//        let model = AlertModel(title: <#T##String#>, message: <#T##String#>)
     }
 }

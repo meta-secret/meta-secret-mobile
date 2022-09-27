@@ -231,7 +231,7 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
         let flattenArray = (viewModel?.vault?.declinedJoins ?? []) + (viewModel?.vault?.pendingJoins ?? []) + (viewModel?.vault?.signatures ?? [])
         let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
         
-        let model = SceneSendDataModel(vault: selectedVault) { [weak self] in
+        let model = SceneSendDataModel(vault: selectedVault) { [weak self] isSuccess in
             self?.vUsers.removeFirst()
             self?.viewModel?.getVault()
         }

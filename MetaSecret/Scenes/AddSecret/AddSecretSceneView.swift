@@ -77,6 +77,10 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
         viewModel?.showDeviceLists()
     }
     
+    //MARK: - AddSecretProtocol
+    func close() {
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
 private extension AddSecretSceneView {
@@ -122,8 +126,8 @@ private extension AddSecretSceneView {
         splitButton.isUserInteractionEnabled = false
         splitButton.backgroundColor = .systemGray5
 
-//        selectThirdButton.isUserInteractionEnabled = false
-//        selectThirdButton.backgroundColor = .systemGray5
+        selectThirdButton.isUserInteractionEnabled = false
+        selectThirdButton.backgroundColor = .systemGray5
     }
     
     @objc func hideKeyboard() {

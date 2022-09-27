@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class CellSetupDate {
     var title: String? = nil
@@ -14,13 +15,15 @@ class CellSetupDate {
     var status: VaultInfoStatus? = nil
     var boolValue: Bool = false
     var id: String? = nil
+    var imageName: UIImage? = nil
     
-    func setupCellSource(title: String? = nil, subtitle: String? = nil, intValue: Int? = nil, status: VaultInfoStatus? = nil, boolValue: Bool = false, id: String? = nil) {
+    func setupCellSource(title: String? = nil, subtitle: String? = nil, intValue: Int? = nil, status: VaultInfoStatus? = nil, boolValue: Bool = false, id: String? = nil, imageName: UIImage? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.intValue = intValue
         self.status = status
         self.boolValue = boolValue
         self.id = id
+        self.imageName = imageName
     }
 }

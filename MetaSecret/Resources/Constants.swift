@@ -119,6 +119,7 @@ struct Constants {
     struct SelectDevice {
         static let sentShareTitle = NSLocalizedString("sentShareTitle", comment: "")
         static let sentShareMessage = NSLocalizedString("sentShareMessage", comment: "")
+        static let chooseDevices = NSLocalizedString("chooseDevices", comment: "")
     }
     
     //MARK: - ALERTS

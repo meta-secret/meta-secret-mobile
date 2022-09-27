@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
-protocol AddSecretProtocol {}
+protocol AddSecretProtocol {
+    func close()
+}
 
 final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     //MARK: - PROPERTIES
@@ -19,6 +21,7 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     private var delegate: AddSecretProtocol? = nil
     private var components: [String] = [String]()
     private var description: String = ""
+    private lazy var secret = Secret()
     
     //MARK: - INIT
     init(delegate: AddSecretProtocol) {
@@ -53,7 +56,6 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
 
         self.description = description
         
-        let secret = Secret()
         secret.secretID = description
         secret.secretPart = encryptedPartOfCode
         secret.isSavedLocaly = !isSplited
@@ -84,9 +86,18 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
 
     func showDeviceLists() {
-//        guard let component = components.first else { return }
-        let model = SceneSendDataModel(mainStringValue: description, stringValue: "component", callBack: { [weak self] in
+        guard let component = components.first else { return }
+        let model = SceneSendDataModel(mainStringValue: description, stringValue: component, callBack: { [weak self] isSuccess in
             
+            let secret = Secret()
+            secret.secretID = self?.secret.secretID ?? ""
+            secret.secretPart = self?.secret.secretPart
+            secret.isFullySplited = true
+            secret.isSavedLocaly = false
+
+            DBManager.shared.saveSecret(secret)
+
+            self?.delegate?.close()
         })
         routeTo(.selectDevice, presentAs: .present, with: model)
     }

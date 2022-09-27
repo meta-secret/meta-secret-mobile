@@ -19,13 +19,14 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var distributeButton: UIButton!
+    @IBOutlet weak var instructionLabel: UILabel!
     
     //MARK: - PROPERTIES
     private var viewModel: SelectDeviceViewModel? = nil
     private var source = [Vault]()
     private var share: String?
     private var note: String?
-    private var callback: (()->())?
+    private var callback: ((Bool?)->())?
     
     private var selectedCellIndexes: [IndexPath] = [IndexPath]()
     
@@ -43,6 +44,8 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
         share = model.stringValue
         note = model.mainStringValue
         callback = model.callBack
+        
+        checkButtonAvailability()
     }
     
     //MARK: - DATA RELOAD
@@ -55,11 +58,12 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
             tableView.isHidden = true
             tableView.reloadData()
         }
-        hideLoader()
     }
     
     @IBAction func distributeButtonPressed(_ sender: Any) {
-        
+        //TODO: - viewmodel.send
+        dismiss(animated: true)
+        callback?(true)
     }
 }
 
@@ -73,7 +77,7 @@ extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
         
         let isSelected = selectedCellIndexes.contains(where: {$0 == indexPath})
         
-        cellSource.setupCellSource(title: member.device?.deviceName ?? "", subtitle: member.device?.deviceId ?? "", boolValue: isSelected )
+        cellSource.setupCellSource(title: member.device?.deviceName ?? "", subtitle: member.device?.deviceId ?? "", boolValue: isSelected, imageName: AppImages.doneCheckmark )
         
         cell.setupCell(content: cellSource)
 
@@ -90,6 +94,7 @@ extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
         if let selectedItemIndex = selectedCellIndexes.firstIndex(where: {$0 == indexPath}) {
             selectedCellIndexes.remove(at: selectedItemIndex)
             tableView.reloadData()
+            checkButtonAvailability()
             return
         }
         
@@ -99,6 +104,8 @@ extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
         
         selectedCellIndexes.append(indexPath)
         tableView.reloadData()
+        
+        checkButtonAvailability()
     }
 }
 
@@ -110,6 +117,10 @@ private extension SelectDeviceSceneView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Config.cellHeight
         tableView.contentInset.top = .zero
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        instructionLabel.text = Constants.SelectDevice.chooseDevices
     }
     
     func checkButtonAvailability() {
