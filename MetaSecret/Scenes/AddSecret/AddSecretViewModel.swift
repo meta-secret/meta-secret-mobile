@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
-protocol AddSecretProtocol {}
+protocol AddSecretProtocol {
+    func close()
+}
 
 final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     //MARK: - PROPERTIES
@@ -17,6 +19,9 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     private var delegate: AddSecretProtocol? = nil
+    private var components: [String] = [String]()
+    private var description: String = ""
+    private lazy var secret = Secret()
     
     //MARK: - INIT
     init(delegate: AddSecretProtocol) {
@@ -24,53 +29,76 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     //MARK: - PUBLIC METHODS
-    func saveMySecret() {
-        
-    }
-    
     func getVault(completion: ((Bool)->())?) {
-        GetVault().execute() { [weak self] result in
-            switch result {
-            case .success(let result):
-                let membersCount = result.vault?.signatures?.count ?? 0
-                if membersCount < Config.minMembersCount {
-                    completion?(false)
-                } else {
-                    completion?(true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
+            
+            GetVault().execute() { [weak self] result in
+                switch result {
+                case .success(let result):
+                    let membersCount = result.vault?.signatures?.count ?? 0
+                    if membersCount < Config.minMembersCount {
+                        completion?(false)
+                    } else {
+                        completion?(true)
+                    }
+                case .failure(let error):
+                    self?.hideLoader()
+                    self?.showCommonError(error.localizedDescription)
                 }
-            case .failure(let error):
-                self?.hideLoader()
-                self?.showCommonError(error.localizedDescription)
             }
-        }
+            
+        })
     }
     
-    func split(secret: String, note: String) {
+    func saveMySecret(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
+        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey else { return }
+        let encryptedPartOfCode = encryptData(Data(part.utf8), key: key, name: name)
+
+        self.description = description
+        
+        secret.secretID = description
+        secret.secretPart = encryptedPartOfCode
+        secret.isSavedLocaly = !isSplited
+
+        DBManager.shared.saveSecret(secret)
+        
+        callBack?()
+    }
+    
+    func split(secret: String, description: String, callBack: ((Bool)->())?) {
+        //TODO: REPLACE FROM HERE
         let pass = secret
         let count = pass.count / 3
         
-        var components = pass.components(withMaxLength: count)
+        components = pass.components(withMaxLength: count)
         
-        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey, let myPartOfSecret = components.first else { return }
-        let encryptedPartOfCode = encryptData(Data(myPartOfSecret.utf8), key: key, name: name)
+        guard let firstPart = components.first else {
+            showCommonError(nil)
+            return
+        }
         
-        let secret = Secret()
-        secret.secretID = note
-        secret.secretPart = encryptedPartOfCode
+        //TODO: REPLACE TO HERE
         
-        DBManager.shared.saveSecret(secret)
-        components.removeFirst()
-        
-        routeTo(.selectDevice, presentAs: .present, with: (note, components))
+        saveMySecret(part: firstPart, description: description, isSplited: true) { [weak self] in
+            self?.components.removeFirst()
+            callBack?(true)
+        }
     }
-    
-    func createVirtualDevices() {
-        
-    }
-}
 
-private extension AddSecretViewModel {
     func showDeviceLists() {
-        
+        guard let component = components.first else { return }
+        let model = SceneSendDataModel(mainStringValue: description, stringValue: component, callBack: { [weak self] isSuccess in
+            
+            let secret = Secret()
+            secret.secretID = self?.secret.secretID ?? ""
+            secret.secretPart = self?.secret.secretPart
+            secret.isFullySplited = true
+            secret.isSavedLocaly = false
+
+            DBManager.shared.saveSecret(secret)
+
+            self?.delegate?.close()
+        })
+        routeTo(.selectDevice, presentAs: .present, with: model)
     }
 }

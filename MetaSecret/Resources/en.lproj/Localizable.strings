@@ -15,11 +15,11 @@
 "distributedStorage" = "Distributed Storage";
 "distributedStorageDescription" = "By adding more devices, you create your own personal cloud to manage passwords and secrets that consists of your devices";
 
-"passwordLess" = "Passwordless Login";
-"passwordLessDescription" = "instant access to your application by using Public Key Cryptography instead of passwords. It's impossible to forget your login password because there is no password!";
-
 "backup" = "Easy access and reliable backup";
 "backupDescription" = "Even if you lose one of the devices, you can always get access to your passwords from the rest of the devices in your network.";
+
+"passwordLess" = "Passwordless Login";
+"passwordLessDescription" = "Your secret is acessed with your defined authentication method like: FingerPrint, FaceID or PIN-code";
 
 "getStarted" = "Get started!";
 
@@ -66,6 +66,19 @@
 
 //MARK: - AddSecret
 "addSecret" = "Add secret/password";
+"addDescription" = "Add description for secret";
+"description" = "Description";
+"addPassword" = "Add password";
+"password" = "Password";
+"splitInstruction" = "We splited your secret on three parts. Encrypted each one and already stored the first part on this device.";
+"selectSecond" = "Select device to store the second part";
+"selectSecondButton" = "Select second device";
+"selectThird" = "Select device to store the third part";
+"selectThirdButton" = "Select third device";
+"selectDevice" = "Select devices to store other parts";
+"selectDeviceButton" = "Select devices";
+"split" = "SPLIT";
+"notSplitedMessage" = "Split process has not been completed. We gonna save your secret locally only. There is a big chance of data loss. Would like to quick?";
 
 //MARK: - ALERTS
 "ok" = "Ок";
@@ -78,3 +91,8 @@
 "enterName" = "Enter your nickname";
 "sww" = "Something wrong";
 "atLeast3" = "Not enough devices connected. It's recommended to have several devices in your network, to reduce the risk of data loss.";
+
+//MARK: - Select device
+"sentShareTitle" = "Share has been sent!";
+"sentShareMessage" = "Secind share has been sent successfully on device %@";
+"chooseDevices" = "Please, select device to distribute other parts of your secret";

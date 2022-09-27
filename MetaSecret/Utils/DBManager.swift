@@ -15,11 +15,22 @@ class DBManager: Alertable {
         do {
             let realm = try Realm()
             try realm.write {
-                realm.add(secret)
+                realm.add(secret, update: .all)
             }
         } catch {
             showCommonError(error.localizedDescription.description)
         }
+    }
+    
+    func readSecretBy(description: String) -> Secret? {
+        do {
+            let realm = try Realm()
+            let specificSecret = realm.object(ofType: Secret.self, forPrimaryKey: description)
+            return specificSecret
+        } catch {
+            showCommonError(error.localizedDescription.description)
+        }
+        return nil
     }
     
     func getAllSecrets() -> [Secret] {

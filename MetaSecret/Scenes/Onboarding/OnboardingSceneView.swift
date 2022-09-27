@@ -14,6 +14,7 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         case welcome
         case cloud
         case distributed
+        case passwordLess
         case backup
         
         var title: String {
@@ -24,8 +25,10 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
                 return Constants.Onboarding.personalCloud
             case .distributed:
                 return Constants.Onboarding.distributedStorage
-            case .backup:
+            case .passwordLess:
                 return Constants.Onboarding.passwordLess
+            case .backup:
+                return Constants.Onboarding.backup
             }
         }
         
@@ -37,8 +40,10 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
                 return Constants.Onboarding.personalCloudDescription
             case .distributed:
                 return Constants.Onboarding.distributedStorageDescription
-            case .backup:
+            case .passwordLess:
                 return Constants.Onboarding.passwordLessDescription
+            case .backup:
+                return Constants.Onboarding.backupDescription
             }
         }
     }
@@ -55,9 +60,11 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     @IBOutlet weak var logoImage: UIImageView!
     @IBOutlet weak var cloudImage: UIImageView!
     @IBOutlet weak var missingImage: UIImageView!
+    @IBOutlet weak var passwordLessImage: UIImageView!
+    
     
     // MARK: - Properties
-    private let cells: [CellType] = [.cloud, .distributed, .backup]
+    private let cells: [CellType] = [.cloud, .distributed, .backup, .passwordLess]
     
     private struct Config {
         static let subtitleFont: CGFloat = 20
@@ -111,6 +118,8 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
             setupSecondAnimatedStep()
         case 2:
             setupThirdAnimatedStep()
+        case 3:
+            setupFourthAnimatedStep()
         default:
             break
         }
@@ -231,6 +240,18 @@ private extension OnboardingSceneView {
             UIView.animate(withDuration: 0.3, animations: {
                 self.missingImage.alpha = 1
             })
+        }
+    }
+    
+    func setupFourthAnimatedStep() {
+        UIView.animate(withDuration: 0.3) {
+            self.mobileImage.alpha = 0
+            self.mobileMainImage.alpha = 0
+            self.computerImage.alpha = 0
+            self.logoImage.alpha = 0
+            self.cloudImage.alpha = 0
+            self.missingImage.alpha = 0
+            self.passwordLessImage.alpha = 1
         }
     }
 }

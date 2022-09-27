@@ -12,7 +12,7 @@ class Distribute: HTTPRequest, UD {
     var params: [String : Any]?
     var path: String = "distribute"
     
-    init() {
+    init(encryptedShare: String) {
         guard let user = mainUser else { return }
         
         self.params = [
@@ -20,7 +20,8 @@ class Distribute: HTTPRequest, UD {
             "deviceName": user.deviceName,
             "publicKey": user.publicKey.base64EncodedString(),
             "rsaPublicKey": user.publicRSAKey.base64EncodedString(),
-            "signature": user.signature?.base64EncodedString() ?? ""
+            "signature": user.signature?.base64EncodedString() ?? "",
+            "encryptedText": encryptedShare
         ]
     }
 }

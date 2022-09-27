@@ -27,7 +27,7 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
     }
     
     private var viewModel: DeviceInfoSceneViewModel? = nil
-    private var callBack: (()->())?
+    private var callBack: ((Bool?)->())?
     var dataSent: Any? = nil
     
     //MARK: - LIFE CICLE
@@ -52,7 +52,7 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
     
     //MARK: - DELEGATION
     func successFullConnection() {
-        callBack?()
+        callBack?(nil)
         self.navigationController?.popViewController(animated: true)
     }
 }

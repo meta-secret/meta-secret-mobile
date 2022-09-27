@@ -19,24 +19,32 @@ final class SelectDeviceViewModel: Alertable, Signable {
     //MARK: - INIT
     init(delegate: SelectDeviceProtocol) {
         self.delegate = delegate
+        fetchAllDevices()
     }
     
     //MARK: - PUBLIC METHODS
-    func send(_ share: String, to member: Vault, with note: String) {
-        guard let key = member.rsaPublicKey?.data(using: .utf8), let name = member.vaultName else {
-            showCommonError(nil)
-            return
-        }
-        
-        let encryptedPartOfCode = encryptData(Data(share.utf8), key: key, name: name)
-        
-        let secret = Secret()
-        secret.secretID = note
-        secret.secretPart = encryptedPartOfCode
-
-        Distribute().execute() { _ in 
+    func send(_ share: String, to member: Vault, with note: String, callback: (()->())?) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
+            guard let key = member.rsaPublicKey?.data(using: .utf8), let name = member.vaultName else {
+                self?.showCommonError(nil)
+                return
+            }
             
-        }
+            let encryptedPartOfCode = self?.encryptData(Data(share.utf8), key: key, name: name)
+            
+            let secret = Secret()
+            secret.secretID = note
+            secret.secretPart = encryptedPartOfCode
+
+            Distribute(encryptedShare: encryptedPartOfCode?.base64EncodedString() ?? "").execute() { [weak self] result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(let error):
+                    self?.showCommonError(error.localizedDescription)
+                }
+            }
+        })
     }
 }
 
@@ -45,7 +53,10 @@ private extension SelectDeviceViewModel {
         GetVault().execute() { [weak self] result in
             switch result {
             case .success(let vaults):
-                guard let members = vaults.vault?.signatures else { return }
+                guard var members = vaults.vault?.signatures else { return }
+                if let ownIndex = members.firstIndex(where: {$0.device?.deviceId == self?.mainUser?.deviceID}) {
+                    members.remove(at: ownIndex)
+                }
                 self?.delegate?.reloadData(source: members)
             case .failure(let error):
                 self?.showCommonError(error.localizedDescription)

@@ -30,6 +30,9 @@ struct Constants {
         static let passwordLess = NSLocalizedString("passwordLess", comment: "")
         static let passwordLessDescription = NSLocalizedString("passwordLessDescription", comment: "")
         
+        static let backup = NSLocalizedString("backup", comment: "")
+        static let backupDescription = NSLocalizedString("backupDescription", comment: "")
+        
         static let getStartedButtonTitle = NSLocalizedString("getStarted", comment: "")
     }
     
@@ -97,6 +100,26 @@ struct Constants {
     
     struct AddSecret {
         static let title = NSLocalizedString("addSecret", comment: "")
+        static let addDescriptionTitle = NSLocalizedString("addDescription", comment: "")
+        static let description = NSLocalizedString("description", comment: "")
+        static let addPassword = NSLocalizedString("addPassword", comment: "")
+        static let password = NSLocalizedString("password", comment: "")
+        static let decriptionPlaceHolder = NSLocalizedString("password", comment: "")
+        static let splitInstruction = NSLocalizedString("splitInstruction", comment: "")
+        static let selectSecond = NSLocalizedString("selectSecond", comment: "")
+        static let selectThird = NSLocalizedString("selectThird", comment: "")
+        static let selectSecondButton = NSLocalizedString("selectSecondButton", comment: "")
+        static let selectThirdButton = NSLocalizedString("selectThirdButton", comment: "")
+        static let split = NSLocalizedString("split", comment: "")
+        static let selectDevice = NSLocalizedString("selectDevice", comment: "")
+        static let selectDeviceButton = NSLocalizedString("selectDeviceButton", comment: "")
+        static let notSplitedMessage = NSLocalizedString("notSplitedMessage", comment: "")
+    }
+    
+    struct SelectDevice {
+        static let sentShareTitle = NSLocalizedString("sentShareTitle", comment: "")
+        static let sentShareMessage = NSLocalizedString("sentShareMessage", comment: "")
+        static let chooseDevices = NSLocalizedString("chooseDevices", comment: "")
     }
     
     //MARK: - ALERTS
