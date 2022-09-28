@@ -46,9 +46,6 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
         
         viewModel?.getVault(completion: { [weak self] isEnoughMembers in
             if isEnoughMembers {
-                self?.selectThirdButton.isUserInteractionEnabled = true
-                self?.selectThirdButton.backgroundColor = AppColors.mainOrange
-                
                 self?.viewModel?.split(secret: self?.passwordTextField.text ?? "", description: self?.noteTextField.text ?? "", callBack: { [weak self] isSuccess in
                     if isSuccess {
                         self?.hideLoader()
@@ -57,6 +54,8 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
                         
                         self?.splitButton.isUserInteractionEnabled = false
                         self?.splitButton.backgroundColor = .systemGray5
+                        self?.selectThirdButton.isUserInteractionEnabled = true
+                        self?.selectThirdButton.backgroundColor = AppColors.mainOrange
                     }
                 })
             } else {
@@ -142,7 +141,9 @@ private extension AddSecretSceneView {
             let warningModel = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.notSplitedMessage, okHandler: { [weak self] in
                 self?.viewModel?.saveMySecret(part: self?.passwordTextField.text ?? "", description: self?.noteTextField.text ?? "", isSplited: false, callBack: { [weak self] in
                     
-                    self?.navigationController?.popViewController(animated: true)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.animationTime) { [weak self] in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 })
             })
             showCommonAlert(warningModel)

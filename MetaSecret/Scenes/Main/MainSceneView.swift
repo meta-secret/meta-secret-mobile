@@ -209,6 +209,11 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
         guard let content = source?.items[indexPath.section][indexPath.row] else {
             return UITableViewCell()
         }
+        
+        if selectedSegment == .Secrets {
+            content.imageName = AppImages.warningSymbol
+        }
+        
         cell.setupCell(content: content)
 
         return cell
@@ -228,13 +233,15 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
             return
         }
         
-        let flattenArray = (viewModel?.vault?.declinedJoins ?? []) + (viewModel?.vault?.pendingJoins ?? []) + (viewModel?.vault?.signatures ?? [])
-        let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
-        
-        let model = SceneSendDataModel(vault: selectedVault) { [weak self] isSuccess in
-            self?.vUsers.removeFirst()
-            self?.viewModel?.getVault()
+        if selectedSegment == .Devices {
+            let flattenArray = (viewModel?.vault?.declinedJoins ?? []) + (viewModel?.vault?.pendingJoins ?? []) + (viewModel?.vault?.signatures ?? [])
+            let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
+            
+            let model = SceneSendDataModel(vault: selectedVault) { [weak self] isSuccess in
+                self?.vUsers.removeFirst()
+                self?.viewModel?.getVault()
+            }
+            routeTo(.deviceInfo, presentAs: .push, with: model)
         }
-        routeTo(.deviceInfo, presentAs: .push, with: model)
     }
 }

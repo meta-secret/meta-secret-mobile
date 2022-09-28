@@ -114,6 +114,7 @@ struct Constants {
         static let selectDevice = NSLocalizedString("selectDevice", comment: "")
         static let selectDeviceButton = NSLocalizedString("selectDeviceButton", comment: "")
         static let notSplitedMessage = NSLocalizedString("notSplitedMessage", comment: "")
+        static let alreadySavedMessage = NSLocalizedString("alreadySavedMessage", comment: "")
     }
     
     struct SelectDevice {

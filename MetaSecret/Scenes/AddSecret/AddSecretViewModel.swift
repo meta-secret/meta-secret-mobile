@@ -21,7 +21,6 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     private var delegate: AddSecretProtocol? = nil
     private var components: [String] = [String]()
     private var description: String = ""
-    private lazy var secret = Secret()
     
     //MARK: - INIT
     init(delegate: AddSecretProtocol) {
@@ -51,18 +50,26 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     func saveMySecret(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
-        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey else { return }
-        let encryptedPartOfCode = encryptData(Data(part.utf8), key: key, name: name)
-
-        self.description = description
         
-        secret.secretID = description
-        secret.secretPart = encryptedPartOfCode
-        secret.isSavedLocaly = !isSplited
-
-        DBManager.shared.saveSecret(secret)
-        
-        callBack?()
+        if let _ = DBManager.shared.readSecretBy(description: description) {
+            let model = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.alreadySavedMessage, okHandler:  { [weak self] in
+                
+                guard let name = self?.mainUser?.userName, let key = self?.mainUser?.publicRSAKey else { return }
+                let encryptedPartOfCode = self?.encryptData(Data(part.utf8), key: key, name: name)
+                
+                self?.description = description
+                
+                let secret = Secret()
+                secret.secretID = description
+                secret.secretPart = encryptedPartOfCode
+                secret.isSavedLocaly = !isSplited
+                
+                DBManager.shared.saveSecret(secret)
+                
+                callBack?()
+            })
+            showCommonAlert(model)
+        }
     }
     
     func split(secret: String, description: String, callBack: ((Bool)->())?) {
@@ -88,16 +95,22 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     func showDeviceLists() {
         guard let component = components.first else { return }
         let model = SceneSendDataModel(mainStringValue: description, stringValue: component, callBack: { [weak self] isSuccess in
+            guard let `self` = self else { return }
+            if isSuccess ?? false {
+                let savedSecret = DBManager.shared.readSecretBy(description: self.description)
+                
+                let secret = Secret()
+                secret.secretID = self.description
+                secret.secretPart = savedSecret?.secretPart
+                secret.isSavedLocaly = false
+                secret.isFullySplited = true
+
+                DBManager.shared.saveSecret(secret)
+                self.delegate?.close()
+            } else {
+                self.showCommonError(nil)
+            }
             
-            let secret = Secret()
-            secret.secretID = self?.secret.secretID ?? ""
-            secret.secretPart = self?.secret.secretPart
-            secret.isFullySplited = true
-            secret.isSavedLocaly = false
-
-            DBManager.shared.saveSecret(secret)
-
-            self?.delegate?.close()
         })
         routeTo(.selectDevice, presentAs: .present, with: model)
     }
