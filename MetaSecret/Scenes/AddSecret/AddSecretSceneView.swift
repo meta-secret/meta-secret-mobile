@@ -142,7 +142,9 @@ private extension AddSecretSceneView {
             let warningModel = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.notSplitedMessage, okHandler: { [weak self] in
                 self?.viewModel?.saveMySecret(part: self?.passwordTextField.text ?? "", description: self?.noteTextField.text ?? "", isSplited: false, callBack: { [weak self] in
                     
-                    self?.navigationController?.popViewController(animated: true)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.animationTime) { [weak self] in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 })
             })
             showCommonAlert(warningModel)
