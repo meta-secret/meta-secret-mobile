@@ -46,9 +46,6 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
         
         viewModel?.getVault(completion: { [weak self] isEnoughMembers in
             if isEnoughMembers {
-                self?.selectThirdButton.isUserInteractionEnabled = true
-                self?.selectThirdButton.backgroundColor = AppColors.mainOrange
-                
                 self?.viewModel?.split(secret: self?.passwordTextField.text ?? "", description: self?.noteTextField.text ?? "", callBack: { [weak self] isSuccess in
                     if isSuccess {
                         self?.hideLoader()
@@ -57,6 +54,8 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable {
                         
                         self?.splitButton.isUserInteractionEnabled = false
                         self?.splitButton.backgroundColor = .systemGray5
+                        self?.selectThirdButton.isUserInteractionEnabled = true
+                        self?.selectThirdButton.backgroundColor = AppColors.mainOrange
                     }
                 })
             } else {
