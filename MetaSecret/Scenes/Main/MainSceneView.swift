@@ -229,11 +229,11 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let content = source?.items[indexPath.section][indexPath.row], content.boolValue else {
+        guard let content = source?.items[indexPath.section][indexPath.row] else {
             return
         }
         
-        if selectedSegment == .Devices {
+        if selectedSegment == .Devices, content.boolValue {
             let flattenArray = (viewModel?.vault?.declinedJoins ?? []) + (viewModel?.vault?.pendingJoins ?? []) + (viewModel?.vault?.signatures ?? [])
             let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
             
@@ -242,6 +242,9 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
                 self?.viewModel?.getVault()
             }
             routeTo(.deviceInfo, presentAs: .push, with: model)
+        } else if selectedSegment == .Secrets {
+            let model = SceneSendDataModel(mainStringValue: content.title, modeType: .readOnly)
+            routeTo(.split, presentAs: .push, with: model)
         }
     }
 }

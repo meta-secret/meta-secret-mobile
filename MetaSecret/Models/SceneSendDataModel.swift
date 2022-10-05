@@ -12,11 +12,13 @@ struct SceneSendDataModel {
     let callBack: ((Bool?)->())?
     let mainStringValue: String?
     let stringValue: String?
+    let modeType: ModeType?
     
-    init(vault: Vault? = nil, mainStringValue: String? = nil, stringValue: String? = nil, callBack: ((Bool?)->())? = nil) {
+    init(vault: Vault? = nil, mainStringValue: String? = nil, stringValue: String? = nil, modeType: ModeType? = nil, callBack: ((Bool?)->())? = nil) {
         self.vault = vault
         self.callBack = callBack
         self.mainStringValue = mainStringValue
         self.stringValue = stringValue
+        self.modeType = modeType
     }
 }

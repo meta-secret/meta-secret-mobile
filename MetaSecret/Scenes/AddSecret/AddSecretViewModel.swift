@@ -91,6 +91,10 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
             callBack?(true)
         }
     }
+    
+    func restoreSecret(completion: ((String)->())?) {
+        completion?("")
+    }
 
     func showDeviceLists() {
         guard let component = components.first else { return }

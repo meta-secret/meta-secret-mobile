@@ -100,6 +100,7 @@ struct Constants {
     
     struct AddSecret {
         static let title = NSLocalizedString("addSecret", comment: "")
+        static let titleEdit = NSLocalizedString("editSecret", comment: "")
         static let addDescriptionTitle = NSLocalizedString("addDescription", comment: "")
         static let description = NSLocalizedString("description", comment: "")
         static let addPassword = NSLocalizedString("addPassword", comment: "")
@@ -115,6 +116,8 @@ struct Constants {
         static let selectDeviceButton = NSLocalizedString("selectDeviceButton", comment: "")
         static let notSplitedMessage = NSLocalizedString("notSplitedMessage", comment: "")
         static let alreadySavedMessage = NSLocalizedString("alreadySavedMessage", comment: "")
+        static let edit = NSLocalizedString("edit", comment: "")
+        static let restore = NSLocalizedString("restore", comment: "")
     }
     
     struct SelectDevice {

@@ -58,7 +58,7 @@ extension Routerable {
         case .main:
             return MainSceneView(nibName: "MainSceneView", bundle: nil)
         case .split:
-            return AddSecretSceneView(nibName: "AddSecretSceneView", bundle: nil)
+            return AddSecretSceneView()
         case .deviceInfo:
             return DeviceInfoSceneView(nibName: "DeviceInfoSceneView", bundle: nil)
         case  .selectDevice:

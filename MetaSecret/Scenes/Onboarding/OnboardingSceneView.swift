@@ -68,6 +68,8 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     
     private struct Config {
         static let subtitleFont: CGFloat = 20
+        static let mainScaleCoef: CGFloat = 0.65
+        static let commonOffset: CGFloat = 16
     }
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -201,31 +203,31 @@ private extension OnboardingSceneView {
         computerImage.isHidden = false
         
         let originMainMobileTransform = mobileMainImage.transform
-        let scaledMainMobileTransform = originMainMobileTransform.scaledBy(x: 0.65, y: 0.65)
-        let finalMainMobileY = animationOnboardingContainer.frame.height - mobileMainImage.frame.height - mobileMainImage.frame.height/2
-        let mainMobileDeltaY = mobileMainImage.frame.origin.y + finalMainMobileY
+        let scaledMainMobileTransform = originMainMobileTransform.scaledBy(x: Config.mainScaleCoef, y: Config.mainScaleCoef)
+        let finalMainMobileY = cloudImage.frame.origin.y + cloudImage.frame.height
+        let mainMobileDeltaY = finalMainMobileY - mobileMainImage.frame.origin.y + 25
         let scaledAndTranslatedMainMobileTransform = scaledMainMobileTransform.translatedBy(x: 0.0, y: mainMobileDeltaY)
         
         let originMobileTransform = mobileImage.transform
-        let finalMobileY = animationOnboardingContainer.frame.height - mobileImage.frame.height - 16
+        let finalMobileY = animationOnboardingContainer.frame.height - mobileImage.frame.height - Config.commonOffset
         let mobileDeltaY = mobileImage.frame.origin.y - finalMobileY
-        let finalMobileX = animationOnboardingContainer.frame.width - mobileImage.frame.width - 16
+        let finalMobileX = animationOnboardingContainer.frame.width - mobileImage.frame.width - Config.commonOffset
         let mobileDeltaX = mobileImage.frame.origin.x - finalMobileX
         let translatedMobileTransform = originMobileTransform.translatedBy(x: mobileDeltaX, y: mobileDeltaY)
         
         let originComputerTransform = computerImage.transform
-        let finalComputerY = animationOnboardingContainer.frame.height - computerImage.frame.height - 16
+        let finalComputerY = animationOnboardingContainer.frame.height - computerImage.frame.height - Config.commonOffset
         let computerDeltaY = computerImage.frame.origin.y - finalComputerY
-        let finalComputerX = animationOnboardingContainer.frame.width - mobileImage.frame.width - 16
+        let finalComputerX = animationOnboardingContainer.frame.width - mobileImage.frame.width - Config.commonOffset
         let computerDeltaX = finalComputerX - mobileImage.frame.origin.x
         let translatedComputerTransform = originComputerTransform.translatedBy(x: computerDeltaX, y: computerDeltaY)
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.Common.animationTime) {
             self.mobileMainImage.transform = scaledAndTranslatedMainMobileTransform
             self.mobileImage.transform = translatedMobileTransform
             self.computerImage.transform = translatedComputerTransform
         } completion: { _ in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: Constants.Common.animationTime, animations: {
                 self.cloudImage.alpha = 1
             })
         }
@@ -234,17 +236,17 @@ private extension OnboardingSceneView {
     func setupThirdAnimatedStep() {
         missingImage.frame.origin = mobileImage.frame.origin
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.Common.animationTime) {
             self.mobileImage.alpha = 0
         } completion: { _ in
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: Constants.Common.animationTime, animations: {
                 self.missingImage.alpha = 1
             })
         }
     }
     
     func setupFourthAnimatedStep() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.Common.animationTime) {
             self.mobileImage.alpha = 0
             self.mobileMainImage.alpha = 0
             self.computerImage.alpha = 0

@@ -80,6 +80,9 @@
 "split" = "SPLIT";
 "notSplitedMessage" = "Split process has not been completed. We gonna save your secret locally only. There is a big chance of data loss. Would like to quit?";
 "alreadySavedMessage" = "You already has a secret with the same description. Do you wanna replace it?";
+"edit" = "Edit";
+"restore" = "RESTORE";
+"editSecret" = "Edit Secret";
 
 //MARK: - ALERTS
 "ok" = "Ок";
