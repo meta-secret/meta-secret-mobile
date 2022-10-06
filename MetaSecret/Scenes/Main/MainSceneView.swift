@@ -32,6 +32,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
         static let cellID = "ClusterDeviceCell"
         static let cellHeight: CGFloat = 60
         static let titleSize: CGFloat = 18
+        static let minDevicesCount = 3
     }
 
     //MARK: - LIFECYCLE
@@ -78,7 +79,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
             let flatArr = source?.items.flatMap { $0 }
             let filteredArr = flatArr?.filter({$0.subtitle?.lowercased() == VaultInfoStatus.member.rawValue})
             
-            guard filteredArr?.count ?? 0 < 3 else { return }
+            guard filteredArr?.count ?? 0 < Config.minDevicesCount else { return }
             
             remainigLabel.text = Constants.MainScreen.addDevices(memberCounts: filteredArr?.count ?? 0)
             
@@ -130,7 +131,6 @@ private extension MainSceneView {
         remainingNotification.addGestureRecognizer(labelTapGR)
         
         setTitle()
-        setupNavBar()
         yourDevicesTitleLabel.text = Constants.MainScreen.yourSecrets
         nickNameTitleLabel.text = Constants.MainScreen.yourNick
         nickNameLabel.text = mainUser?.userName ?? ""
@@ -141,31 +141,16 @@ private extension MainSceneView {
         self.title = selectedSegment.rawValue == 0 ? Constants.MainScreen.secrets : Constants.MainScreen.devices
     }
     
-    func setupNavBar() {
-        navigationController?.isNavigationBarHidden = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.MainScreen.add, style: .plain, target: self, action: #selector(addTapped))
-        navigationItem.rightBarButtonItem?.tintColor = AppColors.mainOrange
-    }
-    
     //MARK: - TAB SELECTING
     func selectTab(index: Int) {
         selector.selectedSegmentIndex = index
         reloadData(source: nil)
         
-        if index == 0 {
-            setupNavBar()
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-        
         selectedSegment = MainScreenSourceType(rawValue: index) ?? .None
         
         let flatArr = source?.items.flatMap { $0 }
         let filteredArr = flatArr?.filter({$0.subtitle == VaultInfoStatus.member.rawValue})
-        
-        if filteredArr?.count ?? 0 < 3 {
-            addDeviceView.isHidden = selectedSegment == .Secrets
-        }
+        addDeviceView.isHidden = (selectedSegment == .Devices && (filteredArr?.count ?? 0 > Config.minDevicesCount))
         
         yourDevicesTitleLabel.text = selectedSegment == .Secrets ? Constants.MainScreen.yourSecrets : Constants.MainScreen.yourDevices
         
@@ -174,27 +159,26 @@ private extension MainSceneView {
     }
     
     //MARK: - ROUTING
-    @objc func addTapped() {
-        routeTo(.split, presentAs: .push)
-    }
-    
     @objc func remainigLabelTapped() {
         showFirstTimePopupHint()
     }
     
     @objc func addDeviceTapped() {
-        let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.userName ?? ""), isClosable: true)
-        routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
-        
+        if selectedSegment == .Devices {
+            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.userName ?? ""), isClosable: true)
+            routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
+        } else {
+            let model = SceneSendDataModel(modeType: .edit)
+            routeTo(.split, presentAs: .push, with: model)
+        }
     }
     
     //MARK: - HINTS
     func showFirstTimePopupHint() {
         let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.userName ?? ""), buttonHandler: { [weak self] in
-            Date().logDate(name: "Close popup")
+
             self?.shouldShowVirtualHint = false
             if self?.vUsers.isEmpty ?? true {
-                Date().logDate(name: "Start generateVirtualVaults")
                 self?.viewModel?.generateVirtualVaults()
             }
         })

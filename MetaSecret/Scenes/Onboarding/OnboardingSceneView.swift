@@ -70,6 +70,7 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         static let subtitleFont: CGFloat = 20
         static let mainScaleCoef: CGFloat = 0.65
         static let commonOffset: CGFloat = 16
+        static let mainOffset: CGFloat = 25
     }
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -205,7 +206,7 @@ private extension OnboardingSceneView {
         let originMainMobileTransform = mobileMainImage.transform
         let scaledMainMobileTransform = originMainMobileTransform.scaledBy(x: Config.mainScaleCoef, y: Config.mainScaleCoef)
         let finalMainMobileY = cloudImage.frame.origin.y + cloudImage.frame.height
-        let mainMobileDeltaY = finalMainMobileY - mobileMainImage.frame.origin.y + 25
+        let mainMobileDeltaY = finalMainMobileY - mobileMainImage.frame.origin.y + Config.mainOffset
         let scaledAndTranslatedMainMobileTransform = scaledMainMobileTransform.translatedBy(x: 0.0, y: mainMobileDeltaY)
         
         let originMobileTransform = mobileImage.transform
