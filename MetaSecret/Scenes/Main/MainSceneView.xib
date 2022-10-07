@@ -163,7 +163,7 @@
                         <constraint firstItem="8td-kl-x7J" firstAttribute="leading" secondItem="2dk-2P-Edx" secondAttribute="leading" id="vV8-Ev-Y6I"/>
                     </constraints>
                 </stackView>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OEd-xV-TVH">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OEd-xV-TVH">
                     <rect key="frame" x="296" y="744" width="86" height="86"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bis-w4-Ixk">

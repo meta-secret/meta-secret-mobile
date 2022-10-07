@@ -18,5 +18,5 @@ struct AppImages {
     static let doneCheckmark = UIImage(systemName: "checkmark.seal") ?? UIImage()
     static let chevroneRight = UIImage(systemName: "chevron.forward") ?? UIImage()
     static let warningSymbol = UIImage(systemName: "exclamationmark.triangle") ?? UIImage()
-    
+    static let chevroneLeft = UIImage(systemName: "chevron.left") ?? UIImage()
 }

@@ -8,6 +8,8 @@
 import XCTest
 @testable import MetaSecret
 
+class UDTest: UD {}
+
 class MetaSecretTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -16,6 +18,12 @@ class MetaSecretTests: XCTestCase {
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+    
+    func udResetAllTest() {
+        let ud = UDTest()
+        ud.resetAll()
+        XCTAssertNil(ud.mainUser)
     }
 
     func testExample() throws {

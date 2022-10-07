@@ -50,26 +50,38 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     func saveMySecret(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
-        
         if let _ = DBManager.shared.readSecretBy(description: description) {
             let model = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.alreadySavedMessage, okHandler:  { [weak self] in
                 
-                guard let name = self?.mainUser?.userName, let key = self?.mainUser?.publicRSAKey else { return }
-                let encryptedPartOfCode = self?.encryptData(Data(part.utf8), key: key, name: name)
-                
-                self?.description = description
-                
-                let secret = Secret()
-                secret.secretID = description
-                secret.secretPart = encryptedPartOfCode
-                secret.isSavedLocaly = !isSplited
-                
-                DBManager.shared.saveSecret(secret)
-                
-                callBack?()
+                self?.saveToDB(part: part, description: description, isSplited: isSplited, callBack: callBack)
             })
             showCommonAlert(model)
+        } else {
+            saveToDB(part: part, description: description, isSplited: isSplited, callBack: callBack)
         }
+    }
+    
+    func readMySecret(description: String) -> String? {
+        guard let name = mainUser?.userName, let key = mainUser?.privateRSAKey else { return nil }
+        guard let secret = DBManager.shared.readSecretBy(description: description) else { return nil }
+        guard let encryptedSecret = secret.secretPart else { return nil }
+        return decryptData(encryptedSecret, key: key, name: name)
+    }
+    
+    private func saveToDB(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
+        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey else { return }
+        let encryptedPartOfCode = encryptData(Data(part.utf8), key: key, name: name)
+        
+        self.description = description
+        
+        let secret = Secret()
+        secret.secretID = description
+        secret.secretPart = encryptedPartOfCode
+        secret.isSavedLocaly = !isSplited
+        
+        DBManager.shared.saveSecret(secret)
+        
+        callBack?()
     }
     
     func split(secret: String, description: String, callBack: ((Bool)->())?) {
@@ -90,6 +102,10 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
             self?.components.removeFirst()
             callBack?(true)
         }
+    }
+    
+    func restoreSecret(completion: ((String)->())?) {
+        completion?("")
     }
 
     func showDeviceLists() {

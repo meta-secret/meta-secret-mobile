@@ -15,7 +15,7 @@ protocol Signable: Alertable, UD {
     func signData(_ data: Data, for user: User)
     func check(_ signature: Data) -> Bool
     func encryptData(_ data: Data, key: Data, name: String) -> Data?
-    func checkEncryptedData()
+    func decryptData(_ encryptedData: Data, key: Data, name: String) -> String?
 }
 
 extension Signable {
@@ -67,16 +67,8 @@ extension Signable {
     
     //MARK: - RSA
     private func getRSAKeyPairs(for userName: String) throws -> (privateRSAKey: SecKey, publicRSAkey: SecKey)? {
-        let attributes: [String: Any] = [
-            kSecAttrKeyType as String           : kSecAttrKeyTypeRSA,
-            kSecAttrKeySizeInBits as String     : 2048,
-            kSecPrivateKeyAttrs as String : [
-                kSecAttrIsPermanent as String       : true,
-                kSecAttrApplicationTag as String    : userName.data(using: .utf8)!
-            ]
-        ]
         
-        guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, nil) else {
+        guard let privateKey = SecKeyCreateRandomKey(attributes(tag: userName), nil) else {
             showCommonError(nil)
             return nil
         }
@@ -90,23 +82,13 @@ extension Signable {
     }
     
     func encryptData(_ data: Data, key: Data, name: String) -> Data? {
-        let attributes: [String: Any] = [
-            kSecAttrKeyType as String           : kSecAttrKeyTypeRSA,
-            kSecAttrKeySizeInBits as String     : 2048,
-            kSecPrivateKeyAttrs as String : [
-                kSecAttrIsPermanent as String       : true,
-                kSecAttrApplicationTag as String    : name.data(using: .utf8) ?? Data()
-            ]
-        ]
-        
         var error: Unmanaged<CFError>? = nil
-        guard let privateKeyRSA = SecKeyCreateWithData(key as CFData, attributes as CFDictionary, &error) else {
-            print(error)
+        guard let secKey = SecKeyCreateWithData(key as CFData, attributes(tag: name), &error) else {
             showCommonError(error.debugDescription)
             return nil
         }
        
-        guard let encryptedData = SecKeyCreateEncryptedData(privateKeyRSA, .ecdhKeyExchangeCofactorX963SHA1, data as CFData, nil) else {
+        guard let encryptedData = SecKeyCreateEncryptedData(secKey, algorithm(), data as CFData, nil) else {
             showCommonError(nil)
             return nil
         }
@@ -114,7 +96,39 @@ extension Signable {
         return encryptedData as Data
     }
     
-    func checkEncryptedData() {
+    func decryptData(_ encryptedData: Data, key: Data, name: String) -> String? {
+        var error: Unmanaged<CFError>? = nil
         
+        guard let secKey = SecKeyCreateWithData(key as CFData, attributes(tag: name, isPrivate: true), &error) else {
+            showCommonError(error.debugDescription)
+            return nil
+        }
+        
+        guard let decryptedData = SecKeyCreateDecryptedData(secKey, algorithm(), encryptedData as CFData, &error) as Data? else {
+            showCommonError(error.debugDescription)
+            return nil
+        }
+        
+        return (String(data: decryptedData, encoding: .utf8))
+    }
+    
+    private func algorithm() -> SecKeyAlgorithm {
+        return SecKeyAlgorithm.rsaEncryptionOAEPSHA384AESGCM
+    }
+    
+    private func attributes(tag: String, isPrivate: Bool = false) -> CFDictionary {
+        let keyClass = isPrivate ? kSecAttrKeyClassPrivate : kSecAttrKeyClassPublic
+        
+        let attributes: [String: Any] = [
+            kSecAttrKeyType as String           : kSecAttrKeyTypeRSA,
+            kSecAttrKeyClass as String          : keyClass,
+            kSecAttrKeySizeInBits as String     : 2048,
+            kSecPrivateKeyAttrs as String : [
+                kSecAttrIsPermanent as String       : true,
+                kSecAttrApplicationTag as String    : tag.data(using: .utf8) ?? Data()
+            ]
+        ]
+        
+        return attributes as CFDictionary
     }
 }
