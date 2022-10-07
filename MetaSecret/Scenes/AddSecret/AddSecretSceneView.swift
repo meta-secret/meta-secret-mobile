@@ -66,8 +66,8 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
                         self?.passwordTextField.text = restoredSecret
                     })
                 } else {
-                    let secret = DBManager.shared.readSecretBy(description: self?.descriptionText ?? "")
-                    self?.passwordTextField.text = secret?.secretPart?.base64EncodedString()
+                    let secret = self?.viewModel?.readMySecret(description: self?.descriptionTextField.text ?? "")
+                    self?.passwordTextField.text = secret
                 }
                 self?.splitButton.isUserInteractionEnabled = false
                 self?.splitButton.backgroundColor = .systemGray5
@@ -76,30 +76,13 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
         } else if modeType == .edit {
             viewModel?.getVault(completion: { [weak self] isEnoughMembers in
                 if isEnoughMembers {
-                    self?.viewModel?.split(secret: self?.passwordTextField.text ?? "", description: self?.descriptionTextField.text ?? "", callBack: { [weak self] isSuccess in
-                        if isSuccess {
-                            self?.hideLoader()
-                            
-                            self?.isLocalySaved = false
-                            
-                            self?.modeType = .distribute
-                            self?.switchMode()
-                        }
-                    })
+                    self?.split()
                 } else {
-                    self?.viewModel?.saveMySecret(part: self?.passwordTextField.text ?? "", description: self?.descriptionTextField.text ?? "", isSplited: false, callBack: { [weak self] in
-                        
-                        self?.isLocalySaved = true
-                        self?.resetScreen()
-                        self?.hideLoader()
-                        
-                        let model = AlertModel(title: Constants.Errors.warning, message: Constants.Errors.notEnoughtMembers)
-                        self?.showCommonAlert(model)
-                    })
+                    self?.saveMySecret()
                 }
             })
         }
-        }
+    }
     
     @IBAction func selectThirdTapped(_ sender: Any) {
         viewModel?.showDeviceLists()
@@ -130,7 +113,6 @@ private extension AddSecretSceneView {
         instructionLabel.text = Constants.AddSecret.splitInstruction
         selectThirdLabel.text = Constants.AddSecret.selectDevice
         selectThirdButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
-        splitButton.setTitle(Constants.AddSecret.split, for: .normal)
         
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         descriptionTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -172,6 +154,31 @@ private extension AddSecretSceneView {
         }
     }
     
+    func split() {
+        viewModel?.split(secret: passwordTextField.text ?? "", description: descriptionTextField.text ?? "", callBack: { [weak self] isSuccess in
+            if isSuccess {
+                self?.hideLoader()
+                
+                self?.isLocalySaved = false
+                
+                self?.modeType = .distribute
+                self?.switchMode()
+            }
+        })
+    }
+    
+    func saveMySecret() {
+        viewModel?.saveMySecret(part: passwordTextField.text ?? "", description: descriptionTextField.text ?? "", isSplited: false, callBack: { [weak self] in
+            
+            self?.isLocalySaved = true
+            self?.resetScreen()
+            self?.hideLoader()
+            
+            let model = AlertModel(title: Constants.Errors.warning, message: Constants.Errors.notEnoughtMembers)
+            self?.showCommonAlert(model)
+        })
+    }
+    
     func resetScreen() {
         passwordTextField.text = ""
         descriptionTextField.text = ""
@@ -189,7 +196,7 @@ private extension AddSecretSceneView {
             passwordTextField.text = nil
             passwordTextField.placeholder = Constants.AddSecret.password
             
-            splitButton.setTitle("{EQ", for: .normal)
+            splitButton.setTitle(Constants.AddSecret.restore, for: .normal)
             splitButton.isUserInteractionEnabled = true
             splitButton.backgroundColor = AppColors.mainOrange
             

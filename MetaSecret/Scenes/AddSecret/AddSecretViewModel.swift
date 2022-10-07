@@ -53,12 +53,19 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
         if let _ = DBManager.shared.readSecretBy(description: description) {
             let model = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.alreadySavedMessage, okHandler:  { [weak self] in
                 
-                self?.saveToDB(part: part, description: description, isSplited: isSplited)
+                self?.saveToDB(part: part, description: description, isSplited: isSplited, callBack: callBack)
             })
             showCommonAlert(model)
         } else {
-            saveToDB(part: part, description: description, isSplited: isSplited)
+            saveToDB(part: part, description: description, isSplited: isSplited, callBack: callBack)
         }
+    }
+    
+    func readMySecret(description: String) -> String? {
+        guard let name = mainUser?.userName, let key = mainUser?.privateRSAKey else { return nil }
+        guard let secret = DBManager.shared.readSecretBy(description: description) else { return nil }
+        guard let encryptedSecret = secret.secretPart else { return nil }
+        return decryptData(encryptedSecret, key: key, name: name)
     }
     
     private func saveToDB(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
