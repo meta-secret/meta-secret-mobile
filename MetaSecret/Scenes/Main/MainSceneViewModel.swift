@@ -22,6 +22,7 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     //MARK: - INIT
     init(delegate: MainSceneProtocol) {
         self.delegate = delegate
+        createTimer()
     }
     
     //MARK: - PUBLIC METHODS
@@ -88,14 +89,6 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
 }
 
 private extension MainSceneViewModel {
-    func accept() {
-        stopTimer()
-    }
-    
-    func cancel() {
-        stopTimer()
-    }
-    
     //MARK: - TIMER
     func createTimer() {
         timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
@@ -108,5 +101,13 @@ private extension MainSceneViewModel {
     
     @objc func fireTimer() {
         getVault()
+    }
+    
+    func checkShares() {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            
+            //TODO: Check selected tab. Save to DB. Reload screen. Than replace with push notification
+        }
     }
 }

@@ -108,25 +108,9 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
         completion?("")
     }
 
-    func showDeviceLists() {
-        guard let component = components.first else { return }
-        let model = SceneSendDataModel(mainStringValue: description, stringValue: component, callBack: { [weak self] isSuccess in
-            guard let `self` = self else { return }
-            if isSuccess ?? false {
-                let savedSecret = DBManager.shared.readSecretBy(description: self.description)
-                
-                let secret = Secret()
-                secret.secretID = self.description
-                secret.secretPart = savedSecret?.secretPart
-                secret.isSavedLocaly = false
-                secret.isFullySplited = true
-
-                DBManager.shared.saveSecret(secret)
-                self.delegate?.close()
-            } else {
-                self.showCommonError(nil)
-            }
-            
+    func showDeviceLists(callBack: ((Bool)->())?) {
+        let model = SceneSendDataModel(mainStringValue: description, stringArray: components, callBack: { [weak self] isSuccess in
+            callBack?(isSuccess ?? false)
         })
         routeTo(.selectDevice, presentAs: .present, with: model)
     }
