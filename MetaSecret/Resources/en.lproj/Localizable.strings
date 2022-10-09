@@ -83,6 +83,8 @@
 "edit" = "Edit";
 "restore" = "RESTORE";
 "editSecret" = "Edit Secret";
+"success" = "Success";
+"successSplited" = "Secret has been splited, encoded and distributed successfully!";
 
 //MARK: - ALERTS
 "ok" = "Ок";

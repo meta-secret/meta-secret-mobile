@@ -24,9 +24,9 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     //MARK: - PROPERTIES
     private var viewModel: SelectDeviceViewModel? = nil
     private var source = [Vault]()
-    private var share: String?
-    private var note: String?
-    private var callback: ((Bool?)->())?
+    private var shares: [String]? = nil
+    private var note: String? = nil
+    private var callback: ((Bool?)->())? = nil
     
     private var selectedCellIndexes: [IndexPath] = [IndexPath]()
     
@@ -41,7 +41,7 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
         self.viewModel = SelectDeviceViewModel(delegate: self)
         guard let model = dataSent as? SceneSendDataModel else { return }
         
-        share = model.stringValue
+        shares = model.stringArray
         note = model.mainStringValue
         callback = model.callBack
         

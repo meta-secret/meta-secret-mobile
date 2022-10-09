@@ -85,7 +85,13 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
     }
     
     @IBAction func selectThirdTapped(_ sender: Any) {
-        viewModel?.showDeviceLists()
+        viewModel?.showDeviceLists(callBack: { [weak self] isSuccess in
+            if isSuccess {
+                self?.showCommonAlert(AlertModel(title: Constants.AddSecret.success, message: Constants.AddSecret.successSplited))
+            } else {
+                self?.saveMySecret()
+            }
+        })
     }
     
     //MARK: - AddSecretProtocol

@@ -118,6 +118,8 @@ struct Constants {
         static let alreadySavedMessage = NSLocalizedString("alreadySavedMessage", comment: "")
         static let edit = NSLocalizedString("edit", comment: "")
         static let restore = NSLocalizedString("restore", comment: "")
+        static let success = NSLocalizedString("success", comment: "")
+        static let successSplited = NSLocalizedString("successSplited", comment: "")
     }
     
     struct SelectDevice {

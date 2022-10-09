@@ -13,12 +13,14 @@ struct SceneSendDataModel {
     let mainStringValue: String?
     let stringValue: String?
     let modeType: ModeType?
+    let stringArray: [String]?
     
-    init(vault: Vault? = nil, mainStringValue: String? = nil, stringValue: String? = nil, modeType: ModeType? = nil, callBack: ((Bool?)->())? = nil) {
+    init(vault: Vault? = nil, mainStringValue: String? = nil, stringValue: String? = nil, modeType: ModeType? = nil, stringArray: [String]? = nil, callBack: ((Bool?)->())? = nil) {
         self.vault = vault
         self.callBack = callBack
         self.mainStringValue = mainStringValue
         self.stringValue = stringValue
         self.modeType = modeType
+        self.stringArray = stringArray
     }
 }
