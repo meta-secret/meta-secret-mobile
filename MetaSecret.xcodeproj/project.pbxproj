@@ -25,6 +25,7 @@
 		E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */; };
 		E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */; };
 		E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A428B6E94800A1E5DB /* MainScreenSource.swift */; };
+		E558ED8C28F5F60A0018F045 /* libmeta_secret_core_swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E558ED8B28F5F5EB0018F045 /* libmeta_secret_core_swift.a */; };
 		E55A226F28B0357900F5F02B /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A226E28B0357900F5F02B /* Register.swift */; };
 		E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227028B0399A00F5F02B /* HTTPRequest.swift */; };
 		E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */; };
@@ -104,6 +105,8 @@
 /* Begin PBXFileReference section */
 		661A42FDDF38EBE81840D342 /* Pods-MetaSecret.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetaSecret.debug.xcconfig"; path = "Target Support Files/Pods-MetaSecret/Pods-MetaSecret.debug.xcconfig"; sourceTree = "<group>"; };
 		99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetaSecret.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E50347A228F4B91D00B4C67B /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		E50347A528F4B9A600B4C67B /* MetaSecret-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetaSecret-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5061CE628CD116700E2787B /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		E5061CE928CD197400E2787B /* BottomInfoSheetViewScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInfoSheetViewScene.swift; sourceTree = "<group>"; };
 		E5061CEA28CD197400E2787B /* BottomInfoSheetViewScene.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomInfoSheetViewScene.xib; sourceTree = "<group>"; };
@@ -122,6 +125,8 @@
 		E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
 		E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreeSourcable.swift; sourceTree = "<group>"; };
 		E54867A428B6E94800A1E5DB /* MainScreenSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenSource.swift; sourceTree = "<group>"; };
+		E558ED8A28F5F5B10018F045 /* meta-secret-core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "meta-secret-core.h"; path = "rustLib/meta-secret-core.h"; sourceTree = "<group>"; };
+		E558ED8B28F5F5EB0018F045 /* libmeta_secret_core_swift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmeta_secret_core_swift.a; path = rustLib/libmeta_secret_core_swift.a; sourceTree = "<group>"; };
 		E55A226E28B0357900F5F02B /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		E55A227028B0399A00F5F02B /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
 		E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HTTPDispatcher.swift; path = MetaSecret/HTTPDispatcher.swift; sourceTree = SOURCE_ROOT; };
@@ -194,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED99C34A213D9E6F01E7CCC8 /* Pods_MetaSecret.framework in Frameworks */,
+				E558ED8C28F5F60A0018F045 /* libmeta_secret_core_swift.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +227,15 @@
 				F718EE19A5066D4F057922FB /* Pods-MetaSecret.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E503479F28F4B8CA00B4C67B /* RustLib */ = {
+			isa = PBXGroup;
+			children = (
+				E558ED8A28F5F5B10018F045 /* meta-secret-core.h */,
+				E50347A528F4B9A600B4C67B /* MetaSecret-Bridging-Header.h */,
+			);
+			name = RustLib;
 			sourceTree = "<group>";
 		};
 		E5061CE828CD193200E2787B /* Common */ = {
@@ -424,6 +439,7 @@
 		E5800060288CB49900E1135C /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				E503479F28F4B8CA00B4C67B /* RustLib */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -470,6 +486,8 @@
 		E5DFC1A2288CB8E100031F0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E558ED8B28F5F5EB0018F045 /* libmeta_secret_core_swift.a */,
+				E50347A228F4B91D00B4C67B /* libresolv.tbd */,
 				99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */,
 			);
 			name = Frameworks;
@@ -960,6 +978,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 11;
+				DEVELOPMENT_ASSET_PATHS = ../../../../../Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.4.sdk/usr/lib/libresolv.tbd;
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MetaSecret/Info.plist;
@@ -974,11 +993,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/rustLib",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.metasecret.vault;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/MetaSecret-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -993,6 +1017,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 11;
+				DEVELOPMENT_ASSET_PATHS = ../../../../../Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.4.sdk/usr/lib/libresolv.tbd;
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MetaSecret/Info.plist;
@@ -1007,11 +1032,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/rustLib",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.metasecret.vault;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/MetaSecret-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
