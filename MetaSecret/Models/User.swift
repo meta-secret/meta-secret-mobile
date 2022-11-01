@@ -6,32 +6,56 @@
 //
 
 import Foundation
+import UIKit
 
-final class User: Codable {
-    let userName: String
+final class UserSignature: Codable {
+    var vaultName: String
+    var signature: String
+    var keyManager: SerializedKeyManager? = nil
+    var deviceName: String
+    var deviceId: String
     
-    let publicKey: Data
-    let privateKey: Data
-    
-    let publicRSAKey: Data
-    let privateRSAKey: Data
-    
-    let deviceName: String
-    let deviceID: String
-    
-    private(set) var signature: Data? = nil
-    
-    init(userName: String, deviceName: String, deviceID: String, publicKey: Data, privateKey: Data, publicRSAKey: Data, privateRSAKey: Data) {
-        self.userName = userName
-        self.deviceName = deviceName
-        self.deviceID = deviceID
-        self.publicKey = publicKey
-        self.privateKey = privateKey
-        self.publicRSAKey = publicRSAKey
-        self.privateRSAKey = privateRSAKey
-    }
-    
-    func addSignature(_ signature: Data) {
+    init(vaultName: String = "", signature: String = "", keyManager: SerializedKeyManager? = nil) {
+        self.vaultName = vaultName
         self.signature = signature
+        self.keyManager = keyManager
+        self.deviceName = UIDevice.current.name
+        self.deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
     }
+    
+    func publicKey() -> String {
+        return keyManager?.dsa.publicKey.base64Text ?? ""
+    }
+    
+    func transportPublicKey() -> String {
+        return keyManager?.transport.publicKey.base64Text ?? ""
+    }
+    
+    func name() -> String {
+        return vaultName
+    }
+    
+    func userSignature() -> String {
+        return signature
+    }
+}
+
+struct SerializedKeyManager: Codable {
+    var dsa: SerializedDsaKeyPair
+    var transport: SerializedTransportKeyPair
+}
+
+struct SerializedDsaKeyPair: Codable {
+    var keyPair: KeyFormat
+    var publicKey: KeyFormat
+}
+
+struct SerializedTransportKeyPair: Codable {
+    var secretKey: KeyFormat
+    var publicKey: KeyFormat
+}
+
+
+struct KeyFormat: Codable {
+    var base64Text: String
 }

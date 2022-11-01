@@ -62,15 +62,15 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     func readMySecret(description: String) -> String? {
-        guard let name = mainUser?.userName, let key = mainUser?.privateRSAKey else { return nil }
+        guard let name = mainUser?.vaultName, let key = mainUser?.keyManager?.transport.secretKey else { return nil }
         guard let secret = DBManager.shared.readSecretBy(description: description) else { return nil }
         guard let encryptedSecret = secret.secretPart else { return nil }
-        return decryptData(encryptedSecret, key: key, name: name)
+        return ""// decryptData(encryptedSecret, key: key, name: name)
     }
     
     private func saveToDB(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
-        guard let name = mainUser?.userName, let key = mainUser?.publicRSAKey else { return }
-        let encryptedPartOfCode = encryptData(Data(part.utf8), key: key, name: name)
+        guard let name = mainUser?.name(), let key = mainUser?.publicKey() else { return }
+        let encryptedPartOfCode = Data() //encryptData(Data(part.utf8), key: key, name: name)
         
         self.description = description
         

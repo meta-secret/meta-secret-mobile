@@ -15,14 +15,14 @@ class Decline: HTTPRequest, UD {
     init(candidate: Vault) {
         guard let member = mainUser else { return }
         
-        self.params = ["member": ["vaultName": member.userName,
-                                  "publicKey": member.publicKey.base64EncodedString(),
-                                  "rsaPublicKey": member.publicRSAKey.base64EncodedString(),
-                                  "signature": member.signature?.base64EncodedString() ?? ""],
+        self.params = ["member": ["vaultName": member.name(),
+                                  "publicKey": member.publicKey(),
+                                  "rsaPublicKey": member.transportPublicKey(),
+                                  "signature": member.userSignature()],
                        "candidate": ["vaultName": candidate.vaultName,
                                      "publicKey": candidate.publicKey,
                                      "rsaPublicKey": candidate.rsaPublicKey,
-                                     "signature": candidate.signature]]
+                                     "signature": candidate.signature ?? ""]]
     }
 }
 

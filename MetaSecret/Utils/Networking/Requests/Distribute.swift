@@ -16,11 +16,11 @@ class Distribute: HTTPRequest, UD {
         guard let user = mainUser else { return }
         
         self.params = [
-            "vaultName": user.userName,
+            "vaultName": user.name(),
             "deviceName": user.deviceName,
-            "publicKey": user.publicKey.base64EncodedString(),
-            "rsaPublicKey": user.publicRSAKey.base64EncodedString(),
-            "signature": user.signature?.base64EncodedString() ?? "",
+            "publicKey": user.publicKey(),
+            "rsaPublicKey": user.transportPublicKey(),
+            "signature": user.userSignature(),
             "encryptedText": encryptedShare
         ]
     }

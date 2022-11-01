@@ -8,61 +8,58 @@
 import Foundation
 
 //MARK: - Key Manager
-class KeysPairsWrapper {
-    private let raw: OpaquePointer
-
-    init() {
-        raw = new_keys_pair()
-    }
-
-    deinit {
-        keys_pair_destroy(raw)
-    }
-
-    var transportPubKey: String? {
-        let byteSlice = get_transport_pub(raw)
-        return byteSlice.asString()
-    }
-
-    var transportSecKey: String? {
-        let byteSlice = get_transport_sec(raw)
-        return byteSlice.asString()
-    }
-    
-    var dsaPubKey: String? {
-        let byteSlice = get_dsa_pub(raw)
-        return byteSlice.asString()
-    }
-
-    var dsaKeyPair: String? {
-        let byteSlice = get_dsa_key_pair(raw)
-        return byteSlice.asString()
-    }
-}
+//class KeysPairsWrapper {
+//    private let raw: OpaquePointer
+//
+//    init() {
+//        raw = new_keys_pair()
+//    }
+//
+//    deinit {
+//        keys_pair_destroy(raw)
+//    }
+//
+//    var transportPubKey: String? {
+//        let byteSlice = get_transport_pub(raw)
+//        return byteSlice.asString()
+//    }
+//
+//    var transportSecKey: String? {
+//        let byteSlice = get_transport_sec(raw)
+//        return byteSlice.asString()
+//    }
+//
+//    var dsaPubKey: String? {
+//        let byteSlice = get_dsa_pub(raw)
+//        return byteSlice.asString()
+//    }
+//
+//    var dsaKeyPair: String? {
+//        let byteSlice = get_dsa_key_pair(raw)
+//        return byteSlice.asString()
+//    }
+//}
 
 //MARK: - Send to Rust Lib
 
 class RustTransporterManager {
+    func generate(for name: String) -> UserSignature? {
+        let userSignature = UserSignature()
+        userSignature.vaultName = name
+        let json = JsonManger.jsonDataGeneration(from: userSignature)
+        
+        let signedUserJson = generate_signed_user(json, json.count).asString() ?? ""
+        do {
+            let signature: UserSignature = try JsonManger.object(from: signedUserJson)
+            return signature
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
     func encodeString() -> String {
-        let sender = KeysPairsWrapper()
-        let receiverOne = KeysPairsWrapper()
-        let receiverTwo = KeysPairsWrapper()
-        
-        var jsonDict = [String: Any]()
-        jsonDict["senderDsaKeyPair"] = sender.dsaKeyPair
-        jsonDict["senderDsaPubKey"] = sender.dsaPubKey
-        jsonDict["senderTransportSecKey"] = sender.transportSecKey
-        jsonDict["senderTransportPubKey"] = sender.transportPubKey
-        jsonDict["receiversPubKeys"] = [sender.transportPubKey, receiverOne.transportPubKey, receiverTwo.transportPubKey]
-        jsonDict["secret"] = "LA LA LA"
-        
-        let jsonData = try? JSONSerialization.data(withJSONObject: jsonDict, options: [])
-        let jsonString = String(data: jsonData ?? Data(), encoding: String.Encoding.ascii)
-        
-        let jsonStringData = [UInt8](Data((jsonString ?? "").utf8))
-        let resultJson = (split_and_encode(jsonStringData, jsonStringData.count)).asString() ?? ""
-        
-        return resultJson
+        return "resultJson"
     }
 }
 

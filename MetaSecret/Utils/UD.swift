@@ -10,11 +10,11 @@ import Foundation
 protocol UD: AnyObject {
     func resetAll()
     
-    var mainUser: User? { get set }
+    var mainUser: UserSignature? { get set }
     var deviceStatus: VaultInfoStatus { get set }
     var shouldShowVirtualHint: Bool {get set}
     var isFirstAppLaunch: Bool {get set}
-    var vUsers: [User] {get set}
+    var vUsers: [UserSignature] {get set}
     var isOwner: Bool {get set}
     var shouldShowOnboarding: Bool {get set}
 }
@@ -27,18 +27,18 @@ extension UD {
     }
     
     //MARK: - VARIABLES
-    var mainUser: User? {
+    var mainUser: UserSignature? {
         get {
-            return UDManager.readCustom(object: User.self, key: UDKeys.localVault)
+            return UDManager.readCustom(object: UserSignature.self, key: UDKeys.localVault)
         }
         set {
             UDManager.saveCustom(object: newValue, key: UDKeys.localVault)
         }
     }
     
-    var vUsers: [User] {
+    var vUsers: [UserSignature] {
         get {
-            guard let vUsers = UDManager.readCustom(object: [User].self, key: UDKeys.vUsers) else { return [] }
+            guard let vUsers = UDManager.readCustom(object: [UserSignature].self, key: UDKeys.vUsers) else { return [] }
             return vUsers
         }
         set {

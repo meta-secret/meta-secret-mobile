@@ -15,7 +15,7 @@ protocol LoginSceneProtocol {
     func showPendingPopup()
 }
 
-final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
+final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerable {
     private var delegate: LoginSceneProtocol? = nil
     private var tempTimer: Timer? = nil
     
@@ -29,53 +29,48 @@ final class LoginSceneViewModel: Signable, RootFindable, Alertable, Routerable {
     
     //MARK: - REGISTRATION
     func register(_ userName: String) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
-            if self?.deviceStatus == .pending {
-                self?.showAwaitingAlert()
-                self?.delegate?.processFinished()
-                return
-            }
-            
-            guard let user = self?.generateKeys(for: userName) else {
-                self?.showCommonError(nil)
-                self?.delegate?.processFinished()
-                return
-            }
-            
-            let userNameData = user.userName.data(using: .utf8) ?? Data()
-            self?.signData(userNameData, for: user)
-            
-            self?.mainUser = user
-            
-            Register().execute() { [weak self] result in
-                switch result {
-                case .success(let response):
-                    if response.status == .Registered {
-                        self?.deviceStatus = .member
-                        self?.mainUser = user
-                        self?.isOwner = true //TODO: Need it on Server
-                        self?.routeTo(.main, presentAs: .root)
-                    } else {
-                        self?.deviceStatus = .pending
-                        self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
-                            guard let `self` = self else { return }
-                            
-                            if self.tempTimer == nil {
-                                self.delegate?.showPendingPopup()
-                                self.tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
-                            }
-                        }, cancelHandler: { [weak self] in
-                            self?.mainUser = nil
-                            self?.deviceStatus = .unknown
-                        }))
-                    }
-                    self?.delegate?.processFinished()
-                case .failure(let error):
-                    self?.delegate?.processFinished()
-                    self?.showCommonError(error.localizedDescription)
+        if deviceStatus == .pending {
+            showAwaitingAlert()
+            delegate?.processFinished()
+            return
+        }
+        
+        guard let user = generateKeys(for: userName) else {
+            showCommonError(nil)
+            delegate?.processFinished()
+            return
+        }
+
+        Register().execute() { [weak self] result in
+            switch result {
+            case .success(let response):
+                if response.status == .Registered {
+                    self?.deviceStatus = .member
+                    self?.mainUser = user
+                    #warning("Need it on Server")
+                    self?.isOwner = true
+                    self?.routeTo(.main, presentAs: .root)
+                } else {
+                    self?.deviceStatus = .pending
+                    self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
+                        guard let `self` = self else { return }
+                        
+                        if self.tempTimer == nil {
+                            self.delegate?.showPendingPopup()
+                            self.tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
+                        }
+                    }, cancelHandler: { [weak self] in
+                        self?.mainUser = nil
+                        self?.deviceStatus = .unknown
+                    }))
                 }
+                self?.delegate?.processFinished()
+            case .failure(let error):
+                self?.delegate?.processFinished()
+                self?.showCommonError(error.localizedDescription)
             }
-        })
+        }
+        
     }
     
     //MARK: - ALERTS

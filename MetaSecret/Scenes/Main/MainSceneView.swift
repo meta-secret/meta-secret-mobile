@@ -133,7 +133,7 @@ private extension MainSceneView {
         setTitle()
         yourDevicesTitleLabel.text = Constants.MainScreen.yourSecrets
         nickNameTitleLabel.text = Constants.MainScreen.yourNick
-        nickNameLabel.text = mainUser?.userName ?? ""
+        nickNameLabel.text = mainUser?.name()
     }
     
     func setTitle() {
@@ -165,7 +165,7 @@ private extension MainSceneView {
     
     @objc func addDeviceTapped() {
         if selectedSegment == .Devices {
-            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.userName ?? ""), isClosable: true)
+            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.name() ?? ""), isClosable: true)
             routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
         } else {
             let model = SceneSendDataModel(modeType: .edit)
@@ -175,7 +175,7 @@ private extension MainSceneView {
     
     //MARK: - HINTS
     func showFirstTimePopupHint() {
-        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.userName ?? ""), buttonHandler: { [weak self] in
+        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.name() ?? ""), buttonHandler: { [weak self] in
 
             self?.shouldShowVirtualHint = false
             if self?.vUsers.isEmpty ?? true {
