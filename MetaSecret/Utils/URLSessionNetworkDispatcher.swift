@@ -9,7 +9,7 @@ import Foundation
 
 struct Server {
 //    static let develop = "http://localhost:8000/"
-    static let develop = "http://ec2-34-201-129-60.compute-1.amazonaws.com:8000/"
+    static let develop = "http://api.meta-secret.org:8000/"
 }
 
 public struct URLSessionNetworkDispatcher: HTTPDispatcher {

@@ -7,46 +7,12 @@
 
 import Foundation
 
-//MARK: - Key Manager
-//class KeysPairsWrapper {
-//    private let raw: OpaquePointer
-//
-//    init() {
-//        raw = new_keys_pair()
-//    }
-//
-//    deinit {
-//        keys_pair_destroy(raw)
-//    }
-//
-//    var transportPubKey: String? {
-//        let byteSlice = get_transport_pub(raw)
-//        return byteSlice.asString()
-//    }
-//
-//    var transportSecKey: String? {
-//        let byteSlice = get_transport_sec(raw)
-//        return byteSlice.asString()
-//    }
-//
-//    var dsaPubKey: String? {
-//        let byteSlice = get_dsa_pub(raw)
-//        return byteSlice.asString()
-//    }
-//
-//    var dsaKeyPair: String? {
-//        let byteSlice = get_dsa_key_pair(raw)
-//        return byteSlice.asString()
-//    }
-//}
-
 //MARK: - Send to Rust Lib
-
 class RustTransporterManager {
     func generate(for name: String) -> UserSignature? {
         let userSignature = UserSignature()
         userSignature.vaultName = name
-        let json = JsonManger.jsonDataGeneration(from: userSignature)
+        let json = JsonManger.jsonU8Generation(from: userSignature)
         
         let signedUserJson = generate_signed_user(json, json.count).asString() ?? ""
         do {

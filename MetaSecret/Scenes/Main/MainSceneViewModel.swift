@@ -22,7 +22,6 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     //MARK: - INIT
     init(delegate: MainSceneProtocol) {
         self.delegate = delegate
-        createTimer()
     }
     
     //MARK: - PUBLIC METHODS
@@ -57,8 +56,10 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     func getNewDataSource(type: MainScreenSourceType) {
         switch type {
         case .Secrets:
+            stopTimer()
             getAllSecrets()
         case .Devices:
+            createTimer()
             getVault()
         default:
             break

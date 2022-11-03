@@ -17,7 +17,6 @@ final class DevicesDataSource: MainScreeSourcable, UD {
         var pendingItems = [CellSetupDate]()
         var declinedItems = [CellSetupDate]()
         var memberItems = [CellSetupDate]()
-        var virtualVaults = [CellSetupDate]()
         
         for item in vault.pendingJoins ?? [] {
             

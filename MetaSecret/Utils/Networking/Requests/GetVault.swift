@@ -13,15 +13,9 @@ class GetVault: HTTPRequest, UD {
     var path: String = "getVault"
     
     init() {
-        guard let user = mainUser else { return }
+        guard let mainUser else { return }
         
-        self.params = [
-            "vaultName": user.name(),
-            "device": ["deviceName": user.deviceName, "deviceId": user.deviceId],
-            "publicKey": user.publicKey(),
-            "rsaPublicKey": user.transportPublicKey(),
-            "signature": user.userSignature()
-        ]
+        self.params = mainUser.createRequestJSon()
     }
 }
 

@@ -23,7 +23,7 @@ class Accept: HTTPRequest, UD {
                        "candidate": ["vaultName": candidate.vaultName ?? "",
                                      "device": ["deviceName": candidate.device?.deviceName, "deviceId": candidate.device?.deviceId],
                                      "publicKey": candidate.publicKey ?? "",
-                                     "rsaPublicKey": candidate.rsaPublicKey ?? "",
+                                     "rsaPublicKey": candidate.transportPublicKey ?? "",
                                      "signature": candidate.signature ?? ""]]
     }
 }

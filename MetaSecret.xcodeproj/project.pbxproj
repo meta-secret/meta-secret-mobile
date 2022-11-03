@@ -70,7 +70,6 @@
 		E5CE3D0528C92B880022A06F /* SelectDeviceSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */; };
 		E5CE3D0628C92B880022A06F /* SelectDeviceSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */; };
 		E5CE3D0828C92B9A0022A06F /* SelectDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */; };
-		E5DA4DAD290587A900893DF2 /* RustLibTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DA4DAC290587A900893DF2 /* RustLibTest.swift */; };
 		E5DA4DAE2905889600893DF2 /* MetaSecretCoreWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5643BD628FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift */; };
 		E5DA4DAF29058A3000893DF2 /* libmeta_secret_core_swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E52686F52901D9DC0030A542 /* libmeta_secret_core_swift.a */; };
 		E5DA4DB12905931F00893DF2 /* meta-secret-core.h in Sources */ = {isa = PBXBuildFile; fileRef = E52686F42901D8A90030A542 /* meta-secret-core.h */; };
@@ -87,7 +86,6 @@
 		E5F0C41028A9958100902310 /* UD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F0C40F28A9958100902310 /* UD.swift */; };
 		E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF621B28B5957F00A794F3 /* ClusterDeviceCell.swift */; };
 		E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5FF621C28B5957F00A794F3 /* ClusterDeviceCell.xib */; };
-		ED99C34A213D9E6F01E7CCC8 /* Pods_MetaSecret.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,7 +100,6 @@
 
 /* Begin PBXFileReference section */
 		661A42FDDF38EBE81840D342 /* Pods-MetaSecret.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetaSecret.debug.xcconfig"; path = "Target Support Files/Pods-MetaSecret/Pods-MetaSecret.debug.xcconfig"; sourceTree = "<group>"; };
-		99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetaSecret.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5061CE628CD116700E2787B /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		E5061CE928CD197400E2787B /* BottomInfoSheetViewScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInfoSheetViewScene.swift; sourceTree = "<group>"; };
 		E5061CEA28CD197400E2787B /* BottomInfoSheetViewScene.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BottomInfoSheetViewScene.xib; sourceTree = "<group>"; };
@@ -173,8 +170,6 @@
 		E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDeviceSceneView.swift; sourceTree = "<group>"; };
 		E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectDeviceSceneView.xib; sourceTree = "<group>"; };
 		E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDeviceViewModel.swift; sourceTree = "<group>"; };
-		E5DA4DAB290587A800893DF2 /* MetaSecretTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetaSecretTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		E5DA4DAC290587A900893DF2 /* RustLibTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RustLibTest.swift; sourceTree = "<group>"; };
 		E5F0C3F728A82B5500902310 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E5F0C3F928A82D0800902310 /* Vault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault.swift; sourceTree = "<group>"; };
 		E5F0C3FB28A82E0700902310 /* LoginSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSceneView.swift; sourceTree = "<group>"; };
@@ -204,7 +199,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED99C34A213D9E6F01E7CCC8 /* Pods_MetaSecret.framework in Frameworks */,
 				E52686F62901D9DC0030A542 /* libmeta_secret_core_swift.a in Frameworks */,
 				E52686F12901D81E0030A542 /* libresolv.tbd in Frameworks */,
 			);
@@ -289,8 +283,6 @@
 		E558ED9528F5FD9F0018F045 /* MetaSecretTests */ = {
 			isa = PBXGroup;
 			children = (
-				E5DA4DAC290587A900893DF2 /* RustLibTest.swift */,
-				E5DA4DAB290587A800893DF2 /* MetaSecretTests-Bridging-Header.h */,
 			);
 			path = MetaSecretTests;
 			sourceTree = "<group>";
@@ -384,7 +376,6 @@
 		E580001D288CA4D000E1135C = {
 			isa = PBXGroup;
 			children = (
-				E5800060288CB49900E1135C /* Packages */,
 				E5800028288CA4D000E1135C /* MetaSecret */,
 				E558ED9528F5FD9F0018F045 /* MetaSecretTests */,
 				E5800027288CA4D000E1135C /* Products */,
@@ -419,13 +410,6 @@
 				E5800037288CA4D300E1135C /* Info.plist */,
 			);
 			path = MetaSecret;
-			sourceTree = "<group>";
-		};
-		E5800060288CB49900E1135C /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		E588251F28D3A55A00FB01B0 /* Onboarding */ = {
@@ -471,7 +455,6 @@
 			isa = PBXGroup;
 			children = (
 				E52686F02901D8150030A542 /* libresolv.tbd */,
-				99F330CFBD984977F4B67C57 /* Pods_MetaSecret.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -690,7 +673,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5DA4DB12905931F00893DF2 /* meta-secret-core.h in Sources */,
-				E5DA4DAD290587A900893DF2 /* RustLibTest.swift in Sources */,
 				E5DA4DAE2905889600893DF2 /* MetaSecretCoreWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

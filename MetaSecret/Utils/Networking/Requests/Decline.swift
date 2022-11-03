@@ -21,7 +21,7 @@ class Decline: HTTPRequest, UD {
                                   "signature": member.userSignature()],
                        "candidate": ["vaultName": candidate.vaultName,
                                      "publicKey": candidate.publicKey,
-                                     "rsaPublicKey": candidate.rsaPublicKey,
+                                     "rsaPublicKey": candidate.transportPublicKey,
                                      "signature": candidate.signature ?? ""]]
     }
 }

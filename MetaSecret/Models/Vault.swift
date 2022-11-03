@@ -8,11 +8,11 @@
 import Foundation
 
 final class Vault: Codable {
-    var vaultName: String?
+    var vaultName: String
+    var signature: KeyFormat?
+    var publicKey: KeyFormat?
+    var transportPublicKey: KeyFormat?
     var device: Device?
-    var publicKey: String?
-    var rsaPublicKey: String?
-    var signature: String?
     var declinedJoins: [Vault]?
     var pendingJoins: [Vault]?
     var signatures: [Vault]?

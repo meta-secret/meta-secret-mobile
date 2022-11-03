@@ -41,7 +41,7 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
             return
         }
 
-        Register().execute() { [weak self] result in
+        Register(user: user).execute() { [weak self] result in
             switch result {
             case .success(let response):
                 if response.status == .Registered {

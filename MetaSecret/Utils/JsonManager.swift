@@ -8,7 +8,7 @@
 import Foundation
 
 class JsonManger {
-    static func jsonDataGeneration<T: Encodable>(from jsonStruct: T) -> [UInt8] {
+    static func jsonU8Generation<T: Encodable>(from jsonStruct: T) -> [UInt8] {
         do {
             let jsonData = try JSONEncoder().encode(jsonStruct)
             let jsonString = String(data: jsonData, encoding: .utf8)
@@ -16,6 +16,27 @@ class JsonManger {
         } catch let _e {
             print(_e)
             return [UInt8]()
+        }
+    }
+    
+    static func jsonGeneration<T: Encodable>(from jsonStruct: T) -> String {
+        do {
+            let jsonData = try JSONEncoder().encode(jsonStruct)
+            let jsonString = String(data: jsonData, encoding: .utf8) ?? ""
+            return jsonString
+        } catch let _e {
+            print(_e)
+            return ""
+        }
+    }
+    
+    static func jsonDataGeneration<T: Encodable>(from jsonStruct: T) -> Data {
+        do {
+            let jsonData = try JSONEncoder().encode(jsonStruct)
+            return jsonData
+        } catch let _e {
+            print(_e)
+            return Data()
         }
     }
     
