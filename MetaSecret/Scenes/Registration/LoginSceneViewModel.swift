@@ -52,6 +52,7 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
                     self?.routeTo(.main, presentAs: .root)
                 } else {
                     self?.deviceStatus = .pending
+                    self?.mainUser = user
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
                         guard let `self` = self else { return }
                         

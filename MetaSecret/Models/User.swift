@@ -30,10 +30,10 @@ class UserSignature: Codable {
 //        let request = UserRequest(vaultName: vaultName, signature: signature, device: device, publicKey: keyManager.dsa.publicKey, transportPublicKey: keyManager.transport.publicKey)
         #warning("Use Structures")
         return ["vaultName": vaultName,
-                  "device": ["deviceName": deviceName, "deviceId": deviceId],
-                  "publicKey": ["base64Text": publicKey()],
-                  "transportPublicKey": ["base64Text": transportPublicKey()],
-                  "signature": ["base64Text": signature]]
+                "device": ["deviceName": deviceName, "deviceId": deviceId],
+                "publicKey": ["base64Text": publicKey()],
+                "transportPublicKey": ["base64Text": transportPublicKey()],
+                "signature": ["base64Text": signature]]
     }
     
     func publicKey() -> String {

@@ -41,7 +41,7 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
         Decline(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
-                if response.status == "Successful" {
+                if response.status == "finished" {
                     self?.delegate?.successFullConnection()
                 } else {
                     self?.showCommonError(nil)
