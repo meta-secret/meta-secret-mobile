@@ -8,24 +8,20 @@
 import Foundation
 
 class FindShares: HTTPRequest, UD {
-    typealias ResponseType = FindSharesResult
+    typealias ResponseType = SecretDistributionDoc
     var params: [String : Any]?
     var path: String = "findShares"
     
     init() {
-        guard let user = mainUser else { return }
+        guard let mainVault else { return }
         
-        self.params = [
-            "vaultName": user.name(),
-            "device": ["deviceName": user.deviceName, "deviceId": user.deviceId],
-            "publicKey": user.publicKey(),
-            "rsaPublicKey": user.transportPublicKey(),
-            "signature": user.userSignature()
-        ]
+        self.params = mainVault.createRequestJSon()
     }
 }
 
-struct FindSharesResult: Codable {
-    var status: VaultInfoStatus = .unknown
-    var vault: Vault?
+struct SecretDistributionDoc: Codable {
+    var res: String
+//    var distributionType: SecretDistributionType? = nil
+//    var metaPassword: MetaPasswordRequest? = nil
+//    var secretMessage: EncryptedMessage? = nil
 }

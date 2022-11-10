@@ -13,9 +13,9 @@ class GetVault: HTTPRequest, UD {
     var path: String = "getVault"
     
     init() {
-        guard let mainUser else { return }
+        guard let mainVault else { return }
         
-        self.params = mainUser.createRequestJSon()
+        self.params = mainVault.createRequestJSon()
     }
 }
 

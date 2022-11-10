@@ -25,5 +25,6 @@ struct RustByteSlice {
 // -----------------------------------------------------------------------
 // from swift_to_rust.rs
 // -----------------------------------------------------------------------
-struct RustByteSlice split_and_encode(const uint8_t *json_bytes, size_t json_len);
-struct RustByteSlice generate_signed_user(const uint8_t *json_bytes, size_t json_len);
+struct RustByteSlice split_secret(const uint8_t *json_bytes, size_t json_len);
+struct RustByteSlice generate_signed_user(const uint8_t *strings_bytes, size_t strings_len);
+struct RustByteSlice encode_secret(const uint8_t *json_bytes, size_t json_len);

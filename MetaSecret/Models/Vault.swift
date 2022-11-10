@@ -16,17 +16,30 @@ final class Vault: Codable, UD {
     var declinedJoins: [Vault]?
     var pendingJoins: [Vault]?
     var signatures: [Vault]?
+    var isVirtual: Bool?
+    
+    init(vaultName: String, signature: KeyFormat? = nil, publicKey: KeyFormat? = nil, transportPublicKey: KeyFormat? = nil, device: Device? = nil, declinedJoins: [Vault]? = nil, pendingJoins: [Vault]? = nil, signatures: [Vault]? = nil, isVirtual: Bool) {
+        self.vaultName = vaultName
+        self.signature = signature
+        self.publicKey = publicKey
+        self.transportPublicKey = transportPublicKey
+        self.device = device
+        self.declinedJoins = declinedJoins
+        self.pendingJoins = pendingJoins
+        self.signatures = signatures
+        self.isVirtual = isVirtual
+    }
     
     func candidateRequest() -> [String: Any] {
-        guard let mainUser else { return [String: Any]() }
+        guard let mainVault else { return [String: Any]() }
         
         #warning("Use structure to JSon")
-        return ["member": mainUser.createRequestJSon(),
+        return ["member": mainVault.createRequestJSon(),
                 "candidate": createRequestJSon()
         ]
     }
     
-    private func createRequestJSon() -> [String: Any] {
+    func createRequestJSon() -> [String: Any] {
         #warning("Use Structures")
         return ["vaultName": vaultName,
                 "device": ["deviceName": device?.deviceName ?? "", "deviceId": device?.deviceId ?? ""],
@@ -39,4 +52,9 @@ final class Vault: Codable, UD {
 struct Device: Codable {
     var deviceName: String?
     var deviceId: String?
+    
+    init(deviceName: String? = nil, deviceId: String? = nil) {
+        self.deviceName = deviceName
+        self.deviceId = deviceId
+    }
 }

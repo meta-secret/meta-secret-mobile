@@ -11,10 +11,11 @@ protocol UD: AnyObject {
     func resetAll()
     
     var mainUser: UserSignature? { get set }
+    var mainVault: Vault? { get set }
     var deviceStatus: VaultInfoStatus { get set }
     var shouldShowVirtualHint: Bool {get set}
     var isFirstAppLaunch: Bool {get set}
-    var vUsers: [UserSignature] {get set}
+    var additionalUsers: [Vault] {get set}
     var isOwner: Bool {get set}
     var shouldShowOnboarding: Bool {get set}
 }
@@ -23,22 +24,32 @@ extension UD {
     //MARK: - RESET
     func resetAll() {
         mainUser = nil
+        additionalUsers = []
         deviceStatus = .unknown
     }
     
     //MARK: - VARIABLES
     var mainUser: UserSignature? {
         get {
-            return UDManager.readCustom(object: UserSignature.self, key: UDKeys.localVault)
+            return UDManager.readCustom(object: UserSignature.self, key: UDKeys.localUser)
+        }
+        set {
+            UDManager.saveCustom(object: newValue, key: UDKeys.localUser)
+        }
+    }
+    
+    var mainVault: Vault? {
+        get {
+            return UDManager.readCustom(object: Vault.self, key: UDKeys.localVault)
         }
         set {
             UDManager.saveCustom(object: newValue, key: UDKeys.localVault)
         }
     }
     
-    var vUsers: [UserSignature] {
+    var additionalUsers: [Vault] {
         get {
-            guard let vUsers = UDManager.readCustom(object: [UserSignature].self, key: UDKeys.vUsers) else { return [] }
+            guard let vUsers = UDManager.readCustom(object: [Vault].self, key: UDKeys.vUsers) else { return [] }
             return vUsers
         }
         set {
@@ -104,6 +115,7 @@ extension UD {
 
 //MARK: - KEYS
 struct UDKeys {
+    static let localUser = "localUser"
     static let localVault = "localVault"
     static let deviceStatus = "deviceStatus"
     static let shouldShowVirtualHint = "shouldShowVirtualHint"

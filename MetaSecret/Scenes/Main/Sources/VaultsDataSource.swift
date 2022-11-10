@@ -18,8 +18,8 @@ final class VaultsDataSource: MainScreeSourcable {
         for item in secrets {
             let cellSource = CellSetupDate()
             
-            let isWarning = (!item.isFullySplited || item.isSavedLocaly) ? true : false
-            cellSource.setupCellSource(title: item.secretID, boolValue: isWarning)
+//            let isWarning = (!item.isFullySplited || item.isSavedLocaly) ? true : false
+            cellSource.setupCellSource(title: item.secretID, boolValue: false)
             items.append(cellSource)
         }
         

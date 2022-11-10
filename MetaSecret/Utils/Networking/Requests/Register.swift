@@ -13,7 +13,7 @@ class Register: HTTPRequest, UD {
     var path: String = "register"
     
     init(user: UserSignature) {
-        self.params = user.createRequestJSon()
+        self.params = user.toVault().createRequestJSon()
     }
 }
 

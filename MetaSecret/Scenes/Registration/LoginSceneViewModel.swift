@@ -46,12 +46,14 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
             case .success(let response):
                 if response.status == .Registered {
                     self?.deviceStatus = .member
+                    self?.mainVault = user.toVault()
                     self?.mainUser = user
                     #warning("Need it on Server")
                     self?.isOwner = true
                     self?.routeTo(.main, presentAs: .root)
                 } else {
                     self?.deviceStatus = .pending
+                    self?.mainVault = user.toVault()
                     self?.mainUser = user
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
                         guard let `self` = self else { return }

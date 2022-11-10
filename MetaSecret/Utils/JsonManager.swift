@@ -44,4 +44,20 @@ class JsonManger {
         let jsonData = Data(jsonString.utf8)
         return try JSONDecoder().decode(T.self, from: jsonData)
     }
+    
+    static func array<T: Decodable>(from jsonString: String) throws -> [T] {
+        var components = [T]()
+        let jsonData = Data(jsonString.utf8)
+        let jsonResult = try JSONSerialization.jsonObject(with: jsonData, options: .mutableLeaves)
+        if let jsonResult = jsonResult as? [[String: Any]] {
+            for item in jsonResult {
+                if let jsonData = try? JSONSerialization.data(withJSONObject: item) {
+                    let item = try JSONDecoder().decode(T.self, from: jsonData)
+                    components.append(item)
+                }
+            }
+        }
+        
+        return components
+    }
 }

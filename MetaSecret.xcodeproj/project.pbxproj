@@ -13,6 +13,7 @@
 		E5061CEE28CD198B00E2787B /* BottomInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5061CED28CD198B00E2787B /* BottomInfoViewModel.swift */; };
 		E5061CF128CD20C500E2787B /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5061CF028CD20C500E2787B /* UIView+Extension.swift */; };
 		E5061CF328CD258D00E2787B /* BottomInfoSheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5061CF228CD258D00E2787B /* BottomInfoSheetModel.swift */; };
+		E50ACA0829156CC200A8B432 /* PasswordShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50ACA0729156CC200A8B432 /* PasswordShare.swift */; };
 		E5108B4828BD38680067207A /* Distribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4728BD38680067207A /* Distribute.swift */; };
 		E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */; };
 		E51ADE9028B7F6D700C6A87B /* CellSetupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */; };
@@ -29,6 +30,7 @@
 		E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */; };
 		E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */; };
 		E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A428B6E94800A1E5DB /* MainScreenSource.swift */; };
+		E54EFA9B291721F30049DD81 /* EncodeShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EFA9A291721F20049DD81 /* EncodeShare.swift */; };
 		E55A226F28B0357900F5F02B /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A226E28B0357900F5F02B /* Register.swift */; };
 		E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227028B0399A00F5F02B /* HTTPRequest.swift */; };
 		E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */; };
@@ -106,6 +108,7 @@
 		E5061CED28CD198B00E2787B /* BottomInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInfoViewModel.swift; sourceTree = "<group>"; };
 		E5061CF028CD20C500E2787B /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E5061CF228CD258D00E2787B /* BottomInfoSheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInfoSheetModel.swift; sourceTree = "<group>"; };
+		E50ACA0729156CC200A8B432 /* PasswordShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordShare.swift; sourceTree = "<group>"; };
 		E5108B4728BD38680067207A /* Distribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distribute.swift; sourceTree = "<group>"; };
 		E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretViewModel.swift; sourceTree = "<group>"; };
 		E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSetupable.swift; sourceTree = "<group>"; };
@@ -123,6 +126,7 @@
 		E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
 		E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreeSourcable.swift; sourceTree = "<group>"; };
 		E54867A428B6E94800A1E5DB /* MainScreenSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenSource.swift; sourceTree = "<group>"; };
+		E54EFA9A291721F20049DD81 /* EncodeShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodeShare.swift; sourceTree = "<group>"; };
 		E558ED9428F5FD9F0018F045 /* MetaSecretTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetaSecretTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55A226E28B0357900F5F02B /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		E55A227028B0399A00F5F02B /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
@@ -470,6 +474,8 @@
 				E52E651728C8021E0028213A /* Secret.swift */,
 				E5061CF228CD258D00E2787B /* BottomInfoSheetModel.swift */,
 				E54205E828D123D300E763DB /* SceneSendDataModel.swift */,
+				E50ACA0729156CC200A8B432 /* PasswordShare.swift */,
+				E54EFA9A291721F20049DD81 /* EncodeShare.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -693,6 +699,7 @@
 				E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */,
 				E55B514528CE92F300373959 /* PopupHintViewScene.swift in Sources */,
 				E5061CF128CD20C500E2787B /* UIView+Extension.swift in Sources */,
+				E50ACA0829156CC200A8B432 /* PasswordShare.swift in Sources */,
 				E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */,
 				E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */,
 				E55A226F28B0357900F5F02B /* Register.swift in Sources */,
@@ -714,6 +721,7 @@
 				E5F0C41028A9958100902310 /* UD.swift in Sources */,
 				E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */,
 				E55B514228CD43A000373959 /* UIFont+Extension.swift in Sources */,
+				E54EFA9B291721F30049DD81 /* EncodeShare.swift in Sources */,
 				E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */,
 				E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */,
 				E5108B4828BD38680067207A /* Distribute.swift in Sources */,
