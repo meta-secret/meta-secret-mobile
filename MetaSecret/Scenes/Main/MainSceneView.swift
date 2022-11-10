@@ -199,7 +199,6 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.setupCell(content: content)
-
         return cell
     }
     
