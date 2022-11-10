@@ -23,33 +23,17 @@ class UserSignature: Codable {
         self.deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
     }
     
-    func createRequestJSon() -> [String: Any] {
-//        guard let keyManager else { return [String: Any]()}
-//
-//        let device = DeviceRequest(deviceName: deviceName, deviceId: deviceId)
-//        let request = UserRequest(vaultName: vaultName, signature: signature, device: device, publicKey: keyManager.dsa.publicKey, transportPublicKey: keyManager.transport.publicKey)
-        #warning("Use Structures")
-        return ["vaultName": vaultName,
-                "device": ["deviceName": deviceName, "deviceId": deviceId],
-                "publicKey": ["base64Text": publicKey()],
-                "transportPublicKey": ["base64Text": transportPublicKey()],
-                "signature": ["base64Text": signature]]
-    }
-    
-    func publicKey() -> String {
-        return keyManager?.dsa.publicKey.base64Text ?? ""
-    }
-    
-    func transportPublicKey() -> String {
-        return keyManager?.transport.publicKey.base64Text ?? ""
-    }
-    
-    func name() -> String {
-        return vaultName
-    }
-    
-    func userSignature() -> String {
-        return signature
+    func toVault() -> Vault {
+        let vault = Vault(vaultName: vaultName,
+                          signature: KeyFormat(base64Text: signature),
+                          publicKey: keyManager?.dsa.publicKey,
+                          transportPublicKey: keyManager?.transport.publicKey,
+                          device: Device(deviceName: deviceName, deviceId: deviceId),
+                          declinedJoins: nil,
+                          pendingJoins: nil,
+                          signatures: nil,
+                          isVirtual: false)
+        return vault
     }
 }
 
@@ -71,6 +55,10 @@ struct SerializedTransportKeyPair: Codable {
 
 struct KeyFormat: Codable {
     var base64Text: String
+    
+    init(base64Text: String) {
+        self.base64Text = base64Text
+    }
 }
 
 private final class UserRequest: Codable {
@@ -88,13 +76,3 @@ private final class UserRequest: Codable {
         self.transportPublicKey = transportPublicKey
     }
 }
-
-//final class DeviceRequest: Codable {
-//    var deviceName: String
-//    var deviceId: String
-//
-//    init(deviceName: String, deviceId: String) {
-//        self.deviceName = deviceName
-//        self.deviceId = deviceId
-//    }
-//}

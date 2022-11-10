@@ -133,7 +133,7 @@ private extension MainSceneView {
         setTitle()
         yourDevicesTitleLabel.text = Constants.MainScreen.yourSecrets
         nickNameTitleLabel.text = Constants.MainScreen.yourNick
-        nickNameLabel.text = mainUser?.name()
+        nickNameLabel.text = mainUser?.vaultName
     }
     
     func setTitle() {
@@ -165,7 +165,7 @@ private extension MainSceneView {
     
     @objc func addDeviceTapped() {
         if selectedSegment == .Devices {
-            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.name() ?? ""), isClosable: true)
+            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.vaultName ?? ""), isClosable: true)
             routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
         } else {
             let model = SceneSendDataModel(modeType: .edit)
@@ -175,10 +175,10 @@ private extension MainSceneView {
     
     //MARK: - HINTS
     func showFirstTimePopupHint() {
-        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.name() ?? ""), buttonHandler: { [weak self] in
+        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.vaultName ?? ""), buttonHandler: { [weak self] in
 
             self?.shouldShowVirtualHint = false
-            if self?.vUsers.isEmpty ?? true {
+            if self?.additionalUsers.isEmpty ?? true {
                 self?.viewModel?.generateVirtualVaults()
             }
         })
@@ -222,7 +222,8 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
             let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
             
             let model = SceneSendDataModel(vault: selectedVault) { [weak self] isSuccess in
-                self?.vUsers.removeFirst()
+                #warning("Need to send data from virtual to real")
+                self?.additionalUsers.removeFirst()
                 self?.viewModel?.getVault()
             }
             routeTo(.deviceInfo, presentAs: .push, with: model)

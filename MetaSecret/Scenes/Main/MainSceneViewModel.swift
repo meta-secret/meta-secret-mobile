@@ -17,7 +17,9 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     private var timer: Timer? = nil
     private var pendings: [Vault]? = nil
     private var source: MainScreenSource? = nil
+    private var type: MainScreenSourceType = .Secrets
     var vault: Vault? = nil
+    
     
     //MARK: - INIT
     init(delegate: MainSceneProtocol) {
@@ -54,6 +56,7 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     }
     
     func getNewDataSource(type: MainScreenSourceType) {
+        self.type = type
         switch type {
         case .Secrets:
             stopTimer()
@@ -74,15 +77,17 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
                 return
             }
             
-            var virtualUsers = [UserSignature]()
+            var virtualUsers = [Vault]()
             
             for i in 0..<2 {
                 if let vUser = self?.generateKeys(for: "\(mainUser.vaultName)_\(Constants.Common.virtual)\(i+1)") {
-                    virtualUsers.append(vUser)
+                    let vVault = vUser.toVault()
+                    vVault.isVirtual = true
+                    virtualUsers.append(vVault)
                 }
             }
             
-            self?.vUsers = virtualUsers
+            self?.additionalUsers = virtualUsers
             self?.hideLoader()
         }
     }
@@ -101,14 +106,29 @@ private extension MainSceneViewModel {
     }
     
     @objc func fireTimer() {
-        getVault()
+        switch type {
+        case .Secrets:
+            getAllSecrets()
+        case .Devices:
+            getVault()
+        case .None:
+            break
+        }
     }
     
-    func checkShares() {
+    func findShares() {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             
-            //TODO: Check selected tab. Save to DB. Reload screen. Than replace with push notification
+            FindShares().execute { [weak self] result in
+                switch result {
+                case .success(let result):
+                    break
+//                    let description = result.secretMessage.debugDescription
+                case .failure(let error):
+                    self?.showCommonError(error.localizedDescription)
+                }
+            }
         }
     }
 }

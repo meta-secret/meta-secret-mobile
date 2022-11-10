@@ -11,9 +11,7 @@ import RealmSwift
 class Secret: Object {
 
     @objc dynamic var secretID = ""
-    @objc dynamic var secretPart: Data? = nil
-    @objc dynamic var isFullySplited: Bool = false
-    @objc dynamic var isSavedLocaly: Bool = false
+    @objc dynamic var secretPart: String = ""
 
     override static func primaryKey() -> String? {
         return "secretID"

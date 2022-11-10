@@ -47,51 +47,56 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupData()
+        showLoader()
         self.viewModel = AddSecretViewModel(delegate: self)
+        viewModel?.getVault(completion: { [weak self] in
+            self?.hideLoader()
+        })
         setupUI()
     }
-
+    
     //MARK: - ACTIONS
     @IBAction func splitPressed(_ sender: Any) {
         showLoader()
         hideKeyboard()
         isSplitPressed = true
-        
+
         if modeType == .readOnly {
-            viewModel?.getVault(completion: { [weak self] isEnoughMembers in
-                if isEnoughMembers {
-                    self?.viewModel?.restoreSecret(completion: { [weak self] restoredSecret in
-                        self?.passwordTextField.text = restoredSecret
-                    })
-                } else {
-                    let secret = self?.viewModel?.readMySecret(description: self?.descriptionTextField.text ?? "")
-                    self?.passwordTextField.text = secret
-                }
-                self?.splitButton.isUserInteractionEnabled = false
-                self?.splitButton.backgroundColor = .systemGray5
-                self?.hideLoader()
-            })
+//            viewModel?.getVault(completion: { [weak self] isEnoughMembers in
+//                self?.isEnoughMembers = isEnoughMembers
+//                if isEnoughMembers {
+//                    self?.viewModel?.restoreSecret(completion: { [weak self] restoredSecret in
+//                        self?.passwordTextField.text = restoredSecret
+//                    })
+//                } else {
+//                    let secret = self?.viewModel?.readMySecret(description: self?.descriptionTextField.text ?? "")
+//                    self?.passwordTextField.text = secret
+//                }
+//                self?.splitButton.isUserInteractionEnabled = false
+//                self?.splitButton.backgroundColor = .systemGray5
+//                self?.hideLoader()
+//            })
         } else if modeType == .edit {
-            viewModel?.getVault(completion: { [weak self] isEnoughMembers in
-                if isEnoughMembers {
-                    self?.split()
-                } else {
-                    self?.saveMySecret()
-                }
-            })
+            split()
         }
     }
     
     @IBAction func selectThirdTapped(_ sender: Any) {
-        viewModel?.showDeviceLists(callBack: { [weak self] isSuccess in
-            if isSuccess {
-                self?.showCommonAlert(AlertModel(title: Constants.AddSecret.success, message: Constants.AddSecret.successSplited))
-            } else {
-                self?.saveMySecret()
-            }
-        })
+        if viewModel?.isMinMembers ?? false {
+            viewModel?.encode(callBack: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+        } else {
+//            viewModel?.showDeviceLists(callBack: { [weak self] isSuccess in
+//                if isSuccess {
+//                    self?.showCommonAlert(AlertModel(title: Constants.AddSecret.success, message: Constants.AddSecret.successSplited))
+//                } else {
+//
+//                }
+//            })
+        }
     }
     
     //MARK: - AddSecretProtocol
@@ -116,7 +121,6 @@ private extension AddSecretSceneView {
         addPassTitleLabel.text = Constants.AddSecret.addPassword
         
         
-        instructionLabel.text = Constants.AddSecret.splitInstruction
         selectThirdLabel.text = Constants.AddSecret.selectDevice
         selectThirdButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
         
@@ -165,24 +169,27 @@ private extension AddSecretSceneView {
             if isSuccess {
                 self?.hideLoader()
                 
-                self?.isLocalySaved = false
-                
                 self?.modeType = .distribute
+                self?.switchMode()
+            } else {
+                self?.hideLoader()
+                self?.showCommonError(nil)
+                self?.resetScreen()
                 self?.switchMode()
             }
         })
     }
     
     func saveMySecret() {
-        viewModel?.saveMySecret(part: passwordTextField.text ?? "", description: descriptionTextField.text ?? "", isSplited: false, callBack: { [weak self] in
-            
-            self?.isLocalySaved = true
-            self?.resetScreen()
-            self?.hideLoader()
-            
-            let model = AlertModel(title: Constants.Errors.warning, message: Constants.Errors.notEnoughtMembers)
-            self?.showCommonAlert(model)
-        })
+//        viewModel?.saveMySecret(part: passwordTextField.text ?? "", description: descriptionTextField.text ?? "", isSplited: false, callBack: { [weak self] in
+//
+//            self?.isLocalySaved = true
+//            self?.resetScreen()
+//            self?.hideLoader()
+//
+//            let model = AlertModel(title: Constants.Errors.warning, message: Constants.Errors.notEnoughtMembers)
+//            self?.showCommonAlert(model)
+//        })
     }
     
     func resetScreen() {
@@ -240,10 +247,18 @@ private extension AddSecretSceneView {
             splitButton.backgroundColor = .systemGray5
             
             instructionLabel.isHidden = false
-            selectThirdLabel.isHidden = false
+            
             selectThirdButton.isHidden = false
             selectThirdButton.isUserInteractionEnabled = true
             selectThirdButton.backgroundColor = AppColors.mainOrange
+            if viewModel?.isMinMembers ?? false {
+                selectThirdLabel.isHidden = true
+                instructionLabel.isHidden = true
+                selectThirdButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
+            } else {
+                selectThirdLabel.isHidden = false
+                selectThirdButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
+            }
         }
     }
     
@@ -258,19 +273,19 @@ private extension AddSecretSceneView {
     }
     
     @objc func backPressed() {
-        if !isSplitPressed || isLocalySaved || isFulySplited || modeType == .readOnly {
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            let warningModel = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.notSplitedMessage, okHandler: { [weak self] in
-                self?.viewModel?.saveMySecret(part: self?.passwordTextField.text ?? "", description: self?.descriptionTextField.text ?? "", isSplited: false, callBack: { [weak self] in
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.animationTime) { [weak self] in
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                })
-            })
-            showCommonAlert(warningModel)
-        }
+//        if !isSplitPressed || isLocalySaved || isFulySplited || modeType == .readOnly {
+//            self.navigationController?.popViewController(animated: true)
+//        } else {
+//            let warningModel = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.notSplitedMessage, okHandler: { [weak self] in
+//                self?.viewModel?.saveMySecret(part: self?.passwordTextField.text ?? "", description: self?.descriptionTextField.text ?? "", isSplited: false, callBack: { [weak self] in
+//                    
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.animationTime) { [weak self] in
+//                        self?.navigationController?.popViewController(animated: true)
+//                    }
+//                })
+//            })
+//            showCommonAlert(warningModel)
+//        }
     }
     
     //MARK: - TEXT FIELD DELEGATE

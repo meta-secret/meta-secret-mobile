@@ -24,8 +24,25 @@ class RustTransporterManager {
         }
     }
     
-    func encodeString() -> String {
-        return "resultJson"
+    func split(secret: String) -> [PasswordShare] {
+        var components = [PasswordShare]()
+        
+        let secretData = [UInt8](Data(secret.utf8))
+        let jsonResult = split_secret(secretData, secretData.count)
+        guard let jsonString = jsonResult.asString() else { return []}
+        do {
+            components = try JsonManger.array(from: jsonString)
+        } catch {
+            print(error.localizedDescription)
+            return []
+        }
+        return components
+    }
+    
+    func encode(share: EncodeShare) -> String? {
+        let jsonData = JsonManger.jsonU8Generation(from: share)
+        let result = encode_secret(jsonData, jsonData.count).asString()
+        return result
     }
 }
 

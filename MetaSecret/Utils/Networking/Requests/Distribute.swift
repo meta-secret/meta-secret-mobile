@@ -12,20 +12,37 @@ class Distribute: HTTPRequest, UD {
     var params: [String : Any]?
     var path: String = "distribute"
     
-    init(encryptedShare: String) {
-        guard let user = mainUser else { return }
+    init(encodedShare: String, reciverVault: Vault, type: SecretDistributionType) {
+        guard let user = mainVault else { return }
         
-        self.params = [
-            "vaultName": user.name(),
-            "deviceName": user.deviceName,
-            "publicKey": user.publicKey(),
-            "rsaPublicKey": user.transportPublicKey(),
-            "signature": user.userSignature(),
-            "encryptedText": encryptedShare
-        ]
+//        let secretMessage = EncryptedMessage(receiver: reciverVault, encryptedText: encryptedShare)
+//        let passwordRequest = MetaPasswordRequest(userSig: user, metaPassword: <#T##<<error type>>#>)
+//
+//        self.params = [
+//            "distributionType": type.rawValue,
+//            "metaPassword": password,
+//            "secretMessage": secretMessage
+//        ]
     }
 }
 
 struct DistributeResult: Codable {
     var status: String
 }
+
+enum SecretDistributionType: String {
+    case Split
+    case Recover
+}
+
+//struct MetaPasswordRequest: Codable {
+//    let userSig: Vault
+//    let metaPassword: MetaPasswordDoc,
+//}
+
+struct EncryptedMessage: Codable {
+    var receiver: Vault
+    var encryptedText: String
+}
+
+
