@@ -8,11 +8,11 @@
 import Foundation
 import RealmSwift
 
-class Secret: Object {
+final class Secret: Object {
 
     @objc dynamic var secretID = ""
-    @objc dynamic var secretPart: String = ""
-
+    var shares = List<String>()
+    
     override static func primaryKey() -> String? {
         return "secretID"
     }

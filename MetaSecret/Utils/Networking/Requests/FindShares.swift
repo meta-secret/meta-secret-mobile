@@ -7,8 +7,8 @@
 
 import Foundation
 
-class FindShares: HTTPRequest, UD {
-    typealias ResponseType = SecretDistributionDoc
+final class FindShares: HTTPRequest, UD {
+    typealias ResponseType = [SecretDistributionDoc]
     var params: [String : Any]?
     var path: String = "findShares"
     
@@ -20,8 +20,7 @@ class FindShares: HTTPRequest, UD {
 }
 
 struct SecretDistributionDoc: Codable {
-    var res: String
-//    var distributionType: SecretDistributionType? = nil
-//    var metaPassword: MetaPasswordRequest? = nil
-//    var secretMessage: EncryptedMessage? = nil
+    var distributionType: SecretDistributionType?
+    var metaPassword: MetaPasswordRequest?
+    var secretMessage: EncryptedMessage?
 }

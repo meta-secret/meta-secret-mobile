@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Register: HTTPRequest, UD {
+final class Register: HTTPRequest, UD {
     typealias ResponseType = RegisterResult
     var params: [String : Any]?
     var path: String = "register"

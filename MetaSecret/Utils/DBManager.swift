@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class DBManager: Alertable {
+final class DBManager: Alertable {
     static let shared = DBManager()
     
     func saveSecret(_ secret: Secret) {

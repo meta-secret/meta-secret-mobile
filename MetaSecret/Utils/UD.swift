@@ -15,7 +15,6 @@ protocol UD: AnyObject {
     var deviceStatus: VaultInfoStatus { get set }
     var shouldShowVirtualHint: Bool {get set}
     var isFirstAppLaunch: Bool {get set}
-    var additionalUsers: [Vault] {get set}
     var isOwner: Bool {get set}
     var shouldShowOnboarding: Bool {get set}
 }
@@ -24,7 +23,6 @@ extension UD {
     //MARK: - RESET
     func resetAll() {
         mainUser = nil
-        additionalUsers = []
         deviceStatus = .unknown
     }
     
@@ -44,16 +42,6 @@ extension UD {
         }
         set {
             UDManager.saveCustom(object: newValue, key: UDKeys.localVault)
-        }
-    }
-    
-    var additionalUsers: [Vault] {
-        get {
-            guard let vUsers = UDManager.readCustom(object: [Vault].self, key: UDKeys.vUsers) else { return [] }
-            return vUsers
-        }
-        set {
-            UDManager.saveCustom(object: newValue, key: UDKeys.vUsers)
         }
     }
     

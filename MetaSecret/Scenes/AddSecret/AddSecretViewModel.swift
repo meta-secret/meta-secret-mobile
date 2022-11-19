@@ -24,9 +24,7 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     private var activeVaults: [Vault]? = nil
     private var description: String = ""
     
-    var isMinMembers: Bool {
-        return vaults?.count == Config.minMembersCount
-    }
+    var isFullySplitted: Bool = false
     
     //MARK: - INIT
     init(delegate: AddSecretProtocol) {
@@ -40,9 +38,9 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
             GetVault().execute() { [weak self] result in
                 switch result {
                 case .success(let result):
+                    self?.vaults?.removeAll()
                     self?.vaults = result.vault?.signatures
-                    self?.vaults?.append(contentsOf: self?.additionalUsers ?? [])
-                    if self?.isMinMembers ?? false {
+                    if self?.vaults?.count ?? 0 <= Constants.Common.neededMembersCount {
                         self?.activeVaults = self?.vaults
                     }
                     completion?()
@@ -56,83 +54,54 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
         })
     }
     
-    func split(secret: String, description: String, callBack: ((Bool)->())?) {
-        self.description = description
-        components = RustTransporterManager().split(secret: secret)
-        callBack?(true)
+    func vaultsCount() -> Int {
+        return vaults?.count ?? 0
     }
     
-    func encode(callBack: (()->())?) {
-        if let _ = readMySecret(description: "\(self.description)_\(mainVault?.vaultName ?? "")") {
+    func split(secret: String, description: String, callBack: ((Bool)->())?) {
+        self.description = description
+        
+        if let _ = readMySecret(description: "\(self.description)") {
             let model = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.alreadySavedMessage, okHandler:  { [weak self] in
-                self?.encodeInternal(callBack: callBack)
+                self?.splitInternal(secret, callBack: callBack)
             })
             showCommonAlert(model)
         } else {
-            encodeInternal(callBack: callBack)
+            splitInternal(secret, callBack: callBack)
         }
     }
     
-    //    func saveMySecret(part: String, description: String, isSplited: Bool, callBack: (()->())? = nil) {
-    //        if let _ = DBManager.shared.readSecretBy(description: description) {
-    //            let model = AlertModel(title: Constants.Errors.warning, message: Constants.AddSecret.alreadySavedMessage, okHandler:  { [weak self] in
-    //
-    //                self?.saveToDB(part: part, description: description, isSplited: isSplited, callBack: callBack)
-    //            })
-    //            showCommonAlert(model)
-    //        } else {
-    //            saveToDB(part: part, description: description, isSplited: isSplited, callBack: callBack)
-    //        }
-    //    }
+    func encodeAndDistribute(callBack: ((Bool)->())?) {
+        #warning("!!!!")
+    }
     
-    //    func showDeviceLists(callBack: ((Bool)->())?) {
-    //        let model = SceneSendDataModel(mainStringValue: description, shares: components, callBack: { [weak self] isSuccess in
-    //            callBack?(isSuccess ?? false)
-    //        })
-    //        routeTo(.selectDevice, presentAs: .present, with: model)
-    //    }
-    //    func restoreSecret(completion: ((String)->())?) {
-    //        completion?("")
-    //    }
+    func showDeviceLists(callBack: ((Bool)->())?) {
+        let model = SceneSendDataModel(vaults: vaults, callBackVaults: { [weak self] vaults in
+            self?.showLoader()
+            self?.activeVaults = vaults
+            self?.encodeAndDistribute(callBack: { isSuccess in
+                callBack?(isSuccess)
+            })
+        })
+        routeTo(.selectDevice, presentAs: .push, with: model)
+    }
+    
+    func restoreSecret(_ description: String, callBack: ((String?)->())?) {
+        #warning("!!!!")
+    }
 }
 
 private extension AddSecretViewModel {
-    
-    //MARK: - WORK WITH DB
-    func encodeInternal(callBack: (()->())?) {
-        guard let keyManager = mainUser?.keyManager, let activeVaults else {
-            showCommonError(nil)
-            callBack?()
-            return
-        }
-        
-        for index in 0..<activeVaults.count {
-            let vault = activeVaults[index]
-            let shareToEncode = EncodeShare(senderKeyManager: keyManager, receiversPubKeys: vault.transportPublicKey?.base64Text ?? "", secret: components[index].shareBlocks?.first?.data?.base64Text ?? "")
-            guard let encodedShare = RustTransporterManager().encode(share: shareToEncode) else {
-                showCommonError(nil)
-                callBack?()
-                return
-            }
-            
-            if (vault.device?.deviceId == mainVault?.device?.deviceId || (vault.isVirtual ?? false)) {
-                let description = "\(self.description)_\(vault.vaultName)"
-                saveToDB(share: encodedShare, description: description)
-            } else {
-                Distribute(encodedShare: encodedShare, reciverVault: vault, type: .Split).execute() { [weak self] result in
-                    print("")
-                }
-            }
-        }
-        
-        callBack?()
+    func splitInternal(_ secret: String, callBack: ((Bool)->())?) {
+        components = RustTransporterManager().split(secret: secret)
+        callBack?(!components.isEmpty)
     }
     
-    private func saveToDB(share: String, description: String) {
+    //MARK: - WORK WITH DB
+    private func saveToDB(shares: [String], description: String, isVirtual: Bool) {
         let secret = Secret()
         secret.secretID = description
-        secret.secretPart = share
-        
+        secret.shares.append(objectsIn: shares)
         DBManager.shared.saveSecret(secret)
     }
     

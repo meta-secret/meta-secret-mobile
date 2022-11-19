@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MainScreenSource {
+final class MainScreenSource {
     var items: [[CellSetupDate]] = []
 }
 

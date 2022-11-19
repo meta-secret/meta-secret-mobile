@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Accept: HTTPRequest, UD {
+final class Accept: HTTPRequest, UD {
     typealias ResponseType = AcceptResult
     var params: [String : Any]?
     var path: String = "accept"

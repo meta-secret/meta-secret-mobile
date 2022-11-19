@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GetVault: HTTPRequest, UD {
+final class GetVault: HTTPRequest, UD {
     typealias ResponseType = GetVaultResult
     var params: [String : Any]?
     var path: String = "getVault"

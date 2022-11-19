@@ -1,5 +1,5 @@
 //
-//  VaultsDataSource.swift
+//  SecretsDataSource.swift
 //  MetaSecret
 //
 //  Created by Dmitry Kuklin on 25.08.2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class VaultsDataSource: MainScreeSourcable {
+final class SecretsDataSource: MainScreeSourcable {
     func getDataSource<T>(for secrets: T) -> MainScreenSource? {
         guard let secrets = secrets as? [Secret] else {
             return nil
@@ -15,12 +15,10 @@ final class VaultsDataSource: MainScreeSourcable {
         
         var sourceItems = [[CellSetupDate]]()
         var items = [CellSetupDate]()
-        for item in secrets {
+        for secret in secrets {
             let cellSource = CellSetupDate()
-            
-//            let isWarning = (!item.isFullySplited || item.isSavedLocaly) ? true : false
-            cellSource.setupCellSource(title: item.secretID, boolValue: false)
-            items.append(cellSource)
+            cellSource.setupCellSource(title: secret.secretID, boolValue: !secret.isFullySplited)
+                items.append(cellSource)
         }
         
         if !items.isEmpty {

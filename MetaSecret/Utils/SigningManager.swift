@@ -11,12 +11,11 @@ import CryptoKit
 import Security
 
 protocol Signable: Alertable, UD {
-    func generateKeys(for userName: String) -> UserSignature?
-//    func decryptData(_ secret: String, key: String, name: String)
+    func generateKeys(for userName: String) -> UserSecurityBox?
 }
 
 extension Signable {
-    func generateKeys(for userName: String) -> UserSignature? {
+    func generateKeys(for userName: String) -> UserSecurityBox? {
         let user = RustTransporterManager().generate(for: userName)
         return user
     }

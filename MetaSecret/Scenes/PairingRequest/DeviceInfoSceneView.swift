@@ -87,8 +87,7 @@ private extension DeviceInfoSceneView {
         
         //Texts
         deviceNameLabel.text = vault.device?.deviceName ?? ""
-        userNameLabel.text = vault.vaultName ?? ""
+        userNameLabel.text = vault.vaultName
         deviceIdLabel.text = vault.device?.deviceId ?? ""
-        
     }
 }

@@ -16,7 +16,7 @@
 		E50ACA0829156CC200A8B432 /* PasswordShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50ACA0729156CC200A8B432 /* PasswordShare.swift */; };
 		E5108B4828BD38680067207A /* Distribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4728BD38680067207A /* Distribute.swift */; };
 		E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */; };
-		E51ADE9028B7F6D700C6A87B /* CellSetupable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */; };
+		E51ADE9028B7F6D700C6A87B /* CellSetupDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE8F28B7F6D700C6A87B /* CellSetupDate.swift */; };
 		E51ADE9228B8109400C6A87B /* FindShares.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9128B8109400C6A87B /* FindShares.swift */; };
 		E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */; };
 		E51ADE9728B8193D00C6A87B /* AddSecretSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */; };
@@ -26,7 +26,7 @@
 		E52686F72901DBD20030A542 /* MetaSecret-Bridging-Header.h in Resources */ = {isa = PBXBuildFile; fileRef = E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */; };
 		E52E651828C8021E0028213A /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E651728C8021E0028213A /* Secret.swift */; };
 		E54205E928D123D300E763DB /* SceneSendDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54205E828D123D300E763DB /* SceneSendDataModel.swift */; };
-		E548679E28B6E37B00A1E5DB /* VaultsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */; };
+		E548679E28B6E37B00A1E5DB /* SecretsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548679D28B6E37B00A1E5DB /* SecretsDataSource.swift */; };
 		E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */; };
 		E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */; };
 		E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A428B6E94800A1E5DB /* MainScreenSource.swift */; };
@@ -63,9 +63,14 @@
 		E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252928D3B5E100FB01B0 /* UICollectionView+Extension.swift */; };
 		E588252C28D3D97000FB01B0 /* AppImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588252B28D3D97000FB01B0 /* AppImages.swift */; };
 		E588253728D5448E00FB01B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E588253928D5448E00FB01B0 /* Localizable.strings */; };
+		E58E3B86292639D50018B136 /* Base64EncodedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B85292639D50018B136 /* Base64EncodedText.swift */; };
+		E58E3B87292639D50018B136 /* Base64EncodedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B85292639D50018B136 /* Base64EncodedText.swift */; };
+		E58E3B89292649670018B136 /* MetaSecretErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B88292649670018B136 /* MetaSecretErrors.swift */; };
+		E58E3B8A292649670018B136 /* MetaSecretErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B88292649670018B136 /* MetaSecretErrors.swift */; };
 		E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */; };
 		E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2828B26208007982BD /* LoaderManager.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
+		E5B64C3D292663510079A5CC /* ShareDistributionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */; };
 		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
 		E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */; };
 		E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */; };
@@ -111,7 +116,7 @@
 		E50ACA0729156CC200A8B432 /* PasswordShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordShare.swift; sourceTree = "<group>"; };
 		E5108B4728BD38680067207A /* Distribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distribute.swift; sourceTree = "<group>"; };
 		E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretViewModel.swift; sourceTree = "<group>"; };
-		E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSetupable.swift; sourceTree = "<group>"; };
+		E51ADE8F28B7F6D700C6A87B /* CellSetupDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSetupDate.swift; sourceTree = "<group>"; };
 		E51ADE9128B8109400C6A87B /* FindShares.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindShares.swift; sourceTree = "<group>"; };
 		E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretSceneView.swift; sourceTree = "<group>"; };
 		E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSecretSceneView.xib; sourceTree = "<group>"; };
@@ -122,7 +127,7 @@
 		E52686F52901D9DC0030A542 /* libmeta_secret_core_swift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmeta_secret_core_swift.a; sourceTree = "<group>"; };
 		E52E651728C8021E0028213A /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		E54205E828D123D300E763DB /* SceneSendDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSendDataModel.swift; sourceTree = "<group>"; };
-		E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultsDataSource.swift; sourceTree = "<group>"; };
+		E548679D28B6E37B00A1E5DB /* SecretsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsDataSource.swift; sourceTree = "<group>"; };
 		E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
 		E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreeSourcable.swift; sourceTree = "<group>"; };
 		E54867A428B6E94800A1E5DB /* MainScreenSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenSource.swift; sourceTree = "<group>"; };
@@ -165,9 +170,12 @@
 		E588253428D5440A00FB01B0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E588253828D5448E00FB01B0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E588253A28D5449000FB01B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E58E3B85292639D50018B136 /* Base64EncodedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64EncodedText.swift; sourceTree = "<group>"; };
+		E58E3B88292649670018B136 /* MetaSecretErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretErrors.swift; sourceTree = "<group>"; };
 		E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extenson.swift"; sourceTree = "<group>"; };
 		E5A64F2828B26208007982BD /* LoaderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderManager.swift; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
+		E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDistributionManager.swift; sourceTree = "<group>"; };
 		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
 		E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceInfoSceneView.xib; sourceTree = "<group>"; };
 		E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneViewModel.swift; sourceTree = "<group>"; };
@@ -245,14 +253,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		E51ADE8E28B7F69300C6A87B /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				E51ADE8F28B7F6D700C6A87B /* CellSetupable.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		E51ADE9328B8191600C6A87B /* AddSecret */ = {
 			isa = PBXGroup;
 			children = (
@@ -277,7 +277,7 @@
 		E548679F28B6E38500A1E5DB /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E548679D28B6E37B00A1E5DB /* VaultsDataSource.swift */,
+				E548679D28B6E37B00A1E5DB /* SecretsDataSource.swift */,
 				E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */,
 				E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */,
 			);
@@ -408,8 +408,6 @@
 				E57BDA7628A79A1B00DB27BD /* Scenes */,
 				E5800029288CA4D000E1135C /* AppDelegate.swift */,
 				E580002F288CA4D000E1135C /* Main.storyboard */,
-				E5800032288CA4D200E1135C /* Assets.xcassets */,
-				E5061CE628CD116700E2787B /* Colors.xcassets */,
 				E5800034288CA4D200E1135C /* LaunchScreen.storyboard */,
 				E5800037288CA4D300E1135C /* Info.plist */,
 			);
@@ -466,7 +464,7 @@
 		E5F0C3F628A82B3B00902310 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E51ADE8E28B7F69300C6A87B /* Protocols */,
+				E51ADE8F28B7F6D700C6A87B /* CellSetupDate.swift */,
 				E5F0C40928A83FFA00902310 /* AlertModel.swift */,
 				E5F0C3F728A82B5500902310 /* User.swift */,
 				E5F0C3F928A82D0800902310 /* Vault.swift */,
@@ -476,6 +474,8 @@
 				E54205E828D123D300E763DB /* SceneSendDataModel.swift */,
 				E50ACA0729156CC200A8B432 /* PasswordShare.swift */,
 				E54EFA9A291721F20049DD81 /* EncodeShare.swift */,
+				E58E3B85292639D50018B136 /* Base64EncodedText.swift */,
+				E58E3B88292649670018B136 /* MetaSecretErrors.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -483,6 +483,8 @@
 		E5F0C40128A8369800902310 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E5800032288CA4D200E1135C /* Assets.xcassets */,
+				E5061CE628CD116700E2787B /* Colors.xcassets */,
 				E588253928D5448E00FB01B0 /* Localizable.strings */,
 				E5F0C40228A836B000902310 /* Constants.swift */,
 				E5F0C40D28A9878D00902310 /* AppColors.swift */,
@@ -504,6 +506,7 @@
 				E55AC12428C7DFB000757C0C /* DBManager.swift */,
 				E5643BD628FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift */,
 				E520C952290F2FAB001DB36E /* JsonManager.swift */,
+				E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -679,7 +682,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5DA4DB12905931F00893DF2 /* meta-secret-core.h in Sources */,
+				E58E3B87292639D50018B136 /* Base64EncodedText.swift in Sources */,
 				E5DA4DAE2905889600893DF2 /* MetaSecretCoreWrapper.swift in Sources */,
+				E58E3B8A292649670018B136 /* MetaSecretErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -696,6 +701,7 @@
 				E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */,
 				E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */,
 				E5F0C40028A82E1900902310 /* LoginSceneViewModel.swift in Sources */,
+				E5B64C3D292663510079A5CC /* ShareDistributionManager.swift in Sources */,
 				E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */,
 				E55B514528CE92F300373959 /* PopupHintViewScene.swift in Sources */,
 				E5061CF128CD20C500E2787B /* UIView+Extension.swift in Sources */,
@@ -717,7 +723,7 @@
 				E5F0C40E28A9878D00902310 /* AppColors.swift in Sources */,
 				E5F0C3FA28A82D0800902310 /* Vault.swift in Sources */,
 				E5F0C3F828A82B5500902310 /* User.swift in Sources */,
-				E51ADE9028B7F6D700C6A87B /* CellSetupable.swift in Sources */,
+				E51ADE9028B7F6D700C6A87B /* CellSetupDate.swift in Sources */,
 				E5F0C41028A9958100902310 /* UD.swift in Sources */,
 				E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */,
 				E55B514228CD43A000373959 /* UIFont+Extension.swift in Sources */,
@@ -727,12 +733,14 @@
 				E5108B4828BD38680067207A /* Distribute.swift in Sources */,
 				E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */,
 				E5643BD728FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift in Sources */,
+				E58E3B89292649670018B136 /* MetaSecretErrors.swift in Sources */,
 				E588252C28D3D97000FB01B0 /* AppImages.swift in Sources */,
 				E5061CEE28CD198B00E2787B /* BottomInfoViewModel.swift in Sources */,
 				E57E6B6528B4199000906DBD /* Decline.swift in Sources */,
 				E588252728D3B53400FB01B0 /* OnboardingCollectionViewCell.swift in Sources */,
 				E55A227D28B0611800F5F02B /* Accept.swift in Sources */,
 				E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */,
+				E58E3B86292639D50018B136 /* Base64EncodedText.swift in Sources */,
 				E5061CF328CD258D00E2787B /* BottomInfoSheetModel.swift in Sources */,
 				E520C953290F2FAB001DB36E /* JsonManager.swift in Sources */,
 				E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */,
@@ -740,7 +748,7 @@
 				E5061CEB28CD197400E2787B /* BottomInfoSheetViewScene.swift in Sources */,
 				E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */,
 				E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */,
-				E548679E28B6E37B00A1E5DB /* VaultsDataSource.swift in Sources */,
+				E548679E28B6E37B00A1E5DB /* SecretsDataSource.swift in Sources */,
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
 				E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */,
 				E5F0C40A28A83FFA00902310 /* AlertModel.swift in Sources */,

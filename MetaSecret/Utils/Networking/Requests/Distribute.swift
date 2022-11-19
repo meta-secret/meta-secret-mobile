@@ -7,20 +7,24 @@
 
 import Foundation
 
-class Distribute: HTTPRequest, UD {
+final class Distribute: HTTPRequest, UD {
     typealias ResponseType = DistributeResult
     var params: [String : Any]?
     var path: String = "distribute"
     
-    init(encodedShare: String, reciverVault: Vault, type: SecretDistributionType) {
+    init(encodedShare: String, reciverVault: Vault, description: String, type: SecretDistributionType) {
         guard let user = mainVault else { return }
         
-//        let secretMessage = EncryptedMessage(receiver: reciverVault, encryptedText: encryptedShare)
-//        let passwordRequest = MetaPasswordRequest(userSig: user, metaPassword: <#T##<<error type>>#>)
-//
+        let secretMessage = EncryptedMessage(receiver: reciverVault, encryptedText: encodedShare)
+        #warning("Need an alert")
+//        let metaPasswordId = RustTransporterManager().generateMetaPassId(description: description)!
+//        print(metaPasswordId)
+//        let metaPasswordDoc = MetaPasswordDoc(id: metaPasswordId, vault: user)
+//        let metaPassword = MetaPasswordRequest(userSig: user, metaPassword: metaPasswordDoc)
+        
 //        self.params = [
 //            "distributionType": type.rawValue,
-//            "metaPassword": password,
+//            "metaPassword": metaPassword,
 //            "secretMessage": secretMessage
 //        ]
     }
@@ -30,19 +34,28 @@ struct DistributeResult: Codable {
     var status: String
 }
 
-enum SecretDistributionType: String {
+enum SecretDistributionType: String, Codable {
     case Split
     case Recover
 }
 
-//struct MetaPasswordRequest: Codable {
-//    let userSig: Vault
-//    let metaPassword: MetaPasswordDoc,
-//}
+struct MetaPasswordRequest: Codable {
+    var userSig: Vault
+    var metaPassword: MetaPasswordDoc
+}
 
 struct EncryptedMessage: Codable {
     var receiver: Vault
     var encryptedText: String
 }
 
+struct MetaPasswordDoc: Codable {
+    var id: MetaPasswordId
+    var vault: Vault
+}
 
+struct MetaPasswordId: Codable {
+    var id: String?
+    var salt: String?
+    var name: String?
+}

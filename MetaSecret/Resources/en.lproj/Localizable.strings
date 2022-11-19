@@ -89,7 +89,7 @@
 "successSplited" = "Secret has been splited, encoded and distributed successfully!";
 
 //MARK: - ALERTS
-"ok" = "Ок";
+"okok" = "Ок";
 "cancel" = "Cancel";
 
 //MARK: - Errors
@@ -104,3 +104,8 @@
 "sentShareTitle" = "Share has been sent!";
 "sentShareMessage" = "Secind share has been sent successfully on device %@";
 "chooseDevices" = "Please, select device to distribute other parts of your secret";
+
+//MARK: -Errors
+"generateUserError" = "Generating of user's signature is FAILED";
+"distributeError" = "Distribution is FAILED";
+"restoreError" = "Restore error";

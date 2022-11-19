@@ -8,39 +8,30 @@
 import Foundation
 
 //MARK: - Send to Rust Lib
-class RustTransporterManager {
-    func generate(for name: String) -> UserSignature? {
-        let userSignature = UserSignature()
-        userSignature.vaultName = name
-        let json = JsonManger.jsonU8Generation(from: userSignature)
+final class RustTransporterManager: JsonSerealizable {
+    func generate(for name: String) -> UserSecurityBox? {
+        let jsonData = jsonU8Generation(from: name)
         
-        let signedUserJson = generate_signed_user(json, json.count).asString() ?? ""
-        do {
-            let signature: UserSignature = try JsonManger.object(from: signedUserJson)
-            return signature
-        } catch {
-            print(error.localizedDescription)
-            return nil
-        }
+        let signedUserJson = generate_signed_user(jsonData, jsonData.count)
+        guard let signedUserJsonString = signedUserJson.asString() else { return nil }
+
+        let userBox: UserSecurityBox? = object(from: signedUserJsonString)
+        return userBox
     }
     
     func split(secret: String) -> [PasswordShare] {
         var components = [PasswordShare]()
-        
-        let secretData = [UInt8](Data(secret.utf8))
+
+        let secretData = jsonU8Generation(from: secret)
         let jsonResult = split_secret(secretData, secretData.count)
         guard let jsonString = jsonResult.asString() else { return []}
-        do {
-            components = try JsonManger.array(from: jsonString)
-        } catch {
-            print(error.localizedDescription)
-            return []
-        }
+
+        components = array(from: jsonString) ?? []
         return components
     }
-    
+
     func encode(share: EncodeShare) -> String? {
-        let jsonData = JsonManger.jsonU8Generation(from: share)
+        guard let jsonData = jsonU8Generation(from: share) else { return nil }
         let result = encode_secret(jsonData, jsonData.count).asString()
         return result
     }

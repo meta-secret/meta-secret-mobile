@@ -26,7 +26,7 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
         Accept(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
-                if response.status == "finished" {
+                if response.status == Constants.Common.finishedStatus {
                     self?.delegate?.successFullConnection()
                 } else {
                     self?.showCommonError(nil)
@@ -41,7 +41,7 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
         Decline(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
-                if response.status == "finished" {
+                if response.status == Constants.Common.finishedStatus {
                     self?.delegate?.successFullConnection()
                 } else {
                     self?.showCommonError(nil)

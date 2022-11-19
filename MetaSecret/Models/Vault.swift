@@ -9,16 +9,15 @@ import Foundation
 
 final class Vault: Codable, UD {
     var vaultName: String
-    var signature: KeyFormat?
-    var publicKey: KeyFormat?
-    var transportPublicKey: KeyFormat?
+    var signature: Base64EncodedText?
+    var publicKey: Base64EncodedText?
+    var transportPublicKey: Base64EncodedText?
     var device: Device?
     var declinedJoins: [Vault]?
     var pendingJoins: [Vault]?
     var signatures: [Vault]?
-    var isVirtual: Bool?
     
-    init(vaultName: String, signature: KeyFormat? = nil, publicKey: KeyFormat? = nil, transportPublicKey: KeyFormat? = nil, device: Device? = nil, declinedJoins: [Vault]? = nil, pendingJoins: [Vault]? = nil, signatures: [Vault]? = nil, isVirtual: Bool) {
+    init(vaultName: String, signature: Base64EncodedText? = nil, publicKey: Base64EncodedText? = nil, transportPublicKey: Base64EncodedText? = nil, device: Device? = nil, declinedJoins: [Vault]? = nil, pendingJoins: [Vault]? = nil, signatures: [Vault]? = nil) {
         self.vaultName = vaultName
         self.signature = signature
         self.publicKey = publicKey
@@ -27,7 +26,6 @@ final class Vault: Codable, UD {
         self.declinedJoins = declinedJoins
         self.pendingJoins = pendingJoins
         self.signatures = signatures
-        self.isVirtual = isVirtual
     }
     
     func candidateRequest() -> [String: Any] {

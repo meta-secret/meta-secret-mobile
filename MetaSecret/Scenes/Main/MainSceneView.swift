@@ -178,9 +178,6 @@ private extension MainSceneView {
         let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.vaultName ?? ""), buttonHandler: { [weak self] in
 
             self?.shouldShowVirtualHint = false
-            if self?.additionalUsers.isEmpty ?? true {
-                self?.viewModel?.generateVirtualVaults()
-            }
         })
         routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
     }
@@ -222,7 +219,6 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
             
             let model = SceneSendDataModel(vault: selectedVault) { [weak self] isSuccess in
                 #warning("Need to send data from virtual to real")
-                self?.additionalUsers.removeFirst()
                 self?.viewModel?.getVault()
             }
             routeTo(.deviceInfo, presentAs: .push, with: model)

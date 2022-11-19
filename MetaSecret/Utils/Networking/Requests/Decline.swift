@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Decline: HTTPRequest {
+final class Decline: HTTPRequest {
     typealias ResponseType = DeclineResult
     var params: [String : Any]?
     var path: String = "decline"

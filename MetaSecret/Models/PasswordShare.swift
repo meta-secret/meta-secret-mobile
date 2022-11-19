@@ -7,11 +7,11 @@
 
 import Foundation
 
-final class PasswordShares: Codable {
+struct PasswordShares: Codable {
     var result: [PasswordShare]
 }
 
-final class PasswordShare: Codable {
+struct PasswordShare: Codable {
     var shareId: Int?
     var shareBlocks: [ShareBlock]?
     
@@ -21,22 +21,22 @@ final class PasswordShare: Codable {
     }
 }
 
-final class ShareBlock: Codable {
+struct ShareBlock: Codable {
     var block: Int?
     var config: ShareBlockConfig?
     var meta_data: ShareBlockMetaData?
     var data: ShareBlockData?
 }
 
-final class ShareBlockConfig: Codable {
+struct ShareBlockConfig: Codable {
     var number_of_shares: Int?
     var threshold: Int?
 }
 
-final class ShareBlockMetaData: Codable {
+struct ShareBlockMetaData: Codable {
     var size: Int?
 }
 
-final class ShareBlockData: Codable {
+struct ShareBlockData: Codable {
     var base64Text: String?
 }

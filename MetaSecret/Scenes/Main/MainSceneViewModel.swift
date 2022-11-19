@@ -20,17 +20,21 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     private var type: MainScreenSourceType = .Secrets
     var vault: Vault? = nil
     
+    enum Config {
+        static let timerInterval: CGFloat = 10
+    }
     
     //MARK: - INIT
     init(delegate: MainSceneProtocol) {
         self.delegate = delegate
+        createTimer()
     }
     
     //MARK: - PUBLIC METHODS
     func getAllSecrets() {
         showLoader()
         DispatchQueue.main.async { [weak self] in
-            self?.source = VaultsDataSource().getDataSource(for: DBManager.shared.getAllSecrets())
+            self?.source = SecretsDataSource().getDataSource(for: DBManager.shared.getAllSecrets())
             guard let `self` = self else { return }
             self.delegate?.reloadData(source: self.source)
         }
@@ -59,45 +63,21 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
         self.type = type
         switch type {
         case .Secrets:
-            stopTimer()
             getAllSecrets()
         case .Devices:
-            createTimer()
             getVault()
         default:
             break
         }
     }
-    
-    func generateVirtualVaults() {
-        showLoader()
-        DispatchQueue.main.async { [weak self] in
-            guard let mainUser = self?.mainUser else {
-                self?.showCommonError(nil)
-                return
-            }
-            
-            var virtualUsers = [Vault]()
-            
-            for i in 0..<2 {
-                if let vUser = self?.generateKeys(for: "\(mainUser.vaultName)_\(Constants.Common.virtual)\(i+1)") {
-                    let vVault = vUser.toVault()
-                    vVault.isVirtual = true
-                    virtualUsers.append(vVault)
-                }
-            }
-            
-            self?.additionalUsers = virtualUsers
-            self?.hideLoader()
-        }
-    }
-    
 }
 
 private extension MainSceneViewModel {
     //MARK: - TIMER
     func createTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+        }
     }
     
     func stopTimer() {
@@ -108,7 +88,7 @@ private extension MainSceneViewModel {
     @objc func fireTimer() {
         switch type {
         case .Secrets:
-            getAllSecrets()
+            findShares()
         case .Devices:
             getVault()
         case .None:
@@ -123,8 +103,16 @@ private extension MainSceneViewModel {
             FindShares().execute { [weak self] result in
                 switch result {
                 case .success(let result):
-                    break
-//                    let description = result.secretMessage.debugDescription
+                    for share in result {
+                        let description = share.metaPassword?.metaPassword.id.name ?? ""
+                        let secretPart = share.secretMessage?.encryptedText ?? ""
+                        let secret = Secret()
+                        secret.secretID = description
+                        #warning("!!!!")
+//                        secret.secretPart = secretPart
+                        DBManager.shared.saveSecret(secret)
+                    }
+                    self?.getAllSecrets()
                 case .failure(let error):
                     self?.showCommonError(error.localizedDescription)
                 }

@@ -1,5 +1,5 @@
 //
-//  CellSetupable.swift
+//  CellSetupDate.swift
 //  MetaSecret
 //
 //  Created by Dmitry Kuklin on 25.08.2022.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CellSetupDate {
+final class CellSetupDate {
     var title: String? = nil
     var subtitle: String? = nil
     var intValue: Int? = nil

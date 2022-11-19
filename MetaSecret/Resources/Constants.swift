@@ -14,6 +14,8 @@ struct Constants {
         static let animationTime: CGFloat = 0.3
         static let waitingTime: CGFloat = 0.1
         static let virtual = "virtual"
+        static let finishedStatus = "finished"
+        static let neededMembersCount = 3
     }
     
     //MARK: - ONBOARDING
@@ -144,6 +146,9 @@ struct Constants {
         static let enterName = NSLocalizedString("enterName", comment: "")
         static let swwError = NSLocalizedString("sww", comment: "")
         static let notEnoughtMembers = NSLocalizedString("atLeast3", comment: "")
+        static let generateUserError = NSLocalizedString("generateUserError", comment: "")
+        static let distributeError = NSLocalizedString("distributeError", comment: "")
+        static let restoreError = NSLocalizedString("restoreError", comment: "")
     }
     
     //MARK: - TAGS

@@ -35,11 +35,13 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
             return
         }
         
-        guard let user = generateKeys(for: userName) else {
-            showCommonError(nil)
+        guard let userSecurityBox = generateKeys(for: userName) else {
+            showCommonError(MetaSecretErrorType.generateUser.message())
             delegate?.processFinished()
             return
         }
+        
+        let user = UserSignature(vaultName: userName, signature: userSecurityBox.signature, keyManager: userSecurityBox.keyManager)
 
         Register(user: user).execute() { [weak self] result in
             switch result {
@@ -48,7 +50,6 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
                     self?.deviceStatus = .member
                     self?.mainVault = user.toVault()
                     self?.mainUser = user
-                    #warning("Need it on Server")
                     self?.isOwner = true
                     self?.routeTo(.main, presentAs: .root)
                 } else {
