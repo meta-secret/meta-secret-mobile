@@ -149,6 +149,8 @@ struct Constants {
         static let generateUserError = NSLocalizedString("generateUserError", comment: "")
         static let distributeError = NSLocalizedString("distributeError", comment: "")
         static let restoreError = NSLocalizedString("restoreError", comment: "")
+        static let encodeError = NSLocalizedString("encodeError", comment: "")
+        static let noMainUserError = NSLocalizedString("noMainUserError", comment: "")
     }
     
     //MARK: - TAGS

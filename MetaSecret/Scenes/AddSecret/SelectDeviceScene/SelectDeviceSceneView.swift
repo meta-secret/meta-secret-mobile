@@ -26,7 +26,7 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     private var source = [Vault]()
     private var shares: [String]? = nil
     private var note: String? = nil
-    private var callback: ((Bool?)->())? = nil
+    private var callback: ((Bool)->())? = nil
     
     private var selectedCellIndexes: [IndexPath] = [IndexPath]()
     

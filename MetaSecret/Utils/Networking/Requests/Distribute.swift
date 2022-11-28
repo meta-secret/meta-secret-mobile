@@ -16,17 +16,18 @@ final class Distribute: HTTPRequest, UD {
         guard let user = mainVault else { return }
         
         let secretMessage = EncryptedMessage(receiver: reciverVault, encryptedText: encodedShare)
-        #warning("Need an alert")
-//        let metaPasswordId = RustTransporterManager().generateMetaPassId(description: description)!
-//        print(metaPasswordId)
-//        let metaPasswordDoc = MetaPasswordDoc(id: metaPasswordId, vault: user)
-//        let metaPassword = MetaPasswordRequest(userSig: user, metaPassword: metaPasswordDoc)
         
-//        self.params = [
-//            "distributionType": type.rawValue,
-//            "metaPassword": metaPassword,
-//            "secretMessage": secretMessage
-//        ]
+        let metaPasswordId = MetaPasswordId(name: description)
+        // RustTransporterManager().generateMetaPassId(description: description)!
+        print(metaPasswordId)
+        let metaPasswordDoc = MetaPasswordDoc(id: metaPasswordId, vault: user)
+        let metaPassword = MetaPasswordRequest(userSig: user, metaPassword: metaPasswordDoc)
+        
+        self.params = [
+            "distributionType": type.rawValue,
+            "metaPassword": metaPassword,
+            "secretMessage": secretMessage
+        ]
     }
 }
 
@@ -58,4 +59,10 @@ struct MetaPasswordId: Codable {
     var id: String?
     var salt: String?
     var name: String?
+    
+    init(name: String) {
+        self.name = name
+        self.salt = UUID().uuidString
+        self.id = UUID().uuidString
+    }
 }

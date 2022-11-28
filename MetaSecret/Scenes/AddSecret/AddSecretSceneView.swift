@@ -73,6 +73,8 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
     @IBAction func selectSaveButtonTapped(_ sender: Any) {
         if (viewModel?.vaultsCount() ?? 1) <= Constants.Common.neededMembersCount {
             viewModel?.encodeAndDistribute(callBack: { [weak self] isSuccess in
+                self?.hideLoader()
+                
                 if isSuccess {
                     self?.navigationController?.popViewController(animated: true)
                 } else {
@@ -81,7 +83,9 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
                 }
             })
         } else {
+            showLoader()
             viewModel?.showDeviceLists(callBack: { [weak self] isSuccess in
+                self?.hideLoader()
                 if isSuccess {
                     self?.showCommonAlert(AlertModel(title: Constants.AddSecret.success, message: Constants.AddSecret.successSplited, okButton: Constants.Alert.ok, okHandler: { [weak self] in
                         self?.navigationController?.popViewController(animated: true)

@@ -109,3 +109,5 @@
 "generateUserError" = "Generating of user's signature is FAILED";
 "distributeError" = "Distribution is FAILED";
 "restoreError" = "Restore error";
+"encodeError" = "Encode error";
+"noMainUserError" = "No main user";

@@ -12,7 +12,7 @@ protocol AddSecretProtocol {
     func close()
 }
 
-final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
+final class AddSecretViewModel: UD, Routerable, Signable {
     //MARK: - PROPERTIES
     enum Config {
         static let minMembersCount = 3
@@ -21,14 +21,16 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     private var delegate: AddSecretProtocol? = nil
     private var components: [PasswordShare] = [PasswordShare]()
     private var vaults: [Vault]? = nil
-    private var activeVaults: [Vault]? = nil
+    private lazy var activeVaults: [Vault] = [Vault]()
     private var description: String = ""
+    private var distributionManager: ShareDistributionable? = nil
     
     var isFullySplitted: Bool = false
     
     //MARK: - INIT
     init(delegate: AddSecretProtocol) {
         self.delegate = delegate
+        distributionManager = ShareDistributionManager()
     }
     
     //MARK: - PUBLIC METHODS
@@ -41,7 +43,7 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
                     self?.vaults?.removeAll()
                     self?.vaults = result.vault?.signatures
                     if self?.vaults?.count ?? 0 <= Constants.Common.neededMembersCount {
-                        self?.activeVaults = self?.vaults
+                        self?.activeVaults = self?.vaults ?? []
                     }
                     completion?()
                 case .failure(let error):
@@ -72,12 +74,11 @@ final class AddSecretViewModel: Alertable, UD, Routerable, Signable {
     }
     
     func encodeAndDistribute(callBack: ((Bool)->())?) {
-        #warning("!!!!")
+        distributionManager?.distributeShares(components, activeVaults, description: description, callBack: callBack)
     }
     
     func showDeviceLists(callBack: ((Bool)->())?) {
         let model = SceneSendDataModel(vaults: vaults, callBackVaults: { [weak self] vaults in
-            self?.showLoader()
             self?.activeVaults = vaults
             self?.encodeAndDistribute(callBack: { isSuccess in
                 callBack?(isSuccess)
@@ -97,14 +98,7 @@ private extension AddSecretViewModel {
         callBack?(!components.isEmpty)
     }
     
-    //MARK: - WORK WITH DB
-    private func saveToDB(shares: [String], description: String, isVirtual: Bool) {
-        let secret = Secret()
-        secret.secretID = description
-        secret.shares.append(objectsIn: shares)
-        DBManager.shared.saveSecret(secret)
-    }
-    
+    //MARK: - WORK WITH DB    
     func readMySecret(description: String) -> Secret? {
         return DBManager.shared.readSecretBy(description: description)
     }

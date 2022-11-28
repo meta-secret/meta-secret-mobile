@@ -108,3 +108,5 @@
 "generateUserError" = "Ошибка генерации юзер сигнатур";
 "distributeError" = "Ошибка дистрибьюции";
 "restoreError" = "Ошибка восстановления пароля";
+"encodeError" = "Ошибка кодирования";
+"noMainUserError" = "Нет основного пользователя";

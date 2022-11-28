@@ -17,7 +17,7 @@ final class SecretsDataSource: MainScreeSourcable {
         var items = [CellSetupDate]()
         for secret in secrets {
             let cellSource = CellSetupDate()
-            cellSource.setupCellSource(title: secret.secretID, boolValue: !secret.isFullySplited)
+            cellSource.setupCellSource(title: secret.secretName, boolValue: secret.shares.count != 1)
                 items.append(cellSource)
         }
         

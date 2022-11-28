@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 protocol MainSceneProtocol {
     func reloadData(source: MainScreenSource?)
@@ -104,12 +105,14 @@ private extension MainSceneViewModel {
                 switch result {
                 case .success(let result):
                     for share in result {
-                        let description = share.metaPassword?.metaPassword.id.name ?? ""
                         let secretPart = share.secretMessage?.encryptedText ?? ""
                         let secret = Secret()
-                        secret.secretID = description
+                        secret.secretID = share.metaPassword?.metaPassword.id.id ?? ""
+                        secret.secretName = share.metaPassword?.metaPassword.id.name ?? ""
                         #warning("!!!!")
-//                        secret.secretPart = secretPart
+                        let realmList = List<String>()
+                        realmList.append(objectsIn: [secretPart])
+                        secret.shares = realmList
                         DBManager.shared.saveSecret(secret)
                     }
                     self?.getAllSecrets()

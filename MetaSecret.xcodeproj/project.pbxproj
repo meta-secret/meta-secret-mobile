@@ -14,6 +14,7 @@
 		E5061CF128CD20C500E2787B /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5061CF028CD20C500E2787B /* UIView+Extension.swift */; };
 		E5061CF328CD258D00E2787B /* BottomInfoSheetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5061CF228CD258D00E2787B /* BottomInfoSheetModel.swift */; };
 		E50ACA0829156CC200A8B432 /* PasswordShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50ACA0729156CC200A8B432 /* PasswordShare.swift */; };
+		E50E4308292D5368007FEBA4 /* Claim.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50E4307292D5368007FEBA4 /* Claim.swift */; };
 		E5108B4828BD38680067207A /* Distribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4728BD38680067207A /* Distribute.swift */; };
 		E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */; };
 		E51ADE9028B7F6D700C6A87B /* CellSetupDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE8F28B7F6D700C6A87B /* CellSetupDate.swift */; };
@@ -71,6 +72,7 @@
 		E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2828B26208007982BD /* LoaderManager.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
 		E5B64C3D292663510079A5CC /* ShareDistributionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */; };
+		E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */; };
 		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
 		E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */; };
 		E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */; };
@@ -114,6 +116,7 @@
 		E5061CF028CD20C500E2787B /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E5061CF228CD258D00E2787B /* BottomInfoSheetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInfoSheetModel.swift; sourceTree = "<group>"; };
 		E50ACA0729156CC200A8B432 /* PasswordShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordShare.swift; sourceTree = "<group>"; };
+		E50E4307292D5368007FEBA4 /* Claim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Claim.swift; sourceTree = "<group>"; };
 		E5108B4728BD38680067207A /* Distribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distribute.swift; sourceTree = "<group>"; };
 		E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretViewModel.swift; sourceTree = "<group>"; };
 		E51ADE8F28B7F6D700C6A87B /* CellSetupDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSetupDate.swift; sourceTree = "<group>"; };
@@ -176,6 +179,7 @@
 		E5A64F2828B26208007982BD /* LoaderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderManager.swift; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
 		E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDistributionManager.swift; sourceTree = "<group>"; };
+		E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindClaims.swift; sourceTree = "<group>"; };
 		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
 		E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceInfoSceneView.xib; sourceTree = "<group>"; };
 		E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneViewModel.swift; sourceTree = "<group>"; };
@@ -319,6 +323,8 @@
 				E57E6B6428B4198F00906DBD /* Decline.swift */,
 				E51ADE9128B8109400C6A87B /* FindShares.swift */,
 				E5108B4728BD38680067207A /* Distribute.swift */,
+				E50E4307292D5368007FEBA4 /* Claim.swift */,
+				E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -697,6 +703,7 @@
 				E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */,
 				E57E6B6328B3F79B00906DBD /* Router.swift in Sources */,
 				E57E6B5728B3F00900906DBD /* MainSceneViewModel.swift in Sources */,
+				E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */,
 				E580002A288CA4D000E1135C /* AppDelegate.swift in Sources */,
 				E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */,
 				E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */,
@@ -720,6 +727,7 @@
 				E55AC12528C7DFB000757C0C /* DBManager.swift in Sources */,
 				E57E6B5A28B3F04B00906DBD /* SplashSceneView.swift in Sources */,
 				E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */,
+				E50E4308292D5368007FEBA4 /* Claim.swift in Sources */,
 				E5F0C40E28A9878D00902310 /* AppColors.swift in Sources */,
 				E5F0C3FA28A82D0800902310 /* Vault.swift in Sources */,
 				E5F0C3F828A82B5500902310 /* User.swift in Sources */,

@@ -6,50 +6,117 @@
 //
 
 import Foundation
-
+#warning("UNIVERSAL MECHANISM NEEDED")
 protocol ShareDistributionable {
-    func distributeShares(_ shares: [PasswordShare], _ vaults: [Vault])
+    func distributeShares(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((Bool)->())?)
+    func restorePassword(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((String)->())?)
 }
 
-extension ShareDistributionable {
-    func distributeShares(_ shares: [PasswordShare], _ vaults: [Vault]) {
+class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSerealizable {
+    fileprivate enum SplittedType: Int {
+        case fullySplitted = 3
+        case allInOne = 1
+        case partially = 2
+    }
+    
+    fileprivate var shares: [PasswordShare] = [PasswordShare]()
+    fileprivate var vaults: [Vault] = [Vault]()
+    fileprivate var description: String = ""
+    fileprivate var callBack: ((Bool)->())?
+    
+    func distributeShares(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((Bool)->())?) {
+        guard let typeOfSharing = SplittedType(rawValue: vaults.count) else {
+            callBack?(false)
+            return
+        }
         
+        self.callBack = callBack
+        self.vaults = vaults
+        self.shares = shares
+        self.description = description
+        
+        switch typeOfSharing {
+        case .fullySplitted:
+            simpleDistribution(callBack: callBack)
+        case .allInOne:
+            simpleDistribution(callBack: callBack)
+        case .partially:
+            break
+        }
+    }
+    
+    func restorePassword(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((String) -> ())?) {
+//        Distribute(encodedShare: shares, reciverVault: vaults, description: description, type: .Recover).execute() { restoredPassword in
+//            callBack?(restoredPassword)
+//        }
     }
 }
 
-/*
- func encodeInternal(callBack: (()->())?) {
-     guard let keyManager = mainUser?.keyManager, let activeVaults else {
-         showCommonError(nil)
-         callBack?()
-         return
-     }
-     
-     for index in 0..<activeVaults.count {
-         let vault = activeVaults[index]
-         let shareToEncode = EncodeShare(senderKeyManager: keyManager, receiversPubKeys: vault.transportPublicKey?.base64Text ?? "", secret: components[index].shareBlocks?.first?.data?.base64Text ?? "")
-         guard let encodedShare = RustTransporterManager().encode(share: shareToEncode) else {
-             showCommonError(nil)
-             callBack?()
-             return
-         }
-         
-         if (vault.device?.deviceId == mainVault?.device?.deviceId || (vault.isVirtual ?? false)) {
-             var description = ""
-             if (vault.isVirtual ?? false) {
-                 description = "\(self.description)*$*\(vault.vaultName)"
-             } else {
-                 description = self.description
-             }
-
-             saveToDB(share: encodedShare, description: description, isVirtual: (vault.isVirtual ?? false))
-         } else {
-             Distribute(encodedShare: encodedShare, reciverVault: vault, description: description, type: .Split).execute() { result in
-                 print("")
-             }
-         }
-     }
-     
-     callBack?()
- }
- */
+private extension ShareDistributionManager {
+    //MARK: - DISTRIBUTIONS FLOWS
+    func simpleDistribution(callBack: ((Bool)->())?) {
+        let myGroup = DispatchGroup()
+        var results = [Bool]()
+        
+        for i in 0..<shares.count {
+            myGroup.enter()
+            
+            let vault: Vault
+            let shareToEncode = shares[i]
+            if vaults.count - 1 >= i {
+                vault = vaults[i]
+            } else {
+                vault = vaults[0]
+            }
+            
+            if let encodedShare = encodeShare(shareToEncode, vault) {
+                distribute([encodedShare], vault: vault) { isSuccess in
+                    results.append(isSuccess)
+                    myGroup.leave()
+                }
+            }
+        }
+        
+        myGroup.notify(queue: .main) {
+            let isFalse = results.first(where: {$0 == false}) ?? false
+            callBack?(!isFalse)
+        }
+    }
+    
+    func partiallyDistribute(callBack: ((Bool)->())?) {
+        #warning("FIX THIS PARTICULAR CASE TO COMMON")
+        shares.append(shares[Constants.Common.neededMembersCount - 1])
+        vaults.append(vaults[0])
+        vaults.append(vaults[Constants.Common.neededMembersCount - 1])
+        
+        simpleDistribution(callBack: callBack)
+    }
+    
+    //MARK: - ENCODING
+    func encodeShare(_ share: PasswordShare, _ vault: Vault) -> String? {
+        guard let keyManager = mainUser?.keyManager else {
+            showCommonError(Constants.Errors.noMainUserError)
+            return nil
+        }
+        
+        let shareToEncode = EncodeShare(senderKeyManager: keyManager, receiversPubKeys: vault.transportPublicKey?.base64Text ?? "", secret: jsonGeneration(from: share) ?? "")
+        
+        guard let encodedShare = RustTransporterManager().encode(share: shareToEncode) else {
+            showCommonError(Constants.Errors.encodeError)
+            return nil
+        }
+        
+        return encodedShare
+    }
+    
+    //MARK: - Distributing
+    
+    func distribute(_ shares: [String], vault: Vault, callBack: ((Bool)->())?) {
+            for share in shares {
+                Distribute(encodedShare: share, reciverVault: vault, description: description, type: .Split).execute() { [weak self] result in
+                    print("")
+                }
+            }
+            callBack?(true)
+    }
+}
