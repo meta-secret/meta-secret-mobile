@@ -11,39 +11,30 @@ import Foundation
 final class RustTransporterManager: JsonSerealizable {
     func generate(for name: String) -> UserSecurityBox? {
         let jsonData = jsonU8Generation(from: name)
+        guard let libResult = generate_signed_user(jsonData, jsonData.count) else { return nil}
+        let jsonString = String(cString: libResult)
+        rust_string_free(libResult)
         
-        let signedUserJson = generate_signed_user(jsonData, jsonData.count)
-        guard let signedUserJsonString = signedUserJson.asString() else { return nil }
-
-        let userBox: UserSecurityBox? = object(from: signedUserJsonString)
+        let userBox: UserSecurityBox? = object(from: jsonString)
         return userBox
     }
     
     func split(secret: String) -> [PasswordShare] {
         var components = [PasswordShare]()
 
-        let secretData = jsonU8Generation(from: secret)
-        let jsonResult = split_secret(secretData, secretData.count)
-        guard let jsonString = jsonResult.asString() else { return []}
-
+        let jsonData = jsonU8Generation(from: secret)
+        guard let libResult = split_secret(jsonData, jsonData.count) else { return [] }
+        let jsonString = String(cString: libResult)
+        
         components = array(from: jsonString) ?? []
         return components
     }
 
-    func encode(share: EncodeShare) -> String? {
+    func encrypt(share: ShareToEncrypt) -> AeadCipherText? {
         guard let jsonData = jsonU8Generation(from: share) else { return nil }
-        let result = encode_secret(jsonData, jsonData.count).asString()
-        return result
-    }
-}
-
-//MARK: - String translator
-extension RustByteSlice {
-    func asUnsafeBufferPointer() -> UnsafeBufferPointer<UInt8> {
-        return UnsafeBufferPointer(start: bytes, count: len)
-    }
-
-    func asString(encoding: UInt = NSUTF8StringEncoding) -> String? {
-        return String(bytes: asUnsafeBufferPointer(), encoding: String.Encoding(rawValue: encoding))
+        guard let libResult = encrypt_secret(jsonData, jsonData.count) else { return nil }
+        let jsonString = String(cString: libResult)
+        let encryptedShare: AeadCipherText? = object(from: jsonString)
+        return encryptedShare
     }
 }

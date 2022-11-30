@@ -111,3 +111,4 @@
 "restoreError" = "Restore error";
 "encodeError" = "Encode error";
 "noMainUserError" = "No main user";
+"objectToJsonError" = "Parse object to Json error";

@@ -7,14 +7,14 @@
 
 import Foundation
 
-final class EncodeShare: Codable {
+final class ShareToEncrypt: Codable {
     var senderKeyManager: SerializedKeyManager
-    var receiversPubKeys: String
+    var receiverPubKey: Base64EncodedText
     var secret: String
     
-    init(senderKeyManager: SerializedKeyManager, receiversPubKeys: String, secret: String) {
+    init(senderKeyManager: SerializedKeyManager, receiverPubKey: Base64EncodedText, secret: String) {
         self.senderKeyManager = senderKeyManager
-        self.receiversPubKeys = receiversPubKeys
+        self.receiverPubKey = receiverPubKey
         self.secret = secret
     }
 }

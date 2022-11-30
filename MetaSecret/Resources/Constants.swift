@@ -151,6 +151,7 @@ struct Constants {
         static let restoreError = NSLocalizedString("restoreError", comment: "")
         static let encodeError = NSLocalizedString("encodeError", comment: "")
         static let noMainUserError = NSLocalizedString("noMainUserError", comment: "")
+        static let objectToJsonError = NSLocalizedString("objectToJsonError", comment: "")
     }
     
     //MARK: - TAGS

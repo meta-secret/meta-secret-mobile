@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SplashSceneView: UIViewController, SplashSceneProtocol {
+class SplashSceneView: UIViewController, SplashSceneProtocol, UD, JsonSerealizable {
     //MARK: - OUTLETS
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
@@ -16,7 +16,7 @@ class SplashSceneView: UIViewController, SplashSceneProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         activityIndicator.startAnimating()
         self.viewModel = SplashSceneViewModel(delegate: self)
         viewModel?.chooseStartingScreen()

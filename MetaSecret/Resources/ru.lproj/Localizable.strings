@@ -110,3 +110,4 @@
 "restoreError" = "Ошибка восстановления пароля";
 "encodeError" = "Ошибка кодирования";
 "noMainUserError" = "Нет основного пользователя";
+"objectToJsonError" = "Ошибка перекодировки объекта в Json";

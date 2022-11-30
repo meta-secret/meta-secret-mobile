@@ -62,15 +62,15 @@ private extension ShareDistributionManager {
             myGroup.enter()
             
             let vault: Vault
-            let shareToEncode = shares[i]
+            let shareToEncrypt = shares[i]
             if vaults.count - 1 >= i {
                 vault = vaults[i]
             } else {
                 vault = vaults[0]
             }
             
-            if let encodedShare = encodeShare(shareToEncode, vault) {
-                distribute([encodedShare], vault: vault) { isSuccess in
+            if let encryptedShare = encryptShare(shareToEncrypt, vault) {
+                distribute([encryptedShare], vault: vault) { isSuccess in
                     results.append(isSuccess)
                     myGroup.leave()
                 }
@@ -93,30 +93,34 @@ private extension ShareDistributionManager {
     }
     
     //MARK: - ENCODING
-    func encodeShare(_ share: PasswordShare, _ vault: Vault) -> String? {
-        guard let keyManager = mainUser?.keyManager else {
+    func encryptShare(_ share: PasswordShare, _ vault: Vault) -> AeadCipherText? {
+        guard let keyManager = mainUser?.keyManager, let transportPublicKey = vault.transportPublicKey else {
             showCommonError(Constants.Errors.noMainUserError)
             return nil
         }
         
-        let shareToEncode = EncodeShare(senderKeyManager: keyManager, receiversPubKeys: vault.transportPublicKey?.base64Text ?? "", secret: jsonGeneration(from: share) ?? "")
+        let shareToEncode = ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: transportPublicKey, secret: jsonGeneration(from: share) ?? "")
         
-        guard let encodedShare = RustTransporterManager().encode(share: shareToEncode) else {
+        guard let encryptedShare = RustTransporterManager().encrypt(share: shareToEncode) else {
             showCommonError(Constants.Errors.encodeError)
             return nil
         }
         
-        return encodedShare
+        return encryptedShare
     }
     
     //MARK: - Distributing
-    
-    func distribute(_ shares: [String], vault: Vault, callBack: ((Bool)->())?) {
-            for share in shares {
-                Distribute(encodedShare: share, reciverVault: vault, description: description, type: .Split).execute() { [weak self] result in
-                    print("")
-                }
+    func distribute(_ shares: [AeadCipherText], vault: Vault, callBack: ((Bool)->())?) {
+        for share in shares {
+            guard let shareJson = jsonGeneration(from: share) else {
+                showCommonError(Constants.Errors.objectToJsonError)
+                return
             }
-            callBack?(true)
+            
+            Distribute(encodedShare: shareJson, reciverVault: vault, description: description, type: .Split).execute() { [weak self] result in
+                print("WHAT NEXT??")
+            }
+        }
+        callBack?(true)
     }
 }
