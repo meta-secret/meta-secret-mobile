@@ -8,5 +8,5 @@
 import Foundation
 
 protocol HTTPDispatcher {
-    func dispatch(path: String, method: HTTPMethod, params: [String: Any]?, completionHandler: @escaping (Result<Data, HTTPStatusCode>) -> Void)
+    func dispatch(path: String, method: HTTPMethod, params: String, completionHandler: @escaping (Result<Data, HTTPStatusCode>) -> Void)
 }

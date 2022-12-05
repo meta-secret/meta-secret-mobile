@@ -7,18 +7,34 @@
 
 import Foundation
 
-struct AeadCipherText: Codable {
+final class AeadCipherText: BaseModel {
     var msg: Base64EncodedText
     var authData: AeadAuthData
+    
+    init(msg: Base64EncodedText, authData: AeadAuthData) {
+        self.msg = msg
+        self.authData = authData
+    }
 }
 
-struct AeadAuthData: Codable {
+final class AeadAuthData: BaseModel {
     var associatedData: String
     var channel: CommunicationChannel
     var nonce: Base64EncodedText
+    
+    init(associatedData: String, channel: CommunicationChannel, nonce: Base64EncodedText) {
+        self.associatedData = associatedData
+        self.channel = channel
+        self.nonce = nonce
+    }
 }
 
-struct CommunicationChannel: Codable {
+final class CommunicationChannel: BaseModel {
     var sender: Base64EncodedText
     var receiver: Base64EncodedText
+    
+    init(sender: Base64EncodedText, receiver: Base64EncodedText) {
+        self.sender = sender
+        self.receiver = receiver
+    }
 }

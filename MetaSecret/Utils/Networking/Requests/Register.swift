@@ -9,17 +9,18 @@ import Foundation
 
 final class Register: HTTPRequest, UD {
     typealias ResponseType = RegisterResult
-    var params: [String : Any]?
+    var params: String = "{}"
     var path: String = "register"
     
-    init(user: UserSignature) {
-        self.params = user.toVault().createRequestJSon()
+    init(_ userSignature: UserSignature) {
+        self.params = userSignature.toJson()
     }
 }
 
 struct RegisterResult: Codable {
-    var status: RegisterStatusResult?
-    var result: String?
+    var data: RegisterStatusResult?
+    var msgType: String
+    var error: String?
 }
 
 enum RegisterStatusResult: String, Codable {

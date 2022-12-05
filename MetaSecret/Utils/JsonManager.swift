@@ -7,22 +7,22 @@
 
 import Foundation
 protocol JsonSerealizable {
-    func jsonU8Generation(from string: String) -> [UInt8]
-    func jsonU8Generation<T: Encodable>(from jsonStruct: T) -> [UInt8]?
-    func jsonGeneration<T: Encodable>(from jsonStruct: T) -> String?
-    func jsonDataGeneration<T: Encodable>(from jsonStruct: T) -> Data?
-    func object<T : Decodable>(from jsonString:String) throws -> T?
-    func array<T: Decodable>(from jsonString: String) throws -> [T]?
+    func jsonU8Generation(string: String) -> [UInt8]
+    func jsonU8Generation<T: Encodable>(from structure: T) -> [UInt8]?
+    func jsonStringGeneration<T: Encodable>(from structure: T) -> String?
+    func jsonDataGeneration<T: Encodable>(from structure: T) -> Data?
+    func objectGeneration<T : Decodable>(from jsonString:String) throws -> T?
+    func arrayGeneration<T: Decodable>(from jsonString: String) throws -> [T]?
 }
 
 extension JsonSerealizable {
-    func jsonU8Generation(from string: String) -> [UInt8] {
+    func jsonU8Generation(string: String) -> [UInt8] {
         return [UInt8](Data(string.utf8))
     }
     
-    func jsonU8Generation<T: Encodable>(from jsonStruct: T) -> [UInt8]? {
+    func jsonU8Generation<T: Encodable>(from structure: T) -> [UInt8]? {
         do {
-            let jsonData = try JSONEncoder().encode(jsonStruct)
+            let jsonData = try JSONEncoder().encode(structure)
             let jsonString = String(data: jsonData, encoding: .utf8)
             return [UInt8](Data((jsonString ?? "").utf8))
         } catch let _e {
@@ -31,9 +31,9 @@ extension JsonSerealizable {
         }
     }
     
-    func jsonGeneration<T: Encodable>(from jsonStruct: T) -> String? {
+    func jsonStringGeneration<T: Encodable>(from structure: T) -> String? {
         do {
-            let jsonData = try JSONEncoder().encode(jsonStruct)
+            let jsonData = try JSONEncoder().encode(structure)
             let jsonString = String(data: jsonData, encoding: .utf8) ?? ""
             return jsonString
         } catch let _e {
@@ -42,9 +42,9 @@ extension JsonSerealizable {
         }
     }
     
-    func jsonDataGeneration<T: Encodable>(from jsonStruct: T) -> Data? {
+    func jsonDataGeneration<T: Encodable>(from structure: T) -> Data? {
         do {
-            let jsonData = try JSONEncoder().encode(jsonStruct)
+            let jsonData = try JSONEncoder().encode(structure)
             return jsonData
         } catch let _e {
             print(_e)
@@ -52,7 +52,7 @@ extension JsonSerealizable {
         }
     }
     
-    func object<T : Decodable>(from jsonString:String) -> T? {
+    func objectGeneration<T : Decodable>(from jsonString: String) -> T? {
         do {
             let jsonData = Data(jsonString.utf8)
             return try JSONDecoder().decode(T.self, from: jsonData)
@@ -62,7 +62,7 @@ extension JsonSerealizable {
         }
     }
     
-    func array<T: Decodable>(from jsonString: String) -> [T]? {
+    func arrayGeneration<T: Decodable>(from jsonString: String) -> [T]? {
         do {
             var components = [T]()
             let jsonData = Data(jsonString.utf8)

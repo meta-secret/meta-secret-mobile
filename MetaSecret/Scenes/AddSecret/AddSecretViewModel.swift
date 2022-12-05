@@ -20,8 +20,8 @@ final class AddSecretViewModel: UD, Routerable, Signable {
     
     private var delegate: AddSecretProtocol? = nil
     private var components: [PasswordShare] = [PasswordShare]()
-    private var vaults: [Vault]? = nil
-    private lazy var activeVaults: [Vault] = [Vault]()
+    private var signatures: [UserSignature]? = nil
+    private lazy var activeSignatures: [UserSignature] = [UserSignature]()
     private var description: String = ""
     private var distributionManager: ShareDistributionable? = nil
     
@@ -35,29 +35,30 @@ final class AddSecretViewModel: UD, Routerable, Signable {
     
     //MARK: - PUBLIC METHODS
     func getVault(completion: (()->())?) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
-            
-            GetVault().execute() { [weak self] result in
-                switch result {
-                case .success(let result):
-                    self?.vaults?.removeAll()
-                    self?.vaults = result.vault?.signatures
-                    if self?.vaults?.count ?? 0 <= Constants.Common.neededMembersCount {
-                        self?.activeVaults = self?.vaults ?? []
-                    }
-                    completion?()
-                case .failure(let error):
-                    completion?()
-                    self?.hideLoader()
-                    self?.showCommonError(error.localizedDescription)
+        GetVault().execute() { [weak self] result in
+            switch result {
+            case .success(let result):
+                guard result.msgType == Constants.Common.ok else {
+                    print(result.error ?? "")
+                    return
                 }
+                
+                self?.signatures?.removeAll()
+                self?.signatures = result.data?.vault?.signatures
+                if self?.signatures?.count ?? 0 <= Constants.Common.neededMembersCount {
+                    self?.activeSignatures = self?.signatures ?? []
+                }
+                completion?()
+            case .failure(let error):
+                completion?()
+                self?.hideLoader()
+                self?.showCommonError(error.localizedDescription)
             }
-            
-        })
+        }
     }
     
     func vaultsCount() -> Int {
-        return vaults?.count ?? 0
+        return signatures?.count ?? 0
     }
     
     func split(secret: String, description: String, callBack: ((Bool)->())?) {
@@ -73,14 +74,14 @@ final class AddSecretViewModel: UD, Routerable, Signable {
         }
     }
     
-    func encodeAndDistribute(callBack: ((Bool)->())?) {
-        distributionManager?.distributeShares(components, activeVaults, description: description, callBack: callBack)
+    func encryptAndDistribute(callBack: ((Bool)->())?) {
+        distributionManager?.distributeShares(components, activeSignatures, description: description, callBack: callBack)
     }
     
     func showDeviceLists(callBack: ((Bool)->())?) {
-        let model = SceneSendDataModel(vaults: vaults, callBackVaults: { [weak self] vaults in
-            self?.activeVaults = vaults
-            self?.encodeAndDistribute(callBack: { isSuccess in
+        let model = SceneSendDataModel(signatures: signatures, callBackSignatures: { [weak self] signatures in
+            self?.activeSignatures = signatures
+            self?.encryptAndDistribute(callBack: { isSuccess in
                 callBack?(isSuccess)
             })
         })

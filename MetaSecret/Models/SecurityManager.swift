@@ -14,7 +14,7 @@ struct UserSecurityBox: Codable {
     var keyManager: SerializedKeyManager
 }
 
-final class UserSignature: Codable {
+final class SecurityManager: BaseModel {
     var vaultName: String
     var signature: Base64EncodedText
     var keyManager: SerializedKeyManager? = nil
@@ -27,18 +27,6 @@ final class UserSignature: Codable {
         self.keyManager = keyManager
         self.deviceName = UIDevice.current.name
         self.deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
-    }
- 
-    func toVault() -> Vault {
-        let vault = Vault(vaultName: vaultName,
-                          signature: signature,
-                          publicKey: keyManager?.dsa.publicKey,
-                          transportPublicKey: keyManager?.transport.publicKey,
-                          device: Device(deviceName: deviceName, deviceId: deviceId),
-                          declinedJoins: nil,
-                          pendingJoins: nil,
-                          signatures: nil)
-        return vault
     }
 }
 

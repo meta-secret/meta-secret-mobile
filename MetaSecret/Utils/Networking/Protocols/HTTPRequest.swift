@@ -11,7 +11,7 @@ protocol HTTPRequest {
     associatedtype ResponseType: Codable
     var path: String { get }
     var method: HTTPMethod { get }
-    var params: [String: Any]? { get set }
+    var params: String { get set }
 }
 
 extension HTTPRequest {
@@ -20,9 +20,9 @@ extension HTTPRequest {
             return HTTPMethod.post
         }
     }
-    var params: [String: Any]? {
+    var params: String {
         get {
-            return nil
+            return "{}"
         }
     }
     

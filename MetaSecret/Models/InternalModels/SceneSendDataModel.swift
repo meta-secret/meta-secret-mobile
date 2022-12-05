@@ -8,18 +8,20 @@
 import Foundation
 
 struct SceneSendDataModel {
-    let vault: Vault?
+    let vault: VaultDoc?
+    let signature: UserSignature?
     #warning("need <Result, Error>")
     let callBack: ((Bool)->())?
-    let callBackVaults: (([Vault])->())?
+    let callBackVaults: (([VaultDoc])->())?
     let mainStringValue: String?
     let stringValue: String?
     let modeType: ModeType?
     let stringArray: [String]?
     let shares: [PasswordShare]?
-    let vaults: [Vault]?
+    let vaults: [VaultDoc]?
+    let signatures: [UserSignature]?
     
-    init(vault: Vault? = nil, mainStringValue: String? = nil, stringValue: String? = nil, modeType: ModeType? = nil, stringArray: [String]? = nil, shares: [PasswordShare]? = nil, vaults: [Vault]? = nil, callBack: ((Bool)->())? = nil, callBackVaults: (([Vault])->())? = nil) {
+    init(vault: VaultDoc? = nil, signature: UserSignature? = nil, mainStringValue: String? = nil, stringValue: String? = nil, modeType: ModeType? = nil, stringArray: [String]? = nil, shares: [PasswordShare]? = nil, vaults: [VaultDoc]? = nil, signatures: [UserSignature]? = nil, callBack: ((Bool)->())? = nil, callBackVaults: (([VaultDoc])->())? = nil, callBackSignatures: (([UserSignature])->())? = nil) {
         self.vault = vault
         self.callBack = callBack
         self.mainStringValue = mainStringValue
@@ -29,5 +31,7 @@ struct SceneSendDataModel {
         self.shares = shares
         self.vaults = vaults
         self.callBackVaults = callBackVaults
+        self.signature = signature
+        self.signatures = signatures
     }
 }

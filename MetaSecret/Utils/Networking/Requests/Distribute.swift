@@ -7,55 +7,83 @@
 
 import Foundation
 
-final class Distribute: HTTPRequest, UD {
+final class Distribute: HTTPRequest, UD, JsonSerealizable {
     typealias ResponseType = DistributeResult
-    var params: [String : Any]?
+    var params: String = "{}"
     var path: String = "distribute"
     
-    init(encodedShare: String, reciverVault: Vault, description: String, type: SecretDistributionType) {
-        guard let user = mainVault else { return }
+    init(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) {
+        guard let mainVault else { return }
+        guard let userSignature else { return }
         
-        let secretMessage = EncryptedMessage(receiver: reciverVault, encryptedText: encodedShare)
+        let secretMessage = EncryptedMessage(receiver: receiver, encryptedText: encodedShare)
+
+        guard let metaPasswordId = RustTransporterManager().generateMetaPassId(description: description) else { return }
+        let metaPasswordDoc = MetaPasswordDoc(id: metaPasswordId, vault: mainVault)
+        let metaPasswordRequest = MetaPasswordRequest(userSig: userSignature, metaPassword: metaPasswordDoc)
+
+        let request = DistributeRequest(distributionType: type.rawValue,
+                                        metaPassword: metaPasswordRequest,
+                                        secretMessage: secretMessage)
         
-        let metaPasswordId = MetaPasswordId(name: description)
-        // RustTransporterManager().generateMetaPassId(description: description)!
-        print(metaPasswordId)
-        let metaPasswordDoc = MetaPasswordDoc(id: metaPasswordId, vault: user)
-        let metaPassword = MetaPasswordRequest(userSig: user, metaPassword: metaPasswordDoc)
-        
-        self.params = [
-            "distributionType": type.rawValue,
-            "metaPassword": metaPassword,
-            "secretMessage": secretMessage
-        ]
+        self.params = request.toJson()
     }
 }
 
 struct DistributeResult: Codable {
-    var status: String
+    var msgType: String
+    var data: String?
+    var error: String?
 }
 
 enum SecretDistributionType: String, Codable {
-    case Split
-    case Recover
+    case split
+    case recover
 }
 
-struct MetaPasswordRequest: Codable {
-    var userSig: Vault
+final class DistributeRequest: BaseModel {
+    let distributionType: String
+    let metaPassword: MetaPasswordRequest
+    let secretMessage: EncryptedMessage
+    
+    init(distributionType: String, metaPassword: MetaPasswordRequest, secretMessage: EncryptedMessage) {
+        self.distributionType = distributionType
+        self.metaPassword = metaPassword
+        self.secretMessage = secretMessage
+    }
+}
+
+final class MetaPasswordRequest: BaseModel {
+    var userSig: UserSignature
     var metaPassword: MetaPasswordDoc
+    
+    init(userSig: UserSignature, metaPassword: MetaPasswordDoc) {
+        self.userSig = userSig
+        self.metaPassword = metaPassword
+    }
 }
 
-struct EncryptedMessage: Codable {
-    var receiver: Vault
-    var encryptedText: String
+final class EncryptedMessage: BaseModel {
+    var receiver: UserSignature
+    var encryptedText: AeadCipherText
+    
+    init(receiver: UserSignature, encryptedText: AeadCipherText) {
+        self.receiver = receiver
+        self.encryptedText = encryptedText
+    }
 }
 
-struct MetaPasswordDoc: Codable {
+final class MetaPasswordDoc: BaseModel {
     var id: MetaPasswordId
-    var vault: Vault
+    var vault: VaultDoc
+    
+    init(id: MetaPasswordId, vault: VaultDoc) {
+        self.id = id
+        self.vault = vault
+    }
 }
 
-struct MetaPasswordId: Codable {
+final class MetaPasswordId: BaseModel {
     var id: String?
     var salt: String?
     var name: String?

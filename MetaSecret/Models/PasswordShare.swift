@@ -11,13 +11,18 @@ struct PasswordShares: Codable {
     var result: [PasswordShare]
 }
 
-struct PasswordShare: Codable {
-    var shareId: Int?
-    var shareBlocks: [ShareBlock]?
+final class PasswordShare: BaseModel {
+    var shareId: Int
+    var shareBlocks: [ShareBlock]
     
     enum CodingKeys: String, CodingKey {
         case shareId = "share_id"
         case shareBlocks = "share_blocks"
+    }
+    
+    init(shareId: Int, shareBlocks: [ShareBlock]) {
+        self.shareId = shareId
+        self.shareBlocks = shareBlocks
     }
 }
 

@@ -41,13 +41,13 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
 
     //MARK: - ACTIONS
     @IBAction func acceptPressed(_ sender: Any) {
-        guard let data = dataSent as? SceneSendDataModel, let vault = data.vault else { return }
-        viewModel?.acceptUser(candidate: vault)
+        guard let data = dataSent as? SceneSendDataModel, let signature = data.signature else { return }
+        viewModel?.acceptUser(candidate: signature)
     }
     
     @IBAction func declinePressed(_ sender: Any) {
-        guard let data = dataSent as? SceneSendDataModel, let vault = data.vault else { return }
-        viewModel?.declineUser(candidate: vault)
+        guard let data = dataSent as? SceneSendDataModel, let signature = data.signature else { return }
+        viewModel?.declineUser(candidate: signature)
     }
     
     //MARK: - DELEGATION
@@ -59,7 +59,7 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
 
 private extension DeviceInfoSceneView {
     func setupUI() {
-        guard let data = dataSent as? SceneSendDataModel, let vault = data.vault else { return }
+        guard let data = dataSent as? SceneSendDataModel, let signature = data.signature else { return }
         
         acceptButton.setTitle(Constants.PairingDeveice.accept, for: .normal)
         declineButton.setTitle(Constants.PairingDeveice.decline, for: .normal)
@@ -86,8 +86,8 @@ private extension DeviceInfoSceneView {
         buttonsContainer.showShadow()
         
         //Texts
-        deviceNameLabel.text = vault.device?.deviceName ?? ""
-        userNameLabel.text = vault.vaultName
-        deviceIdLabel.text = vault.device?.deviceId ?? ""
+        deviceNameLabel.text = Device().deviceName
+        userNameLabel.text = signature.vaultName
+        deviceIdLabel.text = Device().deviceId
     }
 }

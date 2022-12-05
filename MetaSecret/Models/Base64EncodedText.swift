@@ -7,6 +7,6 @@
 
 import Foundation
 
-final class Base64EncodedText: Codable {
+final class Base64EncodedText: BaseModel {
     var base64Text: String
 }

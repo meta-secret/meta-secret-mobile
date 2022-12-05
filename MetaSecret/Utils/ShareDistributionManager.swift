@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import RealmSwift
+
 #warning("UNIVERSAL MECHANISM NEEDED")
 protocol ShareDistributionable {
-    func distributeShares(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((Bool)->())?)
-    func restorePassword(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((String)->())?)
+    func distributeShares(_ shares: [PasswordShare], _ vaults: [UserSignature], description: String, callBack: ((Bool)->())?)
+    func restorePassword(_ shares: [PasswordShare], _ vaults: [UserSignature], description: String, callBack: ((String)->())?)
+    func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?)
 }
 
 class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSerealizable {
@@ -20,18 +23,18 @@ class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSereal
     }
     
     fileprivate var shares: [PasswordShare] = [PasswordShare]()
-    fileprivate var vaults: [Vault] = [Vault]()
+    fileprivate var signatures: [UserSignature] = [UserSignature]()
     fileprivate var description: String = ""
     fileprivate var callBack: ((Bool)->())?
     
-    func distributeShares(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((Bool)->())?) {
-        guard let typeOfSharing = SplittedType(rawValue: vaults.count) else {
+    func distributeShares(_ shares: [PasswordShare], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?) {
+        guard let typeOfSharing = SplittedType(rawValue: signatures.count) else {
             callBack?(false)
             return
         }
         
         self.callBack = callBack
-        self.vaults = vaults
+        self.signatures = signatures
         self.shares = shares
         self.description = description
         
@@ -45,10 +48,40 @@ class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSereal
         }
     }
     
-    func restorePassword(_ shares: [PasswordShare], _ vaults: [Vault], description: String, callBack: ((String) -> ())?) {
+    func restorePassword(_ shares: [PasswordShare], _ vaults: [UserSignature], description: String, callBack: ((String) -> ())?) {
 //        Distribute(encodedShare: shares, reciverVault: vaults, description: description, type: .Recover).execute() { restoredPassword in
 //            callBack?(restoredPassword)
 //        }
+    }
+    
+    func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?) {
+        for share in shares ?? [] {
+            guard let description = share.metaPassword?.metaPassword.id.name else { break }
+            
+            if let secret = DBManager.shared.readSecretBy(description: description) {
+                if let shareJsonString = jsonStringGeneration(from: share) {
+                    let updatesSecret = Secret()
+                    updatesSecret.secretName = secret.secretName
+                    let existedShares = List<String>()
+                    
+                    for secretShare in secret.shares {
+                        existedShares.append(secretShare)
+                    }
+                    existedShares.append(shareJsonString)
+                    updatesSecret.shares = existedShares
+                    DBManager.shared.saveSecret(updatesSecret)
+                }
+            } else {
+                let newSecret = Secret()
+                newSecret.secretName = share.metaPassword?.metaPassword.id.name ?? ""
+                newSecret.shares = List<String>()
+                if let shareJsonString = jsonStringGeneration(from: share) {
+                    newSecret.shares.append(shareJsonString)
+                }
+                DBManager.shared.saveSecret(newSecret)
+            }
+        }
+        callBack?(!(shares ?? []).isEmpty)
     }
 }
 
@@ -61,16 +94,16 @@ private extension ShareDistributionManager {
         for i in 0..<shares.count {
             myGroup.enter()
             
-            let vault: Vault
+            let signature: UserSignature
             let shareToEncrypt = shares[i]
-            if vaults.count - 1 >= i {
-                vault = vaults[i]
+            if signatures.count - 1 >= i {
+                signature = signatures[i]
             } else {
-                vault = vaults[0]
+                signature = signatures[0]
             }
             
-            if let encryptedShare = encryptShare(shareToEncrypt, vault) {
-                distribute([encryptedShare], vault: vault) { isSuccess in
+            if let encryptedShare = encryptShare(shareToEncrypt, signature.publicKey) {
+                distribute([encryptedShare], receiver: signature) { isSuccess in
                     results.append(isSuccess)
                     myGroup.leave()
                 }
@@ -78,28 +111,31 @@ private extension ShareDistributionManager {
         }
         
         myGroup.notify(queue: .main) {
-            let isFalse = results.first(where: {$0 == false}) ?? false
-            callBack?(!isFalse)
+            guard let _ = results.first(where: {$0 == false}) else {
+                callBack?(true)
+                return
+            }
+            callBack?(false)
         }
     }
     
     func partiallyDistribute(callBack: ((Bool)->())?) {
         #warning("FIX THIS PARTICULAR CASE TO COMMON")
         shares.append(shares[Constants.Common.neededMembersCount - 1])
-        vaults.append(vaults[0])
-        vaults.append(vaults[Constants.Common.neededMembersCount - 1])
+        signatures.append(signatures[0])
+        signatures.append(signatures[Constants.Common.neededMembersCount - 1])
         
         simpleDistribution(callBack: callBack)
     }
     
     //MARK: - ENCODING
-    func encryptShare(_ share: PasswordShare, _ vault: Vault) -> AeadCipherText? {
-        guard let keyManager = mainUser?.keyManager, let transportPublicKey = vault.transportPublicKey else {
+    func encryptShare(_ share: PasswordShare, _ receiverPubKey: Base64EncodedText) -> AeadCipherText? {
+        guard let keyManager = securityBox?.keyManager else {
             showCommonError(Constants.Errors.noMainUserError)
             return nil
         }
         
-        let shareToEncode = ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: transportPublicKey, secret: jsonGeneration(from: share) ?? "")
+        let shareToEncode = ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: receiverPubKey, secret: share.toJson())
         
         guard let encryptedShare = RustTransporterManager().encrypt(share: shareToEncode) else {
             showCommonError(Constants.Errors.encodeError)
@@ -110,17 +146,16 @@ private extension ShareDistributionManager {
     }
     
     //MARK: - Distributing
-    func distribute(_ shares: [AeadCipherText], vault: Vault, callBack: ((Bool)->())?) {
+    func distribute(_ shares: [AeadCipherText], receiver: UserSignature, callBack: ((Bool)->())?) {
         for share in shares {
-            guard let shareJson = jsonGeneration(from: share) else {
-                showCommonError(Constants.Errors.objectToJsonError)
-                return
-            }
-            
-            Distribute(encodedShare: shareJson, reciverVault: vault, description: description, type: .Split).execute() { [weak self] result in
-                print("WHAT NEXT??")
+            Distribute(encodedShare: share, receiver: receiver, description: description, type: .split).execute() { result in
+                switch result {
+                case .failure(_):
+                    callBack?(false)
+                default:
+                    callBack?(true)
+                }
             }
         }
-        callBack?(true)
     }
 }

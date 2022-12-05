@@ -15,6 +15,7 @@ struct Constants {
         static let waitingTime: CGFloat = 0.1
         static let virtual = "virtual"
         static let finishedStatus = "finished"
+        static let ok = "ok"
         static let neededMembersCount = 3
     }
     
@@ -88,7 +89,7 @@ struct Constants {
         static let declined = NSLocalizedString("declined", comment: "")
         static let pending = NSLocalizedString("pending", comment: "")
         static let istallInstructionTitle = NSLocalizedString("howToAdd", comment: "")
-        static func istallInstruction(name: String) -> String {
+        static func installInstruction(name: String) -> String {
             return String(format: NSLocalizedString("stepsToAdd", comment: ""), name)
         }
     }

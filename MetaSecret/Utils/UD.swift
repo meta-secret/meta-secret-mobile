@@ -10,8 +10,9 @@ import Foundation
 protocol UD: AnyObject {
     func resetAll()
     
-    var mainUser: UserSignature? { get set }
-    var mainVault: Vault? { get set }
+    var userSignature: UserSignature? { get set }
+    var mainVault: VaultDoc? { get set }
+    var securityBox: UserSecurityBox? { get set }
     var deviceStatus: VaultInfoStatus { get set }
     var shouldShowVirtualHint: Bool {get set}
     var isFirstAppLaunch: Bool {get set}
@@ -22,26 +23,36 @@ protocol UD: AnyObject {
 extension UD {
     //MARK: - RESET
     func resetAll() {
-        mainUser = nil
+        userSignature = nil
+        securityBox = nil
         deviceStatus = .unknown
     }
     
     //MARK: - VARIABLES
-    var mainUser: UserSignature? {
+    var userSignature: UserSignature? {
         get {
-            return UDManager.readCustom(object: UserSignature.self, key: UDKeys.localUser)
+            return UDManager.readCustom(object: UserSignature.self, key: UDKeys.userSignature)
         }
         set {
-            UDManager.saveCustom(object: newValue, key: UDKeys.localUser)
+            UDManager.saveCustom(object: newValue, key: UDKeys.userSignature)
         }
     }
-    
-    var mainVault: Vault? {
+
+    var mainVault: VaultDoc? {
         get {
-            return UDManager.readCustom(object: Vault.self, key: UDKeys.localVault)
+            return UDManager.readCustom(object: VaultDoc.self, key: UDKeys.localVault)
         }
         set {
             UDManager.saveCustom(object: newValue, key: UDKeys.localVault)
+        }
+    }
+    
+    var securityBox: UserSecurityBox? {
+        get {
+            return UDManager.readCustom(object: UserSecurityBox.self, key: UDKeys.securityBox)
+        }
+        set {
+            UDManager.saveCustom(object: newValue, key: UDKeys.securityBox)
         }
     }
     
@@ -103,8 +114,9 @@ extension UD {
 
 //MARK: - KEYS
 struct UDKeys {
-    static let localUser = "localUser"
+    static let userSignature = "userSignature"
     static let localVault = "localVault"
+    static let securityBox = "securityBox"
     static let deviceStatus = "deviceStatus"
     static let shouldShowVirtualHint = "shouldShowVirtualHint"
     static let vUsers = "vUsers"

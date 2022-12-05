@@ -7,13 +7,15 @@
 
 import Foundation
 
-final class Decline: HTTPRequest {
+final class Decline: HTTPRequest, UD {
     typealias ResponseType = DeclineResult
-    var params: [String : Any]?
+    var params: String = "{}"
     var path: String = "decline"
     
-    init(candidate: Vault) {
-        self.params = candidate.candidateRequest()
+    init(candidate: UserSignature) {
+        guard let userSignature else { return }
+        let request = AcceptRequest(member: userSignature, candidate: candidate)
+        self.params = request.toJson()
     }
 }
 

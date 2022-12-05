@@ -9,14 +9,28 @@ import Foundation
 
 final class Accept: HTTPRequest, UD {
     typealias ResponseType = AcceptResult
-    var params: [String : Any]?
+    var params: String = "{}"
     var path: String = "accept"
     
-    init(candidate: Vault) {
-        self.params = candidate.candidateRequest()
+    init(candidate: UserSignature) {
+        guard let userSignature else { return }
+        let request = AcceptRequest(member: userSignature, candidate: candidate)
+        self.params = request.toJson()
     }
 }
 
 struct AcceptResult: Codable {
-    var status: String?
+    var msgType: String
+    var data: String?
+    var error: String?
+}
+
+final class AcceptRequest: BaseModel {
+    let member: UserSignature
+    let candidate: UserSignature
+    
+    init(member: UserSignature, candidate: UserSignature) {
+        self.member = member
+        self.candidate = candidate
+    }
 }

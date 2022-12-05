@@ -9,19 +9,24 @@ import Foundation
 
 final class GetVault: HTTPRequest, UD {
     typealias ResponseType = GetVaultResult
-    var params: [String : Any]?
+    var params: String = "{}"
     var path: String = "getVault"
     
     init() {
-        guard let mainVault else { return }
-        
-        self.params = mainVault.createRequestJSon()
+        guard let userSignature else { return }
+        self.params = userSignature.toJson()
     }
 }
 
 struct GetVaultResult: Codable {
-    var status: VaultInfoStatus = .unknown
-    var vault: Vault?
+    var msgType: String
+    var data: GetVaultData?
+    var error: String?
+}
+
+struct GetVaultData: Codable {
+    var vaultInfo: VaultInfoStatus = .unknown
+    var vault: VaultDoc?
 }
 
 enum VaultInfoStatus: String, Codable {

@@ -22,11 +22,11 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
     }
     
     //MARK: - PUBLIC METHODS
-    func acceptUser(candidate: Vault) {
+    func acceptUser(candidate: UserSignature) {
         Accept(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
-                if response.status == Constants.Common.finishedStatus {
+                if response.msgType == Constants.Common.ok {
                     self?.delegate?.successFullConnection()
                 } else {
                     self?.showCommonError(nil)
@@ -37,11 +37,11 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
         }
     }
     
-    func declineUser(candidate: Vault) {
+    func declineUser(candidate: UserSignature) {
         Decline(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
-                if response.status == Constants.Common.finishedStatus {
+                if response.status == Constants.Common.ok {
                     self?.delegate?.successFullConnection()
                 } else {
                     self?.showCommonError(nil)

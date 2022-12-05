@@ -133,7 +133,7 @@ private extension MainSceneView {
         setTitle()
         yourDevicesTitleLabel.text = Constants.MainScreen.yourSecrets
         nickNameTitleLabel.text = Constants.MainScreen.yourNick
-        nickNameLabel.text = mainUser?.vaultName
+        nickNameLabel.text = userSignature?.vaultName
     }
     
     func setTitle() {
@@ -165,7 +165,7 @@ private extension MainSceneView {
     
     @objc func addDeviceTapped() {
         if selectedSegment == .Devices {
-            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.istallInstruction(name: mainUser?.vaultName ?? ""), isClosable: true)
+            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.installInstruction(name: userSignature?.vaultName ?? ""), isClosable: true)
             routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
         } else {
             let model = SceneSendDataModel(modeType: .edit)
@@ -175,7 +175,7 @@ private extension MainSceneView {
     
     //MARK: - HINTS
     func showFirstTimePopupHint() {
-        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: mainUser?.vaultName ?? ""), buttonHandler: { [weak self] in
+        let model = BottomInfoSheetModel(title: Constants.MainScreen.titleFirstTimeHint, message: Constants.MainScreen.messageFirstTimeHint(name: userSignature?.vaultName ?? ""), buttonHandler: { [weak self] in
 
             self?.shouldShowVirtualHint = false
         })
@@ -214,13 +214,16 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
         }
         
         if selectedSegment == .Devices, content.boolValue {
-            let flattenArray = (viewModel?.vault?.declinedJoins ?? []) + (viewModel?.vault?.pendingJoins ?? []) + (viewModel?.vault?.signatures ?? [])
-            let selectedVault = flattenArray.first(where: {$0.device?.deviceId == content.id })
+            let declines = mainVault?.declinedJoins ?? []
+            let pendings = mainVault?.pendingJoins ?? []
+            let signatures = mainVault?.signatures ?? []
+            let flattenArray = declines + pendings + signatures
+            let selectedItem = flattenArray.first(where: {$0.device.deviceId == content.id })
             
-            let model = SceneSendDataModel(vault: selectedVault) { [weak self] isSuccess in
-                #warning("Need to send data from virtual to real")
+            let model = SceneSendDataModel(signature: selectedItem, callBackVaults:  { [weak self] isSuccess in
+#warning("Need to send data from virtual to real")
                 self?.viewModel?.getVault()
-            }
+            })
             routeTo(.deviceInfo, presentAs: .push, with: model)
         } else if selectedSegment == .Secrets {
             let model = SceneSendDataModel(mainStringValue: content.title, modeType: .readOnly)

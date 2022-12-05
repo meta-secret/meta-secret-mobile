@@ -9,18 +9,11 @@ import Foundation
 
 final class FindCalim: HTTPRequest, UD {
     typealias ResponseType = [PasswordRecoveryRequest]
-    var params: [String : Any]?
+    var params: String = "{}"
     var path: String = "findPasswordRecoveryClaims"
     
     init() {
-        guard let mainVault else { return }
-        
-        self.params = mainVault.createRequestJSon()
+        guard let userSignature else { return }
+        self.params = userSignature.toJson()
     }
-}
-
-struct PasswordRecoveryRequest: Codable {
-    var id: MetaPasswordId?
-    var consumer: Vault?
-    var provider: Vault?
 }

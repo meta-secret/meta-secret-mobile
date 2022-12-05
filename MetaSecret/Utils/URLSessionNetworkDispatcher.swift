@@ -13,10 +13,11 @@ struct Server {
 //    static let develop = "http://api.meta-secret.org:8080/"
 }
 
-public struct URLSessionNetworkDispatcher: HTTPDispatcher {
+public struct URLSessionNetworkDispatcher: HTTPDispatcher, JsonSerealizable {
     
-    func dispatch(path: String, method: HTTPMethod, params: [String : Any]?, completionHandler: @escaping (Result<Data, HTTPStatusCode>) -> Void) {
-        print("## \(Server.develop)\(path)")
+    func dispatch(path: String, method: HTTPMethod, params: String, completionHandler: @escaping (Result<Data, HTTPStatusCode>) -> Void) {
+        print("## Request PATH \(Server.develop)\(path)")
+        print("## Request JSonBody \(params)")
         guard let url = URL(string: "\(Server.develop)\(path)") else {
             completionHandler(.failure(HTTPStatusCode.InvalidURL))
             return
@@ -25,15 +26,16 @@ public struct URLSessionNetworkDispatcher: HTTPDispatcher {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = method.rawValue
         
-        guard params != nil, let body = try? JSONSerialization.data(withJSONObject: params!) else {
-            completionHandler(.failure(HTTPStatusCode.FailedToDecode))
-            return
-        }
+        let body = Data(params.utf8)
         urlRequest.httpBody = body
+        print("## Request body \(String(decoding: body, as: UTF8.self))")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+            print("‼️DATA \(String(decoding: data ?? Data(), as: UTF8.self)) ‼️")
+            
             if error != nil {
+                print("⚠️ \(error?.localizedDescription) ⚠️")
                 completionHandler(.failure(HTTPStatusCode.Networking))
                 return
             }

@@ -16,10 +16,9 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     //MARK: - PROPERTIES
     private var delegate: MainSceneProtocol? = nil
     private var timer: Timer? = nil
-    private var pendings: [Vault]? = nil
+    private var pendings: [VaultDoc]? = nil
     private var source: MainScreenSource? = nil
     private var type: MainScreenSourceType = .Secrets
-    var vault: Vault? = nil
     
     enum Config {
         static let timerInterval: CGFloat = 10
@@ -47,8 +46,13 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
             GetVault().execute() { [weak self] result in
                 switch result {
                 case .success(let result):
-                    self?.vault = result.vault
-                    guard let vault = self?.vault else { return }
+                    guard result.msgType == Constants.Common.ok else {
+                        print(result.error ?? "")
+                        return
+                    }
+                    
+                    self?.mainVault = result.data?.vault
+                    guard let vault = self?.mainVault else { return }
                     self?.source = DevicesDataSource().getDataSource(for: vault)
                     
                     guard let source = self?.source else { return }
@@ -104,18 +108,16 @@ private extension MainSceneViewModel {
             FindShares().execute { [weak self] result in
                 switch result {
                 case .success(let result):
-                    for share in result {
-                        let secretPart = share.secretMessage?.encryptedText ?? ""
-                        let secret = Secret()
-                        secret.secretID = share.metaPassword?.metaPassword.id.id ?? ""
-                        secret.secretName = share.metaPassword?.metaPassword.id.name ?? ""
-                        #warning("!!!!")
-                        let realmList = List<String>()
-                        realmList.append(objectsIn: [secretPart])
-                        secret.shares = realmList
-                        DBManager.shared.saveSecret(secret)
+                    guard result.msgType == Constants.Common.ok else {
+                        print(result.error ?? "")
+                        return
                     }
-                    self?.getAllSecrets()
+                    
+                    ShareDistributionManager().distribtuteToDB(result.data) { isToReload in
+                        if isToReload {
+                            self?.getAllSecrets()
+                        }
+                    }
                 case .failure(let error):
                     self?.showCommonError(error.localizedDescription)
                 }

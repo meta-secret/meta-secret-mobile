@@ -8,15 +8,20 @@
 import Foundation
 
 final class FindShares: HTTPRequest, UD {
-    typealias ResponseType = [SecretDistributionDoc]
-    var params: [String : Any]?
+    typealias ResponseType = FindSharesResponse
+    var params: String = "{}"
     var path: String = "findShares"
     
     init() {
-        guard let mainVault else { return }
-        
-        self.params = mainVault.createRequestJSon()
+        guard let userSignature else { return }
+        self.params = userSignature.toJson()
     }
+}
+
+struct FindSharesResponse: Codable {
+    var msgType: String
+    var data: [SecretDistributionDoc]?
+    var error: String?
 }
 
 struct SecretDistributionDoc: Codable {

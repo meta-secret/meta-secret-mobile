@@ -10,11 +10,10 @@ import RealmSwift
 
 final class Secret: Object {
 
-    @objc dynamic var secretID = ""
     @objc dynamic var secretName = ""
     var shares = List<String>()
     
     override static func primaryKey() -> String? {
-        return "secretID"
+        return "secretName"
     }
 }

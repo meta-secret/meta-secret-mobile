@@ -22,9 +22,9 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
     //MARK: - INIT
     init(delegate: LoginSceneProtocol) {
         self.delegate = delegate
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
-            self?.checkStatus()
-        })
+//        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
+            checkStatus()
+//        })
     }
     
     //MARK: - REGISTRATION
@@ -41,21 +41,30 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
             return
         }
         
-        let user = UserSignature(vaultName: userName, signature: userSecurityBox.signature, keyManager: userSecurityBox.keyManager)
+        let user = UserSignature(vaultName: userName,
+                                 signature: userSecurityBox.signature,
+                                 publicKey: userSecurityBox.keyManager.dsa.publicKey,
+                                 transportPublicKey: userSecurityBox.keyManager.transport.publicKey,
+                                 device: Device())
 
-        Register(user: user).execute() { [weak self] result in
+        Register(user).execute() { [weak self] result in
             switch result {
             case .success(let response):
-                if response.status == .Registered {
+                guard response.msgType == Constants.Common.ok else {
+                    print(response.error ?? "")
+                    return
+                }
+                
+                if response.data == .Registered {
                     self?.deviceStatus = .member
-                    self?.mainVault = user.toVault()
-                    self?.mainUser = user
+                    self?.securityBox = userSecurityBox
+                    self?.userSignature = user
                     self?.isOwner = true
                     self?.routeTo(.main, presentAs: .root)
                 } else {
                     self?.deviceStatus = .pending
-                    self?.mainVault = user.toVault()
-                    self?.mainUser = user
+                    self?.userSignature = user
+                    self?.securityBox = userSecurityBox
                     self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
                         guard let `self` = self else { return }
                         
@@ -64,7 +73,7 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
                             self.tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
                         }
                     }, cancelHandler: { [weak self] in
-                        self?.mainUser = nil
+                        self?.userSignature = nil
                         self?.deviceStatus = .unknown
                     }))
                 }
@@ -100,10 +109,14 @@ private extension LoginSceneViewModel {
             GetVault().execute() { [weak self] result in
                 switch result {
                 case .success(let result):
-                    if result.status == .member {
+                    guard result.msgType == Constants.Common.ok else {
+                        print(result.error ?? "")
+                        return
+                    }
+                    if result.data?.vaultInfo == .member {
                         self?.closePopup()
                         self?.routeTo(.main, presentAs: .root)
-                    } else if result.status == .declined {
+                    } else if result.data?.vaultInfo == .declined {
                         self?.closePopup()
                         self?.resetAll()
 

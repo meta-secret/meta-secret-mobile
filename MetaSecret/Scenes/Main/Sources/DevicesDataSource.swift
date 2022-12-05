@@ -9,7 +9,7 @@ import Foundation
 
 final class DevicesDataSource: MainScreeSourcable, UD {
     func getDataSource<T>(for vault: T) -> MainScreenSource? {
-        guard let vault = vault as? Vault else {
+        guard let vault = vault as? VaultDoc else {
             return nil
         }
         
@@ -18,27 +18,27 @@ final class DevicesDataSource: MainScreeSourcable, UD {
         var declinedItems = [CellSetupDate]()
         var memberItems = [CellSetupDate]()
         
-        for item in vault.pendingJoins ?? [] {
+        for signature in vault.pendingJoins ?? [] {
             
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.pending.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .pending, boolValue: true, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.pending.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .pending, boolValue: true, id: signature.device.deviceId)
             pendingItems.append(cellSource)
         }
         sourceItems.append(pendingItems)
         
-        for item in vault.declinedJoins ?? [] {
+        for signature in vault.declinedJoins ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.declined.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .declined, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.declined.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .declined, id: signature.device.deviceId)
             declinedItems.append(cellSource)
         }
         sourceItems.append(declinedItems)
         
-        for item in vault.signatures ?? [] {
+        for signature in vault.signatures ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: item.device?.deviceName, subtitle: VaultInfoStatus.member.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .member, id: item.device?.deviceId)
+            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.member.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .member, id: signature.device.deviceId)
             memberItems.append(cellSource)
         }
         sourceItems.append(memberItems)

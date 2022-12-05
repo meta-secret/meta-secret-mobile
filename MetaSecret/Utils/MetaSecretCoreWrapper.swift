@@ -10,23 +10,24 @@ import Foundation
 //MARK: - Send to Rust Lib
 final class RustTransporterManager: JsonSerealizable {
     func generate(for name: String) -> UserSecurityBox? {
-        let jsonData = jsonU8Generation(from: name)
+        let jsonData = jsonU8Generation(string: name)
         guard let libResult = generate_signed_user(jsonData, jsonData.count) else { return nil}
         let jsonString = String(cString: libResult)
         rust_string_free(libResult)
         
-        let userBox: UserSecurityBox? = object(from: jsonString)
+        let userBox: UserSecurityBox? = objectGeneration(from: jsonString)
         return userBox
     }
     
     func split(secret: String) -> [PasswordShare] {
         var components = [PasswordShare]()
 
-        let jsonData = jsonU8Generation(from: secret)
+        let jsonData = jsonU8Generation(string: secret)
         guard let libResult = split_secret(jsonData, jsonData.count) else { return [] }
         let jsonString = String(cString: libResult)
+        rust_string_free(libResult)
         
-        components = array(from: jsonString) ?? []
+        components = arrayGeneration(from: jsonString) ?? []
         return components
     }
 
@@ -34,7 +35,19 @@ final class RustTransporterManager: JsonSerealizable {
         guard let jsonData = jsonU8Generation(from: share) else { return nil }
         guard let libResult = encrypt_secret(jsonData, jsonData.count) else { return nil }
         let jsonString = String(cString: libResult)
-        let encryptedShare: AeadCipherText? = object(from: jsonString)
+        rust_string_free(libResult)
+        
+        let encryptedShare: AeadCipherText? = objectGeneration(from: jsonString)
+        return encryptedShare
+    }
+    
+    func generateMetaPassId(description: String) -> MetaPasswordId? {
+        let jsonData = jsonU8Generation(string: description)
+        guard let libResult = generate_meta_password_id(jsonData, jsonData.count) else { return nil }
+        let jsonString = String(cString: libResult)
+        rust_string_free(libResult)
+        
+        let encryptedShare: MetaPasswordId? = objectGeneration(from: jsonString)
         return encryptedShare
     }
 }

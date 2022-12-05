@@ -23,7 +23,7 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     
     //MARK: - PROPERTIES
     private var viewModel: SelectDeviceViewModel? = nil
-    private var source = [Vault]()
+    private var source = [UserSignature]()
     private var shares: [String]? = nil
     private var note: String? = nil
     private var callback: ((Bool)->())? = nil
@@ -49,7 +49,7 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     }
     
     //MARK: - DATA RELOAD
-    func reloadData(source: [Vault]) {
+    func reloadData(source: [UserSignature]) {
         self.source = source
         if !source.isEmpty {
             tableView.isHidden = false
@@ -77,7 +77,7 @@ extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
         
         let isSelected = selectedCellIndexes.contains(where: {$0 == indexPath})
         
-        cellSource.setupCellSource(title: member.device?.deviceName ?? "", subtitle: member.device?.deviceId ?? "", boolValue: isSelected, imageName: AppImages.doneCheckmark )
+        cellSource.setupCellSource(title: member.device.deviceName, subtitle: member.device.deviceId, boolValue: isSelected, imageName: AppImages.doneCheckmark )
         
         cell.setupCell(content: cellSource)
 
