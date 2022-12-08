@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Calim: HTTPRequest, UD {
+final class Claim: HTTPRequest, UD {
     typealias ResponseType = ClaimResult
     var params: String = "{}"
     var path: String = "claimForPasswordRecovery"
@@ -24,9 +24,10 @@ final class Calim: HTTPRequest, UD {
     }
 }
 
-#warning("Common Answer Needed")
 struct ClaimResult: Codable {
-    var status: String?
+    var msgType: String?
+    var data: String?
+    var error: String?
 }
 
 enum StatusResponse: String, Codable {

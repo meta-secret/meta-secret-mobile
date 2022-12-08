@@ -17,11 +17,11 @@ struct SceneSendDataModel {
     let stringValue: String?
     let modeType: ModeType?
     let stringArray: [String]?
-    let shares: [PasswordShare]?
+    let shares: [UserShareDto]?
     let vaults: [VaultDoc]?
     let signatures: [UserSignature]?
     
-    init(vault: VaultDoc? = nil, signature: UserSignature? = nil, mainStringValue: String? = nil, stringValue: String? = nil, modeType: ModeType? = nil, stringArray: [String]? = nil, shares: [PasswordShare]? = nil, vaults: [VaultDoc]? = nil, signatures: [UserSignature]? = nil, callBack: ((Bool)->())? = nil, callBackVaults: (([VaultDoc])->())? = nil, callBackSignatures: (([UserSignature])->())? = nil) {
+    init(vault: VaultDoc? = nil, signature: UserSignature? = nil, mainStringValue: String? = nil, stringValue: String? = nil, modeType: ModeType? = nil, stringArray: [String]? = nil, shares: [UserShareDto]? = nil, vaults: [VaultDoc]? = nil, signatures: [UserSignature]? = nil, callBack: ((Bool)->())? = nil, callBackVaults: (([VaultDoc])->())? = nil, callBackSignatures: (([UserSignature])->())? = nil) {
         self.vault = vault
         self.callBack = callBack
         self.mainStringValue = mainStringValue

@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class FindCalim: HTTPRequest, UD {
-    typealias ResponseType = [PasswordRecoveryRequest]
+final class FindClaims: HTTPRequest, UD {
+    typealias ResponseType = FindClaimsResponse
     var params: String = "{}"
     var path: String = "findPasswordRecoveryClaims"
     
@@ -16,4 +16,10 @@ final class FindCalim: HTTPRequest, UD {
         guard let userSignature else { return }
         self.params = userSignature.toJson()
     }
+}
+
+struct FindClaimsResponse: Codable {
+    var msgType: String?
+    var data: [PasswordRecoveryRequest]?
+    var error: String?
 }

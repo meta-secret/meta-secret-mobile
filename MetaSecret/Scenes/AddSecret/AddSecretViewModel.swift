@@ -10,20 +10,23 @@ import UIKit
 
 protocol AddSecretProtocol {
     func close()
+    func showRestoreResult(password: String?)
 }
 
-final class AddSecretViewModel: UD, Routerable, Signable {
+final class AddSecretViewModel: UD, Routerable, Signable, JsonSerealizable {
     //MARK: - PROPERTIES
     enum Config {
         static let minMembersCount = 3
+        static let timerInterval: CGFloat = 10
     }
     
     private var delegate: AddSecretProtocol? = nil
-    private var components: [PasswordShare] = [PasswordShare]()
+    private var components: [UserShareDto] = [UserShareDto]()
     private var signatures: [UserSignature]? = nil
     private lazy var activeSignatures: [UserSignature] = [UserSignature]()
     private var description: String = ""
     private var distributionManager: ShareDistributionable? = nil
+    private var timer: Timer? = nil
     
     var isFullySplitted: Bool = false
     
@@ -88,12 +91,119 @@ final class AddSecretViewModel: UD, Routerable, Signable {
         routeTo(.selectDevice, presentAs: .push, with: model)
     }
     
-    func restoreSecret(_ description: String, callBack: ((String?)->())?) {
-        #warning("!!!!")
+    func requestClaims(_ description: String, callBack: ((Bool)->())?) {
+        guard let secret = DBManager.shared.readSecretBy(description: description) else {
+            showCommonError(MetaSecretErrorType.cantRestore.message())
+            return }
+        
+        let myGroup = DispatchGroup()
+        var results = [Bool]()
+        
+        for share in Array(secret.shares) {
+            myGroup.enter()
+            
+            if let shareObj: SecretDistributionDoc = objectGeneration(from: share),
+               let signature = shareObj.metaPassword?.userSig {
+                Claim(provider: signature, secret: secret).execute() { [weak self] result in
+                    switch result {
+                    case .success(let result):
+                        guard result.msgType == Constants.Common.ok else {
+                            print(result.error ?? "")
+                            results.append(false)
+                            myGroup.leave()
+                            break
+                        }
+                        results.append(true)
+                        myGroup.leave()
+                    case .failure(let error):
+                        callBack?(false)
+                        results.append(false)
+                        myGroup.leave()
+                        print(error.localizedDescription)
+                        self?.showCommonError(error.localizedDescription)
+                        break
+                    }
+                }
+            }
+        }
+        
+        myGroup.notify(queue: .main) {
+            guard let _ = results.first(where: {$0 == false}) else {
+                self.startWaitingShares()
+                callBack?(true)
+                return
+            }
+            callBack?(false)
+        }
+    }
+
+    func startWaitingShares() {
+        createTimer()
     }
 }
 
 private extension AddSecretViewModel {
+    func createTimer() {
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+        }
+    }
+    
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    @objc func fireTimer() {
+        findShares()
+    }
+    
+    func findShares() {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            
+            FindShares().execute { [weak self] result in
+                self?.stopTimer()
+                
+                switch result {
+                case .success(let result):
+                    guard result.msgType == Constants.Common.ok else {
+                        self?.showCommonError(MetaSecretErrorType.cantRestore.message())
+                        self?.delegate?.showRestoreResult(password: nil)
+                        return
+                    }
+                    
+                    guard let share = result.data?.first, share.distributionType == .recover, let keyManager = self?.securityBox?.keyManager else {
+                        self?.showCommonError(MetaSecretErrorType.cantRestore.message())
+                        self?.delegate?.showRestoreResult(password: nil)
+                        return
+                    }
+                    
+                    guard let description = share.metaPassword?.metaPassword.id.name,
+                          let secret = DBManager.shared.readSecretBy(description: description),
+                          let secretShareString = secret.shares.first else {
+                        self?.showCommonError(MetaSecretErrorType.cantRestore.message())
+                        self?.delegate?.showRestoreResult(password: nil)
+                        return
+                    }
+                    
+                    guard let docOne: SecretDistributionDoc = self?.objectGeneration(from: secretShareString) else {
+                        self?.showCommonError(MetaSecretErrorType.cantRestore.message())
+                        self?.delegate?.showRestoreResult(password: nil)
+                        return
+                    }
+                    
+                    let model = RestoreModel(keyManager: keyManager, docOne: docOne, docTwo: share)
+                    let decriptedSecret = RustTransporterManager().restoreSecret(model: model)
+                    self?.delegate?.showRestoreResult(password: decriptedSecret)
+                    
+                case .failure(let error):
+                    self?.showCommonError(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     func splitInternal(_ secret: String, callBack: ((Bool)->())?) {
         components = RustTransporterManager().split(secret: secret)
         callBack?(!components.isEmpty)

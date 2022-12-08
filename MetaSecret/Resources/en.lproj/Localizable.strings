@@ -112,3 +112,5 @@
 "encodeError" = "Encode error";
 "noMainUserError" = "No main user";
 "objectToJsonError" = "Parse object to Json error";
+"cantRestore" = "Can't restore password";
+"cantClaim" = "Can't finish claim request";

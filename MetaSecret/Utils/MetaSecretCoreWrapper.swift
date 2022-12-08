@@ -19,8 +19,8 @@ final class RustTransporterManager: JsonSerealizable {
         return userBox
     }
     
-    func split(secret: String) -> [PasswordShare] {
-        var components = [PasswordShare]()
+    func split(secret: String) -> [UserShareDto] {
+        var components = [UserShareDto]()
 
         let jsonData = jsonU8Generation(string: secret)
         guard let libResult = split_secret(jsonData, jsonData.count) else { return [] }
@@ -48,6 +48,16 @@ final class RustTransporterManager: JsonSerealizable {
         rust_string_free(libResult)
         
         let encryptedShare: MetaPasswordId? = objectGeneration(from: jsonString)
+        return encryptedShare
+    }
+    
+    func restoreSecret(model: RestoreModel) -> String? {
+        guard let jsonData = jsonU8Generation(from: model) else { return nil }
+        guard let libResult = restore_secret(jsonData, jsonData.count) else { return nil }
+        let jsonString = String(cString: libResult)
+        rust_string_free(libResult)
+        
+        let encryptedShare: String? = objectGeneration(from: jsonString)
         return encryptedShare
     }
 }

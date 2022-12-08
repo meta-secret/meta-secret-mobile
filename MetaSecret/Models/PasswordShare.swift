@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct PasswordShares: Codable {
-    var result: [PasswordShare]
+struct UserShareDtos: Codable {
+    var result: [UserShareDto]
 }
 
-final class PasswordShare: BaseModel {
+final class UserShareDto: BaseModel {
     var shareId: Int
     var shareBlocks: [ShareBlock]
     

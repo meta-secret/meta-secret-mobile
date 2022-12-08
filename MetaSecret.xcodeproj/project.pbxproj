@@ -28,6 +28,7 @@
 		E52686F12901D81E0030A542 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E52686F02901D8150030A542 /* libresolv.tbd */; };
 		E52686F72901DBD20030A542 /* MetaSecret-Bridging-Header.h in Resources */ = {isa = PBXBuildFile; fileRef = E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */; };
 		E52E651828C8021E0028213A /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E651728C8021E0028213A /* Secret.swift */; };
+		E5332238293FCA81005E930D /* RestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5332237293FCA81005E930D /* RestoreModel.swift */; };
 		E54153D62935457C009AA6F1 /* AeadCipherText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54153D52935457C009AA6F1 /* AeadCipherText.swift */; };
 		E54205E928D123D300E763DB /* SceneSendDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54205E828D123D300E763DB /* SceneSendDataModel.swift */; };
 		E548679E28B6E37B00A1E5DB /* SecretsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548679D28B6E37B00A1E5DB /* SecretsDataSource.swift */; };
@@ -133,6 +134,7 @@
 		E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetaSecret-Bridging-Header.h"; sourceTree = "<group>"; };
 		E52686F42901D8A90030A542 /* meta-secret-core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "meta-secret-core.h"; sourceTree = "<group>"; };
 		E52E651728C8021E0028213A /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
+		E5332237293FCA81005E930D /* RestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreModel.swift; sourceTree = "<group>"; };
 		E54153D52935457C009AA6F1 /* AeadCipherText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AeadCipherText.swift; sourceTree = "<group>"; };
 		E54205E828D123D300E763DB /* SceneSendDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSendDataModel.swift; sourceTree = "<group>"; };
 		E548679D28B6E37B00A1E5DB /* SecretsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsDataSource.swift; sourceTree = "<group>"; };
@@ -507,6 +509,7 @@
 				E51867A329396CBA000DF023 /* UserSignature.swift */,
 				E51867A529396FAF000DF023 /* BaseModel.swift */,
 				E51867A8293973C6000DF023 /* DeviceInfo.swift */,
+				E5332237293FCA81005E930D /* RestoreModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -748,6 +751,7 @@
 				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
 				E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */,
+				E5332238293FCA81005E930D /* RestoreModel.swift in Sources */,
 				E57E6B6028B3F09300906DBD /* SplashSceneViewModel.swift in Sources */,
 				E55AC12528C7DFB000757C0C /* DBManager.swift in Sources */,
 				E57E6B5A28B3F04B00906DBD /* SplashSceneView.swift in Sources */,

@@ -12,7 +12,7 @@ protocol MainSceneProtocol {
     func reloadData(source: MainScreenSource?)
 }
 
-final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
+final class MainSceneViewModel: Alertable, Routerable, UD, Signable, JsonSerealizable {
     //MARK: - PROPERTIES
     private var delegate: MainSceneProtocol? = nil
     private var timer: Timer? = nil
@@ -34,9 +34,10 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable {
     func getAllSecrets() {
         showLoader()
         DispatchQueue.main.async { [weak self] in
-            self?.source = SecretsDataSource().getDataSource(for: DBManager.shared.getAllSecrets())
             guard let `self` = self else { return }
+            self.source = SecretsDataSource().getDataSource(for: DBManager.shared.getAllSecrets())
             self.delegate?.reloadData(source: self.source)
+            self.createTimer()
         }
     }
     
@@ -108,6 +109,7 @@ private extension MainSceneViewModel {
             FindShares().execute { [weak self] result in
                 switch result {
                 case .success(let result):
+                    self?.stopTimer()
                     guard result.msgType == Constants.Common.ok else {
                         print(result.error ?? "")
                         return
@@ -120,6 +122,67 @@ private extension MainSceneViewModel {
                     }
                 case .failure(let error):
                     self?.showCommonError(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func findClaims() {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            
+            FindClaims().execute { [weak self] result in
+                switch result {
+                case .success(let result):
+                    guard result.msgType == Constants.Common.ok else {
+                        print(result.error ?? "")
+                        return
+                    }
+                    self?.stopTimer()
+                    self?.distributeClaimsToRestore(claims: result.data)
+                    
+                case .failure(let error):
+                    self?.showCommonError(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func distributeClaimsToRestore(claims: [PasswordRecoveryRequest]?) {
+        guard let claims else {
+            createTimer()
+            showCommonError(MetaSecretErrorType.cantClaim.message())
+            return
+        }
+        
+        #warning("Why can we have more than one claim")
+        for claim in claims {
+            guard let description = claim.id.name, let secret = DBManager.shared.readSecretBy(description: description) else {
+                createTimer()
+                showCommonError(MetaSecretErrorType.cantClaim.message())
+                return
+            }
+            
+            #warning("Do we need all items?")
+            guard let shareString = secret.shares.first else {
+                createTimer()
+                showCommonError(MetaSecretErrorType.cantClaim.message())
+                return
+            }
+            guard let share: AeadCipherText = objectGeneration(from: shareString) else {
+                createTimer()
+                showCommonError(MetaSecretErrorType.cantClaim.message())
+                return
+            }
+            
+            Distribute(encodedShare: share, receiver: claim.consumer, description: description, type: .recover).execute() { [weak self] result in
+                switch result {
+                case .failure(let err):
+                    self?.showCommonError(err.localizedDescription)
+                case .success(let result):
+                    if result.msgType != Constants.Common.ok {
+                        self?.showCommonError(result.error)
+                    }
                 }
             }
         }

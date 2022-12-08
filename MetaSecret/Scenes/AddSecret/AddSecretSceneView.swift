@@ -102,6 +102,16 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
     func close() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    func showRestoreResult(password: String?) {
+        hideLoader()
+        guard let password else {
+            showCommonError(MetaSecretErrorType.cantRestore.message())
+            return
+        }
+        
+        passwordTextField.text = password
+    }
 }
 
 private extension AddSecretSceneView {
@@ -179,19 +189,13 @@ private extension AddSecretSceneView {
         })
     }
     
-    func restore() {
-        viewModel?.restoreSecret(descriptionTextField.text ?? "", callBack: { [weak self] restoredSecret in
-            
-            guard let restoredSecret else {
-                self?.showCommonError(MetaSecretErrorType.restore.message())
-                return
+    private func restore() {
+        showLoader()
+        viewModel?.requestClaims(descriptionTextField.text ?? "", callBack: { [weak self] isRequestOk in
+            if !isRequestOk {
+                self?.hideLoader()
+                self?.showCommonError(MetaSecretErrorType.cantClaim.message())
             }
-            
-            self?.passwordTextField.text = restoredSecret
-            
-            self?.splitRestoreButton.isUserInteractionEnabled = false
-            self?.splitRestoreButton.backgroundColor = .systemGray5
-            self?.hideLoader()
         })
     }
     

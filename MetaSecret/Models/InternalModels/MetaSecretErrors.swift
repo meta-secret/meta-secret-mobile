@@ -12,6 +12,8 @@ enum MetaSecretErrorType {
     case distribute
     case restore
     case objectToJson
+    case cantRestore
+    case cantClaim
     
     func message() -> String {
         switch self {
@@ -23,6 +25,10 @@ enum MetaSecretErrorType {
             return Constants.Errors.restoreError
         case .objectToJson:
             return Constants.Errors.objectToJsonError
+        case .cantRestore:
+            return Constants.Errors.cantRestore
+        case .cantClaim:
+            return Constants.Errors.cantClaim
         }
     }
 }

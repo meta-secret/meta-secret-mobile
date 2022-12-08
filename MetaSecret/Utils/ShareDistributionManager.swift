@@ -10,8 +10,7 @@ import RealmSwift
 
 #warning("UNIVERSAL MECHANISM NEEDED")
 protocol ShareDistributionable {
-    func distributeShares(_ shares: [PasswordShare], _ vaults: [UserSignature], description: String, callBack: ((Bool)->())?)
-    func restorePassword(_ shares: [PasswordShare], _ vaults: [UserSignature], description: String, callBack: ((String)->())?)
+    func distributeShares(_ shares: [UserShareDto], _ vaults: [UserSignature], description: String, callBack: ((Bool)->())?)
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?)
 }
 
@@ -22,12 +21,12 @@ class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSereal
         case partially = 2
     }
     
-    fileprivate var shares: [PasswordShare] = [PasswordShare]()
+    fileprivate var shares: [UserShareDto] = [UserShareDto]()
     fileprivate var signatures: [UserSignature] = [UserSignature]()
     fileprivate var description: String = ""
     fileprivate var callBack: ((Bool)->())?
     
-    func distributeShares(_ shares: [PasswordShare], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?) {
+    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?) {
         guard let typeOfSharing = SplittedType(rawValue: signatures.count) else {
             callBack?(false)
             return
@@ -48,15 +47,10 @@ class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSereal
         }
     }
     
-    func restorePassword(_ shares: [PasswordShare], _ vaults: [UserSignature], description: String, callBack: ((String) -> ())?) {
-//        Distribute(encodedShare: shares, reciverVault: vaults, description: description, type: .Recover).execute() { restoredPassword in
-//            callBack?(restoredPassword)
-//        }
-    }
-    
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?) {
         for share in shares ?? [] {
-            guard let description = share.metaPassword?.metaPassword.id.name else { break }
+            guard let description = share.metaPassword?.metaPassword.id.name,
+                  share.distributionType == .split else { break }
             
             if let secret = DBManager.shared.readSecretBy(description: description) {
                 if let shareJsonString = jsonStringGeneration(from: share) {
@@ -129,7 +123,7 @@ private extension ShareDistributionManager {
     }
     
     //MARK: - ENCODING
-    func encryptShare(_ share: PasswordShare, _ receiverPubKey: Base64EncodedText) -> AeadCipherText? {
+    func encryptShare(_ share: UserShareDto, _ receiverPubKey: Base64EncodedText) -> AeadCipherText? {
         guard let keyManager = securityBox?.keyManager else {
             showCommonError(Constants.Errors.noMainUserError)
             return nil
