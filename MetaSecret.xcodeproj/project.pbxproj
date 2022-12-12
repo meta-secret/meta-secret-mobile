@@ -77,6 +77,7 @@
 		E5B46DC32937EDF100BC6F47 /* libmeta_secret_core_swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5B46DC22937EDF100BC6F47 /* libmeta_secret_core_swift.a */; };
 		E5B64C3D292663510079A5CC /* ShareDistributionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */; };
 		E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */; };
+		E5C5111029428C9600F7BFC0 /* MetaPassId.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C5110F29428C9600F7BFC0 /* MetaPassId.swift */; };
 		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
 		E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */; };
 		E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */; };
@@ -188,6 +189,7 @@
 		E5B46DC22937EDF100BC6F47 /* libmeta_secret_core_swift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmeta_secret_core_swift.a; path = rustLib/libmeta_secret_core_swift.a; sourceTree = SOURCE_ROOT; };
 		E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDistributionManager.swift; sourceTree = "<group>"; };
 		E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindClaims.swift; sourceTree = "<group>"; };
+		E5C5110F29428C9600F7BFC0 /* MetaPassId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaPassId.swift; sourceTree = "<group>"; };
 		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
 		E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceInfoSceneView.xib; sourceTree = "<group>"; };
 		E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneViewModel.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 			isa = PBXGroup;
 			children = (
 				E52E651728C8021E0028213A /* Secret.swift */,
+				E5C5110F29428C9600F7BFC0 /* MetaPassId.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -751,6 +754,7 @@
 				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
 				E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */,
+				E5C5111029428C9600F7BFC0 /* MetaPassId.swift in Sources */,
 				E5332238293FCA81005E930D /* RestoreModel.swift in Sources */,
 				E57E6B6028B3F09300906DBD /* SplashSceneViewModel.swift in Sources */,
 				E55AC12528C7DFB000757C0C /* DBManager.swift in Sources */,

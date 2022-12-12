@@ -10,7 +10,7 @@ import RealmSwift
 
 #warning("UNIVERSAL MECHANISM NEEDED")
 protocol ShareDistributionable {
-    func distributeShares(_ shares: [UserShareDto], _ vaults: [UserSignature], description: String, callBack: ((Bool)->())?)
+    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?)
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?)
 }
 
@@ -90,7 +90,7 @@ private extension ShareDistributionManager {
             
             let signature: UserSignature
             let shareToEncrypt = shares[i]
-            if signatures.count - 1 >= i {
+            if signatures.count > i {
                 signature = signatures[i]
             } else {
                 signature = signatures[0]

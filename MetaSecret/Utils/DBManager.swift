@@ -10,7 +10,8 @@ import RealmSwift
 
 final class DBManager: Alertable {
     static let shared = DBManager()
-    
+    #warning("MAKE GENERIC METHODS")
+    // MARK: - SECRET
     func saveSecret(_ secret: Secret) {
         do {
             let realm = try Realm()
@@ -42,5 +43,28 @@ final class DBManager: Alertable {
             showCommonError(error.localizedDescription.description)
         }
         return []
+    }
+    
+    // MARK: - META PASS
+    func savePass(_ pass: MetaPassId) {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(pass, update: .all)
+            }
+        } catch {
+            showCommonError(error.localizedDescription.description)
+        }
+    }
+    
+    func readPassBy(description: String) -> MetaPassId? {
+        do {
+            let realm = try Realm()
+            let specificPass = realm.object(ofType: MetaPassId.self, forPrimaryKey: description)
+            return specificPass
+        } catch {
+            showCommonError(error.localizedDescription.description)
+        }
+        return nil
     }
 }

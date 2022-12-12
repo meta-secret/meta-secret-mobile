@@ -94,6 +94,7 @@ private extension MainSceneViewModel {
     @objc func fireTimer() {
         switch type {
         case .Secrets:
+            findClaims()
             findShares()
         case .Devices:
             getVault()
@@ -109,12 +110,11 @@ private extension MainSceneViewModel {
             FindShares().execute { [weak self] result in
                 switch result {
                 case .success(let result):
-                    self?.stopTimer()
-                    guard result.msgType == Constants.Common.ok else {
+                    guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
                         print(result.error ?? "")
                         return
                     }
-                    
+                    self?.stopTimer()
                     ShareDistributionManager().distribtuteToDB(result.data) { isToReload in
                         if isToReload {
                             self?.getAllSecrets()
@@ -134,11 +134,10 @@ private extension MainSceneViewModel {
             FindClaims().execute { [weak self] result in
                 switch result {
                 case .success(let result):
-                    guard result.msgType == Constants.Common.ok else {
+                    guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
                         print(result.error ?? "")
                         return
                     }
-                    self?.stopTimer()
                     self?.distributeClaimsToRestore(claims: result.data)
                     
                 case .failure(let error):
@@ -169,13 +168,14 @@ private extension MainSceneViewModel {
                 showCommonError(MetaSecretErrorType.cantClaim.message())
                 return
             }
-            guard let share: AeadCipherText = objectGeneration(from: shareString) else {
+            guard let secretDoc: SecretDistributionDoc = objectGeneration(from: shareString),
+                  let encryptedShare = secretDoc.secretMessage?.encryptedText else {
                 createTimer()
                 showCommonError(MetaSecretErrorType.cantClaim.message())
                 return
             }
             
-            Distribute(encodedShare: share, receiver: claim.consumer, description: description, type: .recover).execute() { [weak self] result in
+            Distribute(encodedShare: encryptedShare, receiver: claim.consumer, description: description, type: .recover).execute() { [weak self] result in
                 switch result {
                 case .failure(let err):
                     self?.showCommonError(err.localizedDescription)

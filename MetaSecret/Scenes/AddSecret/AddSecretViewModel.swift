@@ -92,37 +92,47 @@ final class AddSecretViewModel: UD, Routerable, Signable, JsonSerealizable {
     }
     
     func requestClaims(_ description: String, callBack: ((Bool)->())?) {
-        guard let secret = DBManager.shared.readSecretBy(description: description) else {
+        guard let userSignature, let secret = DBManager.shared.readSecretBy(description: description) else {
             showCommonError(MetaSecretErrorType.cantRestore.message())
             return }
+
+        let sharesArray = Array(secret.shares)
+        guard let shareString = sharesArray.first else {
+            showCommonError(MetaSecretErrorType.cantRestore.message())
+            return }
+        let shareObject: SecretDistributionDoc? = objectGeneration(from: shareString)
         
         let myGroup = DispatchGroup()
         var results = [Bool]()
         
-        for share in Array(secret.shares) {
+        guard let members = shareObject?.metaPassword?.metaPassword.vault.signatures else {
+            showCommonError(MetaSecretErrorType.cantRestore.message())
+            return }
+        #warning("signature make equitable")
+        let otherDevices = members.filter({ $0.signature.base64Text != userSignature.signature.base64Text})
+        let otherMembers = otherDevices.isEmpty ? [userSignature] : otherDevices
+        
+        for member in otherMembers {
             myGroup.enter()
-            
-            if let shareObj: SecretDistributionDoc = objectGeneration(from: share),
-               let signature = shareObj.metaPassword?.userSig {
-                Claim(provider: signature, secret: secret).execute() { [weak self] result in
-                    switch result {
-                    case .success(let result):
-                        guard result.msgType == Constants.Common.ok else {
-                            print(result.error ?? "")
-                            results.append(false)
-                            myGroup.leave()
-                            break
-                        }
-                        results.append(true)
-                        myGroup.leave()
-                    case .failure(let error):
-                        callBack?(false)
+            print("## ASK CLAIM FROM \(userSignature.device.deviceName) TO \(member.device.deviceName)")
+            Claim(provider: member, secret: secret).execute() { [weak self] result in
+                switch result {
+                case .success(let result):
+                    guard result.msgType == Constants.Common.ok else {
+                        print(result.error ?? "")
                         results.append(false)
                         myGroup.leave()
-                        print(error.localizedDescription)
-                        self?.showCommonError(error.localizedDescription)
                         break
                     }
+                    results.append(true)
+                    myGroup.leave()
+                case .failure(let error):
+                    callBack?(false)
+                    results.append(false)
+                    myGroup.leave()
+                    print(error.localizedDescription)
+                    self?.showCommonError(error.localizedDescription)
+                    break
                 }
             }
         }
@@ -163,11 +173,9 @@ private extension AddSecretViewModel {
             guard let `self` = self else { return }
             
             FindShares().execute { [weak self] result in
-                self?.stopTimer()
-                
                 switch result {
                 case .success(let result):
-                    guard result.msgType == Constants.Common.ok else {
+                    guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
                         self?.showCommonError(MetaSecretErrorType.cantRestore.message())
                         self?.delegate?.showRestoreResult(password: nil)
                         return
@@ -180,12 +188,13 @@ private extension AddSecretViewModel {
                     }
                     
                     guard let description = share.metaPassword?.metaPassword.id.name,
-                          let secret = DBManager.shared.readSecretBy(description: description),
-                          let secretShareString = secret.shares.first else {
+                          let secret = DBManager.shared.readSecretBy(description: description) else {
                         self?.showCommonError(MetaSecretErrorType.cantRestore.message())
                         self?.delegate?.showRestoreResult(password: nil)
                         return
                     }
+                    
+                    let secretShareString = secret.shares[0]
                     
                     guard let docOne: SecretDistributionDoc = self?.objectGeneration(from: secretShareString) else {
                         self?.showCommonError(MetaSecretErrorType.cantRestore.message())
@@ -193,6 +202,7 @@ private extension AddSecretViewModel {
                         return
                     }
                     
+                    self?.stopTimer()
                     let model = RestoreModel(keyManager: keyManager, docOne: docOne, docTwo: share)
                     let decriptedSecret = RustTransporterManager().restoreSecret(model: model)
                     self?.delegate?.showRestoreResult(password: decriptedSecret)

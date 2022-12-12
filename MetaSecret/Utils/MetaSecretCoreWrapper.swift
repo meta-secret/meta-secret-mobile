@@ -42,10 +42,20 @@ final class RustTransporterManager: JsonSerealizable {
     }
     
     func generateMetaPassId(description: String) -> MetaPasswordId? {
+        if let metaPassId = DBManager.shared.readPassBy(description: description) {
+            let encryptedShare: MetaPasswordId? = objectGeneration(from: metaPassId.metaPassId)
+            return encryptedShare
+        }
+        
         let jsonData = jsonU8Generation(string: description)
         guard let libResult = generate_meta_password_id(jsonData, jsonData.count) else { return nil }
         let jsonString = String(cString: libResult)
         rust_string_free(libResult)
+        
+        let metaPassId = MetaPassId()
+        metaPassId.secretName = description
+        metaPassId.metaPassId = jsonString
+        DBManager.shared.savePass(metaPassId)
         
         let encryptedShare: MetaPasswordId? = objectGeneration(from: jsonString)
         return encryptedShare
