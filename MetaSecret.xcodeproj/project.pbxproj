@@ -49,6 +49,7 @@
 		E55B514628CE92F300373959 /* PopupHintViewScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55B514428CE92F300373959 /* PopupHintViewScene.xib */; };
 		E5643BD728FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5643BD628FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift */; };
 		E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */; };
+		E5731C692947D8FA004B0095 /* DistributionConnectorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5731C682947D8FA004B0095 /* DistributionConnectorManager.swift */; };
 		E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */; };
 		E57E6B5528B3EFFC00906DBD /* MainSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */; };
 		E57E6B5728B3F00900906DBD /* MainSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E6B5628B3F00900906DBD /* MainSceneViewModel.swift */; };
@@ -157,6 +158,7 @@
 		E55B514428CE92F300373959 /* PopupHintViewScene.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopupHintViewScene.xib; sourceTree = "<group>"; };
 		E5643BD628FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretCoreWrapper.swift; sourceTree = "<group>"; };
 		E56FD13A28B111CA00AA6CA3 /* SigningManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningManager.swift; sourceTree = "<group>"; };
+		E5731C682947D8FA004B0095 /* DistributionConnectorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributionConnectorManager.swift; sourceTree = "<group>"; };
 		E57E6B5228B3EFFC00906DBD /* MainSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneView.swift; sourceTree = "<group>"; };
 		E57E6B5328B3EFFC00906DBD /* MainSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainSceneView.xib; sourceTree = "<group>"; };
 		E57E6B5628B3F00900906DBD /* MainSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneViewModel.swift; sourceTree = "<group>"; };
@@ -544,6 +546,7 @@
 				E5643BD628FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift */,
 				E520C952290F2FAB001DB36E /* JsonManager.swift */,
 				E5B64C3C292663510079A5CC /* ShareDistributionManager.swift */,
+				E5731C682947D8FA004B0095 /* DistributionConnectorManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -732,6 +735,7 @@
 				E5F0C40828A83ECC00902310 /* AlertManager.swift in Sources */,
 				E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */,
 				E51867A429396CBA000DF023 /* UserSignature.swift in Sources */,
+				E5731C692947D8FA004B0095 /* DistributionConnectorManager.swift in Sources */,
 				E57E6B6328B3F79B00906DBD /* Router.swift in Sources */,
 				E57E6B5728B3F00900906DBD /* MainSceneViewModel.swift in Sources */,
 				E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */,

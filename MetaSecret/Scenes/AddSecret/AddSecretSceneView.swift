@@ -50,10 +50,12 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
         
         setupData()
         showLoader()
-        self.viewModel = AddSecretViewModel(delegate: self)
-        viewModel?.getVault(completion: { [weak self] in
-            self?.hideLoader()
-        })
+        self.viewModel = AddSecretViewModel(delegate: self,
+                                            distributionService: DistributionConnectorManager(callBack: { [weak self] type in
+            self?.switchCallback(type: type)
+        }))
+        
+        viewModel?.getVault()
         setupUI()
     }
     
@@ -72,6 +74,7 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
     
     @IBAction func selectSaveButtonTapped(_ sender: Any) {
         if (viewModel?.vaultsCount() ?? 1) <= Constants.Common.neededMembersCount {
+            showLoader()
             viewModel?.encryptAndDistribute(callBack: { [weak self] isSuccess in
                 self?.hideLoader()
                 
@@ -173,6 +176,20 @@ private extension AddSecretSceneView {
         }
     }
     
+    //MARK: - CALL BACK FROM DISTRIBUTION SERVICE
+    func switchCallback(type: CallBackType) {
+        showLoader()
+        switch type {
+        case .Shares, .Devices:
+            hideLoader()
+        case .Claims(let secret):
+            showRestoreResult(password: secret)
+        case .Failure:
+            showRestoreResult(password: nil)
+        }
+    }
+    
+    //MARK: - MAIN FUNCTIONALITY
     func split() {
         viewModel?.split(secret: passwordTextField.text ?? "", description: descriptionTextField.text ?? "", callBack: { [weak self] isSuccess in
             if isSuccess {
@@ -191,14 +208,10 @@ private extension AddSecretSceneView {
     
     private func restore() {
         showLoader()
-        viewModel?.requestClaims(descriptionTextField.text ?? "", callBack: { [weak self] isRequestOk in
-            if !isRequestOk {
-                self?.hideLoader()
-                self?.showCommonError(MetaSecretErrorType.cantClaim.message())
-            }
-        })
+        viewModel?.requestClaims(descriptionTextField.text ?? "")
     }
     
+    //MARK: - CHANGING SCREEN MODE
     func resetScreen() {
         passwordTextField.text = ""
         descriptionTextField.text = ""

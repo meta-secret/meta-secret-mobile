@@ -9,12 +9,12 @@ import Foundation
 import RealmSwift
 
 #warning("UNIVERSAL MECHANISM NEEDED")
-protocol ShareDistributionable {
+protocol ShareDistributionProtocol {
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?)
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?)
 }
 
-class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSerealizable {
+final class ShareDistributionManager: ShareDistributionProtocol, UD, Alertable, JsonSerealizable {
     fileprivate enum SplittedType: Int {
         case fullySplitted = 3
         case allInOne = 1
@@ -38,11 +38,10 @@ class ShareDistributionManager: ShareDistributionable, UD, Alertable, JsonSereal
         self.description = description
         
         switch typeOfSharing {
-        case .fullySplitted:
-            simpleDistribution(callBack: callBack)
-        case .allInOne:
+        case .fullySplitted, .allInOne:
             simpleDistribution(callBack: callBack)
         case .partially:
+        #warning("here!!")
             break
         }
     }
@@ -97,8 +96,8 @@ private extension ShareDistributionManager {
             }
             
             if let encryptedShare = encryptShare(shareToEncrypt, signature.publicKey) {
-                distribute([encryptedShare], receiver: signature) { isSuccess in
-                    results.append(isSuccess)
+                DistributionConnectorManager(callBack: nil).distributeSharesToMembers([encryptedShare], receiver: signature, description: description) { isOk in
+                    results.append(isOk)
                     myGroup.leave()
                 }
             }
@@ -137,19 +136,5 @@ private extension ShareDistributionManager {
         }
         
         return encryptedShare
-    }
-    
-    //MARK: - Distributing
-    func distribute(_ shares: [AeadCipherText], receiver: UserSignature, callBack: ((Bool)->())?) {
-        for share in shares {
-            Distribute(encodedShare: share, receiver: receiver, description: description, type: .split).execute() { result in
-                switch result {
-                case .failure(_):
-                    callBack?(false)
-                default:
-                    callBack?(true)
-                }
-            }
-        }
     }
 }

@@ -40,14 +40,17 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
         super.viewDidLoad()
 
         setupUI()
-        self.viewModel = MainSceneViewModel(delegate: self)
+        self.viewModel = MainSceneViewModel(delegate: self,
+                                            distributionService: DistributionConnectorManager(callBack: { [weak self] type in
+            self?.switchCallback(type: type)
+        }))
         showLoader()
         viewModel?.getAllSecrets()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        showLoader()
         switch selectedSegment {
         case .Secrets:
             viewModel?.getAllSecrets()
@@ -139,6 +142,19 @@ private extension MainSceneView {
     func setTitle() {
         emptyLabel.text = selectedSegment.rawValue == 0 ? Constants.MainScreen.noSecrets : ""
         self.title = selectedSegment.rawValue == 0 ? Constants.MainScreen.secrets : Constants.MainScreen.devices
+    }
+    
+    //MARK: - CALL BACK FROM DISTRIBUTION SERVICE
+    func switchCallback(type: CallBackType) {
+        showLoader()
+        switch type {
+        case .Shares:
+            viewModel?.getAllSecrets()
+        case .Devices:
+            viewModel?.getVault()
+        case .Claims(_), .Failure:
+            break
+        }
     }
     
     //MARK: - TAB SELECTING
