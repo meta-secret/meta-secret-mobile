@@ -18,3 +18,13 @@ final class RestoreModel: BaseModel {
         self.docTwo = docTwo
     }
 }
+
+final class DecryptModel: BaseModel {
+    var keyManager: SerializedKeyManager
+    var doc: SecretDistributionDoc
+    
+    init(keyManager: SerializedKeyManager, doc: SecretDistributionDoc) {
+        self.keyManager = keyManager
+        self.doc = doc
+    }
+}

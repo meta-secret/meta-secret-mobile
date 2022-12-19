@@ -24,14 +24,14 @@ final class AddSecretViewModel: UD, Routerable, Signable, JsonSerealizable {
     private var signatures: [UserSignature]? = nil
     private lazy var activeSignatures: [UserSignature] = [UserSignature]()
     private var description: String = ""
-    private var distributionService: DistributionConnectorManagerProtocol
+//    private var distributionService: DistributionConnectorManagerProtocol
     
     var isFullySplitted: Bool = false
     
     //MARK: - INIT
-    init(delegate: AddSecretProtocol, distributionService: DistributionConnectorManagerProtocol) {
+    init(delegate: AddSecretProtocol/*, distributionService: DistributionConnectorManagerProtocol*/) {
         self.delegate = delegate
-        self.distributionService = distributionService
+//        self.distributionService = distributionService
     }
     
     //MARK: - PUBLIC METHODS
@@ -75,7 +75,7 @@ final class AddSecretViewModel: UD, Routerable, Signable, JsonSerealizable {
     }
     
     func requestClaims(_ description: String) {
-        distributionService.startMonitoringClaims(description: description)
+        DistributionConnectorManager.shared.startMonitoringClaimResponses(description: description)
     }
 }
 

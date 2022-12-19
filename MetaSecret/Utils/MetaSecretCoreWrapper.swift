@@ -41,6 +41,15 @@ final class RustTransporterManager: JsonSerealizable {
         return encryptedShare
     }
     
+    func decrypt(model: DecryptModel) -> String? {
+        guard let jsonData = jsonU8Generation(from: model) else { return nil }
+        guard let libResult = decrypt_secret(jsonData, jsonData.count) else { return nil }
+        let jsonString = String(cString: libResult)
+        rust_string_free(libResult)
+        
+        return jsonString
+    }
+    
     func generateMetaPassId(description: String) -> MetaPasswordId? {
         if let metaPassId = DBManager.shared.readPassBy(description: description) {
             let encryptedShare: MetaPasswordId? = objectGeneration(from: metaPassId.metaPassId)
@@ -67,7 +76,7 @@ final class RustTransporterManager: JsonSerealizable {
         let jsonString = String(cString: libResult)
         rust_string_free(libResult)
         
-        let encryptedShare: String? = objectGeneration(from: jsonString)
-        return encryptedShare
+        let encryptedShare: PlainText? = objectGeneration(from: jsonString)
+        return encryptedShare?.text
     }
 }

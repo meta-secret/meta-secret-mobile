@@ -22,9 +22,7 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
     //MARK: - INIT
     init(delegate: LoginSceneProtocol) {
         self.delegate = delegate
-//        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime, execute: { [weak self] in
-            checkStatus()
-//        })
+        checkStatus()
     }
     
     //MARK: - REGISTRATION

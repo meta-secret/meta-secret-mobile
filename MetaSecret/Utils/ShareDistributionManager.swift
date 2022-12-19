@@ -41,8 +41,7 @@ final class ShareDistributionManager: ShareDistributionProtocol, UD, Alertable, 
         case .fullySplitted, .allInOne:
             simpleDistribution(callBack: callBack)
         case .partially:
-        #warning("here!!")
-            break
+            partiallyDistribute(callBack: callBack)
         }
     }
     
@@ -95,8 +94,8 @@ private extension ShareDistributionManager {
                 signature = signatures[0]
             }
             
-            if let encryptedShare = encryptShare(shareToEncrypt, signature.publicKey) {
-                DistributionConnectorManager(callBack: nil).distributeSharesToMembers([encryptedShare], receiver: signature, description: description) { isOk in
+            if let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
+                DistributionConnectorManager.shared.distributeSharesToMembers([encryptedShare], receiver: signature, description: description) { isOk in
                     results.append(isOk)
                     myGroup.leave()
                 }

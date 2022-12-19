@@ -25,8 +25,8 @@ extension JsonSerealizable {
             let jsonData = try JSONEncoder().encode(structure)
             let jsonString = String(data: jsonData, encoding: .utf8)
             return [UInt8](Data((jsonString ?? "").utf8))
-        } catch let _e {
-            print(_e)
+        } catch let e {
+            print("## \(e.localizedDescription)")
             return nil
         }
     }
@@ -36,8 +36,8 @@ extension JsonSerealizable {
             let jsonData = try JSONEncoder().encode(structure)
             let jsonString = String(data: jsonData, encoding: .utf8) ?? ""
             return jsonString
-        } catch let _e {
-            print(_e)
+        } catch let e {
+            print("## \(e.localizedDescription)")
             return nil
         }
     }
@@ -46,8 +46,8 @@ extension JsonSerealizable {
         do {
             let jsonData = try JSONEncoder().encode(structure)
             return jsonData
-        } catch let _e {
-            print(_e)
+        } catch let e {
+            print("## \(e.localizedDescription)")
             return nil
         }
     }
@@ -57,7 +57,7 @@ extension JsonSerealizable {
             let jsonData = Data(jsonString.utf8)
             return try JSONDecoder().decode(T.self, from: jsonData)
         } catch let e {
-            print(e.localizedDescription)
+            print("## \(e.localizedDescription)")
             return nil
         }
     }
@@ -78,7 +78,7 @@ extension JsonSerealizable {
             
             return components
         } catch let e {
-            print(e.localizedDescription)
+            print("## \(e.localizedDescription)")
             return nil
         }
     }

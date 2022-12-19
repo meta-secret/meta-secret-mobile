@@ -145,7 +145,7 @@ fileprivate class UDManager {
             let data = try encoder.encode(object)
             UserDefaults.standard.set(data, forKey: key)
         } catch {
-            print("Unable to Encode \(T.self)")
+            print("## Unable to Encode \(T.self)")
         }
     }
     
@@ -156,7 +156,7 @@ fileprivate class UDManager {
                 let object = try decoder.decode(T.self, from: data)
                 return object
             } catch {
-                print("Unable to Decode \(T.self)")
+                print("## Unable to Decode \(T.self)")
             }
         }
         return nil

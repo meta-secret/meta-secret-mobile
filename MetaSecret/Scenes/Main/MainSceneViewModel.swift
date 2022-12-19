@@ -18,37 +18,51 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable, JsonSereali
     private var pendings: [VaultDoc]? = nil
     private var source: MainScreenSource? = nil
     private var type: MainScreenSourceType = .Secrets
-    private var distributionService: DistributionConnectorManagerProtocol
+//    private var distributionService: DistributionConnectorManagerProtocol
     
     //MARK: - INIT
-    init(delegate: MainSceneProtocol, distributionService: DistributionConnectorManagerProtocol) {
+    init(delegate: MainSceneProtocol/*, distributionService: DistributionConnectorManagerProtocol*/) {
         self.delegate = delegate
-        self.distributionService = distributionService
+//        self.distributionService = distributionService
     }
     
     //MARK: - PUBLIC METHODS (Changing source)
-    func getAllSecrets() {
+    func getAllLocalSecrets() {
         source = SecretsDataSource().getDataSource(for: DBManager.shared.getAllSecrets())
         delegate?.reloadData(source: source)
-        distributionService.startMonitoringShares()
+        print("## LOCAL SECRETS RELOADED")
+    }
+    
+    func startMonitoringSharesAndClaimRequests() {
+        DistributionConnectorManager.shared.startMonitoringSharesAndClaimRequests()
     }
     
     func getVault() {
+        DistributionConnectorManager.shared.getVault()
+    }
+    
+    func getLocalVaultMembers() {
         guard let mainVault else { return }
         self.source = DevicesDataSource().getDataSource(for: mainVault)
         
         guard let source = self.source else { return }
         delegate?.reloadData(source: source)
-        distributionService.startMonitoringDevices()
+        print("## LOCAL VAULT MEMBERS RELOADED")
+    }
+    
+    func startMonitoringVaultsToConnect() {
+        DistributionConnectorManager.shared.startMonitoringVaults()
     }
     
     func getNewDataSource(type: MainScreenSourceType) {
         self.type = type
         switch type {
         case .Secrets:
-            getAllSecrets()
+            print("## DATA SOURCE CHANGED TO SECRETS")
+            getAllLocalSecrets()
         case .Devices:
-            getVault()
+            print("## DATA SOURCE CHANGED TO DEVICES")
+            getLocalVaultMembers()
         default:
             break
         }

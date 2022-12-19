@@ -40,22 +40,20 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
         super.viewDidLoad()
 
         setupUI()
-        self.viewModel = MainSceneViewModel(delegate: self,
-                                            distributionService: DistributionConnectorManager(callBack: { [weak self] type in
-            self?.switchCallback(type: type)
-        }))
-        showLoader()
-        viewModel?.getAllSecrets()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(switchCallback(_:)), name: NSNotification.Name(rawValue: "distributionService"), object: nil)
+        
+        self.viewModel = MainSceneViewModel(delegate: self)
+        viewModel?.getAllLocalSecrets()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        showLoader()
         switch selectedSegment {
         case .Secrets:
-            viewModel?.getAllSecrets()
+            viewModel?.startMonitoringSharesAndClaimRequests()
         case .Devices:
-            viewModel?.getVault()
+            viewModel?.startMonitoringVaultsToConnect()
         case .None:
             break
         }
@@ -85,18 +83,14 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
             guard filteredArr?.count ?? 0 < Config.minDevicesCount else { return }
             
             remainigLabel.text = Constants.MainScreen.addDevices(memberCounts: filteredArr?.count ?? 0)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Common.waitingTime) { [weak self] in
-                guard let `self` = self else { return }
-                
-                if (self.selectedSegment == .Secrets) || (!self.isOwner) {
-                    self.remainingNotificationContainer.isHidden = true
-                } else {
-                    self.remainingNotificationContainer.isHidden = false
-                }
-                
-                self.remainingNotification.showShadow()
+            if (self.selectedSegment == .Secrets) || (!self.isOwner) {
+                self.remainingNotificationContainer.isHidden = true
+            } else {
+                self.remainingNotificationContainer.isHidden = false
             }
+            
+            self.remainingNotification.showShadow()
+            
         } else {
             tableView.isHidden = true
             tableView.reloadData()
@@ -145,15 +139,23 @@ private extension MainSceneView {
     }
     
     //MARK: - CALL BACK FROM DISTRIBUTION SERVICE
-    func switchCallback(type: CallBackType) {
-        showLoader()
-        switch type {
-        case .Shares:
-            viewModel?.getAllSecrets()
-        case .Devices:
-            viewModel?.getVault()
-        case .Claims(_), .Failure:
-            break
+    @objc func switchCallback(_ notification: NSNotification) {
+        if let type = notification.userInfo?["type"] as? CallBackType {
+            showLoader()
+            switch type {
+            case .Shares:
+                print("## GOT CALLBACK .SHARES")
+                viewModel?.getAllLocalSecrets()
+            case .Devices:
+                print("## GOT CALLBACK .DEVICES")
+                viewModel?.getLocalVaultMembers()
+            case .Claims(_):
+                print("## GOT CALLBACK .CLAIMS")
+                break
+            case .Failure:
+                print("## GOT CALLBACK .FAILURE")
+                break
+            }
         }
     }
     

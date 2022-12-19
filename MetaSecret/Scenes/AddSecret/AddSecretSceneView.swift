@@ -49,11 +49,10 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
         super.viewDidLoad()
         
         setupData()
-        showLoader()
-        self.viewModel = AddSecretViewModel(delegate: self,
-                                            distributionService: DistributionConnectorManager(callBack: { [weak self] type in
-            self?.switchCallback(type: type)
-        }))
+
+        NotificationCenter.default.addObserver(self, selector: #selector(switchCallback(_:)), name: NSNotification.Name(rawValue: "distributionService"), object: nil)
+
+        self.viewModel = AddSecretViewModel(delegate: self)
         
         viewModel?.getVault()
         setupUI()
@@ -177,15 +176,17 @@ private extension AddSecretSceneView {
     }
     
     //MARK: - CALL BACK FROM DISTRIBUTION SERVICE
-    func switchCallback(type: CallBackType) {
-        showLoader()
-        switch type {
-        case .Shares, .Devices:
-            hideLoader()
-        case .Claims(let secret):
-            showRestoreResult(password: secret)
-        case .Failure:
-            showRestoreResult(password: nil)
+    @objc func switchCallback(_ notification: NSNotification) {
+        if let type = notification.userInfo?["type"] as? CallBackType {
+            showLoader()
+            switch type {
+            case .Shares, .Devices:
+                hideLoader()
+            case .Claims(let secret):
+                showRestoreResult(password: secret)
+            case .Failure:
+                showRestoreResult(password: nil)
+            }
         }
     }
     

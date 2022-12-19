@@ -27,6 +27,7 @@
 		E520C953290F2FAB001DB36E /* JsonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520C952290F2FAB001DB36E /* JsonManager.swift */; };
 		E52686F12901D81E0030A542 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E52686F02901D8150030A542 /* libresolv.tbd */; };
 		E52686F72901DBD20030A542 /* MetaSecret-Bridging-Header.h in Resources */ = {isa = PBXBuildFile; fileRef = E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */; };
+		E52B0875294BE47800041554 /* PlainText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52B0874294BE47800041554 /* PlainText.swift */; };
 		E52E651828C8021E0028213A /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E651728C8021E0028213A /* Secret.swift */; };
 		E5332238293FCA81005E930D /* RestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5332237293FCA81005E930D /* RestoreModel.swift */; };
 		E54153D62935457C009AA6F1 /* AeadCipherText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54153D52935457C009AA6F1 /* AeadCipherText.swift */; };
@@ -135,6 +136,7 @@
 		E52686F02901D8150030A542 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetaSecret-Bridging-Header.h"; sourceTree = "<group>"; };
 		E52686F42901D8A90030A542 /* meta-secret-core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "meta-secret-core.h"; sourceTree = "<group>"; };
+		E52B0874294BE47800041554 /* PlainText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainText.swift; sourceTree = "<group>"; };
 		E52E651728C8021E0028213A /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		E5332237293FCA81005E930D /* RestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreModel.swift; sourceTree = "<group>"; };
 		E54153D52935457C009AA6F1 /* AeadCipherText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AeadCipherText.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				E51867A529396FAF000DF023 /* BaseModel.swift */,
 				E51867A8293973C6000DF023 /* DeviceInfo.swift */,
 				E5332237293FCA81005E930D /* RestoreModel.swift */,
+				E52B0874294BE47800041554 /* PlainText.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -790,6 +793,7 @@
 				E58E3B86292639D50018B136 /* Base64EncodedText.swift in Sources */,
 				E5061CF328CD258D00E2787B /* BottomInfoSheetModel.swift in Sources */,
 				E520C953290F2FAB001DB36E /* JsonManager.swift in Sources */,
+				E52B0875294BE47800041554 /* PlainText.swift in Sources */,
 				E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */,
 				E5A64F2928B26208007982BD /* LoaderManager.swift in Sources */,
 				E54153D62935457C009AA6F1 /* AeadCipherText.swift in Sources */,

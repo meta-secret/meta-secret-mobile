@@ -33,7 +33,7 @@ extension HTTPRequest {
                 switch result {
                 case .success(let data):
                     let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
-                    print(json ?? [:])
+//                    print(json ?? [:])
                     
                     if let decoded = try? JSONDecoder().decode(ResponseType.self, from: data) {
                         completionHandler(.success(decoded))
@@ -44,8 +44,8 @@ extension HTTPRequest {
                             do {
                                 let res = try JSONDecoder().decode(ResponseType.self, from: data)
                                 completionHandler(.success(res))
-                            } catch let _e {
-                                print(_e)
+                            } catch let e {
+                                print("## dispatch = \(e)")
                                 completionHandler(.failure(.FailedToDecode))
                             }
                         }
