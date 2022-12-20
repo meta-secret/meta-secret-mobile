@@ -49,6 +49,8 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        
         switch selectedSegment {
         case .Secrets:
             viewModel?.startMonitoringSharesAndClaimRequests()

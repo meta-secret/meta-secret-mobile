@@ -13,9 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let navigationController = UINavigationController()
         let rootViewController = SplashSceneView(nibName: "SplashSceneView", bundle: nil)
-        navigationController.viewControllers = [rootViewController]
+        let navigationController = UINavigationController(rootViewController: rootViewController)
         self.window?.rootViewController = navigationController
         return true
     }

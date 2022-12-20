@@ -116,6 +116,7 @@ final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
         GetVault().execute() { [weak self] result in
             switch result {
             case .success(let result):
+                self?.isLookinForVaults = false
                 guard result.msgType == Constants.Common.ok else {
                     self?.showCommonError(result.error ?? "")
                     return
@@ -366,6 +367,7 @@ private extension DistributionConnectorManager {
     
     //MARK: - VAULTS ACTIONS
     @objc func fireVaultsTimer() {
+        print("## FIRE 2!!!")
         if !isLookinForVaults {
             getVault()
         }

@@ -46,7 +46,7 @@
 "pending" = "Pending...";
 "declined" = "Decine";
 "member" = "Member";
-"noSecrets" = "No secrets yet! Coming soon...";
+"noSecrets" = "No secrets yet!";
 "hmmm" = "Hmmm.... no devices... are you a magician?";
 "yourNick" = "Your Nickname:";
 "yourDevices" = "Your Devices:";
