@@ -166,6 +166,15 @@ private extension MainSceneView {
         
         selectedSegment = MainScreenSourceType(rawValue: index) ?? .None
         
+        switch selectedSegment {
+        case .Secrets:
+            viewModel?.startMonitoringSharesAndClaimRequests()
+        case .Devices:
+            viewModel?.startMonitoringVaultsToConnect()
+        case .None:
+            break
+        }
+        
         let flatArr = source?.items.flatMap { $0 }
         let filteredArr = flatArr?.filter({$0.subtitle == VaultInfoStatus.member.rawValue})
         addDeviceView.isHidden = (selectedSegment == .Devices && (filteredArr?.count ?? 0 > Config.minDevicesCount))

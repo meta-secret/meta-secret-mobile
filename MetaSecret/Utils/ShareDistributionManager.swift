@@ -112,10 +112,9 @@ private extension ShareDistributionManager {
     }
     
     func partiallyDistribute(callBack: ((Bool)->())?) {
-        #warning("FIX THIS PARTICULAR CASE TO COMMON")
-        shares.append(shares[Constants.Common.neededMembersCount - 1])
-        signatures.append(signatures[0])
-        signatures.append(signatures[Constants.Common.neededMembersCount - 1])
+        guard let lastShare = shares.last else { return }
+        shares.append(lastShare)
+        signatures.append(contentsOf: signatures)
         
         simpleDistribution(callBack: callBack)
     }
