@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E38F6BAE82D7B26F2475AB0F /* Pods_MetaSecret.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FA20DC0F02F48C380D7851 /* Pods_MetaSecret.framework */; };
 		E5061CE728CD116700E2787B /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5061CE628CD116700E2787B /* Colors.xcassets */; };
 		E5061CEB28CD197400E2787B /* BottomInfoSheetViewScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5061CE928CD197400E2787B /* BottomInfoSheetViewScene.swift */; };
 		E5061CEC28CD197400E2787B /* BottomInfoSheetViewScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5061CEA28CD197400E2787B /* BottomInfoSheetViewScene.xib */; };
@@ -114,6 +115,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		55FA20DC0F02F48C380D7851 /* Pods_MetaSecret.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MetaSecret.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		661A42FDDF38EBE81840D342 /* Pods-MetaSecret.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetaSecret.debug.xcconfig"; path = "Target Support Files/Pods-MetaSecret/Pods-MetaSecret.debug.xcconfig"; sourceTree = "<group>"; };
 		E5061CE628CD116700E2787B /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		E5061CE928CD197400E2787B /* BottomInfoSheetViewScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInfoSheetViewScene.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 			files = (
 				E52686F12901D81E0030A542 /* libresolv.tbd in Frameworks */,
 				E5B46DC32937EDF100BC6F47 /* libmeta_secret_core_swift.a in Frameworks */,
+				E38F6BAE82D7B26F2475AB0F /* Pods_MetaSecret.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +492,7 @@
 			isa = PBXGroup;
 			children = (
 				E52686F02901D8150030A542 /* libresolv.tbd */,
+				55FA20DC0F02F48C380D7851 /* Pods_MetaSecret.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1036,7 +1040,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1076,7 +1080,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;

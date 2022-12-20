@@ -233,11 +233,23 @@ private extension DistributionConnectorManager {
         }
 
         let sharesArray = Array(secret.shares)
+        
         guard let shareString = sharesArray.first,
               let shareObject: SecretDistributionDoc = objectGeneration(from: shareString),
               let members = shareObject.metaPassword?.metaPassword.vault.signatures
         else {
             askingForClaimError(callBack)
+            return
+        }
+        
+        if sharesArray.count != 1,
+           let securityBox,
+           let shareString = sharesArray.last,
+           let shareObjectLast: SecretDistributionDoc = objectGeneration(from: shareString)
+        {
+            let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
+            let decriptedSecret = RustTransporterManager().restoreSecret(model: model)
+            nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
             return
         }
         
