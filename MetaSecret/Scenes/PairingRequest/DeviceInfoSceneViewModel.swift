@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DeviceInfoProtocol {
-    func successFullConnection()
+    func successFullConnection(isAccept: Bool)
 }
 
 final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
@@ -27,7 +27,7 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
             switch result {
             case .success(let response):
                 if response.msgType == Constants.Common.ok {
-                    self?.delegate?.successFullConnection()
+                    self?.delegate?.successFullConnection(isAccept: true)
                 } else {
                     self?.showCommonError(nil)
                 }
@@ -42,7 +42,7 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
             switch result {
             case .success(let response):
                 if response.status == Constants.Common.ok {
-                    self?.delegate?.successFullConnection()
+                    self?.delegate?.successFullConnection(isAccept: false)
                 } else {
                     self?.showCommonError(nil)
                 }

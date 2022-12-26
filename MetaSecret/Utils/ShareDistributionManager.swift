@@ -46,34 +46,27 @@ final class ShareDistributionManager: ShareDistributionProtocol, UD, Alertable, 
     }
     
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?) {
-        for share in shares ?? [] {
-            guard let description = share.metaPassword?.metaPassword.id.name,
-                  share.distributionType == .split else { break }
-            
-            if let secret = DBManager.shared.readSecretBy(description: description) {
-                if let shareJsonString = jsonStringGeneration(from: share) {
-                    let updatesSecret = Secret()
-                    updatesSecret.secretName = secret.secretName
-                    let existedShares = List<String>()
-                    
-                    for secretShare in secret.shares {
-                        existedShares.append(secretShare)
-                    }
-                    existedShares.append(shareJsonString)
-                    updatesSecret.shares = existedShares
-                    DBManager.shared.saveSecret(updatesSecret)
-                }
-            } else {
+        guard let shares else {
+            callBack?(false)
+            return
+        }
+        let dictionary = shares.reduce(into: [String: [SecretDistributionDoc]]()) { result, object in
+            let array = result[object.metaPassword?.metaPassword.id.name ?? "NoN"] ?? []
+            result[object.metaPassword?.metaPassword.id.name ?? "NoN"] = array + [object]
+        }
+
+        for (description, shares) in dictionary {
+            let filteredShares = shares.filter({$0.distributionType == .split})
                 let newSecret = Secret()
-                newSecret.secretName = share.metaPassword?.metaPassword.id.name ?? ""
+                newSecret.secretName = description
                 newSecret.shares = List<String>()
-                if let shareJsonString = jsonStringGeneration(from: share) {
-                    newSecret.shares.append(shareJsonString)
+                let mappedShares = filteredShares.map {jsonStringGeneration(from: $0)}
+                for item in mappedShares {
+                    newSecret.shares.append(item ?? "")
                 }
                 DBManager.shared.saveSecret(newSecret)
-            }
         }
-        callBack?(!(shares ?? []).isEmpty)
+        callBack?(true)
     }
 }
 

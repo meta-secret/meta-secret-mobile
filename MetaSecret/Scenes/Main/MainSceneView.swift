@@ -27,6 +27,7 @@ class MainSceneView: UIViewController, MainSceneProtocol, Routerable, Loaderable
     private var selectedSegment: MainScreenSourceType = .Secrets
     private var source: MainScreenSource? = nil
     private var currentTab: Int = 0
+    private var isToReDistribute = false
     
     private struct Config {
         static let cellID = "ClusterDeviceCell"
@@ -151,10 +152,18 @@ private extension MainSceneView {
             case .Devices:
                 print("## GOT CALLBACK .DEVICES")
                 viewModel?.getLocalVaultMembers()
+                if isToReDistribute {
+                    isToReDistribute = false
+                    viewModel?.reDistribue()
+                }
             case .Claims(_):
                 print("## GOT CALLBACK .CLAIMS")
                 break
+            case .Redistribute:
+                isToReDistribute = false
             case .Failure:
+                print("## REDISTRIBUTED")
+                isToReDistribute = false
                 print("## GOT CALLBACK .FAILURE")
                 break
             }
@@ -249,8 +258,10 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
             let flattenArray = declines + pendings + signatures
             let selectedItem = flattenArray.first(where: {$0.device.deviceId == content.id })
             
-            let model = SceneSendDataModel(signature: selectedItem, callBackVaults:  { [weak self] isSuccess in
-#warning("Need to send data from virtual to real")
+            let model = SceneSendDataModel(signature: selectedItem, callBack:  { [weak self] isOk in
+                if isOk {
+                    self?.isToReDistribute = true
+                }
                 self?.viewModel?.getVault()
             })
             routeTo(.deviceInfo, presentAs: .push, with: model)

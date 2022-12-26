@@ -28,7 +28,7 @@ final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
     private var isLookinForClaimRequests: Bool = true
     private var isLookinForShares: Bool = true
     private var isLookinForVaults: Bool = true
-//    var callBack: ((CallBackType)->())?
+    private var isNeedToRedistribute: Bool = false
     
     static let shared = DistributionConnectorManager()
     let nc = NotificationCenter.default
@@ -128,6 +128,50 @@ final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
             case .failure(let error):
                 self?.showCommonError(error.localizedDescription)
             }
+        }
+    }
+    
+    func reDistribute() {
+        guard let signatures = mainVault?.signatures else {
+            nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
+            return
+        }
+        let allSecrets = DBManager.shared.getAllSecrets()
+        let myGroup = DispatchGroup()
+        var results = [Bool]()
+        
+        for secret in allSecrets {
+            myGroup.enter()
+            
+            let sharesArray = Array(secret.shares)
+            guard let shareString = sharesArray.first,
+                  let shareObject: SecretDistributionDoc = objectGeneration(from: shareString),
+                  let securityBox,
+                  let shareStringLast = sharesArray.last,
+                  let shareObjectLast: SecretDistributionDoc = objectGeneration(from: shareStringLast) else {
+                nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
+                return
+            }
+            
+            
+            let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
+            guard let decriptedSecret = RustTransporterManager().restoreSecret(model: model) else {
+                nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
+                return
+            }
+            let components = RustTransporterManager().split(secret: decriptedSecret)
+            DBManager.shared.getAllSecrets()
+            ShareDistributionManager().distributeShares(components, signatures, description: secret.secretName, callBack: { isOk in
+                results.append(isOk)
+                myGroup.leave()
+            })
+        }
+        myGroup.notify(queue: .main) { [weak self] in
+            guard let _ = results.first(where: {$0 == false}) else {
+                self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Redistribute])
+                return
+            }
+            self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
         }
     }
 }
@@ -396,5 +440,5 @@ enum CallBackType {
     case Devices
     case Claims(String?)
     case Failure
+    case Redistribute
 }
-

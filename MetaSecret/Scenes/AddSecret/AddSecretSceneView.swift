@@ -180,7 +180,7 @@ private extension AddSecretSceneView {
         if let type = notification.userInfo?["type"] as? CallBackType {
             showLoader()
             switch type {
-            case .Shares, .Devices:
+            case .Shares, .Devices, .Redistribute:
                 hideLoader()
             case .Claims(let secret):
                 showRestoreResult(password: secret)

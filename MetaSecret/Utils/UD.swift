@@ -119,7 +119,6 @@ struct UDKeys {
     static let securityBox = "securityBox"
     static let deviceStatus = "deviceStatus"
     static let shouldShowVirtualHint = "shouldShowVirtualHint"
-    static let vUsers = "vUsers"
     static let isFirstAppLaunch = "isFirstAppLaunch"
     static let isOwner = "isOwner"
     static let shouldShowOnboarding = "shouldShowOnboarding"

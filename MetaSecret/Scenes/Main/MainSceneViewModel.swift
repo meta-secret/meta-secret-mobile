@@ -41,6 +41,10 @@ final class MainSceneViewModel: Alertable, Routerable, UD, Signable, JsonSereali
         DistributionConnectorManager.shared.getVault()
     }
     
+    func reDistribue() {
+        DistributionConnectorManager.shared.reDistribute()
+    }
+    
     func getLocalVaultMembers() {
         guard let mainVault else { return }
         self.source = DevicesDataSource().getDataSource(for: mainVault)

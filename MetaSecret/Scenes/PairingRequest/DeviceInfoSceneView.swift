@@ -51,8 +51,8 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
     }
     
     //MARK: - DELEGATION
-    func successFullConnection() {
-        callBack?(true)
+    func successFullConnection(isAccept: Bool) {
+        callBack?(isAccept)
         self.navigationController?.popViewController(animated: true)
     }
 }
