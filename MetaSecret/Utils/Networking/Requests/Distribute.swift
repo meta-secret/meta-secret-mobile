@@ -7,18 +7,17 @@
 
 import Foundation
 
-final class Distribute: HTTPRequest, UD, JsonSerealizable {
-    typealias ResponseType = DistributeResult
-    var params: String = "{}"
-    var path: String = "distribute"
-    
+final class Distribute: HTTPRequest {
     init(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) {
-        guard let mainVault else { return }
-        guard let userSignature else { return }
+        super.init()
+        path = "distribute"
+        
+        guard let mainVault = userService.mainVault else { return }
+        guard let userSignature = userService.userSignature else { return }
         
         let secretMessage = EncryptedMessage(receiver: receiver, encryptedText: encodedShare)
 
-        guard let metaPasswordId = RustTransporterManager().generateMetaPassId(description: description) else { return }
+        guard let metaPasswordId = rustManager.generateMetaPassId(description: description) else { return }
         let metaPasswordDoc = MetaPasswordDoc(id: metaPasswordId, vault: mainVault)
         let metaPasswordRequest = MetaPasswordRequest(userSig: userSignature, metaPassword: metaPasswordDoc)
 
@@ -26,15 +25,15 @@ final class Distribute: HTTPRequest, UD, JsonSerealizable {
                                         metaPassword: metaPasswordRequest,
                                         secretMessage: secretMessage)
         
-        self.params = request.toJson()
+        self.params = jsonService.jsonStringGeneration(from: request) ?? "{}"
     }
 }
 
-struct DistributeResult: Codable {
-    var msgType: String
-    var data: String?
-    var error: String?
-}
+//struct DistributeResult: Codable {
+//    var msgType: String
+//    var data: String?
+//    var error: String?
+//}
 
 enum SecretDistributionType: String, Codable {
     case split

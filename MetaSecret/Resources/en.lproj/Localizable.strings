@@ -95,6 +95,7 @@
 //MARK: - Errors
 "error" = "Error";
 "warning" = "Warning";
+"commonError" = "Oops, something went wrong";
 "wannaLogin" = "This name already taken. Want to login?";
 "enterName" = "Enter your nickname";
 "sww" = "Something wrong";

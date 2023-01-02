@@ -13,7 +13,10 @@ protocol RootFindable {
     func findWindow() -> UIWindow?
 }
 
-extension RootFindable {
+class RootControllerManager: NSObject, RootFindable {
+    override init() {
+    }
+    
     func findRoot() -> UIViewController? {
         var rootViewController = findWindow()?.rootViewController
         if let navigationController = rootViewController as? UINavigationController {

@@ -8,45 +8,7 @@
 import UIKit
 import AppTrackingTransparency
 
-class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    enum CellType {
-        case welcome
-        case cloud
-        case distributed
-        case passwordLess
-        case backup
-        
-        var title: String {
-            switch self {
-            case .welcome:
-                return Constants.Onboarding.welcome
-            case .cloud:
-                return Constants.Onboarding.personalCloud
-            case .distributed:
-                return Constants.Onboarding.distributedStorage
-            case .passwordLess:
-                return Constants.Onboarding.passwordLess
-            case .backup:
-                return Constants.Onboarding.backup
-            }
-        }
-        
-        var description: String {
-            switch self {
-            case .welcome:
-                return Constants.Onboarding.whatIs
-            case .cloud:
-                return Constants.Onboarding.personalCloudDescription
-            case .distributed:
-                return Constants.Onboarding.distributedStorageDescription
-            case .passwordLess:
-                return Constants.Onboarding.passwordLessDescription
-            case .backup:
-                return Constants.Onboarding.backupDescription
-            }
-        }
-    }
+class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
@@ -62,9 +24,15 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     @IBOutlet weak var missingImage: UIImageView!
     @IBOutlet weak var passwordLessImage: UIImageView!
     
-    
     // MARK: - Properties
-    private let cells: [CellType] = [.cloud, .distributed, .backup, .passwordLess]
+    private var viewModel: OnboardingSceneViewModel
+    
+    override var commonViewModel: CommonViewModel {
+        return viewModel
+    }
+    
+    private var userService: UsersServiceProtocol
+    private let routerService: ApplicationRouterProtocol
     
     private struct Config {
         static let subtitleFont: CGFloat = 20
@@ -72,13 +40,23 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
         static let commonOffset: CGFloat = 16
         static let mainOffset: CGFloat = 25
     }
+    
     // MARK: - Lifecycle
+    init(userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable) {
+        self.userService = userService
+        self.routerService = routerService
+        super.init(alertManager: alertManager)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
         
-        pageControl.numberOfPages = cells.count
-        collectionView.reloadData()
+        pageControl.numberOfPages = viewModel.pagesCount
+//        collectionView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,22 +66,15 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupUI()
     }
     
-    // MARK: - Functions
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
+    override func setupUI() {
+        super.setupUI()
+        setupCollectionView()
         
-        collectionView.isScrollEnabled = false
-        collectionView.isPagingEnabled = true
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.contentInset = .zero
-        collectionView.contentInsetAdjustmentBehavior = .never
-        
-        collectionView.register(nibWithCellClass: OnboardingCollectionViewCell.self)
+        mobileMainImage.center = logoImage.center
+        mobileImage.center = mobileMainImage.center
+        computerImage.center = computerImage.center
     }
     
     // MARK: - Actions
@@ -136,12 +107,12 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
     
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cells.count
+        return viewModel.cellsCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: OnboardingCollectionViewCell.self, for: indexPath)
-        cell.setup(cellType: cells[indexPath.row])
+        cell.setup(cellType: viewModel.cells[indexPath.row])
         return cell
     }
     
@@ -170,23 +141,30 @@ class OnboardingSceneView: UIViewController, UD, Routerable, UICollectionViewDel
 }
 
 private extension OnboardingSceneView {
-    func setupUI() {
-        mobileMainImage.center = logoImage.center
-        mobileImage.center = mobileMainImage.center
-        computerImage.center = computerImage.center
+    // MARK: - SETUPS
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.isScrollEnabled = false
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInset = .zero
+        collectionView.contentInsetAdjustmentBehavior = .never
+        
+        collectionView.register(nibWithCellClass: OnboardingCollectionViewCell.self)
     }
     
     func finishOnboarding() {
+        userService.shouldShowOnboarding = false
         if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
-            ATTrackingManager.requestTrackingAuthorization() { _ in
-                DispatchQueue.main.async {
-                    self.routeTo(.login, presentAs: .root)
-                }
+            ATTrackingManager.requestTrackingAuthorization() { [weak self] _ in
+                self?.routerService.route()
             }
         } else {
-            routeTo(.login, presentAs: .root)
+            routerService.route()
         }
-        shouldShowOnboarding = false
     }
     
     func setupFirstAnimatedStep() {

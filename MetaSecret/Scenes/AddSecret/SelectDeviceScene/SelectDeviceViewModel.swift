@@ -6,20 +6,25 @@
 //
 
 import Foundation
+import PromiseKit
 
 protocol SelectDeviceProtocol {
     func reloadData(source: [UserSignature])
 }
 
-final class SelectDeviceViewModel: Alertable, Signable {
+final class SelectDeviceViewModel: CommonViewModel {
     //MARK: - PROPERTIES
-    
-    private var delegate: SelectDeviceProtocol? = nil
+    var delegate: SelectDeviceProtocol? = nil
     
     //MARK: - INIT
-    init(delegate: SelectDeviceProtocol) {
-        self.delegate = delegate
-        fetchAllDevices()
+    override init() {
+        
+    }
+    
+    override func loadData() -> Promise<Void> {
+        return firstly {
+            fetchAllDevices()
+        }.asVoid()
     }
     
     //MARK: - PUBLIC METHODS
@@ -31,25 +36,25 @@ final class SelectDeviceViewModel: Alertable, Signable {
 }
 
 private extension SelectDeviceViewModel {
-    func fetchAllDevices() {
-        GetVault().execute() { [weak self] result in
-            switch result {
-            case .success(let result):
-                guard result.msgType == Constants.Common.ok else {
-                    print(result.error ?? "")
-                    return
-                }
-                
-                guard var members = result.data?.vault?.signatures else { return }
-                if let ownIndex = members.firstIndex(where: {$0.device.deviceId == self?.userSignature?.device.deviceId}) {
-                    members.remove(at: ownIndex)
-                }
-                self?.delegate?.reloadData(source: members)
-            case .failure(let error):
-                self?.showCommonError(error.localizedDescription)
-            }
-            
-        }
+    func fetchAllDevices() -> Promise<Void> {
+//        GetVault().execute() { [weak self] result in
+//            switch result {
+//            case .success(let result):
+//                guard result.msgType == Constants.Common.ok else {
+//                    print(result.error ?? "")
+//                    return
+//                }
+//
+//                guard var members = result.data?.vault?.signatures else { return }
+//                if let ownIndex = members.firstIndex(where: {$0.device.deviceId == self?.userSignature?.device.deviceId}) {
+//                    members.remove(at: ownIndex)
+//                }
+//                self?.delegate?.reloadData(source: members)
+//            case .failure(let error):
+//                self?.showCommonError(error.localizedDescription)
+//            }
+//        }
+        return Promise().asVoid()
     }
     
     func sending(_ share: String, to member: UserSignature, with note: String, callback: (()->())?) {

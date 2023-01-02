@@ -5,6 +5,7 @@
 //  Created by Dmitry Kuklin on 22.08.2022.
 //
 
+/*
 import Foundation
 import UIKit
 
@@ -74,3 +75,4 @@ extension Routerable {
 protocol DataSendable: AnyObject {
     var dataSent: Any? { get set }
 }
+*/

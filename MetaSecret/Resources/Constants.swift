@@ -143,6 +143,7 @@ struct Constants {
     struct Errors {
         static let error = NSLocalizedString("error", comment: "")
         static let warning = NSLocalizedString("warning", comment: "")
+        static let commonError = NSLocalizedString("commonError", comment: "")
         static let userNameMesasge = NSLocalizedString("wannaLogin", comment: "")
         static let enterName = NSLocalizedString("enterName", comment: "")
         static let swwError = NSLocalizedString("sww", comment: "")

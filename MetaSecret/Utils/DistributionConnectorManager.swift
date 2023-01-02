@@ -7,18 +7,18 @@
 
 import Foundation
 
-//protocol DistributionConnectorManagerProtocol {
-//    func startMonitoringSharesAndClaimRequests()
-//    func stopMonitoringSharesAndClaimRequests()
-//    func startMonitoringVaults()
-//    func stopMonitoringVaults()
-//    func startMonitoringClaimResponses(description: String)
-//    func stopMonitoringClaimResponses()
-//    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String, callBack: ((Bool)->())?)
-//    func getVault()
-//}
+protocol DistributionConnectorManagerProtocol {
+    func startMonitoringSharesAndClaimRequests()
+    func stopMonitoringSharesAndClaimRequests()
+    func startMonitoringVaults()
+    func stopMonitoringVaults()
+    func startMonitoringClaimResponses(description: String)
+    func stopMonitoringClaimResponses()
+    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String, callBack: ((Bool)->())?)
+    func getVault()
+}
 
-final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
+final class DistributionConnectorManager: NSObject, DistributionConnectorManagerProtocol  {
     //MARK: - PROPERTIES
     private var findSharesAndClaimRequestsTimer: Timer? = nil
     private var findVaultsTimer: Timer? = nil
@@ -30,14 +30,28 @@ final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
     private var isLookinForVaults: Bool = true
     private var isNeedToRedistribute: Bool = false
     
-    static let shared = DistributionConnectorManager()
     let nc = NotificationCenter.default
     
     enum Config {
         static let timerInterval: CGFloat = 10.0
     }
     
+    private var userService: UsersServiceProtocol
+    private let alertManager: Alertable
+    private let jsonManager: JsonSerealizable
+    private let dbManager: DBManager
+    private let rustManager: RustProtocol
+    private let sharesManager: ShareDistributionManager
+    
     //MARK: - INIT
+    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManager, rustManager: RustProtocol, sharesManager: ShareDistributionManager) {
+        self.userService = userService
+        self.alertManager = alertManager
+        self.jsonManager = jsonManager
+        self.dbManager = dbManager
+        self.rustManager = rustManager
+        self.sharesManager = sharesManager
+    }
     
     //MARK: - MAIN SCREEN. SHARES
     ///This method for monitoring on MianScreen Secrets tab
@@ -118,25 +132,25 @@ final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
             case .success(let result):
                 self?.isLookinForVaults = false
                 guard result.msgType == Constants.Common.ok else {
-                    self?.showCommonError(result.error ?? "")
+                    self?.alertManager.showCommonError(result.error ?? "")
                     return
                 }
                 
                 print("## GOT VAULT")
-                self?.mainVault = result.data?.vault
+                self?.userService.mainVault = result.data?.vault
                 self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Devices])
             case .failure(let error):
-                self?.showCommonError(error.localizedDescription)
+                self?.alertManager.showCommonError(error.localizedDescription)
             }
         }
     }
     
     func reDistribute() {
-        guard let signatures = mainVault?.signatures else {
+        guard let signatures = userService.mainVault?.signatures else {
             nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
             return
         }
-        let allSecrets = DBManager.shared.getAllSecrets()
+        let allSecrets = dbManager.getAllSecrets()
         let myGroup = DispatchGroup()
         var results = [Bool]()
         
@@ -145,23 +159,23 @@ final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
             
             let sharesArray = Array(secret.shares)
             guard let shareString = sharesArray.first,
-                  let shareObject: SecretDistributionDoc = objectGeneration(from: shareString),
-                  let securityBox,
+                  let shareObject: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString),
+                  let securityBox = userService.securityBox,
                   let shareStringLast = sharesArray.last,
-                  let shareObjectLast: SecretDistributionDoc = objectGeneration(from: shareStringLast) else {
+                  let shareObjectLast: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareStringLast) else {
                 nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
                 return
             }
             
             
             let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
-            guard let decriptedSecret = RustTransporterManager().restoreSecret(model: model) else {
+            guard let decriptedSecret = rustManager.restoreSecret(model: model) else {
                 nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
                 return
             }
-            let components = RustTransporterManager().split(secret: decriptedSecret)
-            DBManager.shared.getAllSecrets()
-            ShareDistributionManager().distributeShares(components, signatures, description: secret.secretName, callBack: { isOk in
+            let components = rustManager.split(secret: decriptedSecret)
+//            dbManager.getAllSecrets()
+            sharesManager.distributeShares(components, signatures, description: secret.secretName, callBack: { isOk in
                 results.append(isOk)
                 myGroup.leave()
             })
@@ -178,18 +192,18 @@ final class DistributionConnectorManager: UD, Alertable, JsonSerealizable {
 
 private extension DistributionConnectorManager {
     func checkForError() {
-        showCommonError(MetaSecretErrorType.cantRestore.message())
+        alertManager.showCommonError(MetaSecretErrorType.cantRestore.message())
         self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
     }
     
     func distributeClaimError() {
-        showCommonError(MetaSecretErrorType.cantClaim.message())
+        alertManager.showCommonError(MetaSecretErrorType.cantClaim.message())
         isLookinForClaimRequests = false
     }
     
     func askingForClaimError(_ callBack: ((Bool)->())?) {
         callBack?(false)
-        showCommonError(MetaSecretErrorType.cantRestore.message())
+        alertManager.showCommonError(MetaSecretErrorType.cantRestore.message())
     }
     
     @objc func fireSharesAndClaimRequestsTimer() {
@@ -216,7 +230,7 @@ private extension DistributionConnectorManager {
                     return
                 }
                 
-                ShareDistributionManager().distribtuteToDB(result.data) { isToReload in
+                self?.sharesManager.distribtuteToDB(result.data) { isToReload in
                     print("## NEW SHARES SAVED TO DB")
                     if isToReload {
                         self?.isLookinForShares = false
@@ -224,7 +238,7 @@ private extension DistributionConnectorManager {
                     }
                 }
             case .failure(let error):
-                self?.showCommonError(error.localizedDescription)
+                self?.alertManager.showCommonError(error.localizedDescription)
             }
         }
     }
@@ -272,7 +286,7 @@ private extension DistributionConnectorManager {
     }
     
     func askingForClaims(description: String, callBack: ((Bool)->())?) {
-        guard let userSignature, let secret = DBManager.shared.readSecretBy(description: description) else {
+        guard let userSignature = userService.userSignature, let secret = dbManager.readSecretBy(description: description) else {
             askingForClaimError(callBack)
             return
         }
@@ -280,7 +294,7 @@ private extension DistributionConnectorManager {
         let sharesArray = Array(secret.shares)
         
         guard let shareString = sharesArray.first,
-              let shareObject: SecretDistributionDoc = objectGeneration(from: shareString),
+              let shareObject: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString),
               let members = shareObject.metaPassword?.metaPassword.vault.signatures
         else {
             askingForClaimError(callBack)
@@ -288,12 +302,12 @@ private extension DistributionConnectorManager {
         }
         
         if sharesArray.count != 1,
-           let securityBox,
+           let securityBox = userService.securityBox,
            let shareString = sharesArray.last,
-           let shareObjectLast: SecretDistributionDoc = objectGeneration(from: shareString)
+           let shareObjectLast: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString)
         {
             let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
-            let decriptedSecret = RustTransporterManager().restoreSecret(model: model)
+            let decriptedSecret = rustManager.restoreSecret(model: model)
             nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
             return
         }
@@ -324,7 +338,7 @@ private extension DistributionConnectorManager {
                     results.append(false)
                     myGroup.leave()
                     print("## CLAIM RESPONSE FAILED")
-                    self?.showCommonError(error.localizedDescription)
+                    self?.alertManager.showCommonError(error.localizedDescription)
                     break
                 }
             }
@@ -349,14 +363,14 @@ private extension DistributionConnectorManager {
             case .success(let result):
                 guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
                     self?.isLookinForClaimRequests = false
-                    print("## == NO CLAIM REQUESTS FOR \(self?.userSignature?.device.deviceName ?? "") ==")
+                    print("## == NO CLAIM REQUESTS FOR \(self?.userService.userSignature?.device.deviceName ?? "") ==")
                     return
                 }
-                self?.showCommonError("I GOT IT! I'LL SEND!")
+                self?.alertManager.showCommonError("I GOT IT! I'LL SEND!")
                 self?.distributeClaimsToRestore(claims: result.data)
             case .failure(let error):
                 self?.isLookinForClaimRequests = false
-                self?.showCommonError(error.localizedDescription)
+                self?.alertManager.showCommonError(error.localizedDescription)
             }
         }
         
@@ -375,13 +389,13 @@ private extension DistributionConnectorManager {
             
             
             guard let description = claim.id.name,
-                  let secret = DBManager.shared.readSecretBy(description: description),
+                  let secret = dbManager.readSecretBy(description: description),
                   let encryptedShare = secret.shares.first else {
                 distributeClaimError()
                 return
             }
             
-            secretDoc = objectGeneration(from: encryptedShare)
+            secretDoc = try? jsonManager.objectGeneration(from: encryptedShare)
             let chanel = secretDoc?.secretMessage?.encryptedText.authData.channel
             
             if claim.consumer.transportPublicKey.base64Text == chanel?.receiver.base64Text ||
@@ -389,13 +403,13 @@ private extension DistributionConnectorManager {
                 newEncryptedshare = secretDoc?.secretMessage?.encryptedText
             } else {
                 guard let secretDoc,
-                      let keyManager = securityBox?.keyManager,
-                      let userShareDto = RustTransporterManager().decrypt(model: DecryptModel(keyManager: keyManager, doc: secretDoc)) else {
+                      let keyManager = userService.securityBox?.keyManager,
+                      let userShareDto = rustManager.decrypt(model: DecryptModel(keyManager: keyManager, doc: secretDoc)) else {
                     distributeClaimError()
                     return
                 }
                 
-                newEncryptedshare = RustTransporterManager().encrypt(share: ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: claim.consumer.transportPublicKey, secret: userShareDto))
+                newEncryptedshare = rustManager.encrypt(share: ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: claim.consumer.transportPublicKey, secret: userShareDto))
             }
             
             guard let encryptedShare = newEncryptedshare else {
@@ -422,11 +436,11 @@ private extension DistributionConnectorManager {
         Distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type).execute() { [weak self] result in
             switch result {
             case .failure(let err):
-                self?.showCommonError(err.localizedDescription)
+                self?.alertManager.showCommonError(err.localizedDescription)
                 callBack?(false)
             case .success(let result):
                 if result.msgType != Constants.Common.ok {
-                    self?.showCommonError(result.error)
+                    self?.alertManager.showCommonError(result.error)
                 }
                 print("## I'VE SENT SUCCESSFULY to \(receiver.device.deviceName)")
                 callBack?(true)

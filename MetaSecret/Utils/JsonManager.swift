@@ -15,7 +15,10 @@ protocol JsonSerealizable {
     func arrayGeneration<T: Decodable>(from jsonString: String) throws -> [T]?
 }
 
-extension JsonSerealizable {
+final class JsonSerealizManager: NSObject, JsonSerealizable {
+    override init() {
+    }
+    
     func jsonU8Generation(string: String) -> [UInt8] {
         return [UInt8](Data(string.utf8))
     }

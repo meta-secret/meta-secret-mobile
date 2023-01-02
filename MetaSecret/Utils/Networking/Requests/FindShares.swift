@@ -7,22 +7,20 @@
 
 import Foundation
 
-final class FindShares: HTTPRequest, UD {
-    typealias ResponseType = FindSharesResponse
-    var params: String = "{}"
-    var path: String = "findShares"
-    
-    init() {
-        guard let userSignature else { return }
-        self.params = userSignature.toJson()
+final class FindShares: HTTPRequest {
+    override init() {
+        super.init()
+        path = "findShares"
+        guard let userSignature = userService.userSignature else { return }
+        self.params = jsonService.jsonStringGeneration(from: userSignature) ?? "{}"
     }
 }
 
-struct FindSharesResponse: Codable {
-    var msgType: String
-    var data: [SecretDistributionDoc]?
-    var error: String?
-}
+//struct FindSharesResponse: Codable {
+//    var msgType: String
+//    var data: [SecretDistributionDoc]?
+//    var error: String?
+//}
 
 struct SecretDistributionDoc: Codable {
     var distributionType: SecretDistributionType?

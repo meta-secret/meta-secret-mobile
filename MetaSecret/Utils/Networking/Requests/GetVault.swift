@@ -7,22 +7,23 @@
 
 import Foundation
 
-final class GetVault: HTTPRequest, UD {
-    typealias ResponseType = GetVaultResult
-    var params: String = "{}"
-    var path: String = "getVault"
-    
-    init() {
-        guard let userSignature else { return }
-        self.params = userSignature.toJson()
+final class GetVault: HTTPRequest {
+//    typealias ResponseType = GetVaultResult
+
+    override init() {
+        super.init()
+        path = "getVault"
+        method = .get
+        guard let userSignature = userService.userSignature else { return }
+        self.params = jsonService.jsonStringGeneration(from: userSignature) ?? "{}"
     }
 }
 
-struct GetVaultResult: Codable {
-    var msgType: String
-    var data: GetVaultData?
-    var error: String?
-}
+//struct GetVaultResult: Codable {
+//    var msgType: String
+//    var data: GetVaultData?
+//    var error: String?
+//}
 
 struct GetVaultData: Codable {
     var vaultInfo: VaultInfoStatus = .unknown

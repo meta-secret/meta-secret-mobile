@@ -8,8 +8,17 @@
 import Foundation
 import RealmSwift
 
-final class DBManager: Alertable {
-    static let shared = DBManager()
+protocol DBManagerProtocol {
+    func saveSecret(_ secret: Secret)
+    func readSecretBy(description: String) -> Secret?
+    func getAllSecrets() -> [Secret]
+    func savePass(_ pass: MetaPassId)
+    func readPassBy(description: String) -> MetaPassId?
+}
+
+final class DBManager: NSObject, DBManagerProtocol {
+    override init() {}
+    
     #warning("MAKE GENERIC METHODS")
     // MARK: - SECRET
     func saveSecret(_ secret: Secret) {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol UD: AnyObject {
+protocol UsersServiceProtocol {
     func resetAll()
     
     var userSignature: UserSignature? { get set }
@@ -20,7 +20,10 @@ protocol UD: AnyObject {
     var shouldShowOnboarding: Bool {get set}
 }
 
-extension UD {
+class UsersService: NSObject, UsersServiceProtocol {
+    override init() {
+    }
+    
     //MARK: - RESET
     func resetAll() {
         userSignature = nil

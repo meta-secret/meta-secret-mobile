@@ -7,26 +7,59 @@
 
 import Foundation
 
-protocol HTTPRequest {
+protocol HTTPRequestProtocol {
     associatedtype ResponseType: Codable
-    var path: String { get }
-    var method: HTTPMethod { get }
+    var path: String { get set }
+    var method: HTTPMethod { get set }
     var params: String { get set }
+    
+    func execute(dispatcher: HTTPDispatcher, completionHandler: @escaping (Result<ResponseType, HTTPStatusCode>) -> Void)
 }
 
-extension HTTPRequest {
+class HTTPRequest: NSObject, HTTPRequestProtocol {
+    private(set) var jsonService: JsonSerealizable
+    private(set) var userService: UsersServiceProtocol
+    private(set) var rustManager: RustProtocol
+    typealias ResponseType = CommonResponse
+    
+    override init(/*serService: UsersServiceProtocol*/) {
+        #warning("Can't init be here")
+        self.jsonService = JsonSerealizManager()
+        self.rustManager = RustTransporterManager(dbManager: DBManager(), jsonSerializeManager: jsonService)
+        self.userService = UsersService()
+    }
+    
+    private var _params = "{}"
+    private var _path = ""
+    private var _method = HTTPMethod.post
+    
+    var path: String {
+        get {
+            return _path
+        }
+        set {
+            _path = newValue
+        }
+    }
+    
     var method: HTTPMethod {
         get {
-            return HTTPMethod.post
+            return _method
+        }
+        set {
+            _method = newValue
         }
     }
     var params: String {
         get {
-            return "{}"
+            return _params
+        }
+        set {
+            _params = newValue
         }
     }
     
-    func execute (dispatcher: HTTPDispatcher = URLSessionNetworkDispatcher.instance, completionHandler: @escaping (Result<ResponseType, HTTPStatusCode>) -> Void) {
+    func execute(dispatcher: HTTPDispatcher = URLSessionNetworkDispatcher.instance, completionHandler: @escaping (Result<ResponseType, HTTPStatusCode>) -> Void) {
         
         dispatcher.dispatch(path: path, method: method, params: self.params) { result in
             DispatchQueue.main.async {

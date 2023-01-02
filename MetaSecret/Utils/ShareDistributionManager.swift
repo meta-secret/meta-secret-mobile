@@ -14,7 +14,7 @@ protocol ShareDistributionProtocol {
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?)
 }
 
-final class ShareDistributionManager: ShareDistributionProtocol, UD, Alertable, JsonSerealizable {
+final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
     fileprivate enum SplittedType: Int {
         case fullySplitted = 3
         case allInOne = 1
@@ -23,8 +23,26 @@ final class ShareDistributionManager: ShareDistributionProtocol, UD, Alertable, 
     
     fileprivate var shares: [UserShareDto] = [UserShareDto]()
     fileprivate var signatures: [UserSignature] = [UserSignature]()
-    fileprivate var description: String = ""
+    fileprivate var secretDescription: String = ""
     fileprivate var callBack: ((Bool)->())?
+    
+    private var jsonSerializationManager: JsonSerealizable
+    private var dbManager: DBManagerProtocol
+    private var userService: UsersServiceProtocol
+    private var alertManager: Alertable
+    private var rustManager: RustProtocol
+    
+    init(jsonSerializationManager: JsonSerealizable,
+         dbManager: DBManagerProtocol,
+         userService: UsersServiceProtocol,
+         alertManager: Alertable,
+         rustManager: RustProtocol) {
+        self.jsonSerializationManager = jsonSerializationManager
+        self.dbManager = dbManager
+        self.userService = userService
+        self.alertManager = alertManager
+        self.rustManager = rustManager
+    }
     
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?) {
         guard let typeOfSharing = SplittedType(rawValue: signatures.count) else {
@@ -35,7 +53,7 @@ final class ShareDistributionManager: ShareDistributionProtocol, UD, Alertable, 
         self.callBack = callBack
         self.signatures = signatures
         self.shares = shares
-        self.description = description
+        self.secretDescription = description
         
         switch typeOfSharing {
         case .fullySplitted, .allInOne:
@@ -60,11 +78,11 @@ final class ShareDistributionManager: ShareDistributionProtocol, UD, Alertable, 
                 let newSecret = Secret()
                 newSecret.secretName = description
                 newSecret.shares = List<String>()
-                let mappedShares = filteredShares.map {jsonStringGeneration(from: $0)}
+            let mappedShares = filteredShares.map {jsonSerializationManager.jsonStringGeneration(from: $0)}
                 for item in mappedShares {
                     newSecret.shares.append(item ?? "")
                 }
-                DBManager.shared.saveSecret(newSecret)
+            dbManager.saveSecret(newSecret)
         }
         callBack?(true)
     }
@@ -114,15 +132,15 @@ private extension ShareDistributionManager {
     
     //MARK: - ENCODING
     func encryptShare(_ share: UserShareDto, _ receiverPubKey: Base64EncodedText) -> AeadCipherText? {
-        guard let keyManager = securityBox?.keyManager else {
-            showCommonError(Constants.Errors.noMainUserError)
+        guard let keyManager = userService.securityBox?.keyManager else {
+            alertManager.showCommonError(Constants.Errors.noMainUserError)
             return nil
         }
         
         let shareToEncode = ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: receiverPubKey, secret: share.toJson())
         
-        guard let encryptedShare = RustTransporterManager().encrypt(share: shareToEncode) else {
-            showCommonError(Constants.Errors.encodeError)
+        guard let encryptedShare = rustManager.encrypt(share: shareToEncode) else {
+            alertManager.showCommonError(Constants.Errors.encodeError)
             return nil
         }
         

@@ -8,35 +8,59 @@
 import Foundation
 import UIKit
 import CryptoKit
+import PromiseKit
 
 protocol LoginSceneProtocol {
     func resetTextField()
-    func processFinished()
     func showPendingPopup()
+    func showAwaitingAlert()
+    func routeNext()
+    func alreadyExisted()
+    func failed(with error: Error)
+    func closePopUp()
 }
 
-final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerable {
-    private var delegate: LoginSceneProtocol? = nil
+final class LoginSceneViewModel: CommonViewModel {
     private var tempTimer: Timer? = nil
+    private var userService: UsersServiceProtocol
+    private var signingManager: Signable
+    private var jsonManager: JsonSerealizable
+    
+    var delegate: LoginSceneProtocol? = nil
     
     //MARK: - INIT
-    init(delegate: LoginSceneProtocol) {
-        self.delegate = delegate
-        checkStatus()
+    init(userService: UsersServiceProtocol, signingManager: Signable, jsonManager: JsonSerealizable) {
+        self.signingManager = signingManager
+        self.userService = userService
+        self.jsonManager = jsonManager
+    }
+    
+    override func loadData() -> Promise<Void> {
+        isLoadingData = true
+        return firstly {
+            checkStatus()
+        }.ensure {
+            self.isLoadingData = false
+        }.asVoid()
+    }
+    
+    //MARK: - PUBLIC METHODS
+    func startTimer() {
+        guard self.tempTimer == nil else { return }
+        delegate?.showPendingPopup()
+        tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
     }
     
     //MARK: - REGISTRATION
-    func register(_ userName: String) {
-        if deviceStatus == .pending {
-            showAwaitingAlert()
-            delegate?.processFinished()
-            return
+    func register(_ userName: String) -> Promise<Void> {
+        if userService.deviceStatus == .pending {
+            delegate?.showAwaitingAlert()
+//            delegate?.processFinished(with: nil)
+            return Promise().asVoid()
         }
         
-        guard let userSecurityBox = generateKeys(for: userName) else {
-            showCommonError(MetaSecretErrorType.generateUser.message())
-            delegate?.processFinished()
-            return
+        guard let userSecurityBox = signingManager.generateKeys(for: userName) else {
+            return Promise(error: MetaSecretErrorType.generateUser)
         }
         
         let user = UserSignature(vaultName: userName,
@@ -49,61 +73,34 @@ final class LoginSceneViewModel: Signable, UD, RootFindable, Alertable, Routerab
             switch result {
             case .success(let response):
                 guard response.msgType == Constants.Common.ok else {
-                    print(response.error ?? "")
+                    self?.delegate?.failed(with: MetaSecretErrorType.commonError)
                     return
                 }
                 
-                if response.data == .Registered {
-                    self?.deviceStatus = .member
-                    self?.securityBox = userSecurityBox
-                    self?.userSignature = user
-                    self?.isOwner = true
-                    self?.routeTo(.main, presentAs: .root)
+                let data = RegisterStatusResult(rawValue: response.data ?? "")
+                if data == .Registered {
+                    self?.userService.deviceStatus = .member
+                    self?.userService.securityBox = userSecurityBox
+                    self?.userService.userSignature = user
+                    self?.userService.isOwner = true
+                    self?.delegate?.routeNext()
                 } else {
-                    self?.deviceStatus = .pending
-                    self?.userSignature = user
-                    self?.securityBox = userSecurityBox
-                    self?.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
-                        guard let `self` = self else { return }
-                        
-                        if self.tempTimer == nil {
-                            self.delegate?.showPendingPopup()
-                            self.tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
-                        }
-                    }, cancelHandler: { [weak self] in
-                        self?.userSignature = nil
-                        self?.deviceStatus = .unknown
-                    }))
+                    self?.userService.deviceStatus = .pending
+                    self?.userService.userSignature = user
+                    self?.userService.securityBox = userSecurityBox
+                    self?.delegate?.alreadyExisted()
                 }
-                self?.delegate?.processFinished()
             case .failure(let error):
-                self?.delegate?.processFinished()
-                self?.showCommonError(error.localizedDescription)
+                self?.delegate?.failed(with: error)
             }
         }
-        
-    }
-    
-    //MARK: - ALERTS
-    func showAlert(title: String = Constants.Errors.error, message: String = Constants.Errors.swwError) {
-        let alertModel = AlertModel(title: Constants.Errors.error, message: Constants.Errors.enterName)
-        showCommonAlert(alertModel)
+        return Promise().asVoid()
     }
 }
 
 private extension LoginSceneViewModel {
-    func showAwaitingAlert() {
-        showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.LoginScreen.chooseAnotherName, okButton: Constants.LoginScreen.renameOk, okHandler: { [weak self] in
-            self?.resetAll()
-            self?.delegate?.resetTextField()
-        }, cancelHandler: { [weak self] in
-            self?.deviceStatus = .unknown
-            return
-        }))
-    }
-    
-    func checkStatus() {
-        if deviceStatus == .pending {
+    func checkStatus() -> Promise<Void> {
+        if userService.deviceStatus == .pending {
             GetVault().execute() { [weak self] result in
                 switch result {
                 case .success(let result):
@@ -111,44 +108,32 @@ private extension LoginSceneViewModel {
                         print(result.error ?? "")
                         return
                     }
-                    if result.data?.vaultInfo == .member {
-                        self?.closePopup()
-                        self?.routeTo(.main, presentAs: .root)
-                    } else if result.data?.vaultInfo == .declined {
-                        self?.closePopup()
-                        self?.resetAll()
-
-                        self?.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.LoginScreen.declined))
+                    
+                    let object: GetVaultData? = try? self?.jsonManager.objectGeneration(from: result.data ?? "")
+                    if object?.vaultInfo == .member {
+                        self?.tempTimer?.invalidate()
+                        self?.tempTimer = nil
+                        self?.delegate?.closePopUp()
+                        self?.delegate?.routeNext()
+                    } else if object?.vaultInfo == .declined {
+                        self?.delegate?.closePopUp()
+                        self?.userService.resetAll()
+                        self?.delegate?.failed(with: MetaSecretErrorType.declinedUser)
                     } else {
-                        guard let `self` = self else { return }
-                        
-                        if self.tempTimer == nil {
-                            self.delegate?.showPendingPopup()
-                            self.tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
-                        }
+                        self?.startTimer()
                     }
-                    self?.delegate?.processFinished()
+//                    return Promise().asVoid()
                 case .failure(let error):
-                    self?.delegate?.processFinished()
-                    self?.showCommonError(error.localizedDescription)
+//                    return Promise(error: error)
+                    self?.delegate?.failed(with: error)
                 }
             }
         }
 
-        self.delegate?.processFinished()
+        return Promise().asVoid()
     }
     
     @objc func fireTimer() {
         checkStatus()
-    }
-    
-    func closePopup() {
-        tempTimer?.invalidate()
-        tempTimer = nil
-        
-        guard let vc = findTop(), let popupVC = vc as? PopupHintViewScene else {
-            return
-        }
-        popupVC.closeHint()
     }
 }

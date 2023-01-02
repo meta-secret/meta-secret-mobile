@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol BaseModel: Codable, UD, JsonSerealizable {
-    func toJson() -> String
-}
+protocol BaseModel: Codable {}
 
+/*
 extension BaseModel {
     func toJson() -> String {
         return jsonStringGeneration(from: self) ?? "{}"
     }
 }
+*/
