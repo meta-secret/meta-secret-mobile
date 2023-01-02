@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtocol, Loaderable, Alertable {
+class SelectDeviceSceneView: CommonSceneView{
     
     private struct Config {
         static let cellID = "ClusterDeviceCell"
@@ -22,30 +22,39 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     @IBOutlet weak var instructionLabel: UILabel!
     
     //MARK: - PROPERTIES
-    private var viewModel: SelectDeviceViewModel? = nil
+    var viewModel: DeviceInfoSceneViewModel
+    var model: SceneSendDataModel? = nil
+    override var commonViewModel: CommonViewModel {
+        return viewModel
+    }
     private var source = [UserSignature]()
     private var shares: [String]? = nil
     private var note: String? = nil
     private var callback: ((Bool)->())? = nil
-    
     private var selectedCellIndexes: [IndexPath] = [IndexPath]()
-    
-    var dataSent: Any? = nil
-    
+
     //MARK: - LIFE CICLE
+    init(viewModel: DeviceInfoSceneViewModel, alertManager: Alertable) {
+        self.viewModel = viewModel
+        super.init(alertManager: alertManager)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupUI()
         
-        self.viewModel = SelectDeviceViewModel(delegate: self)
-        guard let model = dataSent as? SceneSendDataModel else { return }
-        
-        shares = model.stringArray
-        note = model.mainStringValue
-        callback = model.callBack
+        shares = model?.stringArray
+        note = model?.mainStringValue
+        callback = model?.callBack
         
         checkButtonAvailability()
+    }
+    
+    override func setupUI() {
+        internalSetupUI()
     }
     
     //MARK: - DATA RELOAD
@@ -61,7 +70,6 @@ class SelectDeviceSceneView: UIViewController, DataSendable, SelectDeviceProtoco
     }
     
     @IBAction func distributeButtonPressed(_ sender: Any) {
-        //TODO: - viewmodel.send
         dismiss(animated: true)
         callback?(true)
     }
@@ -111,7 +119,7 @@ extension SelectDeviceSceneView: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: - PRIVATE FUNCS
 private extension SelectDeviceSceneView {
-    func setupUI() {
+    func internalSetupUI() {
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: Config.cellID, bundle: nil), forCellReuseIdentifier: Config.cellID)
         tableView.rowHeight = UITableView.automaticDimension

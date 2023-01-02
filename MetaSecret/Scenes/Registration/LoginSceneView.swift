@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import PromiseKit
 
-class LoginSceneView: UIViewController, LoginSceneProtocol, Routerable, UD {
+class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     //MARK: - OUTLETS
     private struct Config {
         static let cornerRadius = 16
@@ -22,52 +23,114 @@ class LoginSceneView: UIViewController, LoginSceneProtocol, Routerable, UD {
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var letsGoButton: UIButton!
     
-    //MARK: - PROPERTIES
-    private var viewModel: LoginSceneViewModel? = nil
+    // MARK: - Properties
+    var viewModel: LoginSceneViewModel
+    
+    override var commonViewModel: CommonViewModel {
+        return viewModel
+    }
+    
+    private var userService: UsersServiceProtocol
+    private let routerService: ApplicationRouterProtocol
+    private let factory: UIFactoryProtocol
+    
+    // MARK: - Lifecycle
+    init(viewModel: LoginSceneViewModel, userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable, factory: UIFactoryProtocol) {
+        self.viewModel = viewModel
+        self.userService = userService
+        self.routerService = routerService
+        self.factory = factory
+        super.init(alertManager: alertManager)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        showLoading()
-        setupUI()
-        
-        self.viewModel = LoginSceneViewModel(delegate: self)
+        alertManager.showLoader()
+    }
+    
+    override func setupUI() {
+        internalSetupUI()
     }
     
     //MARK: - ACTIONS
     @IBAction func letsGoAction(_ sender: Any) {
-        self.showLoading()
+        alertManager.showLoader()
 
         guard let userName = userNameTextField.text, !userName.isEmpty else {
-            viewModel?.showAlert(message: Constants.Errors.enterName)
-            hideLoading()
+            let alertModel = AlertModel(title: Constants.Errors.error, message: Constants.Errors.enterName)
+            alertManager.showCommonAlert(alertModel)
+            alertManager.hideLoader()
             return
         }
         
-        viewModel?.register(userName)
+        guard !viewModel.isLoadingData else { return }
+        firstly {
+            viewModel.register(userName)
+        }.catch { e in
+            self.didFailLoadingData(message: e)
+        }.finally {
+            self.didFinishLoadingData()
+        }
     }
     
     //MARK: - VM DELEGATE
     func resetTextField() {
         userNameTextField.text = nil
     }
+
+    func alreadyExisted() {
+        didFinishLoadingData()
+        alertManager.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
+            self?.viewModel.startTimer()
+        }, cancelHandler: { [weak self] in
+            self?.userService.userSignature = nil
+            self?.userService.deviceStatus = .unknown
+        }))
+    }
     
-    func processFinished() {
-        hideLoading()
+    func routeNext() {
+        let viewController = factory.mainScreen()
+        root(viewController)
     }
     
     func showPendingPopup() {
         let model = BottomInfoSheetModel(title: Constants.LoginScreen.awaitingTitle, message: Constants.LoginScreen.awaitingMessage, isClosable: false)
-        routeTo(.popupHint, presentAs: .presentFullScreen, with: model)
+        let controller = factory.popUpHint(with: model)
+        popUp(controller)
+    }
+    
+    func showAwaitingAlert() {
+        alertManager.showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.LoginScreen.chooseAnotherName, okButton: Constants.LoginScreen.renameOk, okHandler: { [weak self] in
+            self?.userService.resetAll()
+            self?.resetTextField()
+        }, cancelHandler: { [weak self] in
+            self?.userService.deviceStatus = .unknown
+            return
+        }))
+    }
+    
+    func failed(with error: Error) {
+        alertManager.showCommonError(error.localizedDescription)
+    }
+    
+    func closePopUp() {
+        guard let vc = findTop(), let popupVC = vc as? PopupHintViewScene else {
+            return
+        }
+        popupVC.closeHint()
     }
 }
 
 private extension LoginSceneView {
     //MARK: - UI SETUP
-    func setupUI() {
+    func internalSetupUI() {
         userNameTextField.delegate = self
         topView.roundCorners(corners: [.topLeft, .topRight], radius: Config.cornerRadius)
-        
         containerView.showShadow()
         
         userNameTextField.placeholder = Constants.LoginScreen.userNameLabel
@@ -90,20 +153,6 @@ private extension LoginSceneView {
             letsGoButton.isUserInteractionEnabled = false
             letsGoButton.backgroundColor = AppColors.mainGray
         }
-    }
-    
-    func showLoading() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-        userNameTextField.isUserInteractionEnabled = false
-        letsGoButton.isUserInteractionEnabled = false
-        letsGoButton.backgroundColor = AppColors.mainGray
-    }
-    
-    func hideLoading() {
-        activityIndicator.isHidden = true
-        userNameTextField.isUserInteractionEnabled = true
-        textFieldDidChange(userNameTextField)
     }
     
     @objc func hideKeyboard() {

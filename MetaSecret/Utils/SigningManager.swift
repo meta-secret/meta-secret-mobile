@@ -10,13 +10,19 @@ import UIKit
 import CryptoKit
 import Security
 
-protocol Signable: Alertable, UD {
+protocol Signable {
     func generateKeys(for userName: String) -> UserSecurityBox?
 }
 
-extension Signable {
+class SigningManager: NSObject, Signable {
+    private var rustManager: RustProtocol
+    
+    init(rustManager: RustProtocol) {
+        self.rustManager = rustManager
+    }
+    
     func generateKeys(for userName: String) -> UserSecurityBox? {
-        let user = RustTransporterManager().generate(for: userName)
+        let user = rustManager.generate(for: userName)
         return user
     }
 }

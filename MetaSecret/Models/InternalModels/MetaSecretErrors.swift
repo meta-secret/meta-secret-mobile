@@ -7,16 +7,20 @@
 
 import Foundation
 
-enum MetaSecretErrorType {
+enum MetaSecretErrorType: Error {
+    case commonError
     case generateUser
     case distribute
     case restore
     case objectToJson
     case cantRestore
     case cantClaim
+    case declinedUser
     
     func message() -> String {
         switch self {
+        case .commonError:
+            return Constants.Errors.commonError
         case .generateUser:
             return Constants.Errors.generateUserError
         case .distribute:
@@ -29,6 +33,8 @@ enum MetaSecretErrorType {
             return Constants.Errors.cantRestore
         case .cantClaim:
             return Constants.Errors.cantClaim
+        case .declinedUser:
+            return Constants.LoginScreen.declined
         }
     }
 }

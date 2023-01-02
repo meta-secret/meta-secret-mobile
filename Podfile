@@ -16,6 +16,9 @@ target 'MetaSecret' do
 #pod 'ObjectMapper'
 pod 'RealmSwift'
 #pod "ObjectMapper+Realm"
+pod 'Swinject'
+pod 'SwinjectAutoregistration'
+pod 'PromiseKit'
 
 # Show stub for views while loading
 #pod 'SkeletonView'

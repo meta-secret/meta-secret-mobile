@@ -7,21 +7,19 @@
 
 import Foundation
 
-final class Register: HTTPRequest, UD {
-    typealias ResponseType = RegisterResult
-    var params: String = "{}"
-    var path: String = "register"
-    
+final class Register: HTTPRequest {
     init(_ userSignature: UserSignature) {
-        self.params = userSignature.toJson()
+        super.init()
+        path = "register"
+        self.params = jsonService.jsonStringGeneration(from: userSignature) ?? "{}"
     }
 }
 
-struct RegisterResult: Codable {
-    var data: RegisterStatusResult?
-    var msgType: String
-    var error: String?
-}
+//struct RegisterResult: Codable {
+//    var data: RegisterStatusResult?
+//    var msgType: String
+//    var error: String?
+//}
 
 enum RegisterStatusResult: String, Codable {
     case Registered = "registered"

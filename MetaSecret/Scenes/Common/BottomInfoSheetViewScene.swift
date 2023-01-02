@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BottomInfoSheetViewScene: UIViewController, DataSendable {
+class BottomInfoSheetViewScene: CommonSceneView {
     //MARK: - IBOutlets
     @IBOutlet weak var topOffsetConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleLabel: UILabel!
@@ -15,18 +15,17 @@ class BottomInfoSheetViewScene: UIViewController, DataSendable {
     @IBOutlet weak var infoContainer: UIView!
     @IBOutlet weak var mainBG: UIView!
     
+    var model: BottomInfoSheetModel? = nil
+    
     //MARK: - Properties
     private struct Config {
         static let bgAlpha: CGFloat = 0.4
         static let cornerRadius = 16
     }
     
-    var dataSent: Any?
-    
     //MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
+    override func setupUI() {
+        internalSetupUI()
     }
     
     //MARK: - IBActions
@@ -36,16 +35,11 @@ class BottomInfoSheetViewScene: UIViewController, DataSendable {
 }
 
 private extension BottomInfoSheetViewScene {
-    func setupUI() {
-        guard let model = dataSent as? BottomInfoSheetModel else {
-            closeHint()
-            return
-        }
-        
+    func internalSetupUI() {
         infoContainer.roundCorners(corners: [.topLeft, .topRight], radius: Config.cornerRadius)
         
-        titleLabel.text = model.title
-        infoTextLabel.text = model.message
+        titleLabel.text = model?.title
+        infoTextLabel.text = model?.message
         titleLabel.sizeToFit()
         infoTextLabel.sizeToFit()
         

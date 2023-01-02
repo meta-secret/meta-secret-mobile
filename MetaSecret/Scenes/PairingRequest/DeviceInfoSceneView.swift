@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
+class DeviceInfoSceneView: CommonSceneView, DeviceInfoProtocol {
 
     //MARK: - OITLETS
     @IBOutlet weak var stackView: UIStackView!
@@ -26,28 +26,38 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
         static let borderWidth: CGFloat = 2
     }
     
-    private var viewModel: DeviceInfoSceneViewModel? = nil
+    var viewModel: DeviceInfoSceneViewModel
+    var data: SceneSendDataModel? = nil
+    override var commonViewModel: CommonViewModel {
+        return viewModel
+    }
+
     private var callBack: ((Bool)->())?
-    var dataSent: Any? = nil
     
     //MARK: - LIFE CICLE
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.viewModel = DeviceInfoSceneViewModel(delegate: self)
-        setupUI()
+    init(viewModel: DeviceInfoSceneViewModel, alertManager: Alertable) {
+        self.viewModel = viewModel
+        super.init(alertManager: alertManager)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setupUI() {
+        internalSetupUI()
     }
 
 
     //MARK: - ACTIONS
     @IBAction func acceptPressed(_ sender: Any) {
-        guard let data = dataSent as? SceneSendDataModel, let signature = data.signature else { return }
-        viewModel?.acceptUser(candidate: signature)
+        guard let data, let signature = data.signature else { return }
+        viewModel.acceptUser(candidate: signature)
     }
     
     @IBAction func declinePressed(_ sender: Any) {
-        guard let data = dataSent as? SceneSendDataModel, let signature = data.signature else { return }
-        viewModel?.declineUser(candidate: signature)
+        guard let data, let signature = data.signature else { return }
+        viewModel.declineUser(candidate: signature)
     }
     
     //MARK: - DELEGATION
@@ -58,8 +68,8 @@ class DeviceInfoSceneView: UIViewController, DeviceInfoProtocol, DataSendable {
 }
 
 private extension DeviceInfoSceneView {
-    func setupUI() {
-        guard let data = dataSent as? SceneSendDataModel, let signature = data.signature else { return }
+    func internalSetupUI() {
+        guard let data, let signature = data.signature else { return }
         
         acceptButton.setTitle(Constants.PairingDeveice.accept, for: .normal)
         declineButton.setTitle(Constants.PairingDeveice.decline, for: .normal)

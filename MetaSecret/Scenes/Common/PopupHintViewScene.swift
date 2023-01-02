@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PopupHintViewScene: UIViewController, DataSendable {
+class PopupHintViewScene: CommonSceneView {
 
     //MARK: - OUTLETS
     @IBOutlet weak var bgView: UIView!
@@ -23,17 +23,19 @@ class PopupHintViewScene: UIViewController, DataSendable {
     }
     
     private var callBack: (()->())?
-    
-    var dataSent: Any?
+    var model: BottomInfoSheetModel? = nil
     
     //MARK: - LIFE CYCLE
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
+    override init(alertManager: Alertable) {
+        super.init(alertManager: alertManager)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setupUI() {
+        internalSetupUI()
     }
     
     //MARK: - UBACTION
@@ -54,13 +56,11 @@ class PopupHintViewScene: UIViewController, DataSendable {
 }
 
 private extension PopupHintViewScene {
-    func setupUI() {
+    func internalSetupUI() {
+        guard let model else { return }
+        
         containerView.roundCorners(radius: Config.cornerRadius)
         topView.roundCorners(corners: [.topLeft, .topRight], radius: Config.cornerRadius)
-        
-        guard let model = dataSent as? BottomInfoSheetModel else {
-            return
-        }
         
         if let title = model.title {
             titleLabel.text = title

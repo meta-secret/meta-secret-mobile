@@ -7,15 +7,13 @@
 
 import Foundation
 
-final class Decline: HTTPRequest, UD {
-    typealias ResponseType = DeclineResult
-    var params: String = "{}"
-    var path: String = "decline"
-    
+final class Decline: HTTPRequest {
     init(candidate: UserSignature) {
-        guard let userSignature else { return }
+        super.init()
+        path = "decline"
+        guard let userSignature = userService.userSignature else { return }
         let request = AcceptRequest(member: userSignature, candidate: candidate)
-        self.params = request.toJson()
+        self.params = jsonService.jsonStringGeneration(from: request) ?? "{}"
     }
 }
 

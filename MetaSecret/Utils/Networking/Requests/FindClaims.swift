@@ -7,14 +7,13 @@
 
 import Foundation
 
-final class FindClaims: HTTPRequest, UD {
-    typealias ResponseType = FindClaimsResponse
-    var params: String = "{}"
-    var path: String = "findPasswordRecoveryClaims"
-    
-    init() {
-        guard let userSignature else { return }
-        self.params = userSignature.toJson()
+final class FindClaims: HTTPRequest {
+
+    override init() {
+        super.init()
+        path = "findPasswordRecoveryClaims"
+        guard let userSignature = userService.userSignature else { return }
+        self.params = jsonService.jsonStringGeneration(from: userSignature) ?? "{}"
     }
 }
 

@@ -11,14 +11,14 @@ protocol DeviceInfoProtocol {
     func successFullConnection(isAccept: Bool)
 }
 
-final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
-    
-    private var delegate: DeviceInfoProtocol? = nil
-    
+final class DeviceInfoSceneViewModel: CommonViewModel {
+    var delegate: DeviceInfoProtocol? = nil
+    private var alertService: Alertable
     
     //MARK: - INIT
-    init(delegate: DeviceInfoProtocol) {
-        self.delegate = delegate
+    init(alertService: Alertable) {
+        #warning("Should not be there")
+        self.alertService = alertService
     }
     
     //MARK: - PUBLIC METHODS
@@ -29,10 +29,10 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
                 if response.msgType == Constants.Common.ok {
                     self?.delegate?.successFullConnection(isAccept: true)
                 } else {
-                    self?.showCommonError(nil)
+                    self?.alertService.showCommonError(nil)
                 }
             case .failure(let error):
-                self?.showCommonError(error.localizedDescription)
+                self?.alertService.showCommonError(error.localizedDescription)
             }
         }
     }
@@ -41,13 +41,13 @@ final class DeviceInfoSceneViewModel: Alertable, UD, Routerable {
         Decline(candidate: candidate).execute { [weak self] result in
             switch result {
             case .success(let response):
-                if response.status == Constants.Common.ok {
+                if response.msgType == Constants.Common.ok {
                     self?.delegate?.successFullConnection(isAccept: false)
                 } else {
-                    self?.showCommonError(nil)
+                    self?.alertService.showCommonError(nil)
                 }
             case .failure(let error):
-                self?.showCommonError(error.localizedDescription)
+                self?.alertService.showCommonError(error.localizedDescription)
             }
         }
     }
