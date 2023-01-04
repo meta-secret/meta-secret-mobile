@@ -36,6 +36,7 @@ class CommonSceneView: UIViewController {
     
     func loadData() {
         guard !commonViewModel.isLoadingData else { return }
+        alertManager.showLoader()
         commonViewModel.isLoadingData = true
         firstly {
             commonViewModel.loadData()
@@ -46,14 +47,13 @@ class CommonSceneView: UIViewController {
         }
     }
     
-    
     func setupUI() {
         setAttributedTitle(commonViewModel.title)
         clearBackButtonTitle()
         setupNotifications()
     }
     
-    func updateUI(animated: Bool = true, reload: Bool = false, completion: (() -> Void)? = nil) {}
+    func updateUI() {}
     
     @objc func refreshData() {}
     @objc func keyboardWillShow() {}
@@ -80,39 +80,11 @@ class CommonSceneView: UIViewController {
         alertManager.showCommonError((message as? MetaSecretErrorType)?.message())
     }
     
-    func didStartSavingData() {
-        commonViewModel.isSavingData = true
-        view.endEditing(true)
-        alertManager.showLoader()
-    }
-    
-    func didFinishSavingData() {
-        commonViewModel.isSavingData = false
-        updateUI()
-        alertManager.hideLoader()
-    }
-    
-    func didFailSavingData(_ error: Error) {
-        alertManager.showCommonError(MetaSecretErrorType.commonError.message())
-    }
-    
     func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-    
-    func saveData() {
-        guard !commonViewModel.isSavingData else { return }
-        didStartSavingData()
-        firstly {
-            commonViewModel.saveData()
-        }.done {
-            self.didFinishSavingData()
-        }.catch { error in
-            self.didFailSavingData(error)
-        }
     }
 }

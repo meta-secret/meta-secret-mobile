@@ -95,6 +95,12 @@
 "error" = "Ошибка";
 "warning" = "Предупреждение";
 "commonError" = "Ой, что-то пошло не так";
+"networkError" = "Ошибка на сервере";
+"registerError" = "Ошибка регистрации";
+"vaultError" = "Ошибка получения Vault";
+"userSignatureError" = "Ошибка текущего пользователя";
+"shareSearchError" = "shareSearchError";
+"distributionDBError" = "Ошибка распределения данных в БД"
 "wannaLogin" = "Это имя уже занято. Хотите войти?";
 "enterName" = "Пожалуйста, введите ваше имя (никнейм)";
 "sww" = "Что-то пошло не так";

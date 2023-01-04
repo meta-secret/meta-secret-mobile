@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 protocol DistributionConnectorManagerProtocol {
     func startMonitoringSharesAndClaimRequests()
@@ -15,7 +16,9 @@ protocol DistributionConnectorManagerProtocol {
     func startMonitoringClaimResponses(description: String)
     func stopMonitoringClaimResponses()
     func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String, callBack: ((Bool)->())?)
-    func getVault()
+    func getVault() -> Promise<Void>
+    func findShares() -> Promise<Void>
+    func reDistribute()
 }
 
 final class DistributionConnectorManager: NSObject, DistributionConnectorManagerProtocol  {
@@ -24,33 +27,37 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
     private var findVaultsTimer: Timer? = nil
     private var findClaimResponsesTimer: Timer? = nil
     
-    private var isLookinForClaimResponses: Bool = true
-    private var isLookinForClaimRequests: Bool = true
-    private var isLookinForShares: Bool = true
-    private var isLookinForVaults: Bool = true
+//    private var isLookinForClaimResponses: Bool = true
+//    private var isLookinForClaimRequests: Bool = true
+//    private var isLookinForShares: Bool = true
+//    private var isLookinForVaults: Bool = true
     private var isNeedToRedistribute: Bool = false
     
     let nc = NotificationCenter.default
     
     enum Config {
-        static let timerInterval: CGFloat = 10.0
+        static let timerInterval: CGFloat = 1.0
     }
     
     private var userService: UsersServiceProtocol
     private let alertManager: Alertable
     private let jsonManager: JsonSerealizable
-    private let dbManager: DBManager
+    private let dbManager: DBManagerProtocol
     private let rustManager: RustProtocol
     private let sharesManager: ShareDistributionManager
+    private let vaultService: VaultAPIProtocol
+    private let shareService: ShareAPIProtocol
     
     //MARK: - INIT
-    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManager, rustManager: RustProtocol, sharesManager: ShareDistributionManager) {
+    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManagerProtocol, rustManager: RustProtocol, sharesManager: ShareDistributionManager, vaultService: VaultAPIProtocol, shareService: ShareAPIProtocol) {
         self.userService = userService
         self.alertManager = alertManager
         self.jsonManager = jsonManager
         self.dbManager = dbManager
         self.rustManager = rustManager
         self.sharesManager = sharesManager
+        self.vaultService = vaultService
+        self.shareService = shareService
     }
     
     //MARK: - MAIN SCREEN. SHARES
@@ -122,27 +129,22 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
         }
     }
     
-    func getVault() {
-        isLookinForVaults = true
-        print("## findVaultsTimer = \(findVaultsTimer)")
-        guard let _ = self.findVaultsTimer else { return }
-        
-        GetVault().execute() { [weak self] result in
-            switch result {
-            case .success(let result):
-                self?.isLookinForVaults = false
-                guard result.msgType == Constants.Common.ok else {
-                    self?.alertManager.showCommonError(result.error ?? "")
-                    return
-                }
-                
-                print("## GOT VAULT")
-                self?.userService.mainVault = result.data?.vault
-                self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Devices])
-            case .failure(let error):
-                self?.alertManager.showCommonError(error.localizedDescription)
-            }
-        }
+    func getVault() -> Promise<Void> {
+        return firstly {
+            vaultService.getVault()
+        }.get { result in
+            self.userService.mainVault = result.data?.vault
+            self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Devices])
+            
+        }.asVoid()
+    }
+    
+    func findShares() -> Promise<Void> {
+        return firstly {
+            shareService.findShares()
+        }.then { result in
+            self.checkSharesResult(result: result)
+        }.asVoid()
     }
     
     func reDistribute() {
@@ -191,6 +193,18 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
 }
 
 private extension DistributionConnectorManager {
+    func checkSharesResult(result: FindSharesResult) -> Promise<Void> {
+        guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
+            return Promise().asVoid()
+        }
+        
+        return firstly {
+            sharesManager.distribtuteToDB(result.data)
+        }.get {
+            self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Shares])
+        }.asVoid()
+    }
+    
     func checkForError() {
         alertManager.showCommonError(MetaSecretErrorType.cantRestore.message())
         self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
@@ -217,31 +231,6 @@ private extension DistributionConnectorManager {
     }
     
     //MARK: - SHARES ACTIONS
-    func findShares() {
-        isLookinForShares = true
-        FindShares().execute { [weak self] result in
-            guard let _ = self?.findSharesAndClaimRequestsTimer else { return }
-            
-            switch result {
-            case .success(let result):
-                guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
-                    self?.isLookinForShares = false
-                    print("## FIND SHARES ERROR with MSG = \(result.msgType)")
-                    return
-                }
-                
-                self?.sharesManager.distribtuteToDB(result.data) { isToReload in
-                    print("## NEW SHARES SAVED TO DB")
-                    if isToReload {
-                        self?.isLookinForShares = false
-                        self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Shares])
-                    }
-                }
-            case .failure(let error):
-                self?.alertManager.showCommonError(error.localizedDescription)
-            }
-        }
-    }
     
     //MARK: - CLAIMS ACTIONS
     @objc func fireClaimResponsesTimer() {

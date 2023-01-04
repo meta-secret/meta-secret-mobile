@@ -11,7 +11,6 @@ import CryptoKit
 import PromiseKit
 
 protocol LoginSceneProtocol {
-    func resetTextField()
     func showPendingPopup()
     func showAwaitingAlert()
     func routeNext()
@@ -25,14 +24,18 @@ final class LoginSceneViewModel: CommonViewModel {
     private var userService: UsersServiceProtocol
     private var signingManager: Signable
     private var jsonManager: JsonSerealizable
+    private var authService: AuthorizationProtocol
+    private var vaultService: VaultAPIProtocol
     
     var delegate: LoginSceneProtocol? = nil
     
     //MARK: - INIT
-    init(userService: UsersServiceProtocol, signingManager: Signable, jsonManager: JsonSerealizable) {
+    init(userService: UsersServiceProtocol, signingManager: Signable, jsonManager: JsonSerealizable, authService: AuthorizationProtocol, vaultService: VaultAPIProtocol) {
         self.signingManager = signingManager
         self.userService = userService
         self.jsonManager = jsonManager
+        self.authService = authService
+        self.vaultService = vaultService
     }
     
     override func loadData() -> Promise<Void> {
@@ -53,9 +56,10 @@ final class LoginSceneViewModel: CommonViewModel {
     
     //MARK: - REGISTRATION
     func register(_ userName: String) -> Promise<Void> {
+        isLoadingData = true
         if userService.deviceStatus == .pending {
             delegate?.showAwaitingAlert()
-//            delegate?.processFinished(with: nil)
+            isLoadingData = false
             return Promise().asVoid()
         }
         
@@ -69,68 +73,51 @@ final class LoginSceneViewModel: CommonViewModel {
                                  transportPublicKey: userSecurityBox.keyManager.transport.publicKey,
                                  device: Device())
 
-        Register(user).execute() { [weak self] result in
-            switch result {
-            case .success(let response):
-                guard response.msgType == Constants.Common.ok else {
-                    self?.delegate?.failed(with: MetaSecretErrorType.commonError)
-                    return
-                }
-                
-                let data = RegisterStatusResult(rawValue: response.data ?? "")
-                if data == .Registered {
-                    self?.userService.deviceStatus = .member
-                    self?.userService.securityBox = userSecurityBox
-                    self?.userService.userSignature = user
-                    self?.userService.isOwner = true
-                    self?.delegate?.routeNext()
-                } else {
-                    self?.userService.deviceStatus = .pending
-                    self?.userService.userSignature = user
-                    self?.userService.securityBox = userSecurityBox
-                    self?.delegate?.alreadyExisted()
-                }
-            case .failure(let error):
-                self?.delegate?.failed(with: error)
+        return firstly {
+            authService.register(user)
+        }.get { result in
+            if result.data == .Registered {
+                self.userService.deviceStatus = .member
+                self.userService.securityBox = userSecurityBox
+                self.userService.userSignature = user
+                self.userService.isOwner = true
+                self.delegate?.routeNext()
+            } else {
+                self.userService.deviceStatus = .pending
+                self.userService.userSignature = user
+                self.userService.securityBox = userSecurityBox
+                self.delegate?.alreadyExisted()
             }
-        }
-        return Promise().asVoid()
+        }.ensure {
+            self.isLoadingData = false
+        }.asVoid()
     }
 }
 
 private extension LoginSceneViewModel {
     func checkStatus() -> Promise<Void> {
         if userService.deviceStatus == .pending {
-            GetVault().execute() { [weak self] result in
-                switch result {
-                case .success(let result):
-                    guard result.msgType == Constants.Common.ok else {
-                        print(result.error ?? "")
-                        return
-                    }
-                    
-                    let object: GetVaultData? = try? self?.jsonManager.objectGeneration(from: result.data ?? "")
-                    if object?.vaultInfo == .member {
-                        self?.tempTimer?.invalidate()
-                        self?.tempTimer = nil
-                        self?.delegate?.closePopUp()
-                        self?.delegate?.routeNext()
-                    } else if object?.vaultInfo == .declined {
-                        self?.delegate?.closePopUp()
-                        self?.userService.resetAll()
-                        self?.delegate?.failed(with: MetaSecretErrorType.declinedUser)
-                    } else {
-                        self?.startTimer()
-                    }
-//                    return Promise().asVoid()
-                case .failure(let error):
-//                    return Promise(error: error)
-                    self?.delegate?.failed(with: error)
+            return firstly {
+                vaultService.getVault()
+            }.get { result in
+                if result.data?.vaultInfo == .member {
+                    self.tempTimer?.invalidate()
+                    self.tempTimer = nil
+                    self.delegate?.closePopUp()
+                    self.delegate?.routeNext()
+                } else if result.data?.vaultInfo == .declined {
+                    self.delegate?.closePopUp()
+                    self.userService.resetAll()
+                    self.delegate?.failed(with: MetaSecretErrorType.declinedUser)
+                } else {
+                    self.startTimer()
                 }
-            }
+            }.ensure {
+                self.isLoadingData = false
+            }.asVoid()
+        } else {
+            return Promise(error: MetaSecretErrorType.networkError)
         }
-
-        return Promise().asVoid()
     }
     
     @objc func fireTimer() {

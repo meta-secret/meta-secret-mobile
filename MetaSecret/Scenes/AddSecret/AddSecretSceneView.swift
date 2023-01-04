@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSendable {
+class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     //MARK: - OUTLETS
     @IBOutlet weak var splitRestoreButton: UIButton!
     @IBOutlet weak var addPassTitleLabel: UILabel!
@@ -33,7 +33,7 @@ class AddSecretSceneView: UIViewController, AddSecretProtocol, Signable, DataSen
     
     private var descriptionText: String? = nil
     
-    var dataSent: Any?
+    var model: SceneSendDataModel? = nil
     
     //MARK: - LIFE CICLE
     init(modeType: ModeType = .edit) {

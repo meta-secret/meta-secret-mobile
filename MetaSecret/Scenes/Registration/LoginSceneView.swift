@@ -47,12 +47,6 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        alertManager.showLoader()
-    }
-    
     override func setupUI() {
         internalSetupUI()
     }

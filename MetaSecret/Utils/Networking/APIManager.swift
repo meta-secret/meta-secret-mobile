@@ -8,41 +8,48 @@
 import Foundation
 import PromiseKit
 
-protocol NetworLayerProtocl {
-    func fetchData<T>(_ endpoint: HTTPRequestProtocol) -> Promise<T> where T : Decodable
-    func fetchData(from url: URL) -> Promise<Data>
+protocol APIManagerProtocol {
+    func fetchData<T>(_ endpoint: any HTTPRequest) -> Promise<T> where T : Decodable
 }
 
-class APIManager {
-    func fetchData(from url: URL) -> Promise<Data> {
-        return Promise { seal in
-            let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error {
-                    seal.reject(error)
-                } else if let data = data {
-                    seal.fulfill(data)
-                } else {
-                    seal.reject(NSError(domain: "NetworkLayer", code: 0, userInfo: nil))
-                }
-            }
-            task.resume()
-        }
+class APIManager: NSObject, APIManagerProtocol {
+    static let develop = "http://api.meta-secret.org/"
+    
+    private(set) var jsonManager: JsonSerealizable
+    private(set) var userService: UsersServiceProtocol
+    private(set) var rustManager: RustProtocol
+    
+    init(jsonManager: JsonSerealizable, userService: UsersServiceProtocol, rustManager: RustProtocol) {
+        self.userService = userService
+        self.jsonManager = jsonManager
+        self.rustManager = rustManager
     }
-
-    func postData(to url: URL, with parameters: [String: Any]) -> Promise<Data> {
+    
+    func fetchData<T>(_ endpoint: any HTTPRequest) -> Promise<T> where T : Decodable {
         return Promise { seal in
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
+            guard let link = URL(string: APIManager.develop + endpoint.path) else {
+                seal.reject(MetaSecretErrorType.networkError)
+                return
+            }
+            
+            var request = URLRequest(url: link)
+            request.httpMethod = endpoint.method.rawValue
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
-            let data = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+            let data = try? JSONSerialization.data(withJSONObject: endpoint.params, options: [])
             request.httpBody = data
 
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {
                     seal.reject(error)
                 } else if let data = data {
-                    seal.fulfill(data)
+                    do {
+                        let decoder = JSONDecoder()
+                        let object = try decoder.decode(T.self, from: data)
+                        seal.fulfill(object)
+                    } catch {
+                        seal.reject(error)
+                    }
                 } else {
                     seal.reject(NSError(domain: "NetworkLayer", code: 0, userInfo: nil))
                 }
@@ -50,4 +57,6 @@ class APIManager {
             task.resume()
         }
     }
+    
+    
 }

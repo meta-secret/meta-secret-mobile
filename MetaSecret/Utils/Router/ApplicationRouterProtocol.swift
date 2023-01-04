@@ -79,6 +79,7 @@ extension ApplicationRouter {
     
     private func showMain() {
         guard let mainViewController = resolve(MainSceneView.self) else { return }
+        mainViewController.viewModel.delegate = mainViewController
         show(UINavigationController(rootViewController: mainViewController))
     }
     

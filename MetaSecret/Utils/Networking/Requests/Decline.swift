@@ -8,15 +8,10 @@
 import Foundation
 
 final class Decline: HTTPRequest {
-    init(candidate: UserSignature) {
-        super.init()
-        path = "decline"
-        guard let userSignature = userService.userSignature else { return }
-        let request = AcceptRequest(member: userSignature, candidate: candidate)
-        self.params = jsonService.jsonStringGeneration(from: request) ?? "{}"
+    var params: String
+    var path: String { return "decline" }
+    
+    init(_ params: String) {
+        self.params = params
     }
-}
-
-struct DeclineResult: Codable {
-    var status: String?
 }

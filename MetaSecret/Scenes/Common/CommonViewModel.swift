@@ -9,9 +9,7 @@ import Foundation
 import PromiseKit
 
 class CommonViewModel {
-    var isDataLoaded: Bool = false
     var isLoadingData: Bool = false
-    var isSavingData: Bool = false
     
     var title: String {
         return ""

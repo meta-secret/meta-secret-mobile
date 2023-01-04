@@ -7,11 +7,12 @@
 
 import Foundation
 import RealmSwift
+import PromiseKit
 
 #warning("UNIVERSAL MECHANISM NEEDED")
 protocol ShareDistributionProtocol {
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?)
-    func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?)
+    func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void>
 }
 
 final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
@@ -63,10 +64,9 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
         }
     }
     
-    func distribtuteToDB(_ shares: [SecretDistributionDoc]?, callBack: ((Bool)->())?) {
+    func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void> {
         guard let shares else {
-            callBack?(false)
-            return
+            return Promise(error: MetaSecretErrorType.distributionDBError)
         }
         let dictionary = shares.reduce(into: [String: [SecretDistributionDoc]]()) { result, object in
             let array = result[object.metaPassword?.metaPassword.id.name ?? "NoN"] ?? []
@@ -84,7 +84,7 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
                 }
             dbManager.saveSecret(newSecret)
         }
-        callBack?(true)
+        return Promise().asVoid()
     }
 }
 
