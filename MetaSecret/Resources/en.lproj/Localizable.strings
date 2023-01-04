@@ -81,7 +81,7 @@
 "selectDeviceButtonLocal" = "Save";
 "split" = "SPLIT";
 "notSplitedMessage" = "Split process has not been completed. We gonna save your secret locally only. There is a big chance of data loss. Would like to quit?";
-"alreadySavedMessage" = "You already has a secret with the same description. Do you wanna replace it?";
+"alreadySavedMessage" = "You already has a secret with the same description.";
 "edit" = "Edit";
 "restore" = "RESTORE";
 "editSecret" = "Edit Secret";
@@ -102,7 +102,8 @@
 "userSignatureError" = "Curent User Error";
 "wannaLogin" = "This name already taken. Want to login?";
 "enterName" = "Enter your nickname";
-"distributionDBError" = "Data Base distribution error"
+"distributionDBError" = "Data Base distribution error";
+"splitError" = "Splitting error";
 "sww" = "Something wrong";
 "atLeast3" = "Not enough devices connected. It's recommended to have several devices in your network, to reduce the risk of data loss.";
 
@@ -111,7 +112,7 @@
 "sentShareMessage" = "Secind share has been sent successfully on device %@";
 "chooseDevices" = "Please, select device to distribute other parts of your secret";
 
-//MARK: -Errors
+//MARK: - Errors
 "generateUserError" = "Generating of user's signature is FAILED";
 "distributeError" = "Distribution is FAILED";
 "restoreError" = "Restore error";

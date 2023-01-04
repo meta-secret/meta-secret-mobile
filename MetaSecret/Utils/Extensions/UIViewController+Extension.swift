@@ -231,7 +231,7 @@ extension UIViewController {
     func setAttributedTitle(_ title: String?) {
         typealias AttrKey = NSAttributedString.Key
         let label = UILabel()
-        let attributedStringKeys = [AttrKey.foregroundColor : UIColor.black, AttrKey.font: UIFont.systemFont(ofSize: 18)]
+        let attributedStringKeys = [AttrKey.foregroundColor : UIColor.black, AttrKey.font: UIFont.avenirMedium(size: 18)]
         label.attributedText = NSAttributedString(string: title?.capitalized ?? "",
                                                   attributes: attributedStringKeys)
         navigationItem.titleView = label

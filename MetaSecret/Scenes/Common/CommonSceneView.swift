@@ -72,7 +72,7 @@ class CommonSceneView: UIViewController {
         
     func didFinishLoadingData(reload: Bool = true) {
         alertManager.hideLoader()
-        updateUI(reload: reload)
+        updateUI()
     }
     
     func didFailLoadingData(message: Error? = MetaSecretErrorType.commonError) {

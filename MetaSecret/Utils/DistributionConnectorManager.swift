@@ -15,7 +15,7 @@ protocol DistributionConnectorManagerProtocol {
     func stopMonitoringVaults()
     func startMonitoringClaimResponses(description: String)
     func stopMonitoringClaimResponses()
-    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String, callBack: ((Bool)->())?)
+    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String) -> Promise<Void>
     func getVault() -> Promise<Void>
     func findShares() -> Promise<Void>
     func reDistribute()
@@ -36,7 +36,7 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
     let nc = NotificationCenter.default
     
     enum Config {
-        static let timerInterval: CGFloat = 1.0
+        static let timerInterval: CGFloat = 3.0
     }
     
     private var userService: UsersServiceProtocol

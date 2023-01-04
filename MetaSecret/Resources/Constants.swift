@@ -48,8 +48,6 @@ struct Constants {
         static let alreadyExisted = NSLocalizedString("wannaJoin", comment: "")
         static let renameOk = NSLocalizedString("rename", comment: "")
         static let declined = NSLocalizedString("declinedRequest", comment: "")
-        static let shareSearchError = NSLocalizedString("shareSearchError", comment: "")
-        static let distributionDBError = NSLocalizedString("distributionDBError", comment: "")
         static let awaitingTitle = NSLocalizedString("waitingForApproval", comment: "")
         static let awaitingMessage = NSLocalizedString("pleaseAcceptRequest", comment: "")
         static let chooseAnotherName = NSLocalizedString("pleaseAcceptRequest", comment: "")
@@ -162,6 +160,9 @@ struct Constants {
         static let objectToJsonError = NSLocalizedString("objectToJsonError", comment: "")
         static let cantRestore = NSLocalizedString("cantRestore", comment: "")
         static let cantClaim = NSLocalizedString("cantClaim", comment: "")
+        static let shareSearchError = NSLocalizedString("shareSearchError", comment: "")
+        static let distributionDBError = NSLocalizedString("distributionDBError", comment: "")
+        static let splitError = NSLocalizedString("splitError", comment: "")
     }
     
     //MARK: - TAGS

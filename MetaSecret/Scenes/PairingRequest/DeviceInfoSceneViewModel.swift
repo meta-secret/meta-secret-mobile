@@ -6,49 +6,43 @@
 //
 
 import Foundation
+import PromiseKit
 
-protocol DeviceInfoProtocol {
-    func successFullConnection(isAccept: Bool)
-}
+protocol DeviceInfoProtocol {}
 
 final class DeviceInfoSceneViewModel: CommonViewModel {
     var delegate: DeviceInfoProtocol? = nil
-    private var alertService: Alertable
+    override var title: String {
+        return Constants.PairingDeveice.title
+    }
+    private var alertManager: Alertable
+    private var vaultApiService: VaultAPIProtocol
     
     //MARK: - INIT
-    init(alertService: Alertable) {
-        #warning("Should not be there")
-        self.alertService = alertService
+    init(alertManager: Alertable, vaultApiService: VaultAPIProtocol) {
+        self.vaultApiService = vaultApiService
+        self.alertManager = alertManager
     }
     
     //MARK: - PUBLIC METHODS
-    func acceptUser(candidate: UserSignature) {
-        Accept(candidate: candidate).execute { [weak self] result in
-            switch result {
-            case .success(let response):
-                if response.msgType == Constants.Common.ok {
-                    self?.delegate?.successFullConnection(isAccept: true)
-                } else {
-                    self?.alertService.showCommonError(nil)
-                }
-            case .failure(let error):
-                self?.alertService.showCommonError(error.localizedDescription)
-            }
-        }
+    func acceptUser(candidate: UserSignature) -> Promise<Void> {
+        return firstly{
+            vaultApiService.accept(candidate)
+        }.then { result in
+            self.checkResult(result: result)
+        }.asVoid()
     }
     
-    func declineUser(candidate: UserSignature) {
-        Decline(candidate: candidate).execute { [weak self] result in
-            switch result {
-            case .success(let response):
-                if response.msgType == Constants.Common.ok {
-                    self?.delegate?.successFullConnection(isAccept: false)
-                } else {
-                    self?.alertService.showCommonError(nil)
-                }
-            case .failure(let error):
-                self?.alertService.showCommonError(error.localizedDescription)
-            }
-        }
+    func declineUser(candidate: UserSignature) -> Promise<Void> {
+        return firstly{
+            vaultApiService.decline(candidate)
+        }.then { result in
+            self.checkResult(result: result)
+        }.asVoid()
+    }
+    
+    private func checkResult(result: AcceptResult) -> Promise<Void> {
+        guard result.msgType == Constants.Common.ok else { return Promise(error: MetaSecretErrorType.networkError) }
+        return Promise().asVoid()
     }
 }

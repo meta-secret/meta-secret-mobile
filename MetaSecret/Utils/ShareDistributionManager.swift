@@ -11,7 +11,7 @@ import PromiseKit
 
 #warning("UNIVERSAL MECHANISM NEEDED")
 protocol ShareDistributionProtocol {
-    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?)
+    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void>
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void>
 }
 
@@ -25,43 +25,44 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
     fileprivate var shares: [UserShareDto] = [UserShareDto]()
     fileprivate var signatures: [UserSignature] = [UserSignature]()
     fileprivate var secretDescription: String = ""
-    fileprivate var callBack: ((Bool)->())?
     
     private var jsonSerializationManager: JsonSerealizable
     private var dbManager: DBManagerProtocol
     private var userService: UsersServiceProtocol
     private var alertManager: Alertable
     private var rustManager: RustProtocol
+    private var distributionConnectorManager: DistributionConnectorManagerProtocol
     
     init(jsonSerializationManager: JsonSerealizable,
          dbManager: DBManagerProtocol,
          userService: UsersServiceProtocol,
          alertManager: Alertable,
-         rustManager: RustProtocol) {
+         rustManager: RustProtocol,
+         distributionConnectorManager: DistributionConnectorManagerProtocol) {
         self.jsonSerializationManager = jsonSerializationManager
         self.dbManager = dbManager
         self.userService = userService
         self.alertManager = alertManager
         self.rustManager = rustManager
+        self.distributionConnectorManager = distributionConnectorManager
     }
     
-    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String, callBack: ((Bool)->())?) {
+    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void> {
         guard let typeOfSharing = SplittedType(rawValue: signatures.count) else {
-            callBack?(false)
-            return
+            return Promise(error: MetaSecretErrorType.distribute)
         }
         
-        self.callBack = callBack
         self.signatures = signatures
         self.shares = shares
         self.secretDescription = description
         
         switch typeOfSharing {
         case .fullySplitted, .allInOne:
-            simpleDistribution(callBack: callBack)
+            return simpleDistribution()
         case .partially:
-            partiallyDistribute(callBack: callBack)
+            return partiallyDistribute()
         }
+        return Promise().asVoid()
     }
     
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void> {
@@ -90,7 +91,7 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
 
 private extension ShareDistributionManager {
     //MARK: - DISTRIBUTIONS FLOWS
-    func simpleDistribution(callBack: ((Bool)->())?) {
+    func simpleDistribution() -> Promise<Void>{
         let myGroup = DispatchGroup()
         var results = [Bool]()
         
@@ -106,7 +107,7 @@ private extension ShareDistributionManager {
             }
             
             if let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
-                DistributionConnectorManager.shared.distributeSharesToMembers([encryptedShare], receiver: signature, description: description) { isOk in
+                distributionConnectorManager.distributeSharesToMember ([encryptedShare], receiver: signature, description: description) { isOk in
                     results.append(isOk)
                     myGroup.leave()
                 }
@@ -122,12 +123,12 @@ private extension ShareDistributionManager {
         }
     }
     
-    func partiallyDistribute(callBack: ((Bool)->())?) {
-        guard let lastShare = shares.last else { return }
+    func partiallyDistribute() -> Promise<Void> {
+        guard let lastShare = shares.last else { return Promise(error: MetaSecretErrorType.commonError) }
         shares.append(lastShare)
         signatures.append(contentsOf: signatures)
         
-        simpleDistribution(callBack: callBack)
+        return simpleDistribution()
     }
     
     //MARK: - ENCODING
@@ -137,7 +138,7 @@ private extension ShareDistributionManager {
             return nil
         }
         
-        let shareToEncode = ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: receiverPubKey, secret: share.toJson())
+        let shareToEncode = ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: receiverPubKey, secret: jsonSerializationManager.jsonStringGeneration(from: share) ?? "")
         
         guard let encryptedShare = rustManager.encrypt(share: shareToEncode) else {
             alertManager.showCommonError(Constants.Errors.encodeError)

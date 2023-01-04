@@ -11,6 +11,7 @@ enum MetaSecretErrorType: Error {
     case commonError
     case networkError
     case registerError
+    case splitError
     case vaultError
     case shareSearchError
     case distributionDBError
@@ -22,6 +23,7 @@ enum MetaSecretErrorType: Error {
     case cantRestore
     case cantClaim
     case declinedUser
+    case alreadySavedMessage
     
     func message() -> String {
         switch self {
@@ -50,9 +52,13 @@ enum MetaSecretErrorType: Error {
         case .declinedUser:
             return Constants.LoginScreen.declined
         case .shareSearchError:
-            return Constants.LoginScreen.shareSearchError
+            return Constants.Errors.shareSearchError
         case .distributionDBError:
-            return Constants.LoginScreen.distributionDBError
+            return Constants.Errors.distributionDBError
+        case .splitError:
+            return Constants.Errors.splitError
+        case .alreadySavedMessage:
+            return Constants.AddSecret.alreadySavedMessage
         }
     }
 }
