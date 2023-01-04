@@ -16,7 +16,7 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
     var imageAspectRatioConstraint: NSLayoutConstraint?
     
     // MARK: - Functions
-    func setup(cellType: OnboardingSceneView.CellType) {
+    func setup(cellType: OnboardingSceneViewModel.CellType) {
         titleLabel.text = cellType.title
         descriptionLabel.text = cellType.description
     }

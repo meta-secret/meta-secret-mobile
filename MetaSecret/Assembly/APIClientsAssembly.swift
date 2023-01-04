@@ -10,8 +10,10 @@ import SwinjectAutoregistration
 
 class APIClientsAssembly: Assembly {
     func assemble(container: Container) {
-//        container.autoregister((any HTTPRequestProtocol).self, initializer: HTTPRequest.init)
-//        container.autoregister((any RegisterProtocol).self, initializer: Register.init)
+        container.autoregister(APIManagerProtocol.self, initializer: APIManager.init)
+        container.autoregister(AuthorizationProtocol.self, initializer: AuthorisationService.init)
+        container.autoregister(VaultAPIProtocol.self, initializer: VaultAPIService.init)
+        container.autoregister(ShareAPIProtocol.self, initializer: ShareAPIService.init)
     }
 }
 

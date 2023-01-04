@@ -6,41 +6,52 @@
 //
 
 import Foundation
-import UIKit
+import PromiseKit
 
 protocol AddSecretProtocol {
     func close()
     func showRestoreResult(password: String?)
 }
 
-final class AddSecretViewModel: UD, Routerable, Signable, JsonSerealizable {
+final class AddSecretViewModel: CommonViewModel {
     //MARK: - PROPERTIES
     enum Config {
         static let minMembersCount = 3
     }
     
-    private var delegate: AddSecretProtocol? = nil
+    var delegate: AddSecretProtocol? = nil
+    
     private var components: [UserShareDto] = [UserShareDto]()
     private var signatures: [UserSignature]? = nil
     private lazy var activeSignatures: [UserSignature] = [UserSignature]()
     private var description: String = ""
-//    private var distributionService: DistributionConnectorManagerProtocol
+    
+    private var userService: UsersServiceProtocol
     
     var isFullySplitted: Bool = false
     
     //MARK: - INIT
-    init(delegate: AddSecretProtocol/*, distributionService: DistributionConnectorManagerProtocol*/) {
-        self.delegate = delegate
-//        self.distributionService = distributionService
+    init(userService: UsersServiceProtocol) {
+        self.userService = userService
+    }
+    
+    override func loadData() -> Promise<Void> {
+        isLoadingData = true
+        return firstly {
+            getVault()
+        }.ensure {
+            self.isLoadingData = false
+        }.asVoid()
     }
     
     //MARK: - PUBLIC METHODS
-    func getVault() {
+    func getVault() -> Promise<Void> {
         self.signatures?.removeAll()
-        self.signatures = self.mainVault?.signatures
+        self.signatures = userService.mainVault?.signatures
         if self.signatures?.count ?? 0 <= Constants.Common.neededMembersCount {
             self.activeSignatures = self.signatures ?? []
         }
+        return Promise().asVoid()
     }
     
     func vaultsCount() -> Int {

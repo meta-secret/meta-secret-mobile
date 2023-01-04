@@ -8,16 +8,15 @@
 import Foundation
 
 final class FindClaims: HTTPRequest {
-
-    override init() {
-        super.init()
-        path = "findPasswordRecoveryClaims"
-        guard let userSignature = userService.userSignature else { return }
-        self.params = jsonService.jsonStringGeneration(from: userSignature) ?? "{}"
+    var params: String
+    var path: String { return "findPasswordRecoveryClaims" }
+    
+    init(_ params: String) {
+        self.params = params
     }
 }
 
-struct FindClaimsResponse: Codable {
+struct FindClaimsResult: Codable {
     var msgType: String?
     var data: [PasswordRecoveryRequest]?
     var error: String?

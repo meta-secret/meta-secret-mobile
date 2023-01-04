@@ -26,7 +26,6 @@
 		E518420D295E2C4400B8F3BD /* ManagersAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518420C295E2C4400B8F3BD /* ManagersAssembly.swift */; };
 		E518420F295E345600B8F3BD /* UIWindow+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518420E295E345600B8F3BD /* UIWindow+Extension.swift */; };
 		E5184211295E472E00B8F3BD /* APIClientsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5184210295E472E00B8F3BD /* APIClientsAssembly.swift */; };
-		E5184214295E4A2500B8F3BD /* CommonResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5184213295E4A2500B8F3BD /* CommonResponse.swift */; };
 		E5184216295E4F3500B8F3BD /* OnboardingSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5184215295E4F3500B8F3BD /* OnboardingSceneViewModel.swift */; };
 		E51867A429396CBA000DF023 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51867A329396CBA000DF023 /* UserSignature.swift */; };
 		E51867A629396FAF000DF023 /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51867A529396FAF000DF023 /* BaseModel.swift */; };
@@ -50,8 +49,6 @@
 		E54EFA9B291721F30049DD81 /* EncodeShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EFA9A291721F20049DD81 /* EncodeShare.swift */; };
 		E55A226F28B0357900F5F02B /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A226E28B0357900F5F02B /* Register.swift */; };
 		E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227028B0399A00F5F02B /* HTTPRequest.swift */; };
-		E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */; };
-		E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227528B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift */; };
 		E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227A28B05ACE00F5F02B /* GetVault.swift */; };
 		E55A227D28B0611800F5F02B /* Accept.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55A227C28B0611800F5F02B /* Accept.swift */; };
 		E55AC12528C7DFB000757C0C /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55AC12428C7DFB000757C0C /* DBManager.swift */; };
@@ -90,6 +87,9 @@
 		E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */; };
 		E5C4CA622961E9E900DA8A5C /* UIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA612961E9E900DA8A5C /* UIFactory.swift */; };
 		E5C4CA64296358E100DA8A5C /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA63296358E100DA8A5C /* APIManager.swift */; };
+		E5C4CA66296363D000DA8A5C /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA65296363D000DA8A5C /* AuthorizationService.swift */; };
+		E5C4CA6A29636E5300DA8A5C /* VaultAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA6929636E5300DA8A5C /* VaultAPIService.swift */; };
+		E5C4CA6C2963720300DA8A5C /* ShareAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA6B2963720300DA8A5C /* ShareAPIService.swift */; };
 		E5C5111029428C9600F7BFC0 /* MetaPassId.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C5110F29428C9600F7BFC0 /* MetaPassId.swift */; };
 		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
 		E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */; };
@@ -145,7 +145,6 @@
 		E518420C295E2C4400B8F3BD /* ManagersAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagersAssembly.swift; sourceTree = "<group>"; };
 		E518420E295E345600B8F3BD /* UIWindow+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Extension.swift"; sourceTree = "<group>"; };
 		E5184210295E472E00B8F3BD /* APIClientsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientsAssembly.swift; sourceTree = "<group>"; };
-		E5184213295E4A2500B8F3BD /* CommonResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonResponse.swift; sourceTree = "<group>"; };
 		E5184215295E4F3500B8F3BD /* OnboardingSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSceneViewModel.swift; sourceTree = "<group>"; };
 		E51867A329396CBA000DF023 /* UserSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
 		E51867A529396FAF000DF023 /* BaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
@@ -171,8 +170,6 @@
 		E558ED9428F5FD9F0018F045 /* MetaSecretTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetaSecretTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55A226E28B0357900F5F02B /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		E55A227028B0399A00F5F02B /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
-		E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HTTPDispatcher.swift; path = MetaSecret/HTTPDispatcher.swift; sourceTree = SOURCE_ROOT; };
-		E55A227528B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLSessionNetworkDispatcher.swift; path = MetaSecret/Utils/URLSessionNetworkDispatcher.swift; sourceTree = SOURCE_ROOT; };
 		E55A227A28B05ACE00F5F02B /* GetVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetVault.swift; sourceTree = "<group>"; };
 		E55A227C28B0611800F5F02B /* Accept.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accept.swift; sourceTree = "<group>"; };
 		E55AC12428C7DFB000757C0C /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
@@ -215,6 +212,9 @@
 		E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindClaims.swift; sourceTree = "<group>"; };
 		E5C4CA612961E9E900DA8A5C /* UIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFactory.swift; sourceTree = "<group>"; };
 		E5C4CA63296358E100DA8A5C /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		E5C4CA65296363D000DA8A5C /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
+		E5C4CA6929636E5300DA8A5C /* VaultAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultAPIService.swift; sourceTree = "<group>"; };
+		E5C4CA6B2963720300DA8A5C /* ShareAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAPIService.swift; sourceTree = "<group>"; };
 		E5C5110F29428C9600F7BFC0 /* MetaPassId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaPassId.swift; sourceTree = "<group>"; };
 		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
 		E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceInfoSceneView.xib; sourceTree = "<group>"; };
@@ -314,14 +314,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		E5184212295E4A1600B8F3BD /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				E5184213295E4A2500B8F3BD /* CommonResponse.swift */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
 		E51867A7293973B0000DF023 /* InternalModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,11 +368,12 @@
 		E55A226D28B0355B00F5F02B /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				E5184212295E4A1600B8F3BD /* Response */,
 				E55A227928B05A4900F5F02B /* Requests */,
 				E55A227228B03A4D00F5F02B /* Protocols */,
-				E55A227528B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift */,
 				E5C4CA63296358E100DA8A5C /* APIManager.swift */,
+				E5C4CA65296363D000DA8A5C /* AuthorizationService.swift */,
+				E5C4CA6929636E5300DA8A5C /* VaultAPIService.swift */,
+				E5C4CA6B2963720300DA8A5C /* ShareAPIService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -389,7 +382,6 @@
 			isa = PBXGroup;
 			children = (
 				E55A227028B0399A00F5F02B /* HTTPRequest.swift */,
-				E55A227328B03A7300F5F02B /* HTTPDispatcher.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -488,7 +480,6 @@
 			children = (
 				E51841FE295E0C3B00B8F3BD /* Assembly */,
 				E52686F22901D8380030A542 /* RustLib */,
-				E57E6B6128B3F78200906DBD /* Router */,
 				E5F0C40428A839AE00902310 /* Utils */,
 				E5F0C40128A8369800902310 /* Resources */,
 				E5F0C3F628A82B3B00902310 /* Models */,
@@ -595,6 +586,7 @@
 		E5F0C40428A839AE00902310 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E57E6B6128B3F78200906DBD /* Router */,
 				E5184207295E160200B8F3BD /* Helpers */,
 				E5061CEF28CD1F3D00E2787B /* Extensions */,
 				E55A226D28B0355B00F5F02B /* Networking */,
@@ -800,6 +792,7 @@
 				E57E6B6328B3F79B00906DBD /* Router.swift in Sources */,
 				E57E6B5728B3F00900906DBD /* MainSceneViewModel.swift in Sources */,
 				E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */,
+				E5C4CA6C2963720300DA8A5C /* ShareAPIService.swift in Sources */,
 				E580002A288CA4D000E1135C /* AppDelegate.swift in Sources */,
 				E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */,
 				E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */,
@@ -808,6 +801,7 @@
 				E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */,
 				E55B514528CE92F300373959 /* PopupHintViewScene.swift in Sources */,
 				E5184211295E472E00B8F3BD /* APIClientsAssembly.swift in Sources */,
+				E5C4CA6A29636E5300DA8A5C /* VaultAPIService.swift in Sources */,
 				E5184202295E0E3700B8F3BD /* CommonViewModel.swift in Sources */,
 				E5061CF128CD20C500E2787B /* UIView+Extension.swift in Sources */,
 				E50ACA0829156CC200A8B432 /* PasswordShare.swift in Sources */,
@@ -820,7 +814,6 @@
 				E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */,
 				E588252228D3A62600FB01B0 /* OnboardingSceneView.swift in Sources */,
 				E5CE3D0828C92B9A0022A06F /* SelectDeviceViewModel.swift in Sources */,
-				E55A227428B03A7300F5F02B /* HTTPDispatcher.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
 				E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */,
 				E5C5111029428C9600F7BFC0 /* MetaPassId.swift in Sources */,
@@ -841,7 +834,6 @@
 				E54EFA9B291721F30049DD81 /* EncodeShare.swift in Sources */,
 				E51867A9293973C6000DF023 /* DeviceInfo.swift in Sources */,
 				E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */,
-				E55A227628B03ACE00F5F02B /* URLSessionNetworkDispatcher.swift in Sources */,
 				E5108B4828BD38680067207A /* Distribute.swift in Sources */,
 				E55A227128B0399A00F5F02B /* HTTPRequest.swift in Sources */,
 				E51867A629396FAF000DF023 /* BaseModel.swift in Sources */,
@@ -865,12 +857,12 @@
 				E588252A28D3B5E100FB01B0 /* UICollectionView+Extension.swift in Sources */,
 				E54153D62935457C009AA6F1 /* AeadCipherText.swift in Sources */,
 				E5061CEB28CD197400E2787B /* BottomInfoSheetViewScene.swift in Sources */,
+				E5C4CA66296363D000DA8A5C /* AuthorizationService.swift in Sources */,
 				E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */,
 				E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */,
 				E548679E28B6E37B00A1E5DB /* SecretsDataSource.swift in Sources */,
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
 				E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */,
-				E5184214295E4A2500B8F3BD /* CommonResponse.swift in Sources */,
 				E5F0C40A28A83FFA00902310 /* AlertModel.swift in Sources */,
 				E54205E928D123D300E763DB /* SceneSendDataModel.swift in Sources */,
 				E5F0C40328A836B000902310 /* Constants.swift in Sources */,

@@ -96,8 +96,13 @@
 "error" = "Error";
 "warning" = "Warning";
 "commonError" = "Oops, something went wrong";
+"networkError" = "Server error";
+"registerError" = "Registration error";
+"vaultError" = "Getting Vault Error";
+"userSignatureError" = "Curent User Error";
 "wannaLogin" = "This name already taken. Want to login?";
 "enterName" = "Enter your nickname";
+"distributionDBError" = "Data Base distribution error"
 "sww" = "Something wrong";
 "atLeast3" = "Not enough devices connected. It's recommended to have several devices in your network, to reduce the risk of data loss.";
 

@@ -26,7 +26,6 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     
     // MARK: - Properties
     private var viewModel: OnboardingSceneViewModel
-    
     override var commonViewModel: CommonViewModel {
         return viewModel
     }
