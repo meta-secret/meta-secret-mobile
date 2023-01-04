@@ -81,7 +81,7 @@ class MainSceneView: CommonSceneView, MainSceneProtocol {
 private extension MainSceneView {
     //MARK: - SETUP UI
     func internalSetupUI() {
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.avenirMedium(size: Config.titleSize)]
+        super.setupUI()
         
         selector.setTitle(Constants.MainScreen.secrets, forSegmentAt: 0)
         selector.setTitle(Constants.MainScreen.devices, forSegmentAt: 1)

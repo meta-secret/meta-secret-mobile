@@ -100,7 +100,8 @@
 "vaultError" = "Ошибка получения Vault";
 "userSignatureError" = "Ошибка текущего пользователя";
 "shareSearchError" = "shareSearchError";
-"distributionDBError" = "Ошибка распределения данных в БД"
+"distributionDBError" = "Ошибка распределения данных в БД";
+"splitError" = "Ошибка разбиения пароля";
 "wannaLogin" = "Это имя уже занято. Хотите войти?";
 "enterName" = "Пожалуйста, введите ваше имя (никнейм)";
 "sww" = "Что-то пошло не так";

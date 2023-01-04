@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     //MARK: - OUTLETS
@@ -25,78 +26,79 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
         static let titleSize: CGFloat = 18
     }
     
-    private var viewModel: AddSecretViewModel? = nil
+    private var viewModel: AddSecretViewModel
+    override var commonViewModel: CommonViewModel {
+        return viewModel
+    }
+    
     private var isLocalySaved: Bool = false
     private var isFulySplited: Bool = false
-    private var isSplitPressed: Bool = false
-    private var modeType: ModeType = .edit
-    
+
     private var descriptionText: String? = nil
     
     var model: SceneSendDataModel? = nil
     
     //MARK: - LIFE CICLE
-    init(modeType: ModeType = .edit) {
-        super.init(nibName: "AddSecretSceneView", bundle: nil)
-        self.modeType = modeType
+    init(viewModel: AddSecretViewModel, alertManager: AlertManager) {
+        self.viewModel = viewModel
+        self.viewModel.modeType = model?.modeType ?? .edit
+        super.init(alertManager: alertManager)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func setupUI() {
+        innerSetupUI()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupData()
-
         NotificationCenter.default.addObserver(self, selector: #selector(switchCallback(_:)), name: NSNotification.Name(rawValue: "distributionService"), object: nil)
-
-        self.viewModel = AddSecretViewModel(delegate: self)
-        
-        viewModel?.getVault()
-        setupUI()
     }
     
     //MARK: - ACTIONS
     @IBAction func splitRestoreButtonPressed(_ sender: Any) {
-        showLoader()
         hideKeyboard()
-        isSplitPressed = true
 
-        if modeType == .readOnly {
+        if viewModel.modeType == .readOnly {
             restore()
-        } else if modeType == .edit {
+        } else if viewModel.modeType == .edit {
             split()
         }
     }
     
     @IBAction func selectSaveButtonTapped(_ sender: Any) {
-        if (viewModel?.vaultsCount() ?? 1) <= Constants.Common.neededMembersCount {
-            showLoader()
-            viewModel?.encryptAndDistribute(callBack: { [weak self] isSuccess in
-                self?.hideLoader()
-                
-                if isSuccess {
-                    self?.navigationController?.popViewController(animated: true)
-                } else {
-                    self?.showCommonError(MetaSecretErrorType.distribute.message())
-                    self?.resetScreen()
-                }
-            })
+        alertManager.showLoader()
+        if viewModel.vaultsCount() <= Constants.Common.neededMembersCount {
+            firstly {
+                viewModel.encryptAndDistribute()
+            }.catch { e in
+                self.alertManager.hideLoader()
+                let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+                self.alertManager.showCommonError(text)
+                self.resetScreen()
+            }.finally {
+                self.alertManager.hideLoader()
+                self.navigationController?.popViewController(animated: true)
+            }
         } else {
-            showLoader()
-            viewModel?.showDeviceLists(callBack: { [weak self] isSuccess in
-                self?.hideLoader()
-                if isSuccess {
-                    self?.showCommonAlert(AlertModel(title: Constants.AddSecret.success, message: Constants.AddSecret.successSplited, okButton: Constants.Alert.ok, okHandler: { [weak self] in
-                        self?.navigationController?.popViewController(animated: true)
-                    }))
-                } else {
-                    self?.showCommonError(MetaSecretErrorType.distribute.message())
-                    self?.resetScreen()
-                }
-            })
+            firstly {
+                viewModel.showDeviceLists()
+            }.catch { e in
+                self.alertManager.hideLoader()
+                let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+                self.alertManager.showCommonError(text)
+                self.resetScreen()
+            }.finally {
+                self.alertManager.showCommonAlert(AlertModel(title: Constants.AddSecret.success,
+                                                             message: Constants.AddSecret.successSplited,
+                                                             okButton: Constants.Alert.ok,
+                                                             okHandler: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                }))
+            }
         }
     }
     
@@ -106,9 +108,9 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     }
     
     func showRestoreResult(password: String?) {
-        hideLoader()
+        alertManager.hideLoader()
         guard let password else {
-            showCommonError(MetaSecretErrorType.cantRestore.message())
+            alertManager.showCommonError(MetaSecretErrorType.cantRestore.message())
             return
         }
         
@@ -118,98 +120,69 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
 
 private extension AddSecretSceneView {
     //MARK: - UI SETUP
-    func setupUI() {
+    func innerSetupUI() {
+        super.setupUI()
         setupNavBar()
         
         //TapGR
         let globalTapGR = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         self.view.addGestureRecognizer(globalTapGR)
-        
         switchMode()
         
         // Texts
         addDescriptionTitle.text = Constants.AddSecret.addDescriptionTitle
         addPassTitleLabel.text = Constants.AddSecret.addPassword
-        
-        
         selectSaveInfoLabel.text = Constants.AddSecret.selectDevice
         selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
-        
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         descriptionTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-    }
-    
-    func setupData() {
-        guard let dataSent = dataSent as? SceneSendDataModel else {
-            showCommonError(nil)
-            self.navigationController?.popViewController(animated: true)
-            return
-        }
-        self.modeType = dataSent.modeType ?? .edit
-        self.descriptionText = dataSent.mainStringValue
+        descriptionText = model?.mainStringValue
     }
     
     func setupNavBar() {
-        // Title
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.avenirMedium(size: Config.titleSize)]
-        switch modeType {
-        case .readOnly:
-            self.title = Constants.AddSecret.titleEdit
-        case .edit, .distribute:
-            self.title = Constants.AddSecret.title
-        }
-        
         // Back button
         navigationController?.navigationBar.tintColor = AppColors.mainOrange
         navigationItem.hidesBackButton = true
         let chevronLeft = AppImages.chevroneLeft
         let newBackButton = UIBarButtonItem(image: chevronLeft, style: .plain, target: self, action: #selector(backPressed))
         self.navigationItem.leftBarButtonItem = newBackButton
-        
-        // Right button
-        if modeType == .readOnly {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.AddSecret.edit, style: .plain, target: self, action: #selector(editPressed))
-            navigationItem.rightBarButtonItem?.tintColor = AppColors.mainOrange
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
     }
     
     //MARK: - CALL BACK FROM DISTRIBUTION SERVICE
     @objc func switchCallback(_ notification: NSNotification) {
         if let type = notification.userInfo?["type"] as? CallBackType {
-            showLoader()
             switch type {
             case .Shares, .Devices, .Redistribute:
-                hideLoader()
+                alertManager.hideLoader()
             case .Claims(let secret):
-                showRestoreResult(password: secret)
+                self.showRestoreResult(password: secret)
             case .Failure:
-                showRestoreResult(password: nil)
+                self.showRestoreResult(password: nil)
             }
         }
     }
     
     //MARK: - MAIN FUNCTIONALITY
     func split() {
-        viewModel?.split(secret: passwordTextField.text ?? "", description: descriptionTextField.text ?? "", callBack: { [weak self] isSuccess in
-            if isSuccess {
-                self?.hideLoader()
-                
-                self?.modeType = .distribute
-                self?.switchMode()
-            } else {
-                self?.hideLoader()
-                self?.showCommonError(nil)
-                self?.resetScreen()
-                self?.switchMode()
-            }
-        })
+        alertManager.showLoader()
+        firstly {
+            viewModel.split(secret: passwordTextField.text ?? "", description: descriptionTextField.text ?? "")
+        }.catch { e in
+            self.alertManager.hideLoader()
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.showCommonError(text)
+            self.resetScreen()
+            self.switchMode()
+        }.finally {
+            self.alertManager.hideLoader()
+            self.viewModel.modeType = .distribute
+            self.switchMode()
+        }
     }
     
     private func restore() {
-        showLoader()
-        viewModel?.requestClaims(descriptionTextField.text ?? "")
+        alertManager.showLoader()
+        viewModel.requestClaims(descriptionTextField.text ?? "")
     }
     
     //MARK: - CHANGING SCREEN MODE
@@ -219,7 +192,7 @@ private extension AddSecretSceneView {
     }
     
     func switchMode() {
-        switch self.modeType {
+        switch viewModel.modeType {
         case .readOnly:
             descriptionTextField.isUserInteractionEnabled = false
             descriptionTextField.isEnabled = false
@@ -272,7 +245,7 @@ private extension AddSecretSceneView {
             selectSaveButton.isHidden = false
             selectSaveButton.isUserInteractionEnabled = true
             selectSaveButton.backgroundColor = AppColors.mainOrange
-            if ((viewModel?.vaultsCount() ?? 1) <= Constants.Common.neededMembersCount) {
+            if viewModel.vaultsCount() <= Constants.Common.neededMembersCount {
                 selectSaveInfoLabel.isHidden = true
                 instructionLabel.isHidden = true
                 selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
@@ -286,11 +259,6 @@ private extension AddSecretSceneView {
     @objc func hideKeyboard() {
         passwordTextField.resignFirstResponder()
         descriptionTextField.resignFirstResponder()
-    }
-    
-    @objc func editPressed() {
-        modeType = .edit
-        switchMode()
     }
     
     @objc func backPressed() {

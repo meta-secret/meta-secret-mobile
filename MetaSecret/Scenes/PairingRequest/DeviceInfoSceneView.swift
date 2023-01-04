@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class DeviceInfoSceneView: CommonSceneView, DeviceInfoProtocol {
 
@@ -52,34 +53,45 @@ class DeviceInfoSceneView: CommonSceneView, DeviceInfoProtocol {
     //MARK: - ACTIONS
     @IBAction func acceptPressed(_ sender: Any) {
         guard let data, let signature = data.signature else { return }
-        viewModel.acceptUser(candidate: signature)
+        alertManager.showLoader()
+        firstly {
+            viewModel.acceptUser(candidate: signature)
+        }.catch { e in
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.hideLoader()
+            self.alertManager.showCommonError(text)
+        }.finally {
+            self.alertManager.hideLoader()
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func declinePressed(_ sender: Any) {
         guard let data, let signature = data.signature else { return }
-        viewModel.declineUser(candidate: signature)
-    }
-    
-    //MARK: - DELEGATION
-    func successFullConnection(isAccept: Bool) {
-        callBack?(isAccept)
-        self.navigationController?.popViewController(animated: true)
+        alertManager.showLoader()
+        firstly {
+            viewModel.declineUser(candidate: signature)
+        }.catch { e in
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.hideLoader()
+            self.alertManager.showCommonError(text)
+        }.finally {
+            self.alertManager.hideLoader()
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
 
 private extension DeviceInfoSceneView {
     func internalSetupUI() {
+        super.setupUI()
+        
         guard let data, let signature = data.signature else { return }
         
         acceptButton.setTitle(Constants.PairingDeveice.accept, for: .normal)
         declineButton.setTitle(Constants.PairingDeveice.decline, for: .normal)
         warningMessageLabel.text = Constants.PairingDeveice.warningMessage
         callBack = data.callBack
-        
-        // Title
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.avenirMedium(size: Config.titleSize)]
-        
-        self.title = Constants.PairingDeveice.title
         
         stackView.showShadow()
         
