@@ -152,7 +152,7 @@ private extension AddSecretSceneView {
     @objc func switchCallback(_ notification: NSNotification) {
         if let type = notification.userInfo?["type"] as? CallBackType {
             switch type {
-            case .Shares, .Devices, .Redistribute:
+            case .Shares, .Devices:
                 alertManager.hideLoader()
             case .Claims(let secret):
                 self.showRestoreResult(password: secret)

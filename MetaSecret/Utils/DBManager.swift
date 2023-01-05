@@ -17,7 +17,12 @@ protocol DBManagerProtocol {
 }
 
 final class DBManager: NSObject, DBManagerProtocol {
-    override init() {}
+    #warning("remove alertManager")
+    private let alertManager: Alertable
+    
+    init(alertManager: Alertable) {
+        self.alertManager = alertManager
+    }
     
     #warning("MAKE GENERIC METHODS")
     // MARK: - SECRET
@@ -28,7 +33,7 @@ final class DBManager: NSObject, DBManagerProtocol {
                 realm.add(secret, update: .all)
             }
         } catch {
-            showCommonError(error.localizedDescription.description)
+            alertManager.showCommonError(error.localizedDescription.description)
         }
     }
     
@@ -38,7 +43,7 @@ final class DBManager: NSObject, DBManagerProtocol {
             let specificSecret = realm.object(ofType: Secret.self, forPrimaryKey: description)
             return specificSecret
         } catch {
-            showCommonError(error.localizedDescription.description)
+            alertManager.showCommonError(error.localizedDescription.description)
         }
         return nil
     }
@@ -49,7 +54,7 @@ final class DBManager: NSObject, DBManagerProtocol {
             let objs = realm.objects(Secret.self)
             return Array(objs)
         } catch {
-            showCommonError(error.localizedDescription.description)
+            alertManager.showCommonError(error.localizedDescription.description)
         }
         return []
     }
@@ -62,7 +67,7 @@ final class DBManager: NSObject, DBManagerProtocol {
                 realm.add(pass, update: .all)
             }
         } catch {
-            showCommonError(error.localizedDescription.description)
+            alertManager.showCommonError(error.localizedDescription.description)
         }
     }
     
@@ -72,7 +77,7 @@ final class DBManager: NSObject, DBManagerProtocol {
             let specificPass = realm.object(ofType: MetaPassId.self, forPrimaryKey: description)
             return specificPass
         } catch {
-            showCommonError(error.localizedDescription.description)
+            alertManager.showCommonError(error.localizedDescription.description)
         }
         return nil
     }
