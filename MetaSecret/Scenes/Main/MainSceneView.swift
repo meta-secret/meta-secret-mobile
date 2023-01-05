@@ -146,7 +146,7 @@ private extension MainSceneView {
                 }.finally {
                     if self.viewModel.isToReDistribute {
                         self.viewModel.isToReDistribute = false
-                        self.viewModel.reDistribue()
+                        self.reDistribue()
                     } else {
                         self.reloadData()
                     }
@@ -160,20 +160,32 @@ private extension MainSceneView {
                 }.finally {
                     if self.viewModel.isToReDistribute {
                         self.viewModel.isToReDistribute = false
-                        self.viewModel.reDistribue()
+                        self.reDistribue()
                     } else {
                         self.reloadData()
                     }
                 }
             case .Claims(_):
                 break
-            case .Redistribute:
-                viewModel.isToReDistribute = false
             case .Failure:
                 viewModel.isToReDistribute = false
                 break
             }
             reloadData()
+        }
+    }
+    
+    func reDistribue() {
+        firstly {
+            viewModel.reDistribue()
+        }.catch { e in
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.hideLoader()
+            self.alertManager.showCommonError(text)
+        }.finally {
+            self.alertManager.hideLoader()
+            self.viewModel.isToReDistribute = false
+            self.reloadData()
         }
     }
     

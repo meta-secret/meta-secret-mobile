@@ -105,8 +105,8 @@ final class MainSceneViewModel: CommonViewModel {
         distributionManager.startMonitoringVaults()
     }
 
-    func reDistribue() {
-        distributionManager.reDistribute()
+    func reDistribue() -> Promise<Void> {
+        return distributionManager.reDistribute()
     }
 
     func getNewDataSource() -> Promise<Void> {

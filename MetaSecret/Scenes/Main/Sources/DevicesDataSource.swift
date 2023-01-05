@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class DevicesDataSource: MainScreeSourcable, UD {
+final class DevicesDataSource: MainScreeSourcable {
     func getDataSource<T>(for vault: T) -> MainScreenSource? {
         guard let vault = vault as? VaultDoc else {
             return nil

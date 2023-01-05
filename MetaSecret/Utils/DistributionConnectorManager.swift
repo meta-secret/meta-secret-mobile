@@ -10,15 +10,12 @@ import PromiseKit
 
 protocol DistributionConnectorManagerProtocol {
     func startMonitoringSharesAndClaimRequests()
-    func stopMonitoringSharesAndClaimRequests()
     func startMonitoringVaults()
-    func stopMonitoringVaults()
     func startMonitoringClaimResponses(description: String)
-    func stopMonitoringClaimResponses()
     func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String) -> Promise<Void>
     func getVault() -> Promise<Void>
     func findShares() -> Promise<Void>
-    func reDistribute()
+    func reDistribute() -> Promise<Void>
 }
 
 final class DistributionConnectorManager: NSObject, DistributionConnectorManagerProtocol  {
@@ -26,14 +23,8 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
     private var findSharesAndClaimRequestsTimer: Timer? = nil
     private var findVaultsTimer: Timer? = nil
     private var findClaimResponsesTimer: Timer? = nil
-    
-//    private var isLookinForClaimResponses: Bool = true
-//    private var isLookinForClaimRequests: Bool = true
-//    private var isLookinForShares: Bool = true
-//    private var isLookinForVaults: Bool = true
     private var isNeedToRedistribute: Bool = false
-    
-    let nc = NotificationCenter.default
+    private let nc = NotificationCenter.default
     
     enum Config {
         static let timerInterval: CGFloat = 3.0
@@ -63,70 +54,39 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
     //MARK: - MAIN SCREEN. SHARES
     ///This method for monitoring on MianScreen Secrets tab
     func startMonitoringSharesAndClaimRequests() {
-        isLookinForShares = false
-        isLookinForClaimRequests = false
-        stopMonitoringVaults()
-        stopMonitoringClaimResponses()
-        stopMonitoringClaimResponses()
         if findSharesAndClaimRequestsTimer == nil {
-            print("## SHARES AND CLAIM REQUESTS TIMER STARTED")
             findSharesAndClaimRequestsTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(fireSharesAndClaimRequestsTimer), userInfo: nil, repeats: true)
         }
     }
     
-    func stopMonitoringSharesAndClaimRequests() {
-        print("## SHARES AND CLAIM REQUESTS TIMER STOPED")
-        findSharesAndClaimRequestsTimer?.invalidate()
-        findSharesAndClaimRequestsTimer = nil
-    }
-    
     //MARK: - MAIN SCREEN. VAULTS
     func startMonitoringVaults() {
-        isLookinForVaults = false
-        stopMonitoringSharesAndClaimRequests()
-        stopMonitoringClaimResponses()
         if findVaultsTimer == nil {
-            print("## VAULTS TIMER STARTED")
             findVaultsTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(fireVaultsTimer), userInfo: nil, repeats: true)
         }
     }
     
-    func stopMonitoringVaults() {
-        print("## VAULTS TIMER STOPED")
-        findVaultsTimer?.invalidate()
-        findVaultsTimer = nil
-    }
-    
     //MARK: - ADD SECRET SCREEN. CLAIMS
     func startMonitoringClaimResponses(description: String) {
-        stopMonitoringVaults()
-        stopMonitoringSharesAndClaimRequests()
-        
-        askingForClaims(description: description, callBack: { [weak self] isOk in
-            guard let self else { return }
-            if isOk {
-                self.isLookinForClaimRequests = false
-                if self.findClaimResponsesTimer == nil {
-                    print("## CLAIM RESPONSES TIMER STARTED")
-                    self.findClaimResponsesTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(self.fireClaimResponsesTimer), userInfo: nil, repeats: true)
-                }
-            } else {
-                self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
+        firstly {
+            askingForClaims(description: description)
+        }.catch { e in
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.showCommonError(text)
+            self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
+        }.finally {
+            if self.findClaimResponsesTimer == nil {
+                self.findClaimResponsesTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(self.fireClaimResponsesTimer), userInfo: nil, repeats: true)
             }
-        })
-    }
-    
-    func stopMonitoringClaimResponses() {
-        print("## CLAIM RESPONSES TIMER STOPED")
-        findClaimResponsesTimer?.invalidate()
-        findClaimResponsesTimer = nil
+        }
     }
     
     //MARK: - ADD SECRET SCREEN SPLIT
-    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String, callBack: ((Bool)->())?) {
+    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String) -> Promise<Void> {
         for share in shares {
-            distribution(encodedShare: share, receiver: receiver, description: description, type: .split, callBack: callBack)
+            return distribution(encodedShare: share, receiver: receiver, description: description, type: .split)
         }
+        return Promise().asVoid()
     }
     
     func getVault() -> Promise<Void> {
@@ -147,55 +107,48 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
         }.asVoid()
     }
     
-    func reDistribute() {
+    func reDistribute() -> Promise<Void> {
         guard let signatures = userService.mainVault?.signatures else {
-            nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
-            return
+            return Promise(error: MetaSecretErrorType.distribute)
         }
         let allSecrets = dbManager.getAllSecrets()
-        let myGroup = DispatchGroup()
-        var results = [Bool]()
+        var promises = [Promise<Void>]()
         
         for secret in allSecrets {
-            myGroup.enter()
-            
             let sharesArray = Array(secret.shares)
             guard let shareString = sharesArray.first,
                   let shareObject: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString),
                   let securityBox = userService.securityBox,
                   let shareStringLast = sharesArray.last,
                   let shareObjectLast: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareStringLast) else {
-                nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
-                return
+                return Promise(error: MetaSecretErrorType.distribute)
             }
-            
             
             let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
             guard let decriptedSecret = rustManager.restoreSecret(model: model) else {
-                nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
-                return
+                return Promise(error: MetaSecretErrorType.distribute)
             }
             let components = rustManager.split(secret: decriptedSecret)
-//            dbManager.getAllSecrets()
-            sharesManager.distributeShares(components, signatures, description: secret.secretName, callBack: { isOk in
-                results.append(isOk)
-                myGroup.leave()
-            })
+            promises.append(sharesManager.distributeShares(components, signatures, description: secret.secretName))
         }
-        myGroup.notify(queue: .main) { [weak self] in
-            guard let _ = results.first(where: {$0 == false}) else {
-                self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Redistribute])
-                return
-            }
-            self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
+        
+        var isThereError: Bool = false
+        when(fulfilled: promises).then { results in
+            return Promise().asVoid()
+        }.catch { error in
+            let text = (error as? MetaSecretErrorType)?.message() ?? error.localizedDescription
+            self.alertManager.showCommonError(text)
+            isThereError = true
         }
+        
+        return isThereError ? Promise(error: MetaSecretErrorType.distribute) : Promise().asVoid()
     }
 }
 
 private extension DistributionConnectorManager {
     func checkSharesResult(result: FindSharesResult) -> Promise<Void> {
         guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
-            return Promise().asVoid()
+            return Promise(error: MetaSecretErrorType.shareSearchError)
         }
         
         return firstly {
@@ -212,72 +165,57 @@ private extension DistributionConnectorManager {
     
     func distributeClaimError() {
         alertManager.showCommonError(MetaSecretErrorType.cantClaim.message())
-        isLookinForClaimRequests = false
-    }
-    
-    func askingForClaimError(_ callBack: ((Bool)->())?) {
-        callBack?(false)
-        alertManager.showCommonError(MetaSecretErrorType.cantRestore.message())
     }
     
     @objc func fireSharesAndClaimRequestsTimer() {
-        print("## FIRE!!!")
-        if !isLookinForClaimRequests {
-            findClaims()
-        }
-        if !isLookinForShares {
-            findShares()
-        }
+        findClaims()
+        findShares()
     }
     
     //MARK: - SHARES ACTIONS
     
     //MARK: - CLAIMS ACTIONS
     @objc func fireClaimResponsesTimer() {
-        self.findSharesClaim()
+        findSharesClaim()
     }
     
-    func findSharesClaim() {
-        FindShares().execute { [weak self] result in
-            guard let _ = self?.findClaimResponsesTimer else { return }
-            
-            switch result {
-            case .success(let result):
-                guard result.msgType == Constants.Common.ok, let shares = result.data, !shares.isEmpty else {
-                    print("## !!!!!!!!!!!!! EMPTY !!!!!!!!!!!!!!!!!")
-                    self?.checkForError()
-                    return
-                }
-                
-                guard let share = shares.first,
-                      share.distributionType == .recover,
-                      let keyManager = self?.securityBox?.keyManager,
-                      let description = share.metaPassword?.metaPassword.id.name,
-                      let secret = DBManager.shared.readSecretBy(description: description),
-                      let secretShareString = secret.shares.first,
-                      let docOne: SecretDistributionDoc = self?.objectGeneration(from: secretShareString)
-                else {
-                    self?.checkForError()
-                    return
-                }
-
-                self?.stopMonitoringClaimResponses()
-                let model = RestoreModel(keyManager: keyManager, docOne: docOne, docTwo: share)
-                let decriptedSecret = RustTransporterManager().restoreSecret(model: model)
-                print("## DECRYPTED \(decriptedSecret ?? "FATALITY")")
-                self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
-                
-            case .failure(_):
-                self?.showCommonError(MetaSecretErrorType.cantRestore.message())
-                self?.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
-            }
+    func findSharesClaim() -> Promise<Void> {
+        return firstly {
+            shareService.findShares()
+        }.then { result in
+            self.handlefindSharesResponse(result)
         }
     }
     
-    func askingForClaims(description: String, callBack: ((Bool)->())?) {
+    func handlefindSharesResponse(_ result: FindSharesResult) -> Promise<Void> {
+        guard result.msgType == Constants.Common.ok,
+              let shares = result.data,
+              !shares.isEmpty else {
+            self.checkForError()
+            return Promise(error: MetaSecretErrorType.shareSearchError)
+        }
+        
+        guard let share = shares.first,
+              share.distributionType == .recover,
+              let keyManager = userService.securityBox?.keyManager,
+              let description = share.metaPassword?.metaPassword.id.name,
+              let secret = dbManager.readSecretBy(description: description),
+              let secretShareString = secret.shares.first,
+              let docOne: SecretDistributionDoc = try? jsonManager.objectGeneration(from: secretShareString)
+        else {
+            checkForError()
+            return Promise(error: MetaSecretErrorType.shareSearchError)
+        }
+
+        let model = RestoreModel(keyManager: keyManager, docOne: docOne, docTwo: share)
+        let decriptedSecret = rustManager.restoreSecret(model: model)
+        nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
+        return Promise().asVoid()
+    }
+    
+    func askingForClaims(description: String) -> Promise<Void> {
         guard let userSignature = userService.userSignature, let secret = dbManager.readSecretBy(description: description) else {
-            askingForClaimError(callBack)
-            return
+            return Promise(error: MetaSecretErrorType.cantClaim)
         }
 
         let sharesArray = Array(secret.shares)
@@ -286,8 +224,7 @@ private extension DistributionConnectorManager {
               let shareObject: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString),
               let members = shareObject.metaPassword?.metaPassword.vault.signatures
         else {
-            askingForClaimError(callBack)
-            return
+            return Promise(error: MetaSecretErrorType.cantClaim)
         }
         
         if sharesArray.count != 1,
@@ -298,71 +235,35 @@ private extension DistributionConnectorManager {
             let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
             let decriptedSecret = rustManager.restoreSecret(model: model)
             nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
-            return
+            return Promise().asVoid()
         }
         
-        let myGroup = DispatchGroup()
-        var results = [Bool]()
-        
-        #warning("signature make equitable")
-        let otherDevices = members.filter({ $0.signature.base64Text != userSignature.signature.base64Text})
+        var promises = [Promise<ClaimResult>]()
+        let otherDevices = members.filter({ $0.signature != userSignature.signature})
         let otherMembers = otherDevices.isEmpty ? [userSignature] : otherDevices
         
         for member in otherMembers {
-            myGroup.enter()
-            print("## ASK CLAIM FROM \(userSignature.device.deviceName) TO \(member.device.deviceName)")
-            Claim(provider: member, secret: secret).execute() { [weak self] result in
-                switch result {
-                case .success(let result):
-                    guard result.msgType == Constants.Common.ok else {
-                        print("## CLAIM RESPONSE FAILED and MSG = \(result.msgType ?? "")")
-                        results.append(false)
-                        myGroup.leave()
-                        break
-                    }
-                    results.append(true)
-                    myGroup.leave()
-                case .failure(let error):
-                    callBack?(false)
-                    results.append(false)
-                    myGroup.leave()
-                    print("## CLAIM RESPONSE FAILED")
-                    self?.alertManager.showCommonError(error.localizedDescription)
-                    break
-                }
-            }
+            promises.append(shareService.requestClaim(provider: member, secret: secret))
         }
         
-        myGroup.notify(queue: .main) {
-            guard let _ = results.first(where: {$0 == false}) else {
-                callBack?(true)
-                return
-            }
-            callBack?(false)
+        var isThereError = false
+        when(fulfilled: promises).then { results in
+            return Promise().asVoid()
+        }.catch { error in
+            isThereError = true
         }
+        
+        return isThereError ? Promise(error: MetaSecretErrorType.cantClaim) : Promise().asVoid()
     }
     
     func findClaims() {
-        isLookinForClaimRequests = true
-        
-        FindClaims().execute { [weak self] result in
-            guard let _ = self?.findSharesAndClaimRequestsTimer else { return }
-            
-            switch result {
-            case .success(let result):
-                guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
-                    self?.isLookinForClaimRequests = false
-                    print("## == NO CLAIM REQUESTS FOR \(self?.userService.userSignature?.device.deviceName ?? "") ==")
-                    return
-                }
-                self?.alertManager.showCommonError("I GOT IT! I'LL SEND!")
-                self?.distributeClaimsToRestore(claims: result.data)
-            case .failure(let error):
-                self?.isLookinForClaimRequests = false
-                self?.alertManager.showCommonError(error.localizedDescription)
+        firstly {
+            shareService.findClaims()
+        }.get { result in
+            if result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) {
+                self.distributeClaimsToRestore(claims: result.data)
             }
         }
-        
     }
     
     func distributeClaimsToRestore(claims: [PasswordRecoveryRequest]?) {
@@ -375,8 +276,7 @@ private extension DistributionConnectorManager {
         for claim in claims {
             var newEncryptedshare: AeadCipherText? = nil
             var secretDoc: SecretDistributionDoc? = nil
-            
-            
+
             guard let description = claim.id.name,
                   let secret = dbManager.readSecretBy(description: description),
                   let encryptedShare = secret.shares.first else {
@@ -406,36 +306,32 @@ private extension DistributionConnectorManager {
                 return
             }
             
-            distribution(encodedShare: encryptedShare, receiver: claim.consumer, description: description, type: .recover, callBack: { [weak self] _ in
-                self?.isLookinForClaimRequests = false
-            })
+            distribution(encodedShare: encryptedShare, receiver: claim.consumer, description: description, type: .recover)
         }
     }
     
     //MARK: - VAULTS ACTIONS
     @objc func fireVaultsTimer() {
-        print("## FIRE 2!!!")
-        if !isLookinForVaults {
-            getVault()
-        }
+        getVault()
     }
     
     //MARK: - DISTRIBUTE ACTIONS
-    func distribution(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType, callBack: ((Bool)->())?) {
-        Distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type).execute() { [weak self] result in
-            switch result {
-            case .failure(let err):
-                self?.alertManager.showCommonError(err.localizedDescription)
-                callBack?(false)
-            case .success(let result):
-                if result.msgType != Constants.Common.ok {
-                    self?.alertManager.showCommonError(result.error)
-                }
-                print("## I'VE SENT SUCCESSFULY to \(receiver.device.deviceName)")
-                callBack?(true)
-            }
-        }
+    func distribution(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) -> Promise<Void> {
+        
+        return firstly {
+            shareService.distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type)
+        }.then { result in
+            self.handleDistributionResult(result)
+        }.asVoid()
     }
+    
+    func handleDistributionResult(_ result: DistributeResult) -> Promise<Void> {
+        guard result.msgType == Constants.Common.ok else {
+            return Promise(error: MetaSecretErrorType.distribute)
+        }
+        return Promise().asVoid()
+    }
+    
 }
 
 enum CallBackType {
@@ -443,5 +339,4 @@ enum CallBackType {
     case Devices
     case Claims(String?)
     case Failure
-    case Redistribute
 }

@@ -41,7 +41,8 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     }
     
     // MARK: - Lifecycle
-    init(userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable) {
+    init(viewModel: OnboardingSceneViewModel, userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable) {
+        self.viewModel = viewModel
         self.userService = userService
         self.routerService = routerService
         super.init(alertManager: alertManager)

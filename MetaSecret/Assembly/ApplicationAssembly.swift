@@ -48,7 +48,7 @@ extension ApplicationAssembly {
         container.autoregister(MainSceneViewModel.self, initializer: MainSceneViewModel.init)
         container.autoregister(DeviceInfoSceneViewModel.self, initializer: DeviceInfoSceneViewModel.init)
         container.autoregister(AddSecretViewModel.self, initializer: AddSecretViewModel.init)
-        container.autoregister(SelectDeviceViewModel.self, initializer: AddSecretViewModel.init)
+        container.autoregister(SelectDeviceViewModel.self, initializer: SelectDeviceViewModel.init)
         container.autoregister(BottomInfoViewModel.self, initializer: BottomInfoViewModel.init)
     }
 }

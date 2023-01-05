@@ -62,7 +62,6 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
         case .partially:
             return partiallyDistribute()
         }
-        return Promise().asVoid()
     }
     
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void> {
@@ -92,12 +91,10 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
 private extension ShareDistributionManager {
     //MARK: - DISTRIBUTIONS FLOWS
     func simpleDistribution() -> Promise<Void>{
-        let myGroup = DispatchGroup()
-        var results = [Bool]()
-        
+        var promises = [Promise<Void>]()
+        var isThereError = false
+
         for i in 0..<shares.count {
-            myGroup.enter()
-            
             let signature: UserSignature
             let shareToEncrypt = shares[i]
             if signatures.count > i {
@@ -107,20 +104,19 @@ private extension ShareDistributionManager {
             }
             
             if let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
-                distributionConnectorManager.distributeSharesToMember ([encryptedShare], receiver: signature, description: description) { isOk in
-                    results.append(isOk)
-                    myGroup.leave()
-                }
+                promises.append(distributionConnectorManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: description))
             }
         }
         
-        myGroup.notify(queue: .main) {
-            guard let _ = results.first(where: {$0 == false}) else {
-                callBack?(true)
-                return
-            }
-            callBack?(false)
+        when(fulfilled: promises).then { results in
+            return Promise().asVoid()
+        }.catch { error in
+            let text = (error as? MetaSecretErrorType)?.message() ?? error.localizedDescription
+            self.alertManager.showCommonError(text)
+            isThereError = true
         }
+        
+        return isThereError ? Promise(error: MetaSecretErrorType.distribute) : Promise().asVoid()
     }
     
     func partiallyDistribute() -> Promise<Void> {
