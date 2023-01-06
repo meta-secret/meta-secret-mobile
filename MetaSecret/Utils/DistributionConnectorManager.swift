@@ -35,12 +35,12 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
     private let jsonManager: JsonSerealizable
     private let dbManager: DBManagerProtocol
     private let rustManager: RustProtocol
-    private let sharesManager: ShareDistributionManager
+    private let sharesManager: ShareDistributionProtocol
     private let vaultService: VaultAPIProtocol
     private let shareService: ShareAPIProtocol
     
     //MARK: - INIT
-    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManagerProtocol, rustManager: RustProtocol, sharesManager: ShareDistributionManager, vaultService: VaultAPIProtocol, shareService: ShareAPIProtocol) {
+    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManagerProtocol, rustManager: RustProtocol, sharesManager: ShareDistributionProtocol, vaultService: VaultAPIProtocol, shareService: ShareAPIProtocol) {
         self.userService = userService
         self.alertManager = alertManager
         self.jsonManager = jsonManager

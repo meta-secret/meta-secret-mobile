@@ -55,7 +55,9 @@ class CommonSceneView: UIViewController {
     
     func updateUI() {}
     
-    @objc func refreshData() {}
+    @objc func refreshData() {
+        loadData()
+    }
     @objc func keyboardWillShow() {}
     @objc func keyboardWillHide() {}
     
