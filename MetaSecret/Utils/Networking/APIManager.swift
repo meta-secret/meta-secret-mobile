@@ -35,9 +35,15 @@ class APIManager: NSObject, APIManagerProtocol {
             var request = URLRequest(url: link)
             request.httpMethod = endpoint.method.rawValue
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            let data = Data(endpoint.params.utf8)
 
-            let data = try? JSONSerialization.data(withJSONObject: endpoint.params, options: [])
-            request.httpBody = data
+            guard let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                seal.reject(MetaSecretErrorType.networkError)
+                return
+            }
+            
+            let jsonData = try? JSONSerialization.data(withJSONObject: dict)
+            request.httpBody = jsonData
 
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {

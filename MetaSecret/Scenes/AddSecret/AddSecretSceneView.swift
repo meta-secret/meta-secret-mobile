@@ -26,7 +26,7 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
         static let titleSize: CGFloat = 18
     }
     
-    private var viewModel: AddSecretViewModel
+    var viewModel: AddSecretViewModel
     override var commonViewModel: CommonViewModel {
         return viewModel
     }

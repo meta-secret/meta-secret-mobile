@@ -25,7 +25,7 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var passwordLessImage: UIImageView!
     
     // MARK: - Properties
-    private var viewModel: OnboardingSceneViewModel
+    var viewModel: OnboardingSceneViewModel
     override var commonViewModel: CommonViewModel {
         return viewModel
     }
@@ -56,7 +56,6 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
         
         pageControl.numberOfPages = viewModel.pagesCount
-//        collectionView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,15 +65,15 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        mobileMainImage.center = logoImage.center
+        mobileImage.center = mobileMainImage.center
+        computerImage.center = computerImage.center
     }
     
     override func setupUI() {
         super.setupUI()
         setupCollectionView()
-        
-        mobileMainImage.center = logoImage.center
-        mobileImage.center = mobileMainImage.center
-        computerImage.center = computerImage.center
     }
     
     // MARK: - Actions

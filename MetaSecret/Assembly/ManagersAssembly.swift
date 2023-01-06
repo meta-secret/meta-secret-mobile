@@ -10,6 +10,7 @@ import SwinjectAutoregistration
 
 class ManagersAssembly: Assembly {
     func assemble(container: Container) {
+        container.autoregister(UIFactoryProtocol.self, initializer: UIFactory.init)
         container.autoregister(ApplicationRouterProtocol.self, initializer: ApplicationRouter.init).inObjectScope(.container)
         container.autoregister(Alertable.self, initializer: AlertManager.init).inObjectScope(.container)
         container.autoregister(RootFindable.self, initializer: RootControllerManager.init).inObjectScope(.container)

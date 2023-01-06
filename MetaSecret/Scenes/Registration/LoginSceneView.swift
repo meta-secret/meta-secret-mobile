@@ -16,10 +16,8 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     }
     
     @IBOutlet weak var topView: UIView!
-
     @IBOutlet weak var loginTitle: UILabel!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var letsGoButton: UIButton!
     
@@ -88,8 +86,7 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     }
     
     func routeNext() {
-        let viewController = factory.mainScreen()
-        root(viewController)
+        routerService.route()
     }
     
     func showPendingPopup() {

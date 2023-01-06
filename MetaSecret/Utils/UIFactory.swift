@@ -16,7 +16,7 @@ protocol UIFactoryProtocol {
     func split(model: SceneSendDataModel) -> AddSecretSceneView?
 }
 
-class UIFactory : UIFactoryProtocol {
+class UIFactory : NSObject, UIFactoryProtocol {
     private let router: ApplicationRouterProtocol
     
     init(router: ApplicationRouterProtocol) {

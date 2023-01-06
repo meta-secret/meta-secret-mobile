@@ -116,7 +116,7 @@ private extension LoginSceneViewModel {
                 self.isLoadingData = false
             }.asVoid()
         } else {
-            return Promise(error: MetaSecretErrorType.networkError)
+            return Promise().asVoid()
         }
     }
     

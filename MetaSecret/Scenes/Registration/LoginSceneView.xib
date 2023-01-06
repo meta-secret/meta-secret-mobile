@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,7 +11,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginSceneView" customModule="MetaSecret" customModuleProvider="target">
             <connections>
-                <outlet property="activityIndicator" destination="RRU-fT-Ok8" id="cPN-tu-BGz"/>
                 <outlet property="containerView" destination="ziE-L1-oCC" id="Tq1-tK-MA6"/>
                 <outlet property="letsGoButton" destination="mvH-JN-2ca" id="kbo-Pl-5F0"/>
                 <outlet property="loginTitle" destination="AUf-Xv-6dj" id="zhT-Ht-Vi2"/>
@@ -26,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ziE-L1-oCC">
-                    <rect key="frame" x="12.666666666666657" y="152" width="350" height="518"/>
+                    <rect key="frame" x="12.666666666666657" y="153.66666666666663" width="350" height="518"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SM7-bP-VMx">
                             <rect key="frame" x="0.0" y="0.0" width="350" height="200"/>
@@ -69,7 +68,7 @@
                             </connections>
                         </button>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uSm-oD-niL">
-                            <rect key="frame" x="16" y="216" width="318" height="44"/>
+                            <rect key="frame" x="16" y="216.00000000000003" width="318" height="43.999999999999972"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="9mX-0X-zOK"/>
                             </constraints>
@@ -77,10 +76,6 @@
                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="username"/>
                         </textField>
-                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="RRU-fT-Ok8">
-                            <rect key="frame" x="156.33333333333334" y="340" width="37" height="22"/>
-                            <color key="color" name="MainBlack"/>
-                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -88,11 +83,8 @@
                         <constraint firstAttribute="bottom" secondItem="mvH-JN-2ca" secondAttribute="bottom" constant="32" id="A5N-Rq-JDa"/>
                         <constraint firstAttribute="trailing" secondItem="SM7-bP-VMx" secondAttribute="trailing" id="Ffj-Zw-sNA"/>
                         <constraint firstItem="uSm-oD-niL" firstAttribute="top" secondItem="SM7-bP-VMx" secondAttribute="bottom" constant="16" id="Hud-HV-E6o"/>
-                        <constraint firstItem="mvH-JN-2ca" firstAttribute="top" secondItem="RRU-fT-Ok8" secondAttribute="bottom" constant="80" id="NrF-Bh-UYV"/>
                         <constraint firstItem="mvH-JN-2ca" firstAttribute="leading" secondItem="uSm-oD-niL" secondAttribute="leading" id="R8k-8b-EK4"/>
-                        <constraint firstItem="RRU-fT-Ok8" firstAttribute="top" secondItem="uSm-oD-niL" secondAttribute="bottom" constant="80" id="RLX-OG-R9H"/>
                         <constraint firstItem="mvH-JN-2ca" firstAttribute="trailing" secondItem="uSm-oD-niL" secondAttribute="trailing" id="TPp-6K-4f9"/>
-                        <constraint firstItem="RRU-fT-Ok8" firstAttribute="centerX" secondItem="ziE-L1-oCC" secondAttribute="centerX" id="UZb-k2-rb6"/>
                         <constraint firstAttribute="trailing" secondItem="uSm-oD-niL" secondAttribute="trailing" constant="16" id="ViH-bI-cI8"/>
                         <constraint firstAttribute="height" constant="518" id="Y13-3w-PCw"/>
                         <constraint firstItem="SM7-bP-VMx" firstAttribute="leading" secondItem="ziE-L1-oCC" secondAttribute="leading" id="elh-aC-Hhb"/>
