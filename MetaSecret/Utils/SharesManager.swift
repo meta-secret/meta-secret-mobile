@@ -10,12 +10,12 @@ import RealmSwift
 import PromiseKit
 
 #warning("UNIVERSAL MECHANISM NEEDED")
-protocol ShareDistributionProtocol {
+protocol SharesProtocol {
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void>
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void>
 }
 
-final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
+final class SharesManager: NSObject, SharesProtocol {
     fileprivate enum SplittedType: Int {
         case fullySplitted = 3
         case allInOne = 1
@@ -31,20 +31,20 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
     private var userService: UsersServiceProtocol
     private var alertManager: Alertable
     private var rustManager: RustProtocol
-    private var distributionConnectorManager: DistributionConnectorManagerProtocol
+    private var distributionManager: DistributionProtocol
     
     init(jsonSerializationManager: JsonSerealizable,
          dbManager: DBManagerProtocol,
          userService: UsersServiceProtocol,
          alertManager: Alertable,
          rustManager: RustProtocol,
-         distributionConnectorManager: DistributionConnectorManagerProtocol) {
+         distributionManager: DistributionProtocol) {
         self.jsonSerializationManager = jsonSerializationManager
         self.dbManager = dbManager
         self.userService = userService
         self.alertManager = alertManager
         self.rustManager = rustManager
-        self.distributionConnectorManager = distributionConnectorManager
+        self.distributionManager = distributionManager
     }
     
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void> {
@@ -88,7 +88,7 @@ final class ShareDistributionManager: NSObject, ShareDistributionProtocol {
     }
 }
 
-private extension ShareDistributionManager {
+private extension SharesManager {
     //MARK: - DISTRIBUTIONS FLOWS
     func simpleDistribution() -> Promise<Void>{
         var promises = [Promise<Void>]()
@@ -104,7 +104,7 @@ private extension ShareDistributionManager {
             }
             
             if let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
-                promises.append(distributionConnectorManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: description))
+                promises.append(distributionManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: description))
             }
         }
         

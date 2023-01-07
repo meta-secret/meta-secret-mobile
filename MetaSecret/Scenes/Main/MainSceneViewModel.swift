@@ -21,7 +21,7 @@ final class MainSceneViewModel: CommonViewModel {
     private var pendings: [VaultDoc]? = nil
     private var dbManager: DBManagerProtocol
     private var userService: UsersServiceProtocol
-    private var distributionManager: DistributionConnectorManagerProtocol
+    private var distributionManager: DistributionProtocol
     static let minDevicesCount = 3
     
     var emptyStatusText: String {
@@ -49,7 +49,7 @@ final class MainSceneViewModel: CommonViewModel {
     }
     
     //MARK: - INIT
-    init(dbManager: DBManagerProtocol, distributionManager: DistributionConnectorManagerProtocol, userService: UsersServiceProtocol) {
+    init(dbManager: DBManagerProtocol, distributionManager: DistributionProtocol, userService: UsersServiceProtocol) {
         self.dbManager = dbManager
         self.userService = userService
         self.distributionManager = distributionManager

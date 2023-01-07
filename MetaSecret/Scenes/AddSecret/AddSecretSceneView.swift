@@ -33,7 +33,6 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     
     private var isLocalySaved: Bool = false
     private var isFulySplited: Bool = false
-
     private var descriptionText: String? = nil
     
     var model: SceneSendDataModel? = nil

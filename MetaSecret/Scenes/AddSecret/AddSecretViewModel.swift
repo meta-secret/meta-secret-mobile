@@ -25,11 +25,11 @@ final class AddSecretViewModel: CommonViewModel {
     private lazy var activeSignatures: [UserSignature] = [UserSignature]()
     
     private var userService: UsersServiceProtocol
-    private var shareDistributionManager: ShareDistributionProtocol
+    private var sharesManager: SharesProtocol
     private var dbManager: DBManagerProtocol
     private var rustManager: RustProtocol
     private var alertManager: Alertable
-    private var distriButionManager: DistributionConnectorManagerProtocol
+    private var distributionManager: DistributionProtocol
     
     var modeType: ModeType = .edit
     var delegate: AddSecretProtocol? = nil
@@ -40,17 +40,17 @@ final class AddSecretViewModel: CommonViewModel {
     
     //MARK: - INIT
     init(userService: UsersServiceProtocol,
-         shareDistributionManager: ShareDistributionProtocol,
+         sharesManager: SharesProtocol,
          dbManager: DBManagerProtocol,
          rustManager: RustProtocol,
          alertManager: Alertable,
-         distriButionManager: DistributionConnectorManagerProtocol) {
+         distributionManager: DistributionProtocol) {
         self.userService = userService
         self.dbManager = dbManager
-        self.shareDistributionManager = shareDistributionManager
+        self.sharesManager = sharesManager
         self.alertManager = alertManager
         self.rustManager = rustManager
-        self.distriButionManager = distriButionManager
+        self.distributionManager = distributionManager
     }
     
     override func loadData() -> Promise<Void> {
@@ -89,7 +89,7 @@ final class AddSecretViewModel: CommonViewModel {
     
 
     func encryptAndDistribute() -> Promise<Void> {
-        return shareDistributionManager.distributeShares(components, activeSignatures, description: description)
+        return sharesManager.distributeShares(components, activeSignatures, description: description)
     }
     
     func showDeviceLists() -> Promise<Void> {
@@ -102,7 +102,7 @@ final class AddSecretViewModel: CommonViewModel {
     }
     
     func requestClaims(_ description: String) {
-        distriButionManager.startMonitoringClaimResponses(description: description)
+        distributionManager.startMonitoringClaimResponses(description: description)
     }
 }
 
