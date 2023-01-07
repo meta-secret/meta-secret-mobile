@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 
-protocol DistributionConnectorManagerProtocol {
+protocol DistributionProtocol {
     func startMonitoringSharesAndClaimRequests()
     func startMonitoringVaults()
     func startMonitoringClaimResponses(description: String)
@@ -18,7 +18,7 @@ protocol DistributionConnectorManagerProtocol {
     func reDistribute() -> Promise<Void>
 }
 
-final class DistributionConnectorManager: NSObject, DistributionConnectorManagerProtocol  {
+class DistributionManager: NSObject, DistributionProtocol  {
     //MARK: - PROPERTIES
     private var findSharesAndClaimRequestsTimer: Timer? = nil
     private var findVaultsTimer: Timer? = nil
@@ -35,12 +35,12 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
     private let jsonManager: JsonSerealizable
     private let dbManager: DBManagerProtocol
     private let rustManager: RustProtocol
-    private let sharesManager: ShareDistributionProtocol
+    private let sharesManager: SharesProtocol
     private let vaultService: VaultAPIProtocol
     private let shareService: ShareAPIProtocol
     
     //MARK: - INIT
-    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManagerProtocol, rustManager: RustProtocol, sharesManager: ShareDistributionProtocol, vaultService: VaultAPIProtocol, shareService: ShareAPIProtocol) {
+    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManagerProtocol, rustManager: RustProtocol, sharesManager: SharesProtocol, vaultService: VaultAPIProtocol, shareService: ShareAPIProtocol) {
         self.userService = userService
         self.alertManager = alertManager
         self.jsonManager = jsonManager
@@ -145,7 +145,7 @@ final class DistributionConnectorManager: NSObject, DistributionConnectorManager
     }
 }
 
-private extension DistributionConnectorManager {
+private extension DistributionManager {
     func checkSharesResult(result: FindSharesResult) -> Promise<Void> {
         guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
             return Promise(error: MetaSecretErrorType.shareSearchError)
