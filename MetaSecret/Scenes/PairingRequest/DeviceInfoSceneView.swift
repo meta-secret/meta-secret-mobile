@@ -52,6 +52,7 @@ class DeviceInfoSceneView: CommonSceneView, DeviceInfoProtocol {
 
     //MARK: - ACTIONS
     @IBAction func acceptPressed(_ sender: Any) {
+        var isThereError = false
         guard let data, let signature = data.signature else { return }
         alertManager.showLoader()
         firstly {
@@ -60,13 +61,17 @@ class DeviceInfoSceneView: CommonSceneView, DeviceInfoProtocol {
             let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
             self.alertManager.hideLoader()
             self.alertManager.showCommonError(text)
+            isThereError = true
         }.finally {
-            self.alertManager.hideLoader()
-            self.navigationController?.popViewController(animated: true)
+            if !isThereError {
+                self.alertManager.hideLoader()
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     
     @IBAction func declinePressed(_ sender: Any) {
+        var isThereError = false
         guard let data, let signature = data.signature else { return }
         alertManager.showLoader()
         firstly {
@@ -75,9 +80,12 @@ class DeviceInfoSceneView: CommonSceneView, DeviceInfoProtocol {
             let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
             self.alertManager.hideLoader()
             self.alertManager.showCommonError(text)
+            isThereError = true
         }.finally {
-            self.alertManager.hideLoader()
-            self.navigationController?.popViewController(animated: true)
+            if !isThereError {
+                self.alertManager.hideLoader()
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 }
