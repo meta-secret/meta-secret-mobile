@@ -44,7 +44,7 @@ extension UIFactory {
     
     func split(model: SceneSendDataModel) -> AddSecretSceneView? {
         let viewController = router.resolve(AddSecretSceneView.self)
-        viewController?.model = model
+        viewController?.viewModel.model = model
         return viewController
     }
 }

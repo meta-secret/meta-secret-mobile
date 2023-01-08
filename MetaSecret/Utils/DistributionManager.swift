@@ -12,6 +12,7 @@ protocol DistributionProtocol {
     func startMonitoringSharesAndClaimRequests()
     func startMonitoringVaults()
     func startMonitoringClaimResponses(description: String)
+    func stopMonitoringClaimResponses()
     func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String) -> Promise<Void>
     func getVault() -> Promise<Void>
     func findShares() -> Promise<Void>
@@ -23,6 +24,8 @@ class DistributionManager: NSObject, DistributionProtocol  {
     private var findSharesAndClaimRequestsTimer: Timer? = nil
     private var findVaultsTimer: Timer? = nil
     private var findClaimResponsesTimer: Timer? = nil
+    private var isToStopClaimSearching: Bool = false
+    
     private var isNeedToRedistribute: Bool = false
     private let nc = NotificationCenter.default
     
@@ -75,10 +78,16 @@ class DistributionManager: NSObject, DistributionProtocol  {
             self.alertManager.showCommonError(text)
             self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
         }.finally {
-            if self.findClaimResponsesTimer == nil {
+            if self.findClaimResponsesTimer == nil, !self.isToStopClaimSearching {
                 self.findClaimResponsesTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(self.fireClaimResponsesTimer), userInfo: nil, repeats: true)
             }
         }
+    }
+    
+    func stopMonitoringClaimResponses() {
+        isToStopClaimSearching = true
+        findClaimResponsesTimer?.invalidate()
+        findClaimResponsesTimer = nil
     }
     
     //MARK: - ADD SECRET SCREEN SPLIT

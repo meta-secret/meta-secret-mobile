@@ -30,8 +30,16 @@ final class AddSecretViewModel: CommonViewModel {
     private var rustManager: RustProtocol
     private var distributionManager: DistributionProtocol
     
-    var modeType: ModeType = .edit
+    var model: SceneSendDataModel? = nil
     var delegate: AddSecretProtocol? = nil
+    
+    var modeType: ModeType {
+        return model?.modeType ?? .edit
+    }
+    
+    var descriptionText: String {
+        return model?.mainStringValue ?? ""
+    }
     
     override var title: String {
         return modeType == .readOnly ? Constants.AddSecret.titleEdit : Constants.AddSecret.title
@@ -84,8 +92,10 @@ final class AddSecretViewModel: CommonViewModel {
         }
     }
     
+    func stopRestoring() {
+        distributionManager.stopMonitoringClaimResponses()
+    }
     
-
     func encryptAndDistribute() -> Promise<Void> {
         return sharesManager.distributeShares(components, activeSignatures, description: description)
     }
