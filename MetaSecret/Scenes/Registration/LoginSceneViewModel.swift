@@ -101,6 +101,7 @@ private extension LoginSceneViewModel {
                 vaultService.getVault()
             }.get { result in
                 if result.data?.vaultInfo == .member {
+                    self.userService.deviceStatus = .member
                     self.tempTimer?.invalidate()
                     self.tempTimer = nil
                     self.delegate?.closePopUp()

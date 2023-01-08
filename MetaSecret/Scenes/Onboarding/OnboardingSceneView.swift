@@ -159,7 +159,9 @@ private extension OnboardingSceneView {
         userService.shouldShowOnboarding = false
         if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
             ATTrackingManager.requestTrackingAuthorization() { [weak self] _ in
-                self?.routerService.route()
+                DispatchQueue.main.async {
+                    self?.routerService.route()
+                }
             }
         } else {
             routerService.route()

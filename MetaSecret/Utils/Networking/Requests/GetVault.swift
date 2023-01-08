@@ -10,7 +10,6 @@ import Foundation
 final class GetVault: HTTPRequest {
     var params: String
     var path: String { return "getVault" }
-    var method: HTTPMethod { return .get }
     
     init(_ params: String) {
         self.params = params

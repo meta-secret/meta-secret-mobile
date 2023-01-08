@@ -79,7 +79,8 @@ class CommonSceneView: UIViewController {
     
     func didFailLoadingData(message: Error? = MetaSecretErrorType.commonError) {
         alertManager.hideLoader()
-        alertManager.showCommonError((message as? MetaSecretErrorType)?.message())
+        let text = (message as? MetaSecretErrorType)?.message() ?? message?.localizedDescription
+        alertManager.showCommonError(text)
     }
     
     func setupNotifications() {

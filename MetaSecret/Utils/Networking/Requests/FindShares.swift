@@ -10,7 +10,6 @@ import Foundation
 final class FindShares: HTTPRequest {
     var params: String
     var path: String { return "findShares" }
-    var method: HTTPMethod { return .get }
     
     init(_ params: String) {
         self.params = params

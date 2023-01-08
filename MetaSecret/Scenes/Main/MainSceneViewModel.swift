@@ -59,7 +59,7 @@ final class MainSceneViewModel: CommonViewModel {
         isLoadingData = true
         return firstly {
             when(fulfilled: [self.getAllLocalSecrets(), checkShares(), getVault()])
-        }.ensure {
+        }.get { result in
             self.isLoadingData = false
             self.startMonitoringVaultsToConnect()
             self.startMonitoringSharesAndClaimRequests()
@@ -69,14 +69,25 @@ final class MainSceneViewModel: CommonViewModel {
     //MARK: - PUBLIC METHODS (Changing source)
     func getAllLocalSecrets() -> Promise<Void> {
         source = SecretsDataSource().getDataSource(for: dbManager.getAllSecrets())
-        guard source != nil else { return Promise(error: MetaSecretErrorType.vaultError) }
         return Promise().asVoid()
     }
     
     func getLocalVaultMembers() -> Promise<Void> {
+        if let mainVault = userService.mainVault {
+            source = DevicesDataSource().getDataSource(for: mainVault)
+            return Promise().asVoid()
+        } else {
+            return firstly {
+                getVault()
+            }.get {
+                self.checkVaultResult()
+            }.asVoid()
+        }
+    }
+    
+    private func checkVaultResult() -> Promise<Void> {
         guard let mainVault = userService.mainVault else { return Promise(error: MetaSecretErrorType.vaultError) }
         source = DevicesDataSource().getDataSource(for: mainVault)
-        guard source != nil else { return Promise(error: MetaSecretErrorType.vaultError) }
         return Promise().asVoid()
     }
     
@@ -119,7 +130,7 @@ final class MainSceneViewModel: CommonViewModel {
             return Promise().asVoid()
         }
     }
-    
+             
     private func filteredSourceArrayCount() -> Int {
         let flatArr = source?.items.flatMap { $0 }
         let filteredArr = flatArr?.filter({$0.subtitle?.lowercased() == VaultInfoStatus.member.rawValue.lowercased()})
@@ -128,3 +139,4 @@ final class MainSceneViewModel: CommonViewModel {
         return count
     }
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

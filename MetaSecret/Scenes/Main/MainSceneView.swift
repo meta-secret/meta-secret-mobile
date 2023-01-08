@@ -138,31 +138,35 @@ private extension MainSceneView {
         if let type = notification.userInfo?["type"] as? CallBackType {
             switch type {
             case .Shares:
-                firstly {
-                    viewModel.getAllLocalSecrets()
-                }.catch { e in
-                    let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
-                    self.alertManager.showCommonError(text)
-                }.finally {
-                    if self.viewModel.isToReDistribute {
-                        self.viewModel.isToReDistribute = false
-                        self.reDistribue()
-                    } else {
-                        self.reloadData()
+                if viewModel.selectedSegment == .Secrets {
+                    firstly {
+                        viewModel.getAllLocalSecrets()
+                    }.catch { e in
+                        let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+                        self.alertManager.showCommonError(text)
+                    }.finally {
+                        if self.viewModel.isToReDistribute {
+                            self.viewModel.isToReDistribute = false
+                            self.reDistribue()
+                        } else {
+                            self.reloadData()
+                        }
                     }
                 }
             case .Devices:
-                firstly {
-                    viewModel.getLocalVaultMembers()
-                }.catch { e in
-                    let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
-                    self.alertManager.showCommonError(text)
-                }.finally {
-                    if self.viewModel.isToReDistribute {
-                        self.viewModel.isToReDistribute = false
-                        self.reDistribue()
-                    } else {
-                        self.reloadData()
+                if viewModel.selectedSegment == .Devices {
+                    firstly {
+                        viewModel.getLocalVaultMembers()
+                    }.catch { e in
+                        let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+                        self.alertManager.showCommonError(text)
+                    }.finally {
+                        if self.viewModel.isToReDistribute {
+                            self.viewModel.isToReDistribute = false
+                            self.reDistribue()
+                        } else {
+                            self.reloadData()
+                        }
                     }
                 }
             case .Claims(_):
@@ -171,7 +175,6 @@ private extension MainSceneView {
                 viewModel.isToReDistribute = false
                 break
             }
-            reloadData()
         }
     }
     
@@ -196,6 +199,7 @@ private extension MainSceneView {
         addDeviceView.isHidden = viewModel.addDeviceViewHidden
         yourDevicesTitleLabel.text = viewModel.yourDeviceTitle
         setEmptyStatus()
+        setAttributedTitle(viewModel.title)
         
         firstly {
             viewModel.getNewDataSource()
@@ -234,7 +238,9 @@ private extension MainSceneView {
 extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Config.cellID, for: indexPath) as! ClusterDeviceCell
-        guard let content = viewModel.source?.items[indexPath.section][indexPath.row] else {
+        guard indexPath.section < viewModel.source?.items.count ?? 0,
+              indexPath.row < viewModel.source?.items[indexPath.section].count ?? 0,
+              let content = viewModel.source?.items[indexPath.section][indexPath.row] else {
             return UITableViewCell()
         }
         
