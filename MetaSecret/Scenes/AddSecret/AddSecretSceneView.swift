@@ -33,14 +33,10 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     
     private var isLocalySaved: Bool = false
     private var isFulySplited: Bool = false
-    private var descriptionText: String? = nil
-    
-    var model: SceneSendDataModel? = nil
     
     //MARK: - LIFE CICLE
     init(viewModel: AddSecretViewModel, alertManager: Alertable) {
         self.viewModel = viewModel
-        self.viewModel.modeType = model?.modeType ?? .edit
         super.init(alertManager: alertManager)
     }
     
@@ -102,6 +98,7 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
         }
         
         passwordTextField.text = password
+        viewModel.stopRestoring()
     }
 }
 
@@ -123,7 +120,6 @@ private extension AddSecretSceneView {
         selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         descriptionTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        descriptionText = model?.mainStringValue
     }
     
     func setupNavBar() {
@@ -162,7 +158,7 @@ private extension AddSecretSceneView {
             self.switchMode()
         }.finally {
             self.alertManager.hideLoader()
-            self.viewModel.modeType = .distribute
+//            self.viewModel.modeType = .distribute
             self.switchMode()
         }
     }
@@ -183,7 +179,7 @@ private extension AddSecretSceneView {
         case .readOnly:
             descriptionTextField.isUserInteractionEnabled = false
             descriptionTextField.isEnabled = false
-            descriptionTextField.text = self.descriptionText
+            descriptionTextField.text = viewModel.descriptionText
             
             passwordTextField.isUserInteractionEnabled = false
             passwordTextField.isEnabled = false
@@ -202,7 +198,7 @@ private extension AddSecretSceneView {
             descriptionTextField.isUserInteractionEnabled = true
             descriptionTextField.isEnabled = true
             descriptionTextField.placeholder = Constants.AddSecret.description
-            descriptionTextField.text = self.descriptionText
+            descriptionTextField.text = viewModel.descriptionText
             
             passwordTextField.isUserInteractionEnabled = true
             passwordTextField.isEnabled = true
@@ -236,9 +232,9 @@ private extension AddSecretSceneView {
             selectSaveButton.isUserInteractionEnabled = false
             selectSaveButton.backgroundColor = .systemGray5
 //            if viewModel.vaultsCount() <= Constants.Common.neededMembersCount {
-                selectSaveInfoLabel.isHidden = true
-                instructionLabel.isHidden = true
-                selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
+            selectSaveInfoLabel.isHidden = true
+            instructionLabel.isHidden = true
+            selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
 //            } else {
 //                selectSaveInfoLabel.isHidden = false
 //                selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
