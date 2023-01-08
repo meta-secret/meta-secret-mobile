@@ -144,6 +144,7 @@ private extension MainSceneView {
                     }.catch { e in
                         let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
                         self.alertManager.showCommonError(text)
+                        self.viewModel.isToReDistribute = false
                     }.finally {
                         if self.viewModel.isToReDistribute {
                             self.viewModel.isToReDistribute = false
@@ -160,6 +161,7 @@ private extension MainSceneView {
                     }.catch { e in
                         let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
                         self.alertManager.showCommonError(text)
+                        self.viewModel.isToReDistribute = false
                     }.finally {
                         if self.viewModel.isToReDistribute {
                             self.viewModel.isToReDistribute = false

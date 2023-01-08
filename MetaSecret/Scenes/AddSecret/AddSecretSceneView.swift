@@ -38,7 +38,7 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     var model: SceneSendDataModel? = nil
     
     //MARK: - LIFE CICLE
-    init(viewModel: AddSecretViewModel, alertManager: AlertManager) {
+    init(viewModel: AddSecretViewModel, alertManager: Alertable) {
         self.viewModel = viewModel
         self.viewModel.modeType = model?.modeType ?? .edit
         super.init(alertManager: alertManager)
@@ -70,33 +70,21 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     
     @IBAction func selectSaveButtonTapped(_ sender: Any) {
         alertManager.showLoader()
-        if viewModel.vaultsCount() <= Constants.Common.neededMembersCount {
-            firstly {
-                viewModel.encryptAndDistribute()
-            }.catch { e in
-                self.alertManager.hideLoader()
-                let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
-                self.alertManager.showCommonError(text)
-                self.resetScreen()
-            }.finally {
+        var isThereError = false
+        firstly {
+            viewModel.split(secret: passwordTextField.text ?? "", description: descriptionTextField.text ?? "")
+        }.then {
+            self.viewModel.encryptAndDistribute()
+        }.catch { e in
+            self.alertManager.hideLoader()
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.showCommonError(text)
+            self.resetScreen()
+            isThereError = true
+        }.finally {
+            if !isThereError {
                 self.alertManager.hideLoader()
                 self.navigationController?.popViewController(animated: true)
-            }
-        } else {
-            firstly {
-                viewModel.showDeviceLists()
-            }.catch { e in
-                self.alertManager.hideLoader()
-                let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
-                self.alertManager.showCommonError(text)
-                self.resetScreen()
-            }.finally {
-                self.alertManager.showCommonAlert(AlertModel(title: Constants.AddSecret.success,
-                                                             message: Constants.AddSecret.successSplited,
-                                                             okButton: Constants.Alert.ok,
-                                                             okHandler: { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
-                }))
             }
         }
     }
@@ -132,7 +120,7 @@ private extension AddSecretSceneView {
         addDescriptionTitle.text = Constants.AddSecret.addDescriptionTitle
         addPassTitleLabel.text = Constants.AddSecret.addPassword
         selectSaveInfoLabel.text = Constants.AddSecret.selectDevice
-        selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
+        selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         descriptionTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         descriptionText = model?.mainStringValue
@@ -151,12 +139,12 @@ private extension AddSecretSceneView {
     @objc func switchCallback(_ notification: NSNotification) {
         if let type = notification.userInfo?["type"] as? CallBackType {
             switch type {
-            case .Shares, .Devices:
-                alertManager.hideLoader()
             case .Claims(let secret):
                 self.showRestoreResult(password: secret)
             case .Failure:
                 self.showRestoreResult(password: nil)
+            default:
+                break
             }
         }
     }
@@ -205,6 +193,7 @@ private extension AddSecretSceneView {
             splitRestoreButton.setTitle(Constants.AddSecret.restore, for: .normal)
             splitRestoreButton.isUserInteractionEnabled = true
             splitRestoreButton.backgroundColor = AppColors.mainOrange
+            splitRestoreButton.isHidden = false
             
             instructionLabel.isHidden = true
             selectSaveInfoLabel.isHidden = true
@@ -222,9 +211,10 @@ private extension AddSecretSceneView {
             splitRestoreButton.setTitle(Constants.AddSecret.split, for: .normal)
             splitRestoreButton.isUserInteractionEnabled = false
             splitRestoreButton.backgroundColor = .systemGray5
+            splitRestoreButton.isHidden = true
             
             instructionLabel.isHidden = true
-            selectSaveInfoLabel.isHidden = false
+            selectSaveInfoLabel.isHidden = true
             selectSaveButton.isHidden = false
             selectSaveButton.isUserInteractionEnabled = false
             selectSaveButton.backgroundColor = .systemGray5
@@ -238,20 +228,21 @@ private extension AddSecretSceneView {
             splitRestoreButton.setTitle(Constants.AddSecret.split, for: .normal)
             splitRestoreButton.isUserInteractionEnabled = false
             splitRestoreButton.backgroundColor = .systemGray5
+            splitRestoreButton.isHidden = true
             
-            instructionLabel.isHidden = false
+            instructionLabel.isHidden = true
             
             selectSaveButton.isHidden = false
-            selectSaveButton.isUserInteractionEnabled = true
-            selectSaveButton.backgroundColor = AppColors.mainOrange
-            if viewModel.vaultsCount() <= Constants.Common.neededMembersCount {
+            selectSaveButton.isUserInteractionEnabled = false
+            selectSaveButton.backgroundColor = .systemGray5
+//            if viewModel.vaultsCount() <= Constants.Common.neededMembersCount {
                 selectSaveInfoLabel.isHidden = true
                 instructionLabel.isHidden = true
                 selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
-            } else {
-                selectSaveInfoLabel.isHidden = false
-                selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
-            }
+//            } else {
+//                selectSaveInfoLabel.isHidden = false
+//                selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
+//            }
         }
     }
     
@@ -268,11 +259,11 @@ private extension AddSecretSceneView {
     @objc func textFieldDidChange(_ textField: UITextField) {
         instructionLabel.isHidden = true
         if let pass = passwordTextField.text, !pass.isEmpty, let note = descriptionTextField.text, !note.isEmpty {
-            splitRestoreButton.isUserInteractionEnabled = true
-            splitRestoreButton.backgroundColor = AppColors.mainOrange
+            selectSaveButton.isUserInteractionEnabled = true
+            selectSaveButton.backgroundColor = AppColors.mainOrange
         } else {
-            splitRestoreButton.isUserInteractionEnabled = false
-            splitRestoreButton.backgroundColor = .systemGray5
+            selectSaveButton.isUserInteractionEnabled = false
+            selectSaveButton.backgroundColor = .systemGray5
         }
     }
 }

@@ -131,17 +131,8 @@ class DistributionManager: NSObject, DistributionProtocol  {
             let components = rustManager.split(secret: decriptedSecret)
             promises.append(sharesManager.distributeShares(components, signatures, description: secret.secretName))
         }
-        
-        var isThereError: Bool = false
-        when(fulfilled: promises).then { results in
-            return Promise().asVoid()
-        }.catch { error in
-            let text = (error as? MetaSecretErrorType)?.message() ?? error.localizedDescription
-            self.alertManager.showCommonError(text)
-            isThereError = true
-        }
-        
-        return isThereError ? Promise(error: MetaSecretErrorType.distribute) : Promise().asVoid()
+
+        return when(fulfilled: promises)
     }
 }
 
@@ -245,15 +236,8 @@ private extension DistributionManager {
         for member in otherMembers {
             promises.append(shareService.requestClaim(provider: member, secret: secret))
         }
-        
-        var isThereError = false
-        when(fulfilled: promises).then { results in
-            return Promise().asVoid()
-        }.catch { error in
-            isThereError = true
-        }
-        
-        return isThereError ? Promise(error: MetaSecretErrorType.cantClaim) : Promise().asVoid()
+
+        return when(fulfilled: promises).asVoid()
     }
     
     func findClaims() {

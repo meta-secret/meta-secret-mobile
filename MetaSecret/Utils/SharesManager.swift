@@ -92,8 +92,6 @@ private extension SharesManager {
     //MARK: - DISTRIBUTIONS FLOWS
     func simpleDistribution() -> Promise<Void>{
         var promises = [Promise<Void>]()
-        var isThereError = false
-
         for i in 0..<shares.count {
             let signature: UserSignature
             let shareToEncrypt = shares[i]
@@ -104,21 +102,13 @@ private extension SharesManager {
             }
             
             if let distributionManager, let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
-                promises.append(distributionManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: description))
+                promises.append(distributionManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: secretDescription))
             }
         }
         
-        when(fulfilled: promises).then { results in
-            return Promise().asVoid()
-        }.catch { error in
-            let text = (error as? MetaSecretErrorType)?.message() ?? error.localizedDescription
-            self.alertManager.showCommonError(text)
-            isThereError = true
-        }
-        
-        return isThereError ? Promise(error: MetaSecretErrorType.distribute) : Promise().asVoid()
+        return when(fulfilled: promises)
     }
-    
+
     func partiallyDistribute() -> Promise<Void> {
         guard let lastShare = shares.last else { return Promise(error: MetaSecretErrorType.commonError) }
         shares.append(lastShare)

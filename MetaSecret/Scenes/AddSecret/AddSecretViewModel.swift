@@ -28,7 +28,6 @@ final class AddSecretViewModel: CommonViewModel {
     private var sharesManager: SharesProtocol
     private var dbManager: DBManagerProtocol
     private var rustManager: RustProtocol
-    private var alertManager: Alertable
     private var distributionManager: DistributionProtocol
     
     var modeType: ModeType = .edit
@@ -43,12 +42,11 @@ final class AddSecretViewModel: CommonViewModel {
          sharesManager: SharesProtocol,
          dbManager: DBManagerProtocol,
          rustManager: RustProtocol,
-         alertManager: Alertable,
          distributionManager: DistributionProtocol) {
         self.userService = userService
         self.dbManager = dbManager
         self.sharesManager = sharesManager
-        self.alertManager = alertManager
+        self.sharesManager.distributionManager = distributionManager
         self.rustManager = rustManager
         self.distributionManager = distributionManager
     }
