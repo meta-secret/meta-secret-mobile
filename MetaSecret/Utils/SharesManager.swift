@@ -13,6 +13,8 @@ import PromiseKit
 protocol SharesProtocol {
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void>
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void>
+    
+    var distributionManager: DistributionProtocol? {get set}
 }
 
 final class SharesManager: NSObject, SharesProtocol {
@@ -31,20 +33,18 @@ final class SharesManager: NSObject, SharesProtocol {
     private var userService: UsersServiceProtocol
     private var alertManager: Alertable
     private var rustManager: RustProtocol
-    private var distributionManager: DistributionProtocol
+    var distributionManager: DistributionProtocol? = nil
     
     init(jsonSerializationManager: JsonSerealizable,
          dbManager: DBManagerProtocol,
          userService: UsersServiceProtocol,
          alertManager: Alertable,
-         rustManager: RustProtocol,
-         distributionManager: DistributionProtocol) {
+         rustManager: RustProtocol) {
         self.jsonSerializationManager = jsonSerializationManager
         self.dbManager = dbManager
         self.userService = userService
         self.alertManager = alertManager
         self.rustManager = rustManager
-        self.distributionManager = distributionManager
     }
     
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void> {
@@ -103,7 +103,7 @@ private extension SharesManager {
                 signature = signatures[0]
             }
             
-            if let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
+            if let distributionManager, let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
                 promises.append(distributionManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: description))
             }
         }

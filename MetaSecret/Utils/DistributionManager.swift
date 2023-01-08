@@ -27,7 +27,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
     private let nc = NotificationCenter.default
     
     enum Config {
-        static let timerInterval: CGFloat = 3.0
+        static let timerInterval: CGFloat = 5.0
     }
     
     private var userService: UsersServiceProtocol
@@ -148,7 +148,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
 private extension DistributionManager {
     func checkSharesResult(result: FindSharesResult) -> Promise<Void> {
         guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
-            return Promise(error: MetaSecretErrorType.shareSearchError)
+            return Promise().asVoid()
         }
         
         return firstly {

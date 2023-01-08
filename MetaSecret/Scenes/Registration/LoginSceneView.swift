@@ -64,6 +64,8 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
         firstly {
             viewModel.register(userName)
         }.catch { e in
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.showCommonError(text)
             self.didFailLoadingData(message: e)
         }.finally {
             self.didFinishLoadingData()

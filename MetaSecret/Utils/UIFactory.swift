@@ -39,7 +39,6 @@ extension UIFactory {
     func deviceInfo(model: SceneSendDataModel) -> DeviceInfoSceneView? {
         let viewController = router.resolve(DeviceInfoSceneView.self)
         viewController?.data = model
-        viewController?.viewModel.delegate = viewController
         return viewController
     }
     

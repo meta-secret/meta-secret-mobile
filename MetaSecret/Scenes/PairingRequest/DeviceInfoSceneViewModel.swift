@@ -11,17 +11,15 @@ import PromiseKit
 protocol DeviceInfoProtocol {}
 
 final class DeviceInfoSceneViewModel: CommonViewModel {
-    var delegate: DeviceInfoProtocol? = nil
     override var title: String {
         return Constants.PairingDeveice.title
     }
-    private var alertManager: Alertable
+
     private var vaultApiService: VaultAPIProtocol
     
     //MARK: - INIT
-    init(alertManager: Alertable, vaultApiService: VaultAPIProtocol) {
+    init(vaultApiService: VaultAPIProtocol) {
         self.vaultApiService = vaultApiService
-        self.alertManager = alertManager
     }
     
     //MARK: - PUBLIC METHODS
