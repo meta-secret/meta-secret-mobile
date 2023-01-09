@@ -17,6 +17,7 @@ struct Constants {
         static let finishedStatus = "finished"
         static let ok = "ok"
         static let neededMembersCount = 3
+        static let timerInterval: CGFloat = 2
     }
     
     //MARK: - ONBOARDING
@@ -104,6 +105,7 @@ struct Constants {
     struct AddSecret {
         static let title = NSLocalizedString("addSecret", comment: "")
         static let titleEdit = NSLocalizedString("editSecret", comment: "")
+        static let recoverEdit = NSLocalizedString("recoverEdit", comment: "")
         static let addDescriptionTitle = NSLocalizedString("addDescription", comment: "")
         static let description = NSLocalizedString("description", comment: "")
         static let addPassword = NSLocalizedString("addPassword", comment: "")

@@ -273,6 +273,7 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
             let model = SceneSendDataModel(signature: selectedItem, callBack:  { [weak self] isOk in
                 guard let self else { return }
                 if isOk {
+                    self.alertManager.showLoader()
                     self.viewModel.isToReDistribute = true
                 }
                 

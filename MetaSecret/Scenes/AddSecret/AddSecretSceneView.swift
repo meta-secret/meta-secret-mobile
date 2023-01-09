@@ -114,8 +114,8 @@ private extension AddSecretSceneView {
         switchMode()
         
         // Texts
-        addDescriptionTitle.text = Constants.AddSecret.addDescriptionTitle
-        addPassTitleLabel.text = Constants.AddSecret.addPassword
+        addDescriptionTitle.text = viewModel.descriptionHeaderText
+        addPassTitleLabel.text = viewModel.addPasswordHeaderText
         selectSaveInfoLabel.text = Constants.AddSecret.selectDevice
         selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)

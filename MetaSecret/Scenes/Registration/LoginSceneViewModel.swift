@@ -51,7 +51,7 @@ final class LoginSceneViewModel: CommonViewModel {
     func startTimer() {
         guard self.tempTimer == nil else { return }
         delegate?.showPendingPopup()
-        tempTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
+        tempTimer = Timer.scheduledTimer(timeInterval: Constants.Common.timerInterval, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
     }
     
     //MARK: - REGISTRATION

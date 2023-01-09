@@ -41,8 +41,16 @@ final class AddSecretViewModel: CommonViewModel {
         return model?.mainStringValue ?? ""
     }
     
+    var descriptionHeaderText: String {
+        return modeType == .edit ? Constants.AddSecret.addDescriptionTitle : Constants.AddSecret.description
+    }
+    
+    var addPasswordHeaderText: String {
+        return modeType == .edit ? Constants.AddSecret.addPassword : Constants.AddSecret.password
+    }
+    
     override var title: String {
-        return modeType == .readOnly ? Constants.AddSecret.titleEdit : Constants.AddSecret.title
+        return modeType == .readOnly ? Constants.AddSecret.recoverEdit : Constants.AddSecret.title
     }
     
     //MARK: - INIT
