@@ -85,6 +85,7 @@
 "edit" = "Edit";
 "restore" = "RESTORE";
 "editSecret" = "Edit Secret";
+"recoverEdit" = "Restore Secret";
 "success" = "Success";
 "successSplited" = "Secret has been splited, encoded and distributed successfully!";
 

@@ -65,6 +65,7 @@ class DeviceInfoSceneView: CommonSceneView, DeviceInfoProtocol {
         }.finally {
             if !isThereError {
                 self.alertManager.hideLoader()
+                self.data?.callBack?(true)
                 self.navigationController?.popViewController(animated: true)
             }
         }

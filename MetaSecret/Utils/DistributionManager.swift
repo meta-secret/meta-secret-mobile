@@ -29,10 +29,6 @@ class DistributionManager: NSObject, DistributionProtocol  {
     private var isNeedToRedistribute: Bool = false
     private let nc = NotificationCenter.default
     
-    enum Config {
-        static let timerInterval: CGFloat = 5.0
-    }
-    
     private var userService: UsersServiceProtocol
     private let alertManager: Alertable
     private let jsonManager: JsonSerealizable
@@ -58,14 +54,14 @@ class DistributionManager: NSObject, DistributionProtocol  {
     ///This method for monitoring on MianScreen Secrets tab
     func startMonitoringSharesAndClaimRequests() {
         if findSharesAndClaimRequestsTimer == nil {
-            findSharesAndClaimRequestsTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(fireSharesAndClaimRequestsTimer), userInfo: nil, repeats: true)
+            findSharesAndClaimRequestsTimer = Timer.scheduledTimer(timeInterval: Constants.Common.timerInterval, target: self, selector: #selector(fireSharesAndClaimRequestsTimer), userInfo: nil, repeats: true)
         }
     }
     
     //MARK: - MAIN SCREEN. VAULTS
     func startMonitoringVaults() {
         if findVaultsTimer == nil {
-            findVaultsTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(fireVaultsTimer), userInfo: nil, repeats: true)
+            findVaultsTimer = Timer.scheduledTimer(timeInterval: Constants.Common.timerInterval, target: self, selector: #selector(fireVaultsTimer), userInfo: nil, repeats: true)
         }
     }
     
@@ -79,7 +75,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
             self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
         }.finally {
             if self.findClaimResponsesTimer == nil, !self.isToStopClaimSearching {
-                self.findClaimResponsesTimer = Timer.scheduledTimer(timeInterval: Config.timerInterval, target: self, selector: #selector(self.fireClaimResponsesTimer), userInfo: nil, repeats: true)
+                self.findClaimResponsesTimer = Timer.scheduledTimer(timeInterval: Constants.Common.timerInterval, target: self, selector: #selector(self.fireClaimResponsesTimer), userInfo: nil, repeats: true)
             }
         }
     }
