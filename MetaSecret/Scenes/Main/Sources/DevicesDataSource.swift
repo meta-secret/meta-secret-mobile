@@ -22,7 +22,7 @@ final class DevicesDataSource: MainScreeSourcable {
             
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.pending.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .pending, boolValue: true, id: signature.device.deviceId)
+            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.Pending.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .Pending, boolValue: true, id: signature.device.deviceId)
             pendingItems.append(cellSource)
         }
         sourceItems.append(pendingItems)
@@ -30,7 +30,7 @@ final class DevicesDataSource: MainScreeSourcable {
         for signature in vault.declinedJoins ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.declined.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .declined, id: signature.device.deviceId)
+            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.Declined.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .Declined, id: signature.device.deviceId)
             declinedItems.append(cellSource)
         }
         sourceItems.append(declinedItems)
@@ -38,7 +38,7 @@ final class DevicesDataSource: MainScreeSourcable {
         for signature in vault.signatures ?? [] {
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.member.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .member, id: signature.device.deviceId)
+            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.Member.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .Member, id: signature.device.deviceId)
             memberItems.append(cellSource)
         }
         sourceItems.append(memberItems)

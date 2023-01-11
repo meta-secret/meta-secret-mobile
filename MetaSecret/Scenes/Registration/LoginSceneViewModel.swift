@@ -47,21 +47,9 @@ final class LoginSceneViewModel: CommonViewModel {
         }.asVoid()
     }
     
-    //MARK: - PUBLIC METHODS
-    func startTimer() {
-        guard self.tempTimer == nil else { return }
-        delegate?.showPendingPopup()
-        tempTimer = Timer.scheduledTimer(timeInterval: Constants.Common.timerInterval, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
-    }
-    
     //MARK: - REGISTRATION
-    func register(_ userName: String) -> Promise<Void> {
+    func preRegistrationChecking(_ userName: String) -> Promise<Void> {
         isLoadingData = true
-        if userService.deviceStatus == .pending {
-            delegate?.showAwaitingAlert()
-            isLoadingData = false
-            return Promise().asVoid()
-        }
         
         guard let userSecurityBox = signingManager.generateKeys(for: userName) else {
             return Promise(error: MetaSecretErrorType.generateUser)
@@ -74,39 +62,65 @@ final class LoginSceneViewModel: CommonViewModel {
                                  device: Device())
 
         return firstly {
-            authService.register(user)
-        }.get { result in
-            if result.data == .Registered {
-                self.userService.deviceStatus = .member
-                self.userService.securityBox = userSecurityBox
-                self.userService.userSignature = user
-                self.userService.isOwner = true
-                self.delegate?.routeNext()
-            } else {
-                self.userService.deviceStatus = .pending
+            vaultService.getVault(user)
+        }.then { result in
+            if result.data?.vaultInfo == .Unknown {
+                self.userService.deviceStatus = .Pending
                 self.userService.userSignature = user
                 self.userService.securityBox = userSecurityBox
                 self.delegate?.alreadyExisted()
+                return Promise().asVoid()
+            } else if result.data?.vaultInfo == .NotFound {
+                return self.register(user, userSecurityBox, isOwner: true)
+            } else {
+                self.userService.userSignature = nil
+                self.userService.securityBox = nil
+                self.userService.deviceStatus = .Unknown
+                return Promise().asVoid()
             }
         }.ensure {
             self.isLoadingData = false
         }.asVoid()
     }
+    
+    func register(_ user: UserSignature, _ userSecurityBox: UserSecurityBox, isOwner: Bool) -> Promise<Void> {
+        return firstly {
+            authService.register(user)
+        }.get { result in
+            self.userService.userSignature = user
+            self.userService.securityBox = userSecurityBox
+            if result.data == .Registered {
+                self.userService.deviceStatus = .Member
+                self.tempTimer?.invalidate()
+                self.tempTimer = nil
+                self.delegate?.closePopUp()
+                self.delegate?.routeNext()
+            } else {
+                self.startTimer()
+            }
+        }.asVoid()
+    }
 }
 
 private extension LoginSceneViewModel {
+    func startTimer() {
+        guard self.tempTimer == nil else { return }
+        delegate?.showPendingPopup()
+        tempTimer = Timer.scheduledTimer(timeInterval: Constants.Common.timerInterval, target: self, selector: #selector(self.fireTimer), userInfo: nil, repeats: true)
+    }
+    
     func checkStatus() -> Promise<Void> {
-        if userService.deviceStatus == .pending {
+        if userService.deviceStatus == .Pending {
             return firstly {
-                vaultService.getVault()
+                vaultService.getVault(nil)
             }.get { result in
-                if result.data?.vaultInfo == .member {
-                    self.userService.deviceStatus = .member
+                if result.data?.vaultInfo == .Member {
+                    self.userService.deviceStatus = .Member
                     self.tempTimer?.invalidate()
                     self.tempTimer = nil
                     self.delegate?.closePopUp()
                     self.delegate?.routeNext()
-                } else if result.data?.vaultInfo == .declined {
+                } else if result.data?.vaultInfo == .Declined {
                     self.delegate?.closePopUp()
                     self.userService.resetAll()
                     self.delegate?.failed(with: MetaSecretErrorType.declinedUser)
