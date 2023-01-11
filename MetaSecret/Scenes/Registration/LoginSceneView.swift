@@ -62,7 +62,7 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
         
         guard !viewModel.isLoadingData else { return }
         firstly {
-            viewModel.register(userName)
+            viewModel.preRegistrationChecking(userName)
         }.catch { e in
             let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
             self.alertManager.showCommonError(text)
@@ -80,10 +80,13 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     func alreadyExisted() {
         didFinishLoadingData()
         alertManager.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
-            self?.viewModel.startTimer()
+            guard let self,
+                  let securityBox = self.userService.securityBox,
+                  let userSignature = self.userService.userSignature else { return }
+            self.alertManager.showLoader()
+            self.viewModel.register(userSignature, securityBox, isOwner: false)
         }, cancelHandler: { [weak self] in
-            self?.userService.userSignature = nil
-            self?.userService.deviceStatus = .unknown
+            self?.userService.resetAll()
         }))
     }
     
@@ -102,7 +105,7 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
             self?.userService.resetAll()
             self?.resetTextField()
         }, cancelHandler: { [weak self] in
-            self?.userService.deviceStatus = .unknown
+            self?.userService.deviceStatus = .Unknown
             return
         }))
     }

@@ -38,7 +38,7 @@ class ApplicationRouter : NSObject, ApplicationRouterProtocol {
     }
 
     func route() {
-        guard usersService.deviceStatus == .member else {
+        guard usersService.deviceStatus == .Member else {
             routeUnauthenticated()
             return
         }

@@ -96,7 +96,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
     
     func getVault() -> Promise<Void> {
         return firstly {
-            vaultService.getVault()
+            vaultService.getVault(nil)
         }.get { result in
             self.userService.mainVault = result.data?.vault
             self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Devices])
@@ -187,6 +187,7 @@ private extension DistributionManager {
         guard result.msgType == Constants.Common.ok,
               let shares = result.data,
               !shares.isEmpty else {
+            stopMonitoringClaimResponses()
             self.checkForError()
             return Promise(error: MetaSecretErrorType.shareSearchError)
         }

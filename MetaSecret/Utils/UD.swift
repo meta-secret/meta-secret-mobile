@@ -28,7 +28,8 @@ class UsersService: NSObject, UsersServiceProtocol {
     func resetAll() {
         userSignature = nil
         securityBox = nil
-        deviceStatus = .unknown
+        mainVault = nil
+        deviceStatus = .Unknown
     }
     
     //MARK: - VARIABLES
@@ -61,8 +62,8 @@ class UsersService: NSObject, UsersServiceProtocol {
     
     var deviceStatus: VaultInfoStatus {
         get {
-            guard let status = UDManager.read(key: UDKeys.deviceStatus) as? String else { return .unknown }
-            return VaultInfoStatus(rawValue: status) ?? .unknown
+            guard let status = UDManager.read(key: UDKeys.deviceStatus) as? String else { return .Unknown }
+            return VaultInfoStatus(rawValue: status) ?? .Unknown
         }
         
         set {

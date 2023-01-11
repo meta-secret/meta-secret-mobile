@@ -9,15 +9,15 @@ import Foundation
 import PromiseKit
 
 protocol VaultAPIProtocol {
-    func getVault() -> Promise<GetVaultResult>
+    func getVault(_ user: UserSignature?) -> Promise<GetVaultResult>
     func accept(_ candidate: UserSignature) -> Promise<AcceptResult>
     func decline(_ candidate: UserSignature) -> Promise<AcceptResult>
 }
 
 class VaultAPIService: APIManager, VaultAPIProtocol {
-    func getVault() -> Promise<GetVaultResult> {
+    func getVault(_ user: UserSignature? = nil) -> Promise<GetVaultResult> {
         guard
-            let userSignature = userService.userSignature,
+            let userSignature = user ?? userService.userSignature,
             let params = jsonManager.jsonStringGeneration(from: userSignature)
         else {
             return Promise(error: MetaSecretErrorType.userSignatureError)

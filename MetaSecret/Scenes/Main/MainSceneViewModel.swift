@@ -29,7 +29,7 @@ final class MainSceneViewModel: CommonViewModel {
     }
     
     var remainingNotificationContainerHidden: Bool {
-        return selectedSegment == .Secrets || !userService.isOwner
+        return selectedSegment == .Secrets || !userService.isOwner || userService.mainVault?.signatures?.count ?? 0 >= Constants.Common.neededMembersCount
     }
     
     var addDeviceViewHidden: Bool {
@@ -133,7 +133,7 @@ final class MainSceneViewModel: CommonViewModel {
              
     private func filteredSourceArrayCount() -> Int {
         let flatArr = source?.items.flatMap { $0 }
-        let filteredArr = flatArr?.filter({$0.subtitle?.lowercased() == VaultInfoStatus.member.rawValue.lowercased()})
+        let filteredArr = flatArr?.filter({$0.subtitle?.lowercased() == VaultInfoStatus.Member.rawValue.lowercased()})
         
         guard let count = filteredArr?.count, count < Self.minDevicesCount else { return 0 }
         return count

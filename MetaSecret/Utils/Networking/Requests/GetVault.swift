@@ -23,24 +23,24 @@ struct GetVaultResult: Codable {
 }
 
 struct GetVaultData: Codable {
-    var vaultInfo: VaultInfoStatus = .unknown
+    var vaultInfo: VaultInfoStatus = .Unknown
     var vault: VaultDoc?
 }
 
 enum VaultInfoStatus: String, Codable {
-    case member
-    case pending
-    case declined
-    case virtual
-    case unknown
+    case Member
+    case Pending
+    case Declined
+    case NotFound
+    case Unknown
     
     func title() -> String {
         switch self {
-        case .member:
+        case .Member:
             return Constants.Devices.member
-        case .pending:
+        case .Pending:
             return Constants.Devices.pending
-        case .declined:
+        case .Declined:
             return Constants.Devices.declined
         default:
             return ""
