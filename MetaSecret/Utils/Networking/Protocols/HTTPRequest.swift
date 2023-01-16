@@ -11,6 +11,7 @@ protocol HTTPRequest {
     var path: String { get }
     var method: HTTPMethod { get }
     var params: String { get set }
+    var ignorable: Bool { get }
 }
 
 extension HTTPRequest {
@@ -23,6 +24,12 @@ extension HTTPRequest {
     var method: HTTPMethod {
         get {
             return .post
+        }
+    }
+    
+    var ignorable: Bool {
+        get {
+            return false
         }
     }
 }

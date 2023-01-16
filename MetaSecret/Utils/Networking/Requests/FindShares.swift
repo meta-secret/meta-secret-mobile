@@ -8,6 +8,7 @@
 import Foundation
 
 final class FindShares: HTTPRequest {
+    var ignorable: Bool { return true }
     var params: String
     var path: String { return "findShares" }
     

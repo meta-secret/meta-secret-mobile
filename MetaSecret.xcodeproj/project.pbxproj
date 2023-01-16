@@ -40,6 +40,7 @@
 		E5332238293FCA81005E930D /* RestoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5332237293FCA81005E930D /* RestoreModel.swift */; };
 		E54153D62935457C009AA6F1 /* AeadCipherText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54153D52935457C009AA6F1 /* AeadCipherText.swift */; };
 		E54205E928D123D300E763DB /* SceneSendDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54205E828D123D300E763DB /* SceneSendDataModel.swift */; };
+		E54294072970ADF2001B9A1A /* libmeta_secret_core_swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E54294062970ADF2001B9A1A /* libmeta_secret_core_swift.a */; };
 		E548679E28B6E37B00A1E5DB /* SecretsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548679D28B6E37B00A1E5DB /* SecretsDataSource.swift */; };
 		E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */; };
 		E54867A328B6E3DE00A1E5DB /* MainScreeSourcable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */; };
@@ -79,7 +80,6 @@
 		E58E3B89292649670018B136 /* MetaSecretErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B88292649670018B136 /* MetaSecretErrors.swift */; };
 		E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
-		E5B46DC32937EDF100BC6F47 /* libmeta_secret_core_swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5B46DC22937EDF100BC6F47 /* libmeta_secret_core_swift.a */; };
 		E5B64C3D292663510079A5CC /* SharesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B64C3C292663510079A5CC /* SharesManager.swift */; };
 		E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */; };
 		E5C4CA622961E9E900DA8A5C /* UIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA612961E9E900DA8A5C /* UIFactory.swift */; };
@@ -157,6 +157,7 @@
 		E5332237293FCA81005E930D /* RestoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreModel.swift; sourceTree = "<group>"; };
 		E54153D52935457C009AA6F1 /* AeadCipherText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AeadCipherText.swift; sourceTree = "<group>"; };
 		E54205E828D123D300E763DB /* SceneSendDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneSendDataModel.swift; sourceTree = "<group>"; };
+		E54294062970ADF2001B9A1A /* libmeta_secret_core_swift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmeta_secret_core_swift.a; sourceTree = "<group>"; };
 		E548679D28B6E37B00A1E5DB /* SecretsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsDataSource.swift; sourceTree = "<group>"; };
 		E54867A028B6E3A300A1E5DB /* DevicesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesDataSource.swift; sourceTree = "<group>"; };
 		E54867A228B6E3DE00A1E5DB /* MainScreeSourcable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreeSourcable.swift; sourceTree = "<group>"; };
@@ -201,7 +202,6 @@
 		E58E3B88292649670018B136 /* MetaSecretErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretErrors.swift; sourceTree = "<group>"; };
 		E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extenson.swift"; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
-		E5B46DC22937EDF100BC6F47 /* libmeta_secret_core_swift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmeta_secret_core_swift.a; path = rustLib/libmeta_secret_core_swift.a; sourceTree = SOURCE_ROOT; };
 		E5B64C3C292663510079A5CC /* SharesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesManager.swift; sourceTree = "<group>"; };
 		E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindClaims.swift; sourceTree = "<group>"; };
 		E5C4CA612961E9E900DA8A5C /* UIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFactory.swift; sourceTree = "<group>"; };
@@ -244,7 +244,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5B46DC32937EDF100BC6F47 /* libmeta_secret_core_swift.a in Frameworks */,
+				E54294072970ADF2001B9A1A /* libmeta_secret_core_swift.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,8 +333,8 @@
 		E52686F22901D8380030A542 /* RustLib */ = {
 			isa = PBXGroup;
 			children = (
-				E5B46DC22937EDF100BC6F47 /* libmeta_secret_core_swift.a */,
 				E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */,
+				E54294062970ADF2001B9A1A /* libmeta_secret_core_swift.a */,
 				E52686F42901D8A90030A542 /* meta-secret-core.h */,
 			);
 			path = RustLib;

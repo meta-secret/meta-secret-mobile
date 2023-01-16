@@ -24,9 +24,9 @@ class DistributionManager: NSObject, DistributionProtocol  {
     private var findSharesAndClaimRequestsTimer: Timer? = nil
     private var findVaultsTimer: Timer? = nil
     private var findClaimResponsesTimer: Timer? = nil
-    private var isToStopClaimSearching: Bool = false
     
     private var isNeedToRedistribute: Bool = false
+    private var isNeedToSearching: Bool = true
     private let nc = NotificationCenter.default
     
     private var userService: UsersServiceProtocol
@@ -74,14 +74,13 @@ class DistributionManager: NSObject, DistributionProtocol  {
             self.alertManager.showCommonError(text)
             self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Failure])
         }.finally {
-            if self.findClaimResponsesTimer == nil, !self.isToStopClaimSearching {
+            if self.findClaimResponsesTimer == nil {
                 self.findClaimResponsesTimer = Timer.scheduledTimer(timeInterval: Constants.Common.timerInterval, target: self, selector: #selector(self.fireClaimResponsesTimer), userInfo: nil, repeats: true)
             }
         }
     }
     
     func stopMonitoringClaimResponses() {
-        isToStopClaimSearching = true
         findClaimResponsesTimer?.invalidate()
         findClaimResponsesTimer = nil
     }
@@ -89,7 +88,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
     //MARK: - ADD SECRET SCREEN SPLIT
     func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String) -> Promise<Void> {
         for share in shares {
-            return distribution(encodedShare: share, receiver: receiver, description: description, type: .split)
+            return distribution(encodedShare: share, receiver: receiver, description: description, type: .Split)
         }
         return Promise().asVoid()
     }
@@ -108,7 +107,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
         return firstly {
             shareService.findShares()
         }.then { result in
-            self.checkSharesResult(result: result)
+            self.commonShareChecking(result)
         }.asVoid()
     }
     
@@ -142,8 +141,10 @@ class DistributionManager: NSObject, DistributionProtocol  {
 }
 
 private extension DistributionManager {
-    func checkSharesResult(result: FindSharesResult) -> Promise<Void> {
-        guard result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) else {
+    func checkSharesResult(_ result: FindSharesResult) -> Promise<Void> {
+        guard result.msgType == Constants.Common.ok,
+              !(result.data?.isEmpty ?? true),
+              result.data?.first?.distributionType == .Split else {
             return Promise().asVoid()
         }
         
@@ -179,21 +180,23 @@ private extension DistributionManager {
         return firstly {
             shareService.findShares()
         }.then { result in
-            self.handlefindSharesResponse(result)
+            self.commonShareChecking(result)
         }
     }
     
-    func handlefindSharesResponse(_ result: FindSharesResult) -> Promise<Void> {
+    func handleClaimSharesResponse(_ result: FindSharesResult) -> Promise<Void> {
+        guard isNeedToSearching else { return Promise().asVoid() }
+
         guard result.msgType == Constants.Common.ok,
-              let shares = result.data,
-              !shares.isEmpty else {
+              let shares = result.data, !shares.isEmpty,
+              shares.first?.distributionType == .Recover else {
             stopMonitoringClaimResponses()
             self.checkForError()
             return Promise(error: MetaSecretErrorType.shareSearchError)
         }
         
         guard let share = shares.first,
-              share.distributionType == .recover,
+              share.distributionType == .Recover,
               let keyManager = userService.securityBox?.keyManager,
               let description = share.metaPassword?.metaPassword.id.name,
               let secret = dbManager.readSecretBy(description: description),
@@ -210,12 +213,34 @@ private extension DistributionManager {
         return Promise().asVoid()
     }
     
+    func commonShareChecking(_ result: FindSharesResult) -> Promise<Void> {
+        guard result.msgType == Constants.Common.ok else {
+            return Promise(error: MetaSecretErrorType.shareSearchError)
+        }
+        
+        guard let shares = result.data,
+              !shares.isEmpty else {
+            return Promise().asVoid()
+        }
+        
+        switch shares.first?.distributionType {
+        case .Recover:
+            return handleClaimSharesResponse(result)
+        case .Split:
+            return checkSharesResult(result)
+        default:
+            return Promise().asVoid()
+        }
+    }
+    
     func askingForClaims(description: String) -> Promise<Void> {
         guard let userSignature = userService.userSignature, let secret = dbManager.readSecretBy(description: description) else {
             return Promise(error: MetaSecretErrorType.cantClaim)
         }
 
         let sharesArray = Array(secret.shares)
+        
+        isNeedToSearching = sharesArray.count != Constants.Common.neededMembersCount
         
         guard let shareString = sharesArray.first,
               let shareObject: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString),
@@ -229,6 +254,7 @@ private extension DistributionManager {
            let shareString = sharesArray.last,
            let shareObjectLast: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString)
         {
+            stopMonitoringClaimResponses()
             let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
             let decriptedSecret = rustManager.restoreSecret(model: model)
             nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
@@ -295,8 +321,8 @@ private extension DistributionManager {
                 distributeClaimError()
                 return
             }
-            
-            distribution(encodedShare: encryptedShare, receiver: claim.consumer, description: description, type: .recover)
+
+            distribution(encodedShare: encryptedShare, receiver: claim.consumer, description: description, type: .Recover)
         }
     }
     
@@ -307,7 +333,6 @@ private extension DistributionManager {
     
     //MARK: - DISTRIBUTE ACTIONS
     func distribution(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) -> Promise<Void> {
-        
         return firstly {
             shareService.distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type)
         }.then { result in

@@ -24,8 +24,6 @@ class ShareAPIService: APIManager, ShareAPIProtocol {
                     description: String,
                     type: SecretDistributionType) -> PromiseKit.Promise<DistributeResult> {
         
-        
-        
         guard let mainVault = userService.mainVault,
               let userSignature = userService.userSignature,
               let metaPasswordId = rustManager.generateMetaPassId(description: description)

@@ -27,6 +27,8 @@ final class DBManager: NSObject, DBManagerProtocol {
     #warning("MAKE GENERIC METHODS")
     // MARK: - SECRET
     func saveSecret(_ secret: Secret) {
+        print()
+        
         do {
             let realm = try Realm()
             try realm.write {

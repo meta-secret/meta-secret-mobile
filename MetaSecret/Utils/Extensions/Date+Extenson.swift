@@ -11,6 +11,5 @@ extension Date {
     func logDate(name: String) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "y-MM-dd H:mm:ss.SSSS"
-        print("## process \(name) at \(dateFormatter.string(from: self))")
     }
 }
