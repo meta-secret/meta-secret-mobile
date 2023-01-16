@@ -11,6 +11,7 @@ import UIKit
 protocol RootFindable {
     func findRoot() -> UIViewController?
     func findWindow() -> UIWindow?
+    func findTop() -> UIViewController?
 }
 
 class RootControllerManager: NSObject, RootFindable {

@@ -63,6 +63,4 @@ class APIManager: NSObject, APIManagerProtocol {
             task.resume()
         }
     }
-    
-    
 }

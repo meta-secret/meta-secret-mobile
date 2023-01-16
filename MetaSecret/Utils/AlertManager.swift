@@ -77,6 +77,12 @@ class AlertManager: NSObject, Alertable {
     }
     
     private func presentAlert(_ alert: UIAlertController) {
+//        closeAlert()
         rootSearchService.findRoot()?.present(alert, animated: true, completion: nil)
+    }
+    
+    private func closeAlert() {
+        let topController = rootSearchService.findTop()
+        (topController as? UIAlertController)?.dismiss(animated: true)
     }
 }

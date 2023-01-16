@@ -74,7 +74,7 @@ final class SharesManager: NSObject, SharesProtocol {
         }
 
         for (description, shares) in dictionary {
-            let filteredShares = shares.filter({$0.distributionType == .split})
+            let filteredShares = shares.filter({$0.distributionType == .Split})
                 let newSecret = Secret()
                 newSecret.secretName = description
                 newSecret.shares = List<String>()
@@ -82,6 +82,7 @@ final class SharesManager: NSObject, SharesProtocol {
                 for item in mappedShares {
                     newSecret.shares.append(item ?? "")
                 }
+            alertManager.showCommonError("Save to DB")
             dbManager.saveSecret(newSecret)
         }
         return Promise().asVoid()
@@ -92,6 +93,9 @@ private extension SharesManager {
     //MARK: - DISTRIBUTIONS FLOWS
     func simpleDistribution() -> Promise<Void>{
         var promises = [Promise<Void>]()
+        print("SIMPLE DISTRIBUTION")
+        
+        print("shares.count \(shares.count)")
         for i in 0..<shares.count {
             let signature: UserSignature
             let shareToEncrypt = shares[i]
@@ -101,7 +105,9 @@ private extension SharesManager {
                 signature = signatures[0]
             }
             
+            print("Ready to distribute?")
             if let distributionManager, let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
+                print("Ready to distribute!")
                 promises.append(distributionManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: secretDescription))
             }
         }
@@ -113,7 +119,7 @@ private extension SharesManager {
         guard let lastShare = shares.last else { return Promise(error: MetaSecretErrorType.commonError) }
         shares.append(lastShare)
         signatures.append(contentsOf: signatures)
-        
+
         return simpleDistribution()
     }
     

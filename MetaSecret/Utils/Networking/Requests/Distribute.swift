@@ -23,8 +23,8 @@ struct DistributeResult: Codable {
 }
 
 enum SecretDistributionType: String, Codable {
-    case split
-    case recover
+    case Split
+    case Recover
 }
 
 final class DistributeRequest: BaseModel {

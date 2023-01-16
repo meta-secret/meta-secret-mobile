@@ -8,6 +8,7 @@
 import Foundation
 
 final class Claim: HTTPRequest {
+    var ignorable: Bool { return true }
     var params: String
     var path: String { return "claimForPasswordRecovery" }
     
