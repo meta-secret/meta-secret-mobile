@@ -17,7 +17,7 @@ struct Constants {
         static let finishedStatus = "finished"
         static let ok = "ok"
         static let neededMembersCount = 3
-        static let timerInterval: CGFloat = 2
+        static let timerInterval: CGFloat = 1
     }
     
     //MARK: - ONBOARDING

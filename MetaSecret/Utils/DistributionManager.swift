@@ -13,7 +13,7 @@ protocol DistributionProtocol {
     func startMonitoringVaults()
     func startMonitoringClaimResponses(description: String)
     func stopMonitoringClaimResponses()
-    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String) -> Promise<Void>
+    func distributeSharesToMembers(_ shares: [UserShareDto], signatures: [UserSignature], description: String) -> Promise<Void>
     func getVault() -> Promise<Void>
     func findShares() -> Promise<Void>
     func reDistribute() -> Promise<Void>
@@ -86,13 +86,33 @@ class DistributionManager: NSObject, DistributionProtocol  {
     }
     
     //MARK: - ADD SECRET SCREEN SPLIT
-    func distributeSharesToMembers(_ shares: [AeadCipherText], receiver: UserSignature, description: String) -> Promise<Void> {
-        for share in shares {
-            return distribution(encodedShare: share, receiver: receiver, description: description, type: .Split)
+    func distributeSharesToMembers(_ shares: [UserShareDto], signatures: [UserSignature], description: String) -> Promise<Void> {
+        print("## shares.count \(shares.count)")
+        print("## signatures.count \(signatures.count)")
+        var promises = [Promise<Void>]()
+        for i in 0..<shares.count {
+            let signature: UserSignature
+            let shareToEncrypt = shares[i]
+            if signatures.count > i {
+                signature = signatures[i]
+            } else {
+                signature = signatures[0]
+            }
+            
+            if let encryptedShare = sharesManager.encryptShare(shareToEncrypt, signature.transportPublicKey) {
+                for share in [encryptedShare] {
+                    promises.append(distribution(encodedShare: share, receiver: signature, description: description, type: .Split))
+                }
+            }
         }
-        return Promise().asVoid()
+        
+        return firstly {
+            when(fulfilled: promises)
+        }.then { result in
+            self.commonResultHandler(result: result)
+        }.asVoid()
     }
-    
+
     func getVault() -> Promise<Void> {
         return firstly {
             vaultService.getVault(nil)
