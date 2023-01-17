@@ -13,7 +13,7 @@ import PromiseKit
 protocol SharesProtocol {
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void>
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void>
-    
+    func encryptShare(_ share: UserShareDto, _ receiverPubKey: Base64EncodedText) -> AeadCipherText?
     var distributionManager: DistributionProtocol? {get set}
 }
 
@@ -82,48 +82,13 @@ final class SharesManager: NSObject, SharesProtocol {
                 for item in mappedShares {
                     newSecret.shares.append(item ?? "")
                 }
-            alertManager.showCommonError("Save to DB")
             dbManager.saveSecret(newSecret)
         }
+        
+        
         return Promise().asVoid()
     }
-}
-
-private extension SharesManager {
-    //MARK: - DISTRIBUTIONS FLOWS
-    func simpleDistribution() -> Promise<Void>{
-        var promises = [Promise<Void>]()
-        print("SIMPLE DISTRIBUTION")
-        
-        print("shares.count \(shares.count)")
-        for i in 0..<shares.count {
-            let signature: UserSignature
-            let shareToEncrypt = shares[i]
-            if signatures.count > i {
-                signature = signatures[i]
-            } else {
-                signature = signatures[0]
-            }
-            
-            print("Ready to distribute?")
-            if let distributionManager, let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
-                print("Ready to distribute!")
-                promises.append(distributionManager.distributeSharesToMembers([encryptedShare], receiver: signature, description: secretDescription))
-            }
-        }
-        
-        return when(fulfilled: promises)
-    }
-
-    func partiallyDistribute() -> Promise<Void> {
-        guard let lastShare = shares.last else { return Promise(error: MetaSecretErrorType.commonError) }
-        shares.append(lastShare)
-        signatures.append(contentsOf: signatures)
-
-        return simpleDistribution()
-    }
     
-    //MARK: - ENCODING
     func encryptShare(_ share: UserShareDto, _ receiverPubKey: Base64EncodedText) -> AeadCipherText? {
         guard let keyManager = userService.securityBox?.keyManager else {
             alertManager.showCommonError(Constants.Errors.noMainUserError)
@@ -138,5 +103,23 @@ private extension SharesManager {
         }
         
         return encryptedShare
+    }
+}
+
+private extension SharesManager {
+    //MARK: - DISTRIBUTIONS FLOWS
+    func simpleDistribution() -> Promise<Void>{
+        if let distributionManager {
+            return distributionManager.distributeSharesToMembers(shares, signatures: signatures, description: secretDescription)
+        }
+        return Promise(error: MetaSecretErrorType.distribute)
+    }
+
+    func partiallyDistribute() -> Promise<Void> {
+        guard let lastShare = shares.last else { return Promise(error: MetaSecretErrorType.commonError) }
+        shares.append(lastShare)
+        signatures.append(contentsOf: signatures)
+
+        return simpleDistribution()
     }
 }
