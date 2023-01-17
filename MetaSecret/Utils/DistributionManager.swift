@@ -96,10 +96,8 @@ class DistributionManager: NSObject, DistributionProtocol  {
     func getVault() -> Promise<Void> {
         return firstly {
             vaultService.getVault(nil)
-        }.get { result in
-            self.userService.mainVault = result.data?.vault
-            self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Devices])
-            
+        }.then { result in
+            self.commonResultHandler(result: result)
         }.asVoid()
     }
     
@@ -107,7 +105,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
         return firstly {
             shareService.findShares()
         }.then { result in
-            self.commonShareChecking(result)
+            self.commonResultHandler(result: result)
         }.asVoid()
     }
     
@@ -136,7 +134,11 @@ class DistributionManager: NSObject, DistributionProtocol  {
             promises.append(sharesManager.distributeShares(components, signatures, description: secret.secretName))
         }
 
-        return when(fulfilled: promises)
+        return firstly {
+            when(fulfilled: promises)
+        }.then { result in
+            self.commonResultHandler(result: result)
+        }.asVoid()
     }
 }
 
@@ -180,7 +182,7 @@ private extension DistributionManager {
         return firstly {
             shareService.findShares()
         }.then { result in
-            self.commonShareChecking(result)
+            self.commonResultHandler(result: result)
         }
     }
     
@@ -269,16 +271,18 @@ private extension DistributionManager {
             promises.append(shareService.requestClaim(provider: member, secret: secret))
         }
 
-        return when(fulfilled: promises).asVoid()
+        return firstly {
+            when(fulfilled: promises)
+        }.then { result in
+            self.commonResultHandler(result: result)
+        }.asVoid()
     }
     
     func findClaims() {
         firstly {
             shareService.findClaims()
         }.get { result in
-            if result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) {
-                self.distributeClaimsToRestore(claims: result.data)
-            }
+            self.commonResultHandler(result: result)
         }
     }
     
@@ -336,7 +340,7 @@ private extension DistributionManager {
         return firstly {
             shareService.distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type)
         }.then { result in
-            self.handleDistributionResult(result)
+            self.commonResultHandler(result: result)
         }.asVoid()
     }
     
@@ -346,7 +350,29 @@ private extension DistributionManager {
         }
         return Promise().asVoid()
     }
-    
+}
+
+private extension DistributionManager {
+    func commonResultHandler<T>(result: T) -> Promise<Void> {
+        switch result {
+        case is DistributeResult:
+            return self.handleDistributionResult(result as! DistributeResult)
+        case is GetVaultResult:
+            self.userService.mainVault = (result as! GetVaultResult).data?.vault
+            self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Devices])
+            return Promise().asVoid()
+        case is FindSharesResult:
+            return self.commonShareChecking(result as! FindSharesResult)
+        case is FindClaimsResult:
+            let result = result as! FindClaimsResult
+            if result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) {
+                self.distributeClaimsToRestore(claims: result.data)
+            }
+            return Promise().asVoid()
+        default:
+            return Promise().asVoid()
+        }
+    }
 }
 
 enum CallBackType {
