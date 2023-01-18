@@ -19,7 +19,6 @@ class ManagersAssembly: Assembly {
         container.autoregister(DBManagerProtocol.self, initializer: DBManager.init).inObjectScope(.container)
         container.autoregister(RustProtocol.self, initializer: RustTransporterManager.init).inObjectScope(.container)
         container.autoregister(JsonSerealizable.self, initializer: JsonSerealizManager.init).inObjectScope(.container)
-        container.autoregister(SharesProtocol.self, initializer: SharesManager.init).inObjectScope(.container)
         container.autoregister(DistributionProtocol.self, initializer: DistributionManager.init).inObjectScope(.container)
     }
 }

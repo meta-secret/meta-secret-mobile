@@ -45,11 +45,13 @@ class APIManager: NSObject, APIManagerProtocol {
             let jsonData = try? JSONSerialization.data(withJSONObject: dict)
             request.httpBody = jsonData
 
+//            print("## request \(request.description)")
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {
                     seal.reject(error)
                 } else if let data = data {
                     do {
+//                        print("## response \(response?.url)")
                         let decoder = JSONDecoder()
                         let object = try decoder.decode(T.self, from: data)
                         seal.fulfill(object)

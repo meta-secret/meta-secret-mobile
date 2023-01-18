@@ -80,7 +80,6 @@
 		E58E3B89292649670018B136 /* MetaSecretErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B88292649670018B136 /* MetaSecretErrors.swift */; };
 		E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
-		E5B64C3D292663510079A5CC /* SharesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B64C3C292663510079A5CC /* SharesManager.swift */; };
 		E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */; };
 		E5C4CA622961E9E900DA8A5C /* UIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA612961E9E900DA8A5C /* UIFactory.swift */; };
 		E5C4CA64296358E100DA8A5C /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA63296358E100DA8A5C /* APIManager.swift */; };
@@ -202,7 +201,6 @@
 		E58E3B88292649670018B136 /* MetaSecretErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretErrors.swift; sourceTree = "<group>"; };
 		E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extenson.swift"; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
-		E5B64C3C292663510079A5CC /* SharesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesManager.swift; sourceTree = "<group>"; };
 		E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindClaims.swift; sourceTree = "<group>"; };
 		E5C4CA612961E9E900DA8A5C /* UIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFactory.swift; sourceTree = "<group>"; };
 		E5C4CA63296358E100DA8A5C /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -578,7 +576,6 @@
 				E55AC12428C7DFB000757C0C /* DBManager.swift */,
 				E5643BD628FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift */,
 				E520C952290F2FAB001DB36E /* JsonManager.swift */,
-				E5B64C3C292663510079A5CC /* SharesManager.swift */,
 				E5731C682947D8FA004B0095 /* DistributionManager.swift */,
 				E5C4CA612961E9E900DA8A5C /* UIFactory.swift */,
 			);
@@ -777,7 +774,6 @@
 				E5F0C3FD28A82E0700902310 /* LoginSceneView.swift in Sources */,
 				E54867A128B6E3A300A1E5DB /* DevicesDataSource.swift in Sources */,
 				E5F0C40028A82E1900902310 /* LoginSceneViewModel.swift in Sources */,
-				E5B64C3D292663510079A5CC /* SharesManager.swift in Sources */,
 				E55AC12728C7EB5300757C0C /* String+Extension.swift in Sources */,
 				E55B514528CE92F300373959 /* PopupHintViewScene.swift in Sources */,
 				E5184211295E472E00B8F3BD /* APIClientsAssembly.swift in Sources */,
