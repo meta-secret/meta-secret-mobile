@@ -22,7 +22,7 @@ class ShareAPIService: APIManager, ShareAPIProtocol {
     func distribute(encodedShare: AeadCipherText,
                     receiver: UserSignature,
                     description: String,
-                    type: SecretDistributionType) -> PromiseKit.Promise<DistributeResult> {
+                    type: SecretDistributionType) -> Promise<DistributeResult> {
         
         guard let mainVault = userService.mainVault,
               let userSignature = userService.userSignature,

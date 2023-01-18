@@ -87,9 +87,10 @@ class DistributionManager: NSObject, DistributionProtocol  {
     
     //MARK: - ADD SECRET SCREEN SPLIT
     func distributeSharesToMembers(_ shares: [UserShareDto], signatures: [UserSignature], description: String) -> Promise<Void> {
+        var counter = 0
         print("## shares.count \(shares.count)")
         print("## signatures.count \(signatures.count)")
-        var promises = [Promise<Void>]()
+        var promises = [Promise<DistributeResult>]()
         for i in 0..<shares.count {
             let signature: UserSignature
             let shareToEncrypt = shares[i]
@@ -99,8 +100,11 @@ class DistributionManager: NSObject, DistributionProtocol  {
                 signature = signatures[0]
             }
             
+            print("try to encrypt \(shareToEncrypt.shareId)")
+            
             if let encryptedShare = sharesManager.encryptShare(shareToEncrypt, signature.transportPublicKey) {
                 for share in [encryptedShare] {
+                    print("append promise to send \(shareToEncrypt.shareId) to \(signature.device.deviceName) for \(description)")
                     promises.append(distribution(encodedShare: share, receiver: signature, description: description, type: .Split))
                 }
             }
@@ -190,8 +194,6 @@ private extension DistributionManager {
         findClaims()
         findShares()
     }
-    
-    //MARK: - SHARES ACTIONS
     
     //MARK: - CLAIMS ACTIONS
     @objc func fireClaimResponsesTimer() {
@@ -356,12 +358,8 @@ private extension DistributionManager {
     }
     
     //MARK: - DISTRIBUTE ACTIONS
-    func distribution(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) -> Promise<Void> {
-        return firstly {
-            shareService.distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type)
-        }.then { result in
-            self.commonResultHandler(result: result)
-        }.asVoid()
+    func distribution(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) -> Promise<DistributeResult> {
+        return shareService.distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type)
     }
     
     func handleDistributionResult(_ result: DistributeResult) -> Promise<Void> {
@@ -389,7 +387,20 @@ private extension DistributionManager {
                 self.distributeClaimsToRestore(claims: result.data)
             }
             return Promise().asVoid()
+        case is [DistributeResult]:
+            let res = result as! [DistributeResult]
+            res.forEach {
+                print("##\($0.msgType) \($0.data)")
+            }
+            return Promise().asVoid()
+        case is ClaimResult:
+            let res = result as! [ClaimResult]
+            res.forEach {
+                print("##\($0.msgType) \($0.data)")
+            }
+            return Promise().asVoid()
         default:
+            print("## \(result)")
             return Promise().asVoid()
         }
     }
