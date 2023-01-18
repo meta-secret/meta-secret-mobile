@@ -32,7 +32,6 @@ final class DBManager: NSObject, DBManagerProtocol {
         do {
             let realm = try Realm()
             try realm.write {
-                print("## Share \(secret.secretName) saved")
                 realm.add(secret, update: .all)
             }
         } catch {

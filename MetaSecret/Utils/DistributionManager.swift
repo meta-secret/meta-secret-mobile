@@ -100,8 +100,6 @@ class DistributionManager: NSObject, DistributionProtocol  {
     
     //MARK: - ADD SECRET SCREEN SPLIT
     func distributeSharesToMembers(_ shares: [UserShareDto], signatures: [UserSignature], description: String) -> Promise<Void> {
-        print("## shares.count \(shares.count)")
-        print("## signatures.count \(signatures.count)")
         var promises = [Promise<DistributeResult>]()
         for i in 0..<shares.count {
             let signature: UserSignature
@@ -112,11 +110,8 @@ class DistributionManager: NSObject, DistributionProtocol  {
                 signature = signatures[0]
             }
             
-            print("## try to encrypt \(shareToEncrypt.shareId)")
-            
             if let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
                 for share in [encryptedShare] {
-                    print("## append promise to send \(shareToEncrypt.shareId) to \(signature.device.deviceName) for \(description)")
                     promises.append(distribution(encodedShare: share, receiver: signature, description: description, type: .Split))
                 }
             }
@@ -196,7 +191,6 @@ class DistributionManager: NSObject, DistributionProtocol  {
     }
     
     func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void> {
-        print("## need to save \(shares?.count) shares")
         guard let shares else {
             return Promise(error: MetaSecretErrorType.distributionDBError)
         }
@@ -431,7 +425,6 @@ private extension DistributionManager {
     
     //MARK: - DISTRIBUTE ACTIONS
     func distribution(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) -> Promise<DistributeResult> {
-        print("## send to \(receiver.device.deviceName)")
         return shareService.distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type)
     }
     
@@ -476,19 +469,10 @@ private extension DistributionManager {
             }
             return Promise().asVoid()
         case is [DistributeResult]:
-            let res = result as! [DistributeResult]
-            res.forEach {
-                print("## DistributeResult \($0.msgType) \($0.data)")
-            }
             return Promise().asVoid()
         case is ClaimResult:
-            let res = result as! [ClaimResult]
-            res.forEach {
-                print("## ClaimResult \($0.msgType) \($0.data)")
-            }
             return Promise().asVoid()
         default:
-            print("Default ## \(result)")
             return Promise().asVoid()
         }
     }
