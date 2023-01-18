@@ -25,7 +25,6 @@ final class AddSecretViewModel: CommonViewModel {
     private lazy var activeSignatures: [UserSignature] = [UserSignature]()
     
     private var userService: UsersServiceProtocol
-    private var sharesManager: SharesProtocol
     private var dbManager: DBManagerProtocol
     private var rustManager: RustProtocol
     private var distributionManager: DistributionProtocol
@@ -55,14 +54,11 @@ final class AddSecretViewModel: CommonViewModel {
     
     //MARK: - INIT
     init(userService: UsersServiceProtocol,
-         sharesManager: SharesProtocol,
          dbManager: DBManagerProtocol,
          rustManager: RustProtocol,
          distributionManager: DistributionProtocol) {
         self.userService = userService
         self.dbManager = dbManager
-        self.sharesManager = sharesManager
-        self.sharesManager.distributionManager = distributionManager
         self.rustManager = rustManager
         self.distributionManager = distributionManager
     }
@@ -105,7 +101,7 @@ final class AddSecretViewModel: CommonViewModel {
     }
     
     func encryptAndDistribute() -> Promise<Void> {
-        return sharesManager.distributeShares(components, activeSignatures, description: description)
+        return distributionManager.distributeShares(components, activeSignatures, description: description)
     }
     
     func showDeviceLists() -> Promise<Void> {

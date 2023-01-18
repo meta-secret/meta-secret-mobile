@@ -7,6 +7,7 @@
 
 import Foundation
 import PromiseKit
+import RealmSwift
 
 protocol DistributionProtocol {
     func startMonitoringSharesAndClaimRequests()
@@ -17,10 +18,24 @@ protocol DistributionProtocol {
     func getVault() -> Promise<Void>
     func findShares() -> Promise<Void>
     func reDistribute() -> Promise<Void>
+    
+    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void>
+    func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void>
+    func encryptShare(_ share: UserShareDto, _ receiverPubKey: Base64EncodedText) -> AeadCipherText?
 }
 
 class DistributionManager: NSObject, DistributionProtocol  {
     //MARK: - PROPERTIES
+    fileprivate enum SplittedType: Int {
+        case fullySplitted = 3
+        case allInOne = 1
+        case partially = 2
+    }
+    
+    private var shares: [UserShareDto] = [UserShareDto]()
+    private var signatures: [UserSignature] = [UserSignature]()
+    private var secretDescription: String = ""
+    
     private var findSharesAndClaimRequestsTimer: Timer? = nil
     private var findVaultsTimer: Timer? = nil
     private var findClaimResponsesTimer: Timer? = nil
@@ -34,18 +49,16 @@ class DistributionManager: NSObject, DistributionProtocol  {
     private let jsonManager: JsonSerealizable
     private let dbManager: DBManagerProtocol
     private let rustManager: RustProtocol
-    private let sharesManager: SharesProtocol
     private let vaultService: VaultAPIProtocol
     private let shareService: ShareAPIProtocol
     
     //MARK: - INIT
-    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManagerProtocol, rustManager: RustProtocol, sharesManager: SharesProtocol, vaultService: VaultAPIProtocol, shareService: ShareAPIProtocol) {
+    init(userService: UsersServiceProtocol, alertManager: Alertable, jsonManager: JsonSerealizable, dbManager: DBManagerProtocol, rustManager: RustProtocol, vaultService: VaultAPIProtocol, shareService: ShareAPIProtocol) {
         self.userService = userService
         self.alertManager = alertManager
         self.jsonManager = jsonManager
         self.dbManager = dbManager
         self.rustManager = rustManager
-        self.sharesManager = sharesManager
         self.vaultService = vaultService
         self.shareService = shareService
     }
@@ -87,7 +100,6 @@ class DistributionManager: NSObject, DistributionProtocol  {
     
     //MARK: - ADD SECRET SCREEN SPLIT
     func distributeSharesToMembers(_ shares: [UserShareDto], signatures: [UserSignature], description: String) -> Promise<Void> {
-        var counter = 0
         print("## shares.count \(shares.count)")
         print("## signatures.count \(signatures.count)")
         var promises = [Promise<DistributeResult>]()
@@ -100,11 +112,11 @@ class DistributionManager: NSObject, DistributionProtocol  {
                 signature = signatures[0]
             }
             
-            print("try to encrypt \(shareToEncrypt.shareId)")
+            print("## try to encrypt \(shareToEncrypt.shareId)")
             
-            if let encryptedShare = sharesManager.encryptShare(shareToEncrypt, signature.transportPublicKey) {
+            if let encryptedShare = encryptShare(shareToEncrypt, signature.transportPublicKey) {
                 for share in [encryptedShare] {
-                    print("append promise to send \(shareToEncrypt.shareId) to \(signature.device.deviceName) for \(description)")
+                    print("## append promise to send \(shareToEncrypt.shareId) to \(signature.device.deviceName) for \(description)")
                     promises.append(distribution(encodedShare: share, receiver: signature, description: description, type: .Split))
                 }
             }
@@ -155,7 +167,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
                 return Promise(error: MetaSecretErrorType.distribute)
             }
             let components = rustManager.split(secret: decriptedSecret)
-            promises.append(sharesManager.distributeShares(components, signatures, description: secret.secretName))
+            promises.append(distributeShares(components, signatures, description: secret.secretName))
         }
 
         return firstly {
@@ -163,6 +175,66 @@ class DistributionManager: NSObject, DistributionProtocol  {
         }.then { result in
             self.commonResultHandler(result: result)
         }.asVoid()
+    }
+    
+    //MARK: - SHARES DISTRIBUTION
+    func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void> {
+        guard let typeOfSharing = SplittedType(rawValue: signatures.count) else {
+            return Promise(error: MetaSecretErrorType.distribute)
+        }
+        
+        self.signatures = signatures
+        self.shares = shares
+        self.secretDescription = description
+        
+        switch typeOfSharing {
+        case .fullySplitted, .allInOne:
+            return simpleDistribution()
+        case .partially:
+            return partiallyDistribute()
+        }
+    }
+    
+    func distribtuteToDB(_ shares: [SecretDistributionDoc]?) -> Promise<Void> {
+        print("## need to save \(shares?.count) shares")
+        guard let shares else {
+            return Promise(error: MetaSecretErrorType.distributionDBError)
+        }
+        let dictionary = shares.reduce(into: [String: [SecretDistributionDoc]]()) { result, object in
+            let array = result[object.metaPassword?.metaPassword.id.name ?? "NoN"] ?? []
+            result[object.metaPassword?.metaPassword.id.name ?? "NoN"] = array + [object]
+        }
+
+        for (description, shares) in dictionary {
+            let filteredShares = shares.filter({$0.distributionType == .Split})
+                let newSecret = Secret()
+                newSecret.secretName = description
+                newSecret.shares = List<String>()
+            let mappedShares = filteredShares.map {jsonManager.jsonStringGeneration(from: $0)}
+                for item in mappedShares {
+                    newSecret.shares.append(item ?? "")
+                }
+            dbManager.saveSecret(newSecret)
+        }
+        
+        
+        return Promise().asVoid()
+    }
+    
+    func encryptShare(_ share: UserShareDto, _ receiverPubKey: Base64EncodedText) -> AeadCipherText? {
+        guard let keyManager = userService.securityBox?.keyManager else {
+            alertManager.showCommonError(Constants.Errors.noMainUserError)
+            return nil
+        }
+        
+        let shareToEncode = ShareToEncrypt(senderKeyManager: keyManager, receiverPubKey: receiverPubKey, secret: jsonManager.jsonStringGeneration(from: share) ?? "")
+        
+        guard let encryptedShare = rustManager.encrypt(share: shareToEncode) else {
+            alertManager.showCommonError(Constants.Errors.encodeError)
+            return nil
+        }
+        
+        return encryptedShare
     }
 }
 
@@ -175,7 +247,7 @@ private extension DistributionManager {
         }
         
         return firstly {
-            sharesManager.distribtuteToDB(result.data)
+            distribtuteToDB(result.data)
         }.get {
             self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Shares])
         }.asVoid()
@@ -359,6 +431,7 @@ private extension DistributionManager {
     
     //MARK: - DISTRIBUTE ACTIONS
     func distribution(encodedShare: AeadCipherText, receiver: UserSignature, description: String, type: SecretDistributionType) -> Promise<DistributeResult> {
+        print("## send to \(receiver.device.deviceName)")
         return shareService.distribute(encodedShare: encodedShare, receiver: receiver, description: description, type: type)
     }
     
@@ -367,6 +440,21 @@ private extension DistributionManager {
             return Promise(error: MetaSecretErrorType.distribute)
         }
         return Promise().asVoid()
+    }
+}
+
+private extension DistributionManager {
+    //MARK: - DISTRIBUTIONS FLOWS
+    func simpleDistribution() -> Promise<Void>{
+            return distributeSharesToMembers(shares, signatures: signatures, description: secretDescription)
+    }
+
+    func partiallyDistribute() -> Promise<Void> {
+        guard let lastShare = shares.last else { return Promise(error: MetaSecretErrorType.commonError) }
+        shares.append(lastShare)
+        signatures.append(contentsOf: signatures)
+
+        return simpleDistribution()
     }
 }
 
@@ -390,17 +478,17 @@ private extension DistributionManager {
         case is [DistributeResult]:
             let res = result as! [DistributeResult]
             res.forEach {
-                print("##\($0.msgType) \($0.data)")
+                print("## DistributeResult \($0.msgType) \($0.data)")
             }
             return Promise().asVoid()
         case is ClaimResult:
             let res = result as! [ClaimResult]
             res.forEach {
-                print("##\($0.msgType) \($0.data)")
+                print("## ClaimResult \($0.msgType) \($0.data)")
             }
             return Promise().asVoid()
         default:
-            print("## \(result)")
+            print("Default ## \(result)")
             return Promise().asVoid()
         }
     }
