@@ -8,8 +8,8 @@ use_frameworks!
 target 'MetaSecret' do
 
 # Pods for Front
-#pod 'Firebase/Analytics'
-#pod 'Firebase/Crashlytics'
+pod 'Firebase/Analytics'
+pod 'Firebase/Crashlytics'
 #pod 'Firebase/Messaging'
 #pod 'Firebase/Performance'
 #pod 'SDWebImage'

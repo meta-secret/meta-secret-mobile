@@ -251,6 +251,7 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.setupCell(content: content)
+        cell.delegate = self
         return cell
     }
     
@@ -295,5 +296,11 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
             let controller = factory.split(model: model)
             push(controller)
         }
+    }
+}
+
+extension MainSceneView: ClusterDeviceCellDelegate {
+    func buttonTapped() {
+        alertManager.showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.MainScreen.notBackedUp))
     }
 }

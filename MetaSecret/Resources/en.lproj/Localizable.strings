@@ -51,6 +51,7 @@
 "yourNick" = "Your Nickname:";
 "yourDevices" = "Your Devices:";
 "yourSecrets" = "Your Secrets:";
+"notBackedUp" = "There is only one device in your network! We recommend adding more devices to provide better fault tolerance";
 
 "createCluster" = "Create your own network of devices to keep secrets secure";
 "onlyOneDevice" = "There is only one device in your network!\n\n• We recommend adding more devices to provide better fault tolerance\n\n• Just install this app on other your devices and use your nickname: %@, to join the network";
@@ -121,4 +122,4 @@
 "noMainUserError" = "No main user";
 "objectToJsonError" = "Parse object to Json error";
 "cantRestore" = "Can't restore password";
-"cantClaim" = "Can't finish claim request";
+"cantClaim" = "Launch the app on another device to restore the password";

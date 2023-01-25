@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -49,15 +49,27 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.forward" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Z00-OL-wqV">
-                        <rect key="frame" x="291.5" y="21" width="12.5" height="18"/>
+                        <rect key="frame" x="291.5" y="22" width="12.5" height="16.5"/>
                         <color key="tintColor" name="MainBlack"/>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ol-xl-N7w">
+                        <rect key="frame" x="280" y="0.0" width="40" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="HBW-H8-u6Z"/>
+                        </constraints>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                        <connections>
+                            <action selector="chevronTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="PFb-SZ-H5M"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="Tot-jI-Yqz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="0ox-xP-l7O"/>
                     <constraint firstItem="9BT-Dc-pFE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="3ND-LU-xJZ"/>
                     <constraint firstItem="Z00-OL-wqV" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="5ca-F1-5IS"/>
+                    <constraint firstAttribute="bottom" secondItem="2ol-xl-N7w" secondAttribute="bottom" id="BiV-pg-sLY"/>
                     <constraint firstAttribute="trailing" secondItem="0hH-Iy-UCd" secondAttribute="trailing" id="CnM-7c-aep"/>
                     <constraint firstAttribute="bottom" secondItem="Tot-jI-Yqz" secondAttribute="bottom" constant="8" id="GjE-r6-Ynd"/>
                     <constraint firstAttribute="bottom" secondItem="0hH-Iy-UCd" secondAttribute="bottom" id="JG2-66-8Ft"/>
@@ -68,15 +80,18 @@
                     <constraint firstAttribute="trailing" secondItem="Z00-OL-wqV" secondAttribute="trailing" constant="16" id="azJ-dz-uWO"/>
                     <constraint firstItem="IPa-Je-Vvi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="c3t-cT-AfQ"/>
                     <constraint firstItem="Tot-jI-Yqz" firstAttribute="top" secondItem="IPa-Je-Vvi" secondAttribute="bottom" constant="13.5" id="hgd-GV-Ifi"/>
+                    <constraint firstAttribute="trailing" secondItem="2ol-xl-N7w" secondAttribute="trailing" id="i6s-E1-7sD"/>
                     <constraint firstItem="0hH-Iy-UCd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="iWz-F5-BTa"/>
                     <constraint firstItem="oEJ-ea-0EN" firstAttribute="centerY" secondItem="Tot-jI-Yqz" secondAttribute="centerY" id="nFI-Bs-GSR"/>
                     <constraint firstAttribute="bottom" secondItem="9BT-Dc-pFE" secondAttribute="bottom" id="t7r-w1-aex"/>
+                    <constraint firstItem="2ol-xl-N7w" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="vvh-sL-X6L"/>
                     <constraint firstItem="oEJ-ea-0EN" firstAttribute="leading" secondItem="Tot-jI-Yqz" secondAttribute="trailing" constant="16" id="wg0-0c-7Lz"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="chevronButton" destination="2ol-xl-N7w" id="vRQ-Gk-BFx"/>
                 <outlet property="chevroneImage" destination="Z00-OL-wqV" id="Bov-EL-92v"/>
                 <outlet property="deviceIDLabel" destination="oEJ-ea-0EN" id="emS-al-Iyh"/>
                 <outlet property="deviceNameLabel" destination="Tot-jI-Yqz" id="k8b-cF-Arz"/>
@@ -86,7 +101,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="chevron.forward" catalog="system" width="96" height="128"/>
+        <image name="chevron.forward" catalog="system" width="97" height="128"/>
         <namedColor name="MainBlack">
             <color red="0.14117647058823529" green="0.16470588235294117" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

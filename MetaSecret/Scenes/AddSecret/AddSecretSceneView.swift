@@ -158,7 +158,6 @@ private extension AddSecretSceneView {
             self.switchMode()
         }.finally {
             self.alertManager.hideLoader()
-//            self.viewModel.modeType = .distribute
             self.switchMode()
         }
     }

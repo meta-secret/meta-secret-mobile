@@ -8,11 +8,3 @@
 import Foundation
 
 protocol BaseModel: Codable {}
-
-/*
-extension BaseModel {
-    func toJson() -> String {
-        return jsonStringGeneration(from: self) ?? "{}"
-    }
-}
-*/

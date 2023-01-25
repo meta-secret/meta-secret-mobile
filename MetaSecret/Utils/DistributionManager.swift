@@ -16,7 +16,7 @@ protocol DistributionProtocol {
     func stopMonitoringClaimResponses()
     func distributeSharesToMembers(_ shares: [UserShareDto], signatures: [UserSignature], description: String) -> Promise<Void>
     func getVault() -> Promise<Void>
-    func findShares() -> Promise<Void>
+    func findShares(type: SecretDistributionType) -> Promise<Void>
     func reDistribute() -> Promise<Void>
     
     func distributeShares(_ shares: [UserShareDto], _ signatures: [UserSignature], description: String) -> Promise<Void>
@@ -132,9 +132,9 @@ class DistributionManager: NSObject, DistributionProtocol  {
         }.asVoid()
     }
     
-    func findShares() -> Promise<Void> {
+    func findShares(type: SecretDistributionType) -> Promise<Void> {
         return firstly {
-            shareService.findShares()
+            shareService.findShares(type: type)
         }.then { result in
             self.commonResultHandler(result: result)
         }.asVoid()
@@ -235,13 +235,14 @@ class DistributionManager: NSObject, DistributionProtocol  {
 private extension DistributionManager {
     func checkSharesResult(_ result: FindSharesResult) -> Promise<Void> {
         guard result.msgType == Constants.Common.ok,
-              !(result.data?.isEmpty ?? true),
-              result.data?.first?.distributionType == .Split else {
+              let shares = result.data?.shares,
+              !(shares.isEmpty),
+              result.data?.userRequestType == .Split else {
             return Promise().asVoid()
         }
         
         return firstly {
-            distribtuteToDB(result.data)
+            distribtuteToDB(result.data?.shares)
         }.get {
             self.nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Shares])
         }.asVoid()
@@ -253,22 +254,22 @@ private extension DistributionManager {
     }
     
     func distributeClaimError() {
-        alertManager.showCommonError(MetaSecretErrorType.cantClaim.message())
+        alertManager.showCommonError(MetaSecretErrorType.distribute.message())
     }
     
     @objc func fireSharesAndClaimRequestsTimer() {
         findClaims()
-        findShares()
+        let _ = findShares(type: .Split)
     }
     
     //MARK: - CLAIMS ACTIONS
     @objc func fireClaimResponsesTimer() {
-        findSharesClaim()
+        let _ = findSharesClaim()
     }
     
     func findSharesClaim() -> Promise<Void> {
         return firstly {
-            shareService.findShares()
+            shareService.findShares(type: .Recover)
         }.then { result in
             self.commonResultHandler(result: result)
         }
@@ -278,7 +279,7 @@ private extension DistributionManager {
         guard isNeedToSearching else { return Promise().asVoid() }
 
         guard result.msgType == Constants.Common.ok,
-              let shares = result.data, !shares.isEmpty,
+              let shares = result.data?.shares, !shares.isEmpty,
               shares.first?.distributionType == .Recover else {
             stopMonitoringClaimResponses()
             self.checkForError()
@@ -308,24 +309,26 @@ private extension DistributionManager {
             return Promise(error: MetaSecretErrorType.shareSearchError)
         }
         
-        guard let shares = result.data,
-              !shares.isEmpty else {
+        guard let data = result.data else {
             return Promise().asVoid()
         }
         
-        switch shares.first?.distributionType {
+        let type = data.userRequestType
+        
+        switch type {
         case .Recover:
+            guard !data.shares.isEmpty else {
+                return Promise(error: MetaSecretErrorType.cantClaim)
+            }
             return handleClaimSharesResponse(result)
         case .Split:
             return checkSharesResult(result)
-        default:
-            return Promise().asVoid()
         }
     }
     
     func askingForClaims(description: String) -> Promise<Void> {
         guard let userSignature = userService.userSignature, let secret = dbManager.readSecretBy(description: description) else {
-            return Promise(error: MetaSecretErrorType.cantClaim)
+            return Promise(error: MetaSecretErrorType.commonError)
         }
 
         let sharesArray = Array(secret.shares)
@@ -336,7 +339,7 @@ private extension DistributionManager {
               let shareObject: SecretDistributionDoc = try? jsonManager.objectGeneration(from: shareString),
               let members = shareObject.metaPassword?.metaPassword.vault.signatures
         else {
-            return Promise(error: MetaSecretErrorType.cantClaim)
+            return Promise(error: MetaSecretErrorType.commonError)
         }
         
         if sharesArray.count != 1,

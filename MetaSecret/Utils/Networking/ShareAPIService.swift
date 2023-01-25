@@ -9,7 +9,7 @@ import Foundation
 import PromiseKit
 
 protocol ShareAPIProtocol {
-    func findShares() -> Promise<FindSharesResult>
+    func findShares(type: SecretDistributionType) -> Promise<FindSharesResult>
     func distribute(encodedShare: AeadCipherText,
                     receiver: UserSignature,
                     description: String,
@@ -43,10 +43,15 @@ class ShareAPIService: APIManager, ShareAPIProtocol {
         return fetchData(Distribute(params))
     }
     
-    func findShares() -> Promise<FindSharesResult> {
+    func findShares(type: SecretDistributionType) -> Promise<FindSharesResult> {
         guard
-            let userSignature = userService.userSignature,
-            let params = jsonManager.jsonStringGeneration(from: userSignature)
+            let userSignature = userService.userSignature else {
+            return Promise(error: MetaSecretErrorType.userSignatureError)
+        }
+        
+        let model = FindSharesRequest(userRequestType: type, userSignature: userSignature)
+        
+        guard let params = jsonManager.jsonStringGeneration(from: model)
         else {
             return Promise(error: MetaSecretErrorType.userSignatureError)
         }

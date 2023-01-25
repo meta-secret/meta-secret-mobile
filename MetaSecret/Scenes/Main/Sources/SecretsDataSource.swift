@@ -17,7 +17,7 @@ final class SecretsDataSource: MainScreeSourcable {
         var items = [CellSetupDate]()
         for secret in secrets {
             let cellSource = CellSetupDate()
-            cellSource.setupCellSource(title: secret.secretName, boolValue: secret.shares.count != 1)
+            cellSource.setupCellSource(title: secret.secretName, boolValue: secret.shares.count == Constants.Common.neededMembersCount)
                 items.append(cellSource)
         }
         

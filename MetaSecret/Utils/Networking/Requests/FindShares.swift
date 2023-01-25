@@ -19,8 +19,13 @@ final class FindShares: HTTPRequest {
 
 struct FindSharesResult: Codable {
     var msgType: String
-    var data: [SecretDistributionDoc]?
+    var data: FindSharesResponse?
     var error: String?
+}
+
+struct FindSharesResponse: Codable {
+    var userRequestType: SecretDistributionType
+    var shares: [SecretDistributionDoc]
 }
 
 struct SecretDistributionDoc: Codable {
