@@ -10,10 +10,10 @@ import RealmSwift
 
 protocol DBManagerProtocol {
     func saveSecret(_ secret: Secret)
-    func readSecretBy(description: String) -> Secret?
+    func readSecretBy(descriptionName: String) -> Secret?
     func getAllSecrets() -> [Secret]
     func savePass(_ pass: MetaPassId)
-    func readPassBy(description: String) -> MetaPassId?
+    func readPassBy(descriptionName: String) -> MetaPassId?
 }
 
 final class DBManager: NSObject, DBManagerProtocol {
@@ -27,8 +27,6 @@ final class DBManager: NSObject, DBManagerProtocol {
     #warning("MAKE GENERIC METHODS")
     // MARK: - SECRET
     func saveSecret(_ secret: Secret) {
-        print()
-        
         do {
             let realm = try Realm()
             try realm.write {
@@ -39,10 +37,10 @@ final class DBManager: NSObject, DBManagerProtocol {
         }
     }
     
-    func readSecretBy(description: String) -> Secret? {
+    func readSecretBy(descriptionName: String) -> Secret? {
         do {
             let realm = try Realm()
-            let specificSecret = realm.object(ofType: Secret.self, forPrimaryKey: description)
+            let specificSecret = realm.object(ofType: Secret.self, forPrimaryKey: descriptionName)
             return specificSecret
         } catch {
             alertManager.showCommonError(error.localizedDescription.description)
@@ -73,10 +71,10 @@ final class DBManager: NSObject, DBManagerProtocol {
         }
     }
     
-    func readPassBy(description: String) -> MetaPassId? {
+    func readPassBy(descriptionName: String) -> MetaPassId? {
         do {
             let realm = try Realm()
-            let specificPass = realm.object(ofType: MetaPassId.self, forPrimaryKey: description)
+            let specificPass = realm.object(ofType: MetaPassId.self, forPrimaryKey: descriptionName)
             return specificPass
         } catch {
             alertManager.showCommonError(error.localizedDescription.description)

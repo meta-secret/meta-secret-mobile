@@ -21,7 +21,7 @@ final class AddSecretViewModel: CommonViewModel {
     
     private var components: [UserShareDto] = [UserShareDto]()
     private var signatures: [UserSignature]? = nil
-    private var description: String = ""
+    private var descriptionName: String = ""
     private lazy var activeSignatures: [UserSignature] = [UserSignature]()
     
     private var userService: UsersServiceProtocol
@@ -86,10 +86,10 @@ final class AddSecretViewModel: CommonViewModel {
         return signatures?.count ?? 0
     }
     
-    func split(secret: String, description: String) -> Promise<Void> {
-        self.description = description
+    func split(secret: String, descriptionName: String) -> Promise<Void> {
+        self.descriptionName = descriptionName
         
-        if let _ = readMySecret(description: description) {
+        if let _ = readMySecret(descriptionName: descriptionName) {
             return Promise(error: MetaSecretErrorType.alreadySavedMessage)
         } else {
             return splitInternal(secret)
@@ -101,7 +101,7 @@ final class AddSecretViewModel: CommonViewModel {
     }
     
     func encryptAndDistribute() -> Promise<Void> {
-        return distributionManager.distributeShares(components, activeSignatures, description: description)
+        return distributionManager.distributeShares(components, activeSignatures, descriptionName: descriptionName)
     }
     
     func showDeviceLists() -> Promise<Void> {
@@ -113,8 +113,8 @@ final class AddSecretViewModel: CommonViewModel {
         return Promise().asVoid()
     }
     
-    func requestClaims(_ description: String) {
-        distributionManager.startMonitoringClaimResponses(description: description)
+    func requestClaims(_ descriptionName: String) {
+        distributionManager.startMonitoringClaimResponses(descriptionName: descriptionName)
     }
 }
 
@@ -128,7 +128,7 @@ private extension AddSecretViewModel {
     }
     
     //MARK: - WORK WITH DB    
-    func readMySecret(description: String) -> Secret? {
-        return dbManager.readSecretBy(description: description)
+    func readMySecret(descriptionName: String) -> Secret? {
+        return dbManager.readSecretBy(descriptionName: descriptionName)
     }
 }

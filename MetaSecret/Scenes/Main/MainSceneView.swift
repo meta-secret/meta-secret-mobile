@@ -301,6 +301,6 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
 
 extension MainSceneView: ClusterDeviceCellDelegate {
     func buttonTapped() {
-        alertManager.showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.MainScreen.notBackedUp))
+        alertManager.showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.MainScreen.notBackedUp, cancelButton: nil))
     }
 }

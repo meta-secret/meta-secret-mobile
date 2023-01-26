@@ -48,7 +48,7 @@ extension OnboardingSceneViewModel {
             }
         }
         
-        var description: String {
+        var descriptionName: String {
             switch self {
             case .welcome:
                 return Constants.Onboarding.whatIs

@@ -68,7 +68,7 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
         alertManager.showLoader()
         var isThereError = false
         firstly {
-            viewModel.split(secret: passwordTextField.text ?? "", description: descriptionTextField.text ?? "")
+            viewModel.split(secret: passwordTextField.text ?? "", descriptionName: descriptionTextField.text ?? "")
         }.then {
             self.viewModel.encryptAndDistribute()
         }.catch { e in
@@ -149,7 +149,7 @@ private extension AddSecretSceneView {
     func split() {
         alertManager.showLoader()
         firstly {
-            viewModel.split(secret: passwordTextField.text ?? "", description: descriptionTextField.text ?? "")
+            viewModel.split(secret: passwordTextField.text ?? "", descriptionName: descriptionTextField.text ?? "")
         }.catch { e in
             self.alertManager.hideLoader()
             let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription

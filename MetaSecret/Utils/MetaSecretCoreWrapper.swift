@@ -12,7 +12,7 @@ protocol RustProtocol {
     func split(secret: String) -> [UserShareDto]
     func encrypt(share: ShareToEncrypt) -> AeadCipherText?
     func decrypt(model: DecryptModel) -> String?
-    func generateMetaPassId(description: String) -> MetaPasswordId?
+    func generateMetaPassId(descriptionName: String) -> MetaPasswordId?
     func restoreSecret(model: RestoreModel) -> String?
 }
 
@@ -68,19 +68,19 @@ final class RustTransporterManager: NSObject, RustProtocol {
         return jsonString
     }
     
-    func generateMetaPassId(description: String) -> MetaPasswordId? {
-        if let metaPassId = dbManager.readPassBy(description: description) {
+    func generateMetaPassId(descriptionName: String) -> MetaPasswordId? {
+        if let metaPassId = dbManager.readPassBy(descriptionName: descriptionName) {
             let encryptedShare: MetaPasswordId? = try? jsonSerializeManager.objectGeneration(from: metaPassId.metaPassId)
             return encryptedShare
         }
         
-        let jsonData = jsonSerializeManager.jsonU8Generation(string: description)
+        let jsonData = jsonSerializeManager.jsonU8Generation(string: descriptionName)
         guard let libResult = generate_meta_password_id(jsonData, jsonData.count) else { return nil }
         let jsonString = String(cString: libResult)
         rust_string_free(libResult)
         
         let metaPassId = MetaPassId()
-        metaPassId.secretName = description
+        metaPassId.secretName = descriptionName
         metaPassId.metaPassId = jsonString
         dbManager.savePass(metaPassId)
         

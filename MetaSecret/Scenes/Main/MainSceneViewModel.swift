@@ -80,7 +80,7 @@ final class MainSceneViewModel: CommonViewModel {
             return firstly {
                 getVault()
             }.get {
-                self.checkVaultResult()
+                let _ = self.checkVaultResult()
             }.asVoid()
         }
     }
@@ -92,7 +92,7 @@ final class MainSceneViewModel: CommonViewModel {
     }
     
     private func checkShares() -> Promise<Void> {
-        return distributionManager.findShares()
+        return distributionManager.findShares(type: .Split)
     }
     
     func getVault() -> Promise<Void> {

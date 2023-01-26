@@ -12,7 +12,7 @@ protocol ShareAPIProtocol {
     func findShares(type: SecretDistributionType) -> Promise<FindSharesResult>
     func distribute(encodedShare: AeadCipherText,
                     receiver: UserSignature,
-                    description: String,
+                    descriptionName: String,
                     type: SecretDistributionType) -> Promise<DistributeResult>
     func requestClaim(provider: UserSignature, secret: Secret) -> Promise<ClaimResult>
     func findClaims() -> Promise<FindClaimsResult>
@@ -21,12 +21,12 @@ protocol ShareAPIProtocol {
 class ShareAPIService: APIManager, ShareAPIProtocol {
     func distribute(encodedShare: AeadCipherText,
                     receiver: UserSignature,
-                    description: String,
+                    descriptionName: String,
                     type: SecretDistributionType) -> Promise<DistributeResult> {
         
         guard let mainVault = userService.mainVault,
               let userSignature = userService.userSignature,
-              let metaPasswordId = rustManager.generateMetaPassId(description: description)
+              let metaPasswordId = rustManager.generateMetaPassId(descriptionName: descriptionName)
         else { return Promise(error: MetaSecretErrorType.userSignatureError) }
             
         let secretMessage = EncryptedMessage(receiver: receiver, encryptedText: encodedShare)
@@ -62,7 +62,7 @@ class ShareAPIService: APIManager, ShareAPIProtocol {
     func requestClaim(provider: UserSignature, secret: Secret) -> Promise<ClaimResult> {
         guard
             let userSignature = userService.userSignature,
-            let metaPasswordId = rustManager.generateMetaPassId(description: secret.secretName)
+            let metaPasswordId = rustManager.generateMetaPassId(descriptionName: secret.secretName)
         else {
             return Promise(error: MetaSecretErrorType.userSignatureError)
         }

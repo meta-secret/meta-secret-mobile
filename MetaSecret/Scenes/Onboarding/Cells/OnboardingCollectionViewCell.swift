@@ -18,6 +18,6 @@ class OnboardingCollectionViewCell: UICollectionViewCell {
     // MARK: - Functions
     func setup(cellType: OnboardingSceneViewModel.CellType) {
         titleLabel.text = cellType.title
-        descriptionLabel.text = cellType.description
+        descriptionLabel.text = cellType.descriptionName
     }
 }

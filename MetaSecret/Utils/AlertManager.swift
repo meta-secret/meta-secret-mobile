@@ -51,7 +51,7 @@ class AlertManager: NSObject, Alertable {
     }
     
     func showCommonError(_ message: String?) {
-        let errorModel = AlertModel(title: Constants.Errors.error, message: message ?? Constants.Errors.swwError)
+        let errorModel = AlertModel(title: Constants.Errors.error, message: message ?? Constants.Errors.swwError, cancelButton: nil)
         showCommonAlert(errorModel)
     }
     
