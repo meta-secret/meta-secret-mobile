@@ -42,6 +42,7 @@ class DistributionManager: NSObject, DistributionProtocol  {
     
     private var isNeedToRedistribute: Bool = false
     private var isNeedToSearching: Bool = true
+    private var needToRecover: Bool = false
     private let nc = NotificationCenter.default
     
     private var userService: UsersServiceProtocol
@@ -275,6 +276,7 @@ private extension DistributionManager {
     }
     
     func findSharesClaim() -> Promise<Void> {
+        needToRecover = true
         return firstly {
             shareService.findShares(type: .Recover)
         }.then { result in
@@ -324,7 +326,13 @@ private extension DistributionManager {
         case .Recover:
             stopMonitoringClaimResponses()
             if userService.mainVault?.signatures?.count == 3, data.shares.isEmpty {
-                return Promise(error: MetaSecretErrorType.cantClaim)
+                if needToRecover {
+                    needToRecover = false
+                    return Promise(error: MetaSecretErrorType.cantClaim)
+                } else {
+                    needToRecover = false
+                    return Promise().asVoid()
+                }
             }
             return handleClaimSharesResponse(result)
         case .Split:
