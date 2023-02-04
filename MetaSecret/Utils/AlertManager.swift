@@ -13,6 +13,7 @@ protocol Alertable {
     func showCommonAlert(_ model: AlertModel)
     func showLoader()
     func hideLoader()
+    func hideAlert()
 }
 
 class AlertManager: NSObject, Alertable {
@@ -48,6 +49,14 @@ class AlertManager: NSObject, Alertable {
         
         let loaderView = window?.subviews.first(where: {$0.tag == Constants.ViewTags.loaderTag})
         loaderView?.removeFromSuperview()
+    }
+    
+    func hideAlert() {
+        let window = rootSearchService.findWindow()
+        
+        if let alertViewController = window?.rootViewController?.presentedViewController as? UIAlertController {
+            alertViewController.dismiss(animated: true)
+        }
     }
     
     func showCommonError(_ message: String?) {

@@ -24,6 +24,7 @@ enum MetaSecretErrorType: Error {
     case cantClaim
     case declinedUser
     case alreadySavedMessage
+    case notConfirmed
     
     func message() -> String {
         switch self {
@@ -59,6 +60,8 @@ enum MetaSecretErrorType: Error {
             return Constants.Errors.splitError
         case .alreadySavedMessage:
             return Constants.AddSecret.alreadySavedMessage
+        case .notConfirmed:
+            return Constants.Errors.notConfirmed
         }
     }
 }

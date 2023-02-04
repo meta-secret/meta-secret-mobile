@@ -14,7 +14,6 @@ protocol DistributionProtocol {
     func startMonitoringVaults()
     func startMonitoringClaimResponses(descriptionName: String)
     func stopMonitoringClaimResponses()
-    func distributeSharesToMembers(_ shares: [UserShareDto], signatures: [UserSignature], descriptionName: String) -> Promise<Void>
     func getVault() -> Promise<Void>
     func findShares(type: SecretDistributionType) -> Promise<Void>
     func reDistribute() -> Promise<Void>
@@ -276,7 +275,7 @@ private extension DistributionManager {
     }
     
     func findSharesClaim() -> Promise<Void> {
-        needToRecover = true
+//        needToRecover = true
         return firstly {
             shareService.findShares(type: .Recover)
         }.then { result in
@@ -326,13 +325,13 @@ private extension DistributionManager {
         case .Recover:
             stopMonitoringClaimResponses()
             if userService.mainVault?.signatures?.count == 3, data.shares.isEmpty {
-                if needToRecover {
-                    needToRecover = false
-                    return Promise(error: MetaSecretErrorType.cantClaim)
-                } else {
-                    needToRecover = false
+//                if needToRecover {
+//                    needToRecover = false
+//                    return Promise(error: MetaSecretErrorType.cantClaim)
+//                } else {
+//                    needToRecover = false
                     return Promise().asVoid()
-                }
+//                }
             }
             return handleClaimSharesResponse(result)
         case .Split:
@@ -396,7 +395,17 @@ private extension DistributionManager {
         }
     }
     
-    func distributeClaimsToRestore(claims: [PasswordRecoveryRequest]?) {
+    func askConfirmation(claims: [PasswordRecoveryRequest]?) {
+        alertManager.showCommonAlert(AlertModel(title: Constants.Alert.needConfirmation,
+                                                message: Constants.Alert.confirmationText,
+                                                okHandler: { [weak self] in
+            self?.distributeClaimsToRestore(claims)
+        }, cancelHandler: {
+            return
+        }))
+    }
+    
+    func distributeClaimsToRestore(_ claims: [PasswordRecoveryRequest]?) {
         guard let claims else {
             distributeClaimError()
             return
@@ -487,7 +496,7 @@ private extension DistributionManager {
         case is FindClaimsResult:
             let result = result as! FindClaimsResult
             if result.msgType == Constants.Common.ok, !(result.data?.isEmpty ?? true) {
-                self.distributeClaimsToRestore(claims: result.data)
+                self.askConfirmation(claims: result.data)
             }
             return Promise().asVoid()
         case is [DistributeResult]:

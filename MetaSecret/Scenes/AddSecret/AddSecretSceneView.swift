@@ -92,6 +92,7 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     
     func showRestoreResult(password: String?) {
         alertManager.hideLoader()
+        alertManager.hideAlert()
         guard let password else {
             alertManager.showCommonError(MetaSecretErrorType.cantRestore.message())
             return
@@ -162,9 +163,11 @@ private extension AddSecretSceneView {
         }
     }
     
-    private func restore() {
+    func restore() {
         viewModel.restore(descriptionName: descriptionTextField.text ?? "")
     }
+    
+    
     
     //MARK: - CHANGING SCREEN MODE
     func resetScreen() {

@@ -142,6 +142,9 @@ struct Constants {
         static let ok = NSLocalizedString("ok", comment: "")
         static let cancel = NSLocalizedString("cancel", comment: "")
         static let biometricalReason = NSLocalizedString("biometricalReason", comment: "")
+        static let needConfirmation = NSLocalizedString("needConfirmation", comment: "")
+        static let confirmationText = NSLocalizedString("confirmationText", comment: "")
+        static let waitConfirmationText = NSLocalizedString("waitConfirmationText", comment: "")
     }
     
     struct Errors {
@@ -169,6 +172,7 @@ struct Constants {
         static let splitError = NSLocalizedString("splitError", comment: "")
         static let authError = NSLocalizedString("authError", comment: "")
         static let authErrorMessage = NSLocalizedString("authErrorMessage", comment: "")
+        static let notConfirmed = NSLocalizedString("notConfirmed", comment: "")
     }
     
     //MARK: - TAGS

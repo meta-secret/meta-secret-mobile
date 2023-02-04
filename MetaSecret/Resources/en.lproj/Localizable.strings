@@ -95,6 +95,9 @@
 "okok" = "Ок";
 "cancel" = "Cancel";
 "biometricalReason" = "Authentication required to access the secure data";
+"needConfirmation" = "Need Confirmation";
+"confirmationText" = "Please confirm secret restoring";
+"waitConfirmationText" = "Please wait for confirmation on another device or cancel it";
 
 //MARK: - Errors
 "error" = "Error";
@@ -112,6 +115,7 @@
 "atLeast3" = "Not enough devices connected. It's recommended to have several devices in your network, to reduce the risk of data loss.";
 "authError" = "Authentication failed";
 "authErrorMessage" = "You could not be verified; please try again.";
+"notConfirmed" = "Restoring not confirmed";
 
 //MARK: - Select device
 "sentShareTitle" = "Share has been sent!";
