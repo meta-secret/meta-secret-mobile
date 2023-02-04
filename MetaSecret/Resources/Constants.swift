@@ -125,7 +125,7 @@ struct Constants {
         static let notSplitedMessage = NSLocalizedString("notSplitedMessage", comment: "")
         static let alreadySavedMessage = NSLocalizedString("alreadySavedMessage", comment: "")
         static let edit = NSLocalizedString("edit", comment: "")
-        static let restore = NSLocalizedString("restore", comment: "")
+        static let showSecret = NSLocalizedString("showSecret", comment: "")
         static let success = NSLocalizedString("success", comment: "")
         static let successSplited = NSLocalizedString("successSplited", comment: "")
     }
@@ -141,6 +141,7 @@ struct Constants {
         static let emptyTitle = ""
         static let ok = NSLocalizedString("ok", comment: "")
         static let cancel = NSLocalizedString("cancel", comment: "")
+        static let biometricalReason = NSLocalizedString("biometricalReason", comment: "")
     }
     
     struct Errors {
@@ -166,6 +167,8 @@ struct Constants {
         static let shareSearchError = NSLocalizedString("shareSearchError", comment: "")
         static let distributionDBError = NSLocalizedString("distributionDBError", comment: "")
         static let splitError = NSLocalizedString("splitError", comment: "")
+        static let authError = NSLocalizedString("authError", comment: "")
+        static let authErrorMessage = NSLocalizedString("authErrorMessage", comment: "")
     }
     
     //MARK: - TAGS

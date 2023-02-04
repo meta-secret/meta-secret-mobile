@@ -85,6 +85,7 @@
 "alreadySavedMessage" = "You already has a secret with the same description.";
 "edit" = "Edit";
 "restore" = "RESTORE";
+"showSecret" = "SHOW SECRET";
 "editSecret" = "Edit Secret";
 "recoverEdit" = "Restore Secret";
 "success" = "Success";
@@ -93,6 +94,7 @@
 //MARK: - ALERTS
 "okok" = "Ок";
 "cancel" = "Cancel";
+"biometricalReason" = "Authentication required to access the secure data";
 
 //MARK: - Errors
 "error" = "Error";
@@ -108,6 +110,8 @@
 "splitError" = "Splitting error";
 "sww" = "Something wrong";
 "atLeast3" = "Not enough devices connected. It's recommended to have several devices in your network, to reduce the risk of data loss.";
+"authError" = "Authentication failed";
+"authErrorMessage" = "You could not be verified; please try again.";
 
 //MARK: - Select device
 "sentShareTitle" = "Share has been sent!";

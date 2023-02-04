@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class SplashSceneView: CommonSceneView {
     //MARK: - OUTLETS
@@ -13,6 +14,8 @@ class SplashSceneView: CommonSceneView {
     
     //MARK: - PROPERTIES
     private let router: ApplicationRouterProtocol
+    private let context = LAContext()
+    private var isSecureAuth = false
     
     //MARK: - INITIALISATION
     init(messagesManager: Alertable,
@@ -30,6 +33,26 @@ class SplashSceneView: CommonSceneView {
         super.viewDidLoad()
         
         activityIndicator.startAnimating()
-        router.route()
+        checkBiometricAllow()
+    }
+    
+    func checkBiometricAllow() {
+        var error: NSError?
+        let reason = Constants.Alert.biometricalReason
+        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+            
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) {
+                [weak self] success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        self?.router.route()
+                    } else {
+                        self?.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.authError, message: Constants.Errors.authErrorMessage))
+                    }
+                }
+            }
+        } else {
+            self.router.route()
+        }
     }
 }

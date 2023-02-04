@@ -163,8 +163,7 @@ private extension AddSecretSceneView {
     }
     
     private func restore() {
-        alertManager.showLoader()
-        viewModel.requestClaims(descriptionTextField.text ?? "")
+        viewModel.restore(descriptionName: descriptionTextField.text ?? "")
     }
     
     //MARK: - CHANGING SCREEN MODE
@@ -185,7 +184,7 @@ private extension AddSecretSceneView {
             passwordTextField.text = nil
             passwordTextField.placeholder = Constants.AddSecret.password
             
-            splitRestoreButton.setTitle(Constants.AddSecret.restore, for: .normal)
+            splitRestoreButton.setTitle(Constants.AddSecret.showSecret, for: .normal)
             splitRestoreButton.isUserInteractionEnabled = true
             splitRestoreButton.backgroundColor = AppColors.mainOrange
             splitRestoreButton.isHidden = false

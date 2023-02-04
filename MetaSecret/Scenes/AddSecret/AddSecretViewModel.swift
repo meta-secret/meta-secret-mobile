@@ -7,6 +7,7 @@
 
 import Foundation
 import PromiseKit
+import LocalAuthentication
 
 protocol AddSecretProtocol {
     func close()
@@ -28,6 +29,7 @@ final class AddSecretViewModel: CommonViewModel {
     private var dbManager: DBManagerProtocol
     private var rustManager: RustProtocol
     private var distributionManager: DistributionProtocol
+    private var alertManager: Alertable
     
     var model: SceneSendDataModel? = nil
     var delegate: AddSecretProtocol? = nil
@@ -56,11 +58,13 @@ final class AddSecretViewModel: CommonViewModel {
     init(userService: UsersServiceProtocol,
          dbManager: DBManagerProtocol,
          rustManager: RustProtocol,
-         distributionManager: DistributionProtocol) {
+         distributionManager: DistributionProtocol,
+         alertManager: Alertable) {
         self.userService = userService
         self.dbManager = dbManager
         self.rustManager = rustManager
         self.distributionManager = distributionManager
+        self.alertManager = alertManager
     }
     
     override func loadData() -> Promise<Void> {
@@ -111,6 +115,31 @@ final class AddSecretViewModel: CommonViewModel {
 //        })
 //        routeTo(.selectDevice, presentAs: .push, with: model)
         return Promise().asVoid()
+    }
+    
+    func restore(descriptionName: String) {
+        checkBiometricAllow(descriptionName)
+    }
+    
+    private func checkBiometricAllow(_ descriptionName: String) {
+        let context = LAContext()
+        var error: NSError?
+        let reason = Constants.Alert.biometricalReason
+        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) {
+                [weak self] success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        self?.alertManager.showLoader()
+                        self?.requestClaims(descriptionName)
+                    } else {
+                        self?.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.authError, message: Constants.Errors.authErrorMessage))
+                    }
+                }
+            }
+        } else {
+            requestClaims(descriptionName)
+        }
     }
     
     func requestClaims(_ descriptionName: String) {
