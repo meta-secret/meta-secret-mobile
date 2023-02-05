@@ -129,9 +129,11 @@ final class AddSecretViewModel: CommonViewModel {
                 [weak self] success, authenticationError in
                 DispatchQueue.main.async {
                     if success {
-                        self?.alertManager.showCommonAlert(AlertModel(title: Constants.Alert.needConfirmation, message: Constants.Alert.waitConfirmationText, okButton: Constants.Alert.cancel, cancelButton: nil, okHandler: {
-                            self?.distributionManager.stopMonitoringClaimResponses()
-                        }))
+                        if self?.userService.mainVault?.signatures?.count ?? 0 >= Constants.Common.neededMembersCount {
+                            self?.alertManager.showCommonAlert(AlertModel(title: Constants.Alert.needConfirmation, message: Constants.Alert.waitConfirmationText, okButton: Constants.Alert.cancel, cancelButton: nil, okHandler: {
+                                self?.distributionManager.stopMonitoringClaimResponses()
+                            }))
+                        }
                         self?.requestClaims(descriptionName)
                     } else {
                         self?.alertManager.showCommonError(Constants.Errors.authErrorMessage)

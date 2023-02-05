@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import LocalAuthentication
 
 class SplashSceneView: CommonSceneView {
     //MARK: - OUTLETS
@@ -14,14 +13,16 @@ class SplashSceneView: CommonSceneView {
     
     //MARK: - PROPERTIES
     private let router: ApplicationRouterProtocol
-    private let context = LAContext()
     private var isSecureAuth = false
+    private let biometricManager: BiometricsManagerProtocol
     
     //MARK: - INITIALISATION
     init(messagesManager: Alertable,
+         biometricManager: BiometricsManagerProtocol,
          router: ApplicationRouterProtocol
     ) {
         self.router = router
+        self.biometricManager = biometricManager
         super.init(alertManager: messagesManager)
     }
     
@@ -33,26 +34,25 @@ class SplashSceneView: CommonSceneView {
         super.viewDidLoad()
         
         activityIndicator.startAnimating()
-        checkBiometricAllow()
+        checkBiometric()
     }
     
-    func checkBiometricAllow() {
-        var error: NSError?
-        let reason = Constants.Alert.biometricalReason
-        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
-            
-            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) {
-                [weak self] success, authenticationError in
-                DispatchQueue.main.async {
-                    if success {
-                        self?.router.route()
-                    } else {
-                        self?.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.authError, message: Constants.Errors.authErrorMessage))
-                    }
-                }
+    private func checkBiometric() {
+        biometricManager.canEvaluate { [weak self] (canEvaluate, _, canEvaluateError) in
+            guard canEvaluate else {
+                self?.router.route()
+                return
             }
-        } else {
-            self.router.route()
+            
+            biometricManager.evaluate { [weak self] (success, error) in
+                guard success else {
+                    self?.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.error,
+                                message: error?.localizedDescription ?? Constants.BiometricError.unknown, cancelButton: nil))
+                    return
+                }
+                
+                self?.router.route()
+            }
         }
     }
 }

@@ -131,3 +131,13 @@
 "objectToJsonError" = "Ошибка перекодировки объекта в Json";
 "cantRestore" = "Не получается восстановить пароль";
 "cantClaim" = "Запустите приложение на втором устройстве, чтоб восстановить пароль!";
+
+//MARK: - Biometric errors
+"authenticationFailed" = "Проблема с подтверждением личности.";
+"userCancel" = "Вы нажали Отменить.";
+"userFallback" = "Вы нажали Пароль.";
+"biometryNotAvailable" = "Face ID/Touch ID недоступны.";
+"biometryNotEnrolled" = "Face ID/Touch ID не унастроены.";
+"biometryLockout" = "Face ID/Touch ID заблокированы.";
+"unknown" = "Face ID/Touch ID возможно не сконфигурированы.";
+"enterAppPass" = "Введите пароль приложения";

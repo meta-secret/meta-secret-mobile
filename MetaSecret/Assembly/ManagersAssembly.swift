@@ -20,5 +20,6 @@ class ManagersAssembly: Assembly {
         container.autoregister(RustProtocol.self, initializer: RustTransporterManager.init).inObjectScope(.container)
         container.autoregister(JsonSerealizable.self, initializer: JsonSerealizManager.init).inObjectScope(.container)
         container.autoregister(DistributionProtocol.self, initializer: DistributionManager.init).inObjectScope(.container)
+        container.autoregister(BiometricsManagerProtocol.self, initializer: BiometricsManager.init).inObjectScope(.container)
     }
 }

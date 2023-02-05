@@ -175,6 +175,17 @@ struct Constants {
         static let notConfirmed = NSLocalizedString("notConfirmed", comment: "")
     }
     
+    struct BiometricError {
+        static let authenticationFailed = NSLocalizedString("authenticationFailed", comment: "")
+        static let userCancel = NSLocalizedString("userCancel", comment: "")
+        static let userFallback = NSLocalizedString("userFallback", comment: "")
+        static let biometryNotAvailable = NSLocalizedString("biometryNotAvailable", comment: "")
+        static let biometryNotEnrolled = NSLocalizedString("biometryNotEnrolled", comment: "")
+        static let biometryLockout = NSLocalizedString("biometryLockout", comment: "")
+        static let unknown = NSLocalizedString("unknown", comment: "")
+        static let enterAppPass = NSLocalizedString("enterAppPass", comment: "")
+    }
+    
     //MARK: - TAGS
     struct ViewTags {
         static let loaderTag = 1001

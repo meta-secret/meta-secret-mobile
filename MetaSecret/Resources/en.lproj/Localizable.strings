@@ -131,3 +131,13 @@
 "objectToJsonError" = "Parse object to Json error";
 "cantRestore" = "Can't restore password";
 "cantClaim" = "Launch the app on another device to restore the password";
+
+//MARK: - Biometric errors
+"authenticationFailed" = "There was a problem verifying your identity.";
+"userCancel" = "You pressed cancel.";
+"userFallback" = "You pressed password.";
+"biometryNotAvailable" = "Face ID/Touch ID is not available.";
+"biometryNotEnrolled" = "Face ID/Touch ID is not set up.";
+"biometryLockout" = "Face ID/Touch ID is locked.";
+"unknown" = "Face ID/Touch ID may not be configured";
+"enterAppPass" = "Enter App Password";
