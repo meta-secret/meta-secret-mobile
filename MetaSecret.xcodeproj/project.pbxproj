@@ -18,6 +18,7 @@
 		E5108B4828BD38680067207A /* Distribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4728BD38680067207A /* Distribute.swift */; };
 		E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */; };
 		E510BB162981CFBB009EBE4C /* FindSharesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510BB152981CFBB009EBE4C /* FindSharesRequest.swift */; };
+		E51295922991B55A00D484E2 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51295912991B55A00D484E2 /* KeyChainManager.swift */; };
 		E5184200295E0C7F00B8F3BD /* ApplicationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51841FF295E0C7F00B8F3BD /* ApplicationAssembly.swift */; };
 		E5184202295E0E3700B8F3BD /* CommonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5184201295E0E3700B8F3BD /* CommonViewModel.swift */; };
 		E5184204295E117800B8F3BD /* CommonSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5184203295E117800B8F3BD /* CommonSceneView.swift */; };
@@ -138,6 +139,7 @@
 		E5108B4728BD38680067207A /* Distribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Distribute.swift; sourceTree = "<group>"; };
 		E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretViewModel.swift; sourceTree = "<group>"; };
 		E510BB152981CFBB009EBE4C /* FindSharesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindSharesRequest.swift; sourceTree = "<group>"; };
+		E51295912991B55A00D484E2 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		E51841FF295E0C7F00B8F3BD /* ApplicationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationAssembly.swift; sourceTree = "<group>"; };
 		E5184201295E0E3700B8F3BD /* CommonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModel.swift; sourceTree = "<group>"; };
 		E5184203295E117800B8F3BD /* CommonSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSceneView.swift; sourceTree = "<group>"; };
@@ -599,6 +601,7 @@
 				E5731C682947D8FA004B0095 /* DistributionManager.swift */,
 				E5C4CA612961E9E900DA8A5C /* UIFactory.swift */,
 				E523D741298F22AD00A53141 /* BiometricsManager.swift */,
+				E51295912991B55A00D484E2 /* KeyChainManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -785,6 +788,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E52E651828C8021E0028213A /* Secret.swift in Sources */,
+				E51295922991B55A00D484E2 /* KeyChainManager.swift in Sources */,
 				E5F0C40828A83ECC00902310 /* AlertManager.swift in Sources */,
 				E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */,
 				E51867A429396CBA000DF023 /* UserSignature.swift in Sources */,
