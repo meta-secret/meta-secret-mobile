@@ -84,7 +84,7 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
                   let securityBox = self.userService.securityBox,
                   let userSignature = self.userService.userSignature else { return }
             self.alertManager.showLoader()
-            self.viewModel.register(userSignature, securityBox, isOwner: false)
+            let _ = self.viewModel.register(userSignature, securityBox, isOwner: false)
         }, cancelHandler: { [weak self] in
             self?.userService.resetAll()
         }))

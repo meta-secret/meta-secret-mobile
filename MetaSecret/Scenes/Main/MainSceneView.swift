@@ -21,6 +21,7 @@ class MainSceneView: CommonSceneView, MainSceneProtocol {
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var remainigLabel: UILabel!
     @IBOutlet weak var yourDevicesTitleLabel: UILabel!
+    @IBOutlet weak var newBubble: UIView!
     
     //MARK: - PROPERTIES
     var viewModel: MainSceneViewModel
@@ -102,6 +103,9 @@ private extension MainSceneView {
         yourDevicesTitleLabel.text = Constants.MainScreen.yourSecrets
         nickNameTitleLabel.text = Constants.MainScreen.yourNick
         nickNameLabel.text = userService.userSignature?.vaultName
+        
+        newBubble.layer.cornerRadius = 10.0
+        newBubble.isHidden = true
     }
     
     func reloadData() {
@@ -155,6 +159,7 @@ private extension MainSceneView {
                     }
                 }
             case .Devices:
+                newBubble.isHidden = userService.mainVault?.pendingJoins?.count == 0
                 if viewModel.selectedSegment == .Devices {
                     firstly {
                         viewModel.getLocalVaultMembers()
