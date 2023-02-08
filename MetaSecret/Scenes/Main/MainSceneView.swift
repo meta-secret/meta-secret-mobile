@@ -274,29 +274,7 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
             return
         }
         
-        if viewModel.selectedSegment == .Devices, content.boolValue {
-            let selectedItem = viewModel.selectedDevice(content: content)
-            let model = SceneSendDataModel(signature: selectedItem, callBack:  { [weak self] isOk in
-                guard let self else { return }
-                if isOk {
-                    self.alertManager.showLoader()
-                    self.viewModel.isToReDistribute = true
-                }
-                
-                firstly {
-                    self.viewModel.getVault()
-                }.catch { e in
-                    let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
-                    self.alertManager.showCommonError(text)
-                }.finally {
-                    self.reloadData()
-                }
-            })
-            
-            let controller = factory.deviceInfo(model: model)
-            push(controller)
-            
-        } else if viewModel.selectedSegment == .Secrets {
+        if viewModel.selectedSegment == .Secrets {
             let model = SceneSendDataModel(mainStringValue: content.title, modeType: .readOnly)
             let controller = factory.split(model: model)
             push(controller)
@@ -305,6 +283,63 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MainSceneView: ClusterDeviceCellDelegate {
+    func acceptTapped(_ content: CellSetupDate) {
+        var isThereError = false
+        let selectedItem = viewModel.selectedDevice(content: content)
+        guard let signature = selectedItem else { return }
+        
+        alertManager.showLoader()
+        firstly {
+            viewModel.acceptUser(candidate: signature)
+        }.catch { e in
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.hideLoader()
+            self.alertManager.showCommonError(text)
+            isThereError = true
+        }.finally {
+            if !isThereError {
+                self.viewModel.isToReDistribute = true
+                firstly {
+                    self.viewModel.getVault()
+                }.catch { e in
+                    let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+                    self.alertManager.showCommonError(text)
+                }.finally {
+                    self.alertManager.hideLoader()
+                    self.reloadData()
+                }
+            }
+        }
+    }
+    
+    func declineTapped(_ content: CellSetupDate) {
+        var isThereError = false
+        let selectedItem = viewModel.selectedDevice(content: content)
+        guard let signature = selectedItem else { return }
+        
+        alertManager.showLoader()
+        firstly {
+            viewModel.declineUser(candidate: signature)
+        }.catch { e in
+            let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+            self.alertManager.hideLoader()
+            self.alertManager.showCommonError(text)
+            isThereError = true
+        }.finally {
+            if !isThereError {
+                firstly {
+                    self.viewModel.getVault()
+                }.catch { e in
+                    let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
+                    self.alertManager.showCommonError(text)
+                }.finally {
+                    self.alertManager.hideLoader()
+                    self.reloadData()
+                }
+            }
+        }
+    }
+    
     func buttonTapped() {
         alertManager.showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.MainScreen.notBackedUp, cancelButton: nil))
     }

@@ -34,9 +34,7 @@ extension ApplicationAssembly {
         container.autoregister(LoginSceneView.self, initializer: LoginSceneView.init)
         container.autoregister(PopupHintViewScene.self, initializer: PopupHintViewScene.init)
         container.autoregister(MainSceneView.self, initializer: MainSceneView.init)
-        container.autoregister(DeviceInfoSceneView.self, initializer: DeviceInfoSceneView.init)
         container.autoregister(AddSecretSceneView.self, initializer: AddSecretSceneView.init)
-        container.autoregister(SelectDeviceSceneView.self, initializer: SelectDeviceSceneView.init)
         container.autoregister(BottomInfoSheetViewScene.self, initializer: BottomInfoSheetViewScene.init)
     }
 }
@@ -46,9 +44,7 @@ extension ApplicationAssembly {
         container.autoregister(OnboardingSceneViewModel.self, initializer: OnboardingSceneViewModel.init)
         container.autoregister(LoginSceneViewModel.self, initializer: LoginSceneViewModel.init)
         container.autoregister(MainSceneViewModel.self, initializer: MainSceneViewModel.init)
-        container.autoregister(DeviceInfoSceneViewModel.self, initializer: DeviceInfoSceneViewModel.init)
         container.autoregister(AddSecretViewModel.self, initializer: AddSecretViewModel.init)
-        container.autoregister(SelectDeviceViewModel.self, initializer: SelectDeviceViewModel.init)
         container.autoregister(BottomInfoViewModel.self, initializer: BottomInfoViewModel.init)
     }
 }

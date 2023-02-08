@@ -90,12 +90,6 @@
 		E5C4CA6A29636E5300DA8A5C /* VaultAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA6929636E5300DA8A5C /* VaultAPIService.swift */; };
 		E5C4CA6C2963720300DA8A5C /* ShareAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C4CA6B2963720300DA8A5C /* ShareAPIService.swift */; };
 		E5C5111029428C9600F7BFC0 /* MetaPassId.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C5110F29428C9600F7BFC0 /* MetaPassId.swift */; };
-		E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */; };
-		E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */; };
-		E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */; };
-		E5CE3D0528C92B880022A06F /* SelectDeviceSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */; };
-		E5CE3D0628C92B880022A06F /* SelectDeviceSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */; };
-		E5CE3D0828C92B9A0022A06F /* SelectDeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */; };
 		E5D1B05E29808F4E00A0CF8C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5D1B05D29808F4E00A0CF8C /* GoogleService-Info.plist */; };
 		E5DA4DAE2905889600893DF2 /* MetaSecretCoreWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5643BD628FF5EBB00DD7FF7 /* MetaSecretCoreWrapper.swift */; };
 		E5DA4DB12905931F00893DF2 /* meta-secret-core.h in Sources */ = {isa = PBXBuildFile; fileRef = E52686F42901D8A90030A542 /* meta-secret-core.h */; };
@@ -217,12 +211,6 @@
 		E5C4CA6929636E5300DA8A5C /* VaultAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultAPIService.swift; sourceTree = "<group>"; };
 		E5C4CA6B2963720300DA8A5C /* ShareAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAPIService.swift; sourceTree = "<group>"; };
 		E5C5110F29428C9600F7BFC0 /* MetaPassId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaPassId.swift; sourceTree = "<group>"; };
-		E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneView.swift; sourceTree = "<group>"; };
-		E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceInfoSceneView.xib; sourceTree = "<group>"; };
-		E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfoSceneViewModel.swift; sourceTree = "<group>"; };
-		E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDeviceSceneView.swift; sourceTree = "<group>"; };
-		E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectDeviceSceneView.xib; sourceTree = "<group>"; };
-		E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDeviceViewModel.swift; sourceTree = "<group>"; };
 		E5D1B05D29808F4E00A0CF8C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E5F0C3F728A82B5500902310 /* SecurityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityManager.swift; sourceTree = "<group>"; };
 		E5F0C3F928A82D0800902310 /* VaultDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultDoc.swift; sourceTree = "<group>"; };
@@ -339,7 +327,6 @@
 		E51ADE9328B8191600C6A87B /* AddSecret */ = {
 			isa = PBXGroup;
 			children = (
-				E5CE3D0228C92B040022A06F /* SelectDeviceScene */,
 				E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */,
 				E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */,
 				E5108B4928BD38DF0067207A /* AddSecretViewModel.swift */,
@@ -417,7 +404,6 @@
 				E588251F28D3A55A00FB01B0 /* Onboarding */,
 				E57E6B5C28B3F04F00906DBD /* Registration */,
 				E57E6B5D28B3F06200906DBD /* Main */,
-				E5C7116828BE9DA600D53CA8 /* PairingRequest */,
 				E51ADE9328B8191600C6A87B /* AddSecret */,
 				E5061CE828CD193200E2787B /* Common */,
 			);
@@ -519,26 +505,6 @@
 				E588252628D3B53400FB01B0 /* OnboardingCollectionViewCell.xib */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		E5C7116828BE9DA600D53CA8 /* PairingRequest */ = {
-			isa = PBXGroup;
-			children = (
-				E5C7116928BE9DE200D53CA8 /* DeviceInfoSceneView.swift */,
-				E5C7116A28BE9DE200D53CA8 /* DeviceInfoSceneView.xib */,
-				E5C7116D28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift */,
-			);
-			path = PairingRequest;
-			sourceTree = "<group>";
-		};
-		E5CE3D0228C92B040022A06F /* SelectDeviceScene */ = {
-			isa = PBXGroup;
-			children = (
-				E5CE3D0328C92B880022A06F /* SelectDeviceSceneView.swift */,
-				E5CE3D0428C92B880022A06F /* SelectDeviceSceneView.xib */,
-				E5CE3D0728C92B9A0022A06F /* SelectDeviceViewModel.swift */,
-			);
-			path = SelectDeviceScene;
 			sourceTree = "<group>";
 		};
 		E5EF2DE2293ABAD8007E9B9E /* Realm */ = {
@@ -710,10 +676,8 @@
 				E52686F72901DBD20030A542 /* MetaSecret-Bridging-Header.h in Resources */,
 				E5061CEC28CD197400E2787B /* BottomInfoSheetViewScene.xib in Resources */,
 				E5800036288CA4D200E1135C /* LaunchScreen.storyboard in Resources */,
-				E5CE3D0628C92B880022A06F /* SelectDeviceSceneView.xib in Resources */,
 				E5061CE728CD116700E2787B /* Colors.xcassets in Resources */,
 				E588252328D3A62600FB01B0 /* OnboardingSceneView.xib in Resources */,
-				E5C7116C28BE9DE200D53CA8 /* DeviceInfoSceneView.xib in Resources */,
 				E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
 				E55B514628CE92F300373959 /* PopupHintViewScene.xib in Resources */,
@@ -812,11 +776,9 @@
 				E5184200295E0C7F00B8F3BD /* ApplicationAssembly.swift in Sources */,
 				E54867A528B6E94800A1E5DB /* MainScreenSource.swift in Sources */,
 				E55A226F28B0357900F5F02B /* Register.swift in Sources */,
-				E5CE3D0528C92B880022A06F /* SelectDeviceSceneView.swift in Sources */,
 				E518420D295E2C4400B8F3BD /* ManagersAssembly.swift in Sources */,
 				E55A227B28B05ACE00F5F02B /* GetVault.swift in Sources */,
 				E588252228D3A62600FB01B0 /* OnboardingSceneView.swift in Sources */,
-				E5CE3D0828C92B9A0022A06F /* SelectDeviceViewModel.swift in Sources */,
 				E57E6B5428B3EFFC00906DBD /* MainSceneView.swift in Sources */,
 				E5108B4A28BD38DF0067207A /* AddSecretViewModel.swift in Sources */,
 				E5C5111029428C9600F7BFC0 /* MetaPassId.swift in Sources */,
@@ -862,8 +824,6 @@
 				E54153D62935457C009AA6F1 /* AeadCipherText.swift in Sources */,
 				E5061CEB28CD197400E2787B /* BottomInfoSheetViewScene.swift in Sources */,
 				E5C4CA66296363D000DA8A5C /* AuthorizationService.swift in Sources */,
-				E5C7116E28BE9DF100D53CA8 /* DeviceInfoSceneViewModel.swift in Sources */,
-				E5C7116B28BE9DE200D53CA8 /* DeviceInfoSceneView.swift in Sources */,
 				E548679E28B6E37B00A1E5DB /* SecretsDataSource.swift in Sources */,
 				E56FD13B28B111CA00AA6CA3 /* SigningManager.swift in Sources */,
 				E5FF621D28B5957F00A794F3 /* ClusterDeviceCell.swift in Sources */,
@@ -1100,7 +1060,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
@@ -1142,7 +1102,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;

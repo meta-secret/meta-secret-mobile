@@ -12,7 +12,6 @@ protocol UIFactoryProtocol {
     // Common
     func popUpHint(with model: BottomInfoSheetModel) -> PopupHintViewScene?
     func mainScreen() -> MainSceneView?
-    func deviceInfo(model: SceneSendDataModel) -> DeviceInfoSceneView?
     func split(model: SceneSendDataModel) -> AddSecretSceneView?
 }
 
@@ -33,12 +32,6 @@ extension UIFactory {
 
     func mainScreen() -> MainSceneView? {
         let viewController = router.resolve(MainSceneView.self)
-        return viewController
-    }
-    
-    func deviceInfo(model: SceneSendDataModel) -> DeviceInfoSceneView? {
-        let viewController = router.resolve(DeviceInfoSceneView.self)
-        viewController?.data = model
         return viewController
     }
     

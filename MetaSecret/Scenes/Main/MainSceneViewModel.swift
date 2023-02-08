@@ -22,6 +22,7 @@ final class MainSceneViewModel: CommonViewModel {
     private var dbManager: DBManagerProtocol
     private var userService: UsersServiceProtocol
     private var distributionManager: DistributionProtocol
+    private var vaultApiService: VaultAPIProtocol
     static let minDevicesCount = 3
     
     var emptyStatusText: String {
@@ -49,10 +50,11 @@ final class MainSceneViewModel: CommonViewModel {
     }
     
     //MARK: - INIT
-    init(dbManager: DBManagerProtocol, distributionManager: DistributionProtocol, userService: UsersServiceProtocol) {
+    init(dbManager: DBManagerProtocol, distributionManager: DistributionProtocol, userService: UsersServiceProtocol, vaultApiService: VaultAPIProtocol) {
         self.dbManager = dbManager
         self.userService = userService
         self.distributionManager = distributionManager
+        self.vaultApiService = vaultApiService
     }
     
     override func loadData() -> Promise<Void> {
@@ -64,6 +66,28 @@ final class MainSceneViewModel: CommonViewModel {
             self.startMonitoringVaultsToConnect()
             self.startMonitoringSharesAndClaimRequests()
         }.asVoid()
+    }
+    
+    //MARK: - PUBLIC METHODS (Pairing)
+    func acceptUser(candidate: UserSignature) -> Promise<Void> {
+        return firstly{
+            vaultApiService.accept(candidate)
+        }.then { result in
+            self.checkResult(result: result)
+        }.asVoid()
+    }
+    
+    func declineUser(candidate: UserSignature) -> Promise<Void> {
+        return firstly{
+            vaultApiService.decline(candidate)
+        }.then { result in
+            self.checkResult(result: result)
+        }.asVoid()
+    }
+    
+    private func checkResult(result: AcceptResult) -> Promise<Void> {
+        guard result.msgType == Constants.Common.ok else { return Promise(error: MetaSecretErrorType.networkError) }
+        return Promise().asVoid()
     }
     
     //MARK: - PUBLIC METHODS (Changing source)
