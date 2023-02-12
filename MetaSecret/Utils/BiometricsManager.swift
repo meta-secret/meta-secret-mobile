@@ -7,10 +7,11 @@
 
 import Foundation
 import LocalAuthentication
+import PromiseKit
 
 protocol BiometricsManagerProtocol {
-    func canEvaluate(completion: (Bool, BiometricType, BiometricError?) -> Void)
-    func evaluate(completion: @escaping (Bool, BiometricError?) -> Void)
+    func canEvaluate() -> Promise<Bool>
+    func evaluate() -> Promise<(Bool, BiometricError?)>
 }
 
 final class BiometricsManager: NSObject, BiometricsManagerProtocol {
@@ -27,25 +28,33 @@ final class BiometricsManager: NSObject, BiometricsManagerProtocol {
         context.localizedCancelTitle = nil
     }
     
-    func canEvaluate(completion: (Bool, BiometricType, BiometricError?) -> Void) {
+    func canEvaluate() -> Promise<Bool> {
         guard context.canEvaluatePolicy(policy, error: &error) else {
             let type = biometricType(for: context.biometryType)
-            guard let error = error else {
-                return completion(false, type, nil)
+            guard error == nil else {
+                return Promise<Bool> { seal in
+                    seal.fulfill(false)
+                }
             }
-            return completion(false, type, biometricError(from: error))
+            return Promise<Bool> { seal in
+                seal.fulfill(true)
+            }
         }
-        completion(true, biometricType(for: context.biometryType), nil)
+        return Promise<Bool> { seal in
+            seal.fulfill(true)
+        }
     }
     
-    func evaluate(completion: @escaping (Bool, BiometricError?) -> Void) {
-        context.evaluatePolicy(policy, localizedReason: localizedReason) { [weak self] success, error in
-            DispatchQueue.main.async {
-                if success {
-                    completion(true, nil)
-                } else {
-                    guard let error = error else { return completion(false, nil) }
-                    completion(false, self?.biometricError(from: error as NSError))
+    func evaluate() -> Promise<(Bool, BiometricError?)> {
+        return Promise<(Bool, BiometricError?)> { seal in
+            context.evaluatePolicy(policy, localizedReason: localizedReason) { [weak self] success, error in
+                DispatchQueue.main.async {
+                    if success {
+                        seal.fulfill((true, nil))
+                    } else {
+                        guard let error = error else { return seal.fulfill((false, nil)) }
+                        seal.fulfill((false, self?.biometricError(from: error as NSError)))
+                    }
                 }
             }
         }
@@ -64,7 +73,7 @@ final class BiometricsManager: NSObject, BiometricsManagerProtocol {
         }
     }
     
-    private func biometricError(from nsError: NSError) -> BiometricError {
+    fileprivate func biometricError(from nsError: NSError) -> BiometricError {
         let error: BiometricError
         
         switch nsError {

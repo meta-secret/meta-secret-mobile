@@ -23,7 +23,10 @@ final class MainSceneViewModel: CommonViewModel {
     private var userService: UsersServiceProtocol
     private var distributionManager: DistributionProtocol
     private var vaultApiService: VaultAPIProtocol
-    static let minDevicesCount = 3
+    private var biometricManager: BiometricsManagerProtocol
+    private var alertManager: Alertable
+    private var rustManager: RustProtocol
+    private var currentSecretIndex: Int = 0
     
     var emptyStatusText: String {
         return selectedSegment.rawValue == 0 ? Constants.MainScreen.noSecrets : ""
@@ -34,7 +37,7 @@ final class MainSceneViewModel: CommonViewModel {
     }
     
     var addDeviceViewHidden: Bool {
-        return selectedSegment == .Devices && (filteredSourceArrayCount() > Self.minDevicesCount)
+        return selectedSegment == .Devices && (filteredSourceArrayCount() > Constants.Common.neededMembersCount)
     }
     
     var remainingDevicesText: String {
@@ -50,11 +53,14 @@ final class MainSceneViewModel: CommonViewModel {
     }
     
     //MARK: - INIT
-    init(dbManager: DBManagerProtocol, distributionManager: DistributionProtocol, userService: UsersServiceProtocol, vaultApiService: VaultAPIProtocol) {
+    init(dbManager: DBManagerProtocol, distributionManager: DistributionProtocol, userService: UsersServiceProtocol, vaultApiService: VaultAPIProtocol, biometricManager: BiometricsManagerProtocol, alertManager: Alertable, rustManager: RustProtocol) {
         self.dbManager = dbManager
         self.userService = userService
         self.distributionManager = distributionManager
         self.vaultApiService = vaultApiService
+        self.biometricManager = biometricManager
+        self.alertManager = alertManager
+        self.rustManager = rustManager
     }
     
     override func loadData() -> Promise<Void> {
@@ -131,6 +137,10 @@ final class MainSceneViewModel: CommonViewModel {
         let selectedItem = flattenArray.first(where: {$0.device.deviceId == content.id })
         return selectedItem
     }
+    
+    func needDBRedistribution() -> Bool {
+        return dbManager.getAllSecrets().first(where: {$0.shares.count == 1}) != nil
+    }
 
     func startMonitoringSharesAndClaimRequests() {
         distributionManager.startMonitoringSharesAndClaimRequests()
@@ -142,6 +152,66 @@ final class MainSceneViewModel: CommonViewModel {
 
     func reDistribue() -> Promise<Void> {
         return distributionManager.reDistribute()
+    }
+    
+    func dbRedistribution(_ secret: String, descriptionName: String) {
+        let components = rustManager.split(secret: secret)
+        guard !components.isEmpty,
+        let signatures = userService.mainVault?.signatures,
+        signatures.count <= Constants.Common.neededMembersCount else {
+            currentSecretIndex += 1
+            dbRedistributionAsk()
+            return
+        }
+        
+        let _ = firstly {
+            distributionManager.distributeShares(components, signatures, descriptionName: descriptionName)
+        }.get {
+            self.currentSecretIndex += 1
+            self.dbRedistributionAsk()
+        }
+    }
+    
+    private func dbRedistributionAsk() {
+        let allSecrets = dbManager.getAllSecrets()
+        if currentSecretIndex < allSecrets.count {
+            let currentSecret = allSecrets[currentSecretIndex]
+            distributionManager.startMonitoringClaimResponses(descriptionName: currentSecret.secretName)
+        } else {
+            alertManager.hideLoader()
+            userService.needDBRedistribution = false
+            currentSecretIndex = 0
+        }
+    }
+    
+    private func evaluation(success: Bool, error: BiometricError?) -> Promise<Void> {
+        guard success else {
+            return Promise(error: MetaSecretErrorType.alreadySavedMessage)
+        }
+        dbRedistributionAsk()
+        return Promise().asVoid()
+    }
+    
+    private func checEvaluation(_ canEvaluate: Bool) -> Promise<Void> {
+        self.alertManager.showLoader()
+        guard canEvaluate else {
+            dbRedistributionAsk()
+            return Promise().asVoid()
+        }
+        
+        return firstly {
+            biometricManager.evaluate()
+        }.then { success, error in
+            self.evaluation(success: success, error: error)
+        }.asVoid()
+    }
+    
+    func checkBiometricAllow() -> Promise<Void> {
+        return firstly {
+            biometricManager.canEvaluate()
+        }.then { canEvaluate in
+            self.checEvaluation(canEvaluate)
+        }.asVoid()
     }
 
     func getNewDataSource() -> Promise<Void> {
@@ -159,7 +229,7 @@ final class MainSceneViewModel: CommonViewModel {
         let flatArr = source?.items.flatMap { $0 }
         let filteredArr = flatArr?.filter({$0.subtitle?.lowercased() == VaultInfoStatus.Member.rawValue.lowercased()})
         
-        guard let count = filteredArr?.count, count < Self.minDevicesCount else { return 0 }
+        guard let count = filteredArr?.count, count < Constants.Common.neededMembersCount else { return 0 }
         return count
     }
 }

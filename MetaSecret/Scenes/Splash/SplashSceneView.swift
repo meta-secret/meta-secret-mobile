@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class SplashSceneView: CommonSceneView {
     //MARK: - OUTLETS
@@ -38,21 +39,23 @@ class SplashSceneView: CommonSceneView {
     }
     
     private func checkBiometric() {
-        biometricManager.canEvaluate { [weak self] (canEvaluate, _, canEvaluateError) in
+        let _ = firstly {
+            biometricManager.canEvaluate()
+        }.get { canEvaluate in
             guard canEvaluate else {
-                self?.router.route()
+                self.router.route()
+                return
+            }
+        }.then { _ in
+            self.biometricManager.evaluate()
+        }.get { success, error in
+            guard success else {
+                self.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.error,
+                            message: error?.localizedDescription ?? Constants.BiometricError.unknown, cancelButton: nil))
                 return
             }
             
-            biometricManager.evaluate { [weak self] (success, error) in
-                guard success else {
-                    self?.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.error,
-                                message: error?.localizedDescription ?? Constants.BiometricError.unknown, cancelButton: nil))
-                    return
-                }
-                
-                self?.router.route()
-            }
+            self.router.route()
         }
     }
 }

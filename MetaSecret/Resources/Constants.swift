@@ -173,6 +173,7 @@ struct Constants {
         static let authError = NSLocalizedString("authError", comment: "")
         static let authErrorMessage = NSLocalizedString("authErrorMessage", comment: "")
         static let notConfirmed = NSLocalizedString("notConfirmed", comment: "")
+        static let dbNotConsistence = NSLocalizedString("dbNotConsistence", comment: "")
     }
     
     struct BiometricError {

@@ -305,7 +305,7 @@ private extension DistributionManager {
 
         let model = RestoreModel(keyManager: keyManager, docOne: docOne, docTwo: share)
         let decriptedSecret = rustManager.restoreSecret(model: model)
-        nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
+        nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret, descriptionName)])
         return Promise().asVoid()
     }
     
@@ -361,7 +361,7 @@ private extension DistributionManager {
             stopMonitoringClaimResponses()
             let model = RestoreModel(keyManager: securityBox.keyManager, docOne: shareObject, docTwo: shareObjectLast)
             let decriptedSecret = rustManager.restoreSecret(model: model)
-            nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret)])
+            nc.post(name: NSNotification.Name(rawValue: "distributionService"), object: nil, userInfo: ["type": CallBackType.Claims(decriptedSecret, descriptionName)])
             return Promise().asVoid()
         }
         
@@ -505,6 +505,6 @@ private extension DistributionManager {
 enum CallBackType {
     case Shares
     case Devices
-    case Claims(String?)
+    case Claims(String?, String?)
     case Failure
 }

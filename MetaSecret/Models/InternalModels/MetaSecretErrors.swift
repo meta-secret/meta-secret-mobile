@@ -25,6 +25,7 @@ enum MetaSecretErrorType: Error {
     case declinedUser
     case alreadySavedMessage
     case notConfirmed
+    case biometric
     
     func message() -> String {
         switch self {
@@ -62,6 +63,8 @@ enum MetaSecretErrorType: Error {
             return Constants.AddSecret.alreadySavedMessage
         case .notConfirmed:
             return Constants.Errors.notConfirmed
+        case .biometric:
+            return Constants.BiometricError.authenticationFailed
         }
     }
 }

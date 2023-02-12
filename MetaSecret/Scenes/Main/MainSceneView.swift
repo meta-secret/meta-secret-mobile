@@ -67,6 +67,10 @@ class MainSceneView: CommonSceneView, MainSceneProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        if userService.needDBRedistribution {
+            showDBInconsistencyAlert()
+        }
     }
     
     //MARK: - IBACTIONS
@@ -176,8 +180,12 @@ private extension MainSceneView {
                         }
                     }
                 }
-            case .Claims(_):
-                break
+            case .Claims(let decriptedSecret, let descriptionName):
+                if userService.needDBRedistribution, let decriptedSecret, let descriptionName {
+                    viewModel.dbRedistribution(decriptedSecret, descriptionName: descriptionName)
+                } else {
+                    break
+                }
             case .Failure:
                 viewModel.isToReDistribute = false
                 break
@@ -239,6 +247,12 @@ private extension MainSceneView {
             push(controller)
         }
     }
+    
+    func showDBInconsistencyAlert() {
+        self.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.warning, message: Constants.Errors.dbNotConsistence, cancelButton: nil, okHandler: {
+            let _ = self.viewModel.checkBiometricAllow()
+        }))
+    }
 }
 
 //MARK: - TABLE VIEW DELEGATE DATA SOURCE
@@ -286,6 +300,8 @@ extension MainSceneView: ClusterDeviceCellDelegate {
     func acceptTapped(_ content: CellSetupDate) {
         var isThereError = false
         let selectedItem = viewModel.selectedDevice(content: content)
+
+        userService.needDBRedistribution = viewModel.needDBRedistribution()
         guard let signature = selectedItem else { return }
         
         alertManager.showLoader()
@@ -297,7 +313,9 @@ extension MainSceneView: ClusterDeviceCellDelegate {
             self.alertManager.showCommonError(text)
             isThereError = true
         }.finally {
-            if !isThereError {
+            if self.userService.needDBRedistribution {
+                self.showDBInconsistencyAlert()
+            } else if !isThereError {
                 self.viewModel.isToReDistribute = true
                 firstly {
                     self.viewModel.getVault()

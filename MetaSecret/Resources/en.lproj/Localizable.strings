@@ -116,6 +116,7 @@
 "authError" = "Authentication failed";
 "authErrorMessage" = "You could not be verified; please try again.";
 "notConfirmed" = "Restoring not confirmed";
+"dbNotConsistence" = "We have found that the integrity of the database has been corrupted and will be restored. Please, prepare all your devices to do this!";
 
 //MARK: - Select device
 "sentShareTitle" = "Share has been sent!";

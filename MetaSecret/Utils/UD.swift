@@ -18,6 +18,7 @@ protocol UsersServiceProtocol {
     var isFirstAppLaunch: Bool {get set}
     var isOwner: Bool {get set}
     var shouldShowOnboarding: Bool {get set}
+    var needDBRedistribution: Bool {get set}
 }
 
 class UsersService: NSObject, UsersServiceProtocol {
@@ -114,6 +115,17 @@ class UsersService: NSObject, UsersServiceProtocol {
             UDManager.save(value: newValue, key: UDKeys.shouldShowOnboarding)
         }
     }
+    
+    var needDBRedistribution: Bool {
+        get {
+            guard let status = UDManager.read(key: UDKeys.needDBRedistribution) as? Bool else { return false }
+            return status
+        }
+        
+        set {
+            UDManager.save(value: newValue, key: UDKeys.needDBRedistribution)
+        }
+    }
 }
 
 //MARK: - KEYS
@@ -126,6 +138,7 @@ struct UDKeys {
     static let isFirstAppLaunch = "isFirstAppLaunch"
     static let isOwner = "isOwner"
     static let shouldShowOnboarding = "shouldShowOnboarding"
+    static let needDBRedistribution = "needDBRedistribution"
 }
 
 //MARK: - UDMANAGER
