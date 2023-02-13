@@ -33,10 +33,12 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     
     private var isLocalySaved: Bool = false
     private var isFulySplited: Bool = false
+    private let analytic: AnalyticManagerProtocol
     
     //MARK: - LIFE CICLE
-    init(viewModel: AddSecretViewModel, alertManager: Alertable) {
+    init(viewModel: AddSecretViewModel, alertManager: Alertable, analytic: AnalyticManagerProtocol) {
         self.viewModel = viewModel
+        self.analytic = analytic
         super.init(alertManager: alertManager)
     }
     
@@ -50,6 +52,8 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analytic.event(name: AnalyticsEvent.AddSecretShow)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(switchCallback(_:)), name: NSNotification.Name(rawValue: "distributionService"), object: nil)
     }
     
@@ -67,6 +71,9 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     @IBAction func selectSaveButtonTapped(_ sender: Any) {
         alertManager.showLoader()
         var isThereError = false
+        
+        analytic.event(name: AnalyticsEvent.SplitSecret)
+        
         firstly {
             viewModel.split(secret: passwordTextField.text ?? "", descriptionName: descriptionTextField.text ?? "")
         }.then {
@@ -164,6 +171,7 @@ private extension AddSecretSceneView {
     }
     
     func restore() {
+        analytic.event(name: AnalyticsEvent.RestoreSecret)
         viewModel.restore(descriptionName: descriptionTextField.text ?? "")
     }
     

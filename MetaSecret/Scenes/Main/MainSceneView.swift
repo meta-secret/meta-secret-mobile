@@ -31,6 +31,7 @@ class MainSceneView: CommonSceneView, MainSceneProtocol {
 
     private var userService: UsersServiceProtocol
     private var factory: UIFactoryProtocol
+    private var analytic: AnalyticManagerProtocol
     
     private struct Config {
         static let cellID = "ClusterDeviceCell"
@@ -39,10 +40,11 @@ class MainSceneView: CommonSceneView, MainSceneProtocol {
     }
 
     //MARK: - LIFECYCLE
-    init(viewModel: MainSceneViewModel, alertManager: Alertable, factory: UIFactoryProtocol, userService: UsersServiceProtocol) {
+    init(viewModel: MainSceneViewModel, alertManager: Alertable, factory: UIFactoryProtocol, userService: UsersServiceProtocol, analytic: AnalyticManagerProtocol) {
         self.userService = userService
         self.viewModel = viewModel
         self.factory = factory
+        self.analytic = analytic
         super.init(alertManager: alertManager)
     }
     
@@ -52,6 +54,8 @@ class MainSceneView: CommonSceneView, MainSceneProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        analytic.event(name: AnalyticsEvent.MainShow)
         
         NotificationCenter.default.addObserver(self, selector: #selector(switchCallback(_:)), name: NSNotification.Name(rawValue: "distributionService"), object: nil)
     }
@@ -69,6 +73,7 @@ class MainSceneView: CommonSceneView, MainSceneProtocol {
         navigationController?.setNavigationBarHidden(false, animated: false)
         
         if userService.needDBRedistribution {
+            analytic.event(name: AnalyticsEvent.MainStartNeedDBRedistribution)
             showDBInconsistencyAlert()
         }
     }
@@ -164,6 +169,9 @@ private extension MainSceneView {
                 }
             case .Devices:
                 newBubble.isHidden = userService.mainVault?.pendingJoins?.count == 0
+                viewModel.selectedSegment = .Devices
+                selectTab()
+                
                 if viewModel.selectedSegment == .Devices {
                     firstly {
                         viewModel.getLocalVaultMembers()
@@ -216,6 +224,8 @@ private extension MainSceneView {
         setEmptyStatus()
         setAttributedTitle(viewModel.title)
         
+        analytic.event(name: AnalyticsEvent.SelectorTapped, params: [AnalyticsProperty.SelectorTab: viewModel.title])
+        
         firstly {
             viewModel.getNewDataSource()
         }.catch { e in
@@ -238,10 +248,14 @@ private extension MainSceneView {
     
     @objc func addDeviceTapped() {
         if viewModel.selectedSegment == .Devices {
+            analytic.event(name: AnalyticsEvent.AddDevice)
+            
             let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.installInstruction(name: userService.userSignature?.vaultName ?? ""), isClosable: true)
             let controller = factory.popUpHint(with: model)
             popUp(controller)
         } else {
+            analytic.event(name: AnalyticsEvent.AddDevice)
+            
             let model = SceneSendDataModel(modeType: .edit)
             let controller = factory.split(model: model)
             push(controller)
@@ -298,6 +312,8 @@ extension MainSceneView: UITableViewDelegate, UITableViewDataSource {
 
 extension MainSceneView: ClusterDeviceCellDelegate {
     func acceptTapped(_ content: CellSetupDate) {
+        analytic.event(name: AnalyticsEvent.AddDeviceAccept)
+        
         var isThereError = false
         let selectedItem = viewModel.selectedDevice(content: content)
 
@@ -331,6 +347,8 @@ extension MainSceneView: ClusterDeviceCellDelegate {
     }
     
     func declineTapped(_ content: CellSetupDate) {
+        analytic.event(name: AnalyticsEvent.AddDeviceDecline)
+        
         var isThereError = false
         let selectedItem = viewModel.selectedDevice(content: content)
         guard let signature = selectedItem else { return }

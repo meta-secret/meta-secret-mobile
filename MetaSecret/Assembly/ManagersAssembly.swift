@@ -22,5 +22,6 @@ class ManagersAssembly: Assembly {
         container.autoregister(DistributionProtocol.self, initializer: DistributionManager.init).inObjectScope(.container)
         container.autoregister(BiometricsManagerProtocol.self, initializer: BiometricsManager.init).inObjectScope(.container)
         container.autoregister(KeyChainManagerProtocol.self, initializer: KeyChainManager.init).inObjectScope(.container)
+        container.autoregister(AnalyticManagerProtocol.self, initializer: AnalyticManager.init).inObjectScope(.container)
     }
 }

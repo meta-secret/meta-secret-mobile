@@ -42,8 +42,8 @@ class ClusterDeviceCell: UITableViewCell {
         deviceIDLabel.text = content.id
         chevroneImage.image = content.imageName ?? AppImages.chevroneRight
         chevroneImage.tintColor = content.imageName == nil ? AppColors.mainBlack : AppColors.mainOrange
-        chevroneImage.isHidden = !content.boolValue && content.status == nil
-        chevronButton.isHidden = !content.boolValue && content.status == nil
+        chevroneImage.isHidden = !content.boolValue
+        chevronButton.isHidden = !content.boolValue
         chevronButton.setTitle("", for: .normal)
         statusLabel.textColor = AppColors.mainOrange
         

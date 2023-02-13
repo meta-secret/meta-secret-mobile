@@ -31,18 +31,25 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     private var userService: UsersServiceProtocol
     private let routerService: ApplicationRouterProtocol
     private let factory: UIFactoryProtocol
+    private let analytic: AnalyticManagerProtocol
     
     // MARK: - Lifecycle
-    init(viewModel: LoginSceneViewModel, userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable, factory: UIFactoryProtocol) {
+    init(viewModel: LoginSceneViewModel, userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable, factory: UIFactoryProtocol, analytic: AnalyticManagerProtocol) {
         self.viewModel = viewModel
         self.userService = userService
         self.routerService = routerService
         self.factory = factory
+        self.analytic = analytic
         super.init(alertManager: alertManager)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        analytic.event(name: AnalyticsEvent.LoginStart)
     }
     
     override func setupUI() {
@@ -78,6 +85,8 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     }
 
     func alreadyExisted() {
+        analytic.event(name: AnalyticsEvent.LoginExist, params: [AnalyticsProperty.UserName: userNameTextField.text ?? ""])
+        
         didFinishLoadingData()
         alertManager.showCommonAlert(AlertModel(title: Constants.Alert.emptyTitle, message: Constants.LoginScreen.alreadyExisted, okHandler: { [weak self] in
             guard let self,
@@ -86,15 +95,18 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
             self.alertManager.showLoader()
             let _ = self.viewModel.register(userSignature, securityBox, isOwner: false)
         }, cancelHandler: { [weak self] in
+            self?.analytic.event(name: AnalyticsEvent.LoginExistCancel, params: [AnalyticsProperty.UserName: self?.userNameTextField.text ?? ""])
             self?.userService.resetAll()
         }))
     }
     
     func routeNext() {
+        analytic.event(name: AnalyticsEvent.LoginRouteNext, params: [AnalyticsProperty.UserName: userNameTextField.text ?? ""])
         routerService.route()
     }
     
     func showPendingPopup() {
+        analytic.event(name: AnalyticsEvent.LoginAwait, params: [AnalyticsProperty.UserName: userNameTextField.text ?? ""])
         let model = BottomInfoSheetModel(title: Constants.LoginScreen.awaitingTitle, message: Constants.LoginScreen.awaitingMessage, isClosable: false)
         let controller = factory.popUpHint(with: model)
         popUp(controller)

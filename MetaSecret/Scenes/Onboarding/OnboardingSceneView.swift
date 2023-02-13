@@ -32,6 +32,7 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     
     private var userService: UsersServiceProtocol
     private let routerService: ApplicationRouterProtocol
+    private let analytics: AnalyticManagerProtocol
     
     private struct Config {
         static let subtitleFont: CGFloat = 20
@@ -41,10 +42,11 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     }
     
     // MARK: - Lifecycle
-    init(viewModel: OnboardingSceneViewModel, userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable) {
+    init(viewModel: OnboardingSceneViewModel, userService: UsersServiceProtocol, routerService: ApplicationRouterProtocol, alertManager: Alertable, analytics: AnalyticManagerProtocol) {
         self.viewModel = viewModel
         self.userService = userService
         self.routerService = routerService
+        self.analytics = analytics
         super.init(alertManager: alertManager)
     }
     
@@ -56,6 +58,7 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
         super.viewDidLoad()
         
         pageControl.numberOfPages = viewModel.pagesCount
+        analytics.event(name: AnalyticsEvent.OnboardingShow)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,10 +81,12 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     
     // MARK: - Actions
     @IBAction func skipButtonTapped(_ sender: Any) {
+        analytics.event(name: AnalyticsEvent.OnboardingSkip, params: [AnalyticsProperty.OnBoardingPage: pageControl.currentPage])
         finishOnboarding()
     }
     
     @IBAction func nextPageButtonTapped(_ sender: Any) {
+        analytics.event(name: AnalyticsEvent.OnboardingNext)
         let nextPage = pageControl.currentPage + 1
         
         switch nextPage {
@@ -100,6 +105,7 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
         if nextPage < pageControl.numberOfPages {
             collectionView.scrollToItem(at: IndexPath(row: nextPage, section: 0), at: .left, animated: true)
         } else {
+            analytics.event(name: AnalyticsEvent.OnboardingFinish)
             finishOnboarding()
         }
     }

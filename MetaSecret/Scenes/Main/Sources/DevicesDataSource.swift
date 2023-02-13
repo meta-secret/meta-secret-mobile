@@ -22,7 +22,7 @@ final class DevicesDataSource: MainScreeSourcable {
             
             let cellSource = CellSetupDate()
             
-            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.Pending.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .Pending, boolValue: true, id: signature.device.deviceId)
+            cellSource.setupCellSource(title: signature.device.deviceName, subtitle: VaultInfoStatus.Pending.title(), intValue: MainScreenSourceType.Secrets.rawValue, status: .Pending, boolValue: false, id: signature.device.deviceId)
             pendingItems.append(cellSource)
         }
         sourceItems.append(pendingItems)
