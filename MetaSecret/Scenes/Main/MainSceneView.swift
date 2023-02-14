@@ -169,8 +169,6 @@ private extension MainSceneView {
                 }
             case .Devices:
                 newBubble.isHidden = userService.mainVault?.pendingJoins?.count == 0
-                viewModel.selectedSegment = .Devices
-                selectTab()
                 
                 if viewModel.selectedSegment == .Devices {
                     firstly {
