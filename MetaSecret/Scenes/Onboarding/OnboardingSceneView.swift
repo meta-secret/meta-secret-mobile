@@ -163,15 +163,7 @@ private extension OnboardingSceneView {
     
     func finishOnboarding() {
         userService.shouldShowOnboarding = false
-        if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
-            ATTrackingManager.requestTrackingAuthorization() { [weak self] _ in
-                DispatchQueue.main.async {
-                    self?.routerService.route()
-                }
-            }
-        } else {
-            routerService.route()
-        }
+        routerService.route()
     }
     
     func setupFirstAnimatedStep() {
