@@ -252,7 +252,7 @@ private extension MainSceneView {
             let controller = factory.popUpHint(with: model)
             popUp(controller)
         } else {
-            analytic.event(name: AnalyticsEvent.AddDevice)
+            analytic.event(name: AnalyticsEvent.AddSecret)
             
             let model = SceneSendDataModel(modeType: .edit)
             let controller = factory.split(model: model)

@@ -9,16 +9,22 @@ import UIKit
 import Swinject
 import RealmSwift
 import FirebaseCore
+import YandexMobileMetrica
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let assembler = Assembler()
     var router: ApplicationRouterProtocol!
+    let appMetricaApiKey = "79926b91-9a90-42f8-8a7e-f2081dd49045"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         bootstrap(launchOptions)
         FirebaseApp.configure()
+        
+        let configuration = YMMYandexMetricaConfiguration.init(apiKey: appMetricaApiKey)
+        YMMYandexMetrica.activate(with: configuration!)
+        
         return true
     }
     

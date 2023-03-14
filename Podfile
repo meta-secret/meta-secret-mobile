@@ -19,6 +19,7 @@ pod 'RealmSwift'
 pod 'Swinject'
 pod 'SwinjectAutoregistration'
 pod 'PromiseKit'
+pod 'YandexMobileMetrica'
 
 # Show stub for views while loading
 #pod 'SkeletonView'

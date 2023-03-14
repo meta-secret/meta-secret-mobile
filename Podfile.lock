@@ -117,6 +117,14 @@ PODS:
   - Swinject (2.8.2)
   - SwinjectAutoregistration (2.7.0):
     - Swinject (~> 2.7)
+  - YandexMobileMetrica (4.4.0):
+    - YandexMobileMetrica/Static (= 4.4.0)
+  - YandexMobileMetrica/Static (4.4.0):
+    - YandexMobileMetrica/Static/Core (= 4.4.0)
+    - YandexMobileMetrica/Static/Crashes (= 4.4.0)
+  - YandexMobileMetrica/Static/Core (4.4.0)
+  - YandexMobileMetrica/Static/Crashes (4.4.0):
+    - YandexMobileMetrica/Static/Core
 
 DEPENDENCIES:
   - Firebase/Analytics
@@ -125,6 +133,7 @@ DEPENDENCIES:
   - RealmSwift
   - Swinject
   - SwinjectAutoregistration
+  - YandexMobileMetrica
 
 SPEC REPOS:
   trunk:
@@ -145,6 +154,7 @@ SPEC REPOS:
     - RealmSwift
     - Swinject
     - SwinjectAutoregistration
+    - YandexMobileMetrica
 
 SPEC CHECKSUMS:
   Firebase: 5ae8b7cf8efce559a653aef0ad95bab3f427c351
@@ -164,7 +174,8 @@ SPEC CHECKSUMS:
   RealmSwift: cef9946f09f2333a8f2ac8bac4f8de52fb9f5ac3
   Swinject: b4a11b31992e8668308dc594ba1cb9b3164a37ab
   SwinjectAutoregistration: 330f5012642a8b5c89a8a4adb0c5e52df07382c0
+  YandexMobileMetrica: baf7cea47cb87fc9af963c4f747ce8dd7df3d7c0
 
-PODFILE CHECKSUM: 297ffe5ed2198fe330834876b27bb7388e07213a
+PODFILE CHECKSUM: c2a068a7b8316c328e5567cb1de70f7b655d57fb
 
 COCOAPODS: 1.11.3
