@@ -52,12 +52,24 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
         analytic.event(name: AnalyticsEvent.LoginStart)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let vaultName = userService.preInstallationVault {
+            userNameTextField.text = vaultName
+            letsGo()
+        }
+    }
+    
     override func setupUI() {
         internalSetupUI()
     }
     
     //MARK: - ACTIONS
     @IBAction func letsGoAction(_ sender: Any) {
+        letsGo()
+    }
+    
+    private func letsGo() {
         alertManager.showLoader()
 
         guard let userName = userNameTextField.text, !userName.isEmpty else {

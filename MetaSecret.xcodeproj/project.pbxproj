@@ -36,6 +36,7 @@
 		E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */; };
 		E51ADE9728B8193D00C6A87B /* AddSecretSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */; };
 		E520C953290F2FAB001DB36E /* JsonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520C952290F2FAB001DB36E /* JsonManager.swift */; };
+		E523CD6929C3BFE200DA8CD3 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523CD6829C3BFE200DA8CD3 /* UIImage+Extension.swift */; };
 		E523D742298F22AD00A53141 /* BiometricsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D741298F22AD00A53141 /* BiometricsManager.swift */; };
 		E52686F72901DBD20030A542 /* MetaSecret-Bridging-Header.h in Resources */ = {isa = PBXBuildFile; fileRef = E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */; };
 		E52B0875294BE47800041554 /* PlainText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52B0874294BE47800041554 /* PlainText.swift */; };
@@ -152,6 +153,7 @@
 		E51ADE9428B8193D00C6A87B /* AddSecretSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSecretSceneView.swift; sourceTree = "<group>"; };
 		E51ADE9528B8193D00C6A87B /* AddSecretSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSecretSceneView.xib; sourceTree = "<group>"; };
 		E520C952290F2FAB001DB36E /* JsonManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonManager.swift; sourceTree = "<group>"; };
+		E523CD6829C3BFE200DA8CD3 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		E523D741298F22AD00A53141 /* BiometricsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsManager.swift; sourceTree = "<group>"; };
 		E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MetaSecret-Bridging-Header.h"; sourceTree = "<group>"; };
 		E52686F42901D8A90030A542 /* meta-secret-core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "meta-secret-core.h"; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */,
 				E5184205295E14B800B8F3BD /* UIViewController+Extension.swift */,
 				E518420E295E345600B8F3BD /* UIWindow+Extension.swift */,
+				E523CD6829C3BFE200DA8CD3 /* UIImage+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -802,6 +805,7 @@
 				E5F0C40C28A9877C00902310 /* Color+extension.swift in Sources */,
 				E55B514228CD43A000373959 /* UIFont+Extension.swift in Sources */,
 				E54EFA9B291721F30049DD81 /* EncodeShare.swift in Sources */,
+				E523CD6929C3BFE200DA8CD3 /* UIImage+Extension.swift in Sources */,
 				E51867A9293973C6000DF023 /* DeviceInfo.swift in Sources */,
 				E51ADE9628B8193D00C6A87B /* AddSecretSceneView.swift in Sources */,
 				E5108B4828BD38680067207A /* Distribute.swift in Sources */,
@@ -1064,7 +1068,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
@@ -1105,7 +1109,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;

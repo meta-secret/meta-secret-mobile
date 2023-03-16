@@ -16,6 +16,8 @@ class PopupHintViewScene: CommonSceneView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var imageContainerView: UIView!
+    @IBOutlet weak var imageView: UIImageView!
     
     //MARK: - PROPERTIES
     private struct Config {
@@ -73,6 +75,9 @@ private extension PopupHintViewScene {
         messageLabel.text = model.message ?? ""
         closeButton.isHidden = !model.isClosable
         messageLabel.sizeToFit()
+        
+        imageContainerView.isHidden = model.image == nil
+        imageView.image = model.image
         
         if model.isClosable {
             let tapGR = UITapGestureRecognizer(target: self, action: #selector(tapOutside))

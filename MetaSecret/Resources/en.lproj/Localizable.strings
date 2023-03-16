@@ -58,8 +58,9 @@
 "pleaseInstall" = "Please install this app on %@ additional devices!";
 
 "howToAdd" = "How to add a device to your network?";
-"stepsToAdd" = "1. Download MetaSecret app on a new device. \n\n2. Register with your nickname: %@ \n\n 3. Accept a join request from a device that already a member of the network. \n\n4. Repeat on other devices.";
+"stepsToAdd" = "1. Download MetaSecret app on a new device. \n2. Register with your nickname: %@ \n3. Accept a join request from a device that already a member of the network. \n4. Repeat on other devices.\n5. Or just scan this QR code";
 "add" = "Add";
+
 
 //MARK: - Pending device
 "deviceAdding" = "Adding device process";

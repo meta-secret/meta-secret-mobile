@@ -18,6 +18,7 @@ struct Constants {
         static let ok = "ok"
         static let neededMembersCount = 3
         static let timerInterval: CGFloat = 1
+        static let appStoreLink = "https://testflight.apple.com/join/AkzuH5A4/"
     }
     
     //MARK: - ONBOARDING
