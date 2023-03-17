@@ -47,12 +47,14 @@ struct Constants {
         static let loginTitle = NSLocalizedString("loginTitle", comment: "")
         static let userNameLabel = NSLocalizedString("yourName", comment: "")
         static let letsGoButton = NSLocalizedString("letsgo", comment: "")
+        static let scanQRButton = NSLocalizedString("scanQR", comment: "")
         static let alreadyExisted = NSLocalizedString("wannaJoin", comment: "")
         static let renameOk = NSLocalizedString("rename", comment: "")
         static let declined = NSLocalizedString("declinedRequest", comment: "")
         static let awaitingTitle = NSLocalizedString("waitingForApproval", comment: "")
         static let awaitingMessage = NSLocalizedString("pleaseAcceptRequest", comment: "")
         static let chooseAnotherName = NSLocalizedString("pleaseAcceptRequest", comment: "")
+        static let qrScanner = NSLocalizedString("qrScanner", comment: "")
     }
     
     struct MainScreen {
@@ -175,6 +177,7 @@ struct Constants {
         static let authErrorMessage = NSLocalizedString("authErrorMessage", comment: "")
         static let notConfirmed = NSLocalizedString("notConfirmed", comment: "")
         static let dbNotConsistence = NSLocalizedString("dbNotConsistence", comment: "")
+        static let cameraError = NSLocalizedString("cameraError", comment: "")
     }
     
     struct BiometricError {

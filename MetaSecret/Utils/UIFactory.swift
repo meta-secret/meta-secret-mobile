@@ -13,6 +13,7 @@ protocol UIFactoryProtocol {
     func popUpHint(with model: BottomInfoSheetModel) -> PopupHintViewScene?
     func mainScreen() -> MainSceneView?
     func split(model: SceneSendDataModel) -> AddSecretSceneView?
+    func scanner(delegate: ScannerSceneViewDelegate) -> ScannerSceneView?
 }
 
 class UIFactory : NSObject, UIFactoryProtocol {
@@ -38,6 +39,12 @@ extension UIFactory {
     func split(model: SceneSendDataModel) -> AddSecretSceneView? {
         let viewController = router.resolve(AddSecretSceneView.self)
         viewController?.viewModel.model = model
+        return viewController
+    }
+    
+    func scanner(delegate: ScannerSceneViewDelegate) -> ScannerSceneView? {
+        let viewController = router.resolve(ScannerSceneView.self)
+        viewController?.delegate = delegate
         return viewController
     }
 }

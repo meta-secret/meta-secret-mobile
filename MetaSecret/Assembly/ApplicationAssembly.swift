@@ -36,6 +36,7 @@ extension ApplicationAssembly {
         container.autoregister(MainSceneView.self, initializer: MainSceneView.init)
         container.autoregister(AddSecretSceneView.self, initializer: AddSecretSceneView.init)
         container.autoregister(BottomInfoSheetViewScene.self, initializer: BottomInfoSheetViewScene.init)
+        container.autoregister(ScannerSceneView.self, initializer: ScannerSceneView.init)
     }
 }
 

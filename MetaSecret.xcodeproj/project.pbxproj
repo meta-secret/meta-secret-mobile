@@ -83,6 +83,8 @@
 		E58E3B89292649670018B136 /* MetaSecretErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B88292649670018B136 /* MetaSecretErrors.swift */; };
 		E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
+		E5AF12AB29C4EC66003FEF19 /* ScannerSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF12AA29C4EC66003FEF19 /* ScannerSceneView.swift */; };
+		E5AF12AF29C4FA17003FEF19 /* ScannerSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5AF12AE29C4FA17003FEF19 /* ScannerSceneView.xib */; };
 		E5B5A0CB298099350096BAC9 /* libmeta_secret_core_swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E54294062970ADF2001B9A1A /* libmeta_secret_core_swift.a */; };
 		E5B98CC1292D7DFD006BFC6A /* FindClaims.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */; };
 		E5C0CF242999A8D000277635 /* AnalyticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF232999A8D000277635 /* AnalyticManager.swift */; };
@@ -207,6 +209,8 @@
 		E58E3B88292649670018B136 /* MetaSecretErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretErrors.swift; sourceTree = "<group>"; };
 		E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extenson.swift"; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
+		E5AF12AA29C4EC66003FEF19 /* ScannerSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSceneView.swift; sourceTree = "<group>"; };
+		E5AF12AE29C4FA17003FEF19 /* ScannerSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScannerSceneView.xib; sourceTree = "<group>"; };
 		E5B98CC0292D7DFD006BFC6A /* FindClaims.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindClaims.swift; sourceTree = "<group>"; };
 		E5C0CF232999A8D000277635 /* AnalyticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticManager.swift; sourceTree = "<group>"; };
 		E5C4CA612961E9E900DA8A5C /* UIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFactory.swift; sourceTree = "<group>"; };
@@ -421,6 +425,8 @@
 				E5F0C3FB28A82E0700902310 /* LoginSceneView.swift */,
 				E5F0C3FC28A82E0700902310 /* LoginSceneView.xib */,
 				E5F0C3FF28A82E1900902310 /* LoginSceneViewModel.swift */,
+				E5AF12AA29C4EC66003FEF19 /* ScannerSceneView.swift */,
+				E5AF12AE29C4FA17003FEF19 /* ScannerSceneView.xib */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -683,6 +689,7 @@
 				E5061CEC28CD197400E2787B /* BottomInfoSheetViewScene.xib in Resources */,
 				E5800036288CA4D200E1135C /* LaunchScreen.storyboard in Resources */,
 				E5061CE728CD116700E2787B /* Colors.xcassets in Resources */,
+				E5AF12AF29C4FA17003FEF19 /* ScannerSceneView.xib in Resources */,
 				E588252328D3A62600FB01B0 /* OnboardingSceneView.xib in Resources */,
 				E5FF621E28B5957F00A794F3 /* ClusterDeviceCell.xib in Resources */,
 				E5F0C3FE28A82E0700902310 /* LoginSceneView.xib in Resources */,
@@ -817,6 +824,7 @@
 				E588252C28D3D97000FB01B0 /* AppImages.swift in Sources */,
 				E5061CEE28CD198B00E2787B /* BottomInfoViewModel.swift in Sources */,
 				E5184204295E117800B8F3BD /* CommonSceneView.swift in Sources */,
+				E5AF12AB29C4EC66003FEF19 /* ScannerSceneView.swift in Sources */,
 				E57E6B6528B4199000906DBD /* Decline.swift in Sources */,
 				E5C4CA622961E9E900DA8A5C /* UIFactory.swift in Sources */,
 				E588252728D3B53400FB01B0 /* OnboardingCollectionViewCell.swift in Sources */,
@@ -1068,7 +1076,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
@@ -1087,7 +1095,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/MetaSecret/RustLib",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.metasecret.vault;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1109,7 +1117,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7RKQD29YMQ;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1127,7 +1135,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/MetaSecret/RustLib",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.metasecret.vault;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

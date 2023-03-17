@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,6 +14,7 @@
                 <outlet property="containerView" destination="ziE-L1-oCC" id="Tq1-tK-MA6"/>
                 <outlet property="letsGoButton" destination="mvH-JN-2ca" id="kbo-Pl-5F0"/>
                 <outlet property="loginTitle" destination="AUf-Xv-6dj" id="zhT-Ht-Vi2"/>
+                <outlet property="scanButton" destination="54h-oV-Bh2" id="ZxI-cp-q7G"/>
                 <outlet property="topView" destination="SM7-bP-VMx" id="VSF-AS-M7Y"/>
                 <outlet property="userNameTextField" destination="uSm-oD-niL" id="K1I-Rr-uL3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -67,6 +68,27 @@
                                 <action selector="letsGoAction:" destination="-1" eventType="touchUpInside" id="t7e-nQ-0A1"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54h-oV-Bh2">
+                            <rect key="frame" x="16" y="390" width="318" height="44"/>
+                            <color key="backgroundColor" name="MainGray"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="bqZ-iA-0nm"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="AvenirNext-Heavy" family="Avenir Next" pointSize="18"/>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="SCAN QR CODE">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="scanButtonTapped:" destination="-1" eventType="touchUpInside" id="BBg-Xd-e9Y"/>
+                            </connections>
+                        </button>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uSm-oD-niL">
                             <rect key="frame" x="16" y="216.00000000000003" width="318" height="43.999999999999972"/>
                             <constraints>
@@ -82,6 +104,7 @@
                         <constraint firstItem="uSm-oD-niL" firstAttribute="leading" secondItem="ziE-L1-oCC" secondAttribute="leading" constant="16" id="276-tG-58c"/>
                         <constraint firstAttribute="bottom" secondItem="mvH-JN-2ca" secondAttribute="bottom" constant="32" id="A5N-Rq-JDa"/>
                         <constraint firstAttribute="trailing" secondItem="SM7-bP-VMx" secondAttribute="trailing" id="Ffj-Zw-sNA"/>
+                        <constraint firstItem="54h-oV-Bh2" firstAttribute="trailing" secondItem="mvH-JN-2ca" secondAttribute="trailing" id="Hi7-Dw-wtW"/>
                         <constraint firstItem="uSm-oD-niL" firstAttribute="top" secondItem="SM7-bP-VMx" secondAttribute="bottom" constant="16" id="Hud-HV-E6o"/>
                         <constraint firstItem="mvH-JN-2ca" firstAttribute="leading" secondItem="uSm-oD-niL" secondAttribute="leading" id="R8k-8b-EK4"/>
                         <constraint firstItem="mvH-JN-2ca" firstAttribute="trailing" secondItem="uSm-oD-niL" secondAttribute="trailing" id="TPp-6K-4f9"/>
@@ -89,7 +112,9 @@
                         <constraint firstAttribute="height" constant="518" id="Y13-3w-PCw"/>
                         <constraint firstItem="SM7-bP-VMx" firstAttribute="leading" secondItem="ziE-L1-oCC" secondAttribute="leading" id="elh-aC-Hhb"/>
                         <constraint firstAttribute="width" constant="350" id="gsi-FX-lub"/>
+                        <constraint firstItem="mvH-JN-2ca" firstAttribute="top" secondItem="54h-oV-Bh2" secondAttribute="bottom" constant="8" id="rBq-DN-Jwn"/>
                         <constraint firstItem="SM7-bP-VMx" firstAttribute="top" secondItem="ziE-L1-oCC" secondAttribute="top" id="t59-CW-rSK"/>
+                        <constraint firstItem="54h-oV-Bh2" firstAttribute="leading" secondItem="mvH-JN-2ca" secondAttribute="leading" id="tmt-tF-EMx"/>
                     </constraints>
                 </view>
             </subviews>

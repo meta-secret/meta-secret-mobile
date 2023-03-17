@@ -7,6 +7,7 @@
 
 import UIKit
 import PromiseKit
+import AVFoundation
 
 class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     //MARK: - OUTLETS
@@ -20,6 +21,7 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var letsGoButton: UIButton!
+    @IBOutlet weak var scanButton: UIButton!
     
     // MARK: - Properties
     var viewModel: LoginSceneViewModel
@@ -52,14 +54,6 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
         analytic.event(name: AnalyticsEvent.LoginStart)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let vaultName = userService.preInstallationVault {
-            userNameTextField.text = vaultName
-            letsGo()
-        }
-    }
-    
     override func setupUI() {
         internalSetupUI()
     }
@@ -88,6 +82,21 @@ class LoginSceneView: CommonSceneView, LoginSceneProtocol {
             self.didFailLoadingData(message: e)
         }.finally {
             self.didFinishLoadingData()
+        }
+    }
+    
+    @IBAction func scanButtonTapped(_ sender: Any) {
+        AVCaptureDevice.requestAccess(for: .video) { success in
+            if success {
+                DispatchQueue.main.async {
+                    let controller = self.factory.scanner(delegate: self)
+                    self.popUp(controller, animated: true)
+                }
+            } else {
+                self.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.error, message: Constants.Errors.cameraError, okHandler: {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                }))
+            }
         }
     }
     
@@ -160,6 +169,10 @@ private extension LoginSceneView {
         userNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textFieldDidChange(userNameTextField)
         
+        scanButton.isUserInteractionEnabled = true
+        scanButton.backgroundColor = AppColors.mainBlack
+        scanButton.setTitle(Constants.LoginScreen.scanQRButton, for: .disabled)
+        
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         self.view.addGestureRecognizer(tapGR)
     }
@@ -185,5 +198,12 @@ extension LoginSceneView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension LoginSceneView: ScannerSceneViewDelegate {
+    func setVault(name: String) {
+        userNameTextField.text = name
+        letsGo()
     }
 }

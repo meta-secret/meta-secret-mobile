@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ScannerSceneView" customModule="MetaSecret" customModuleProvider="target">
+            <connections>
+                <outlet property="cameraView" destination="Rje-vt-lUy" id="l9D-eu-zWT"/>
+                <outlet property="titleLabel" destination="wos-OY-aIm" id="gZE-I8-JS3"/>
+                <outlet property="view" destination="mqw-bz-1n0" id="Sb6-Xm-vus"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="mqw-bz-1n0">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nf-nQ-yjd">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="88"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vmZ-Pk-rFE">
+                            <rect key="frame" x="16" y="48" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="Vxq-Pg-1SX"/>
+                                <constraint firstAttribute="height" constant="40" id="eUP-pU-aoc"/>
+                            </constraints>
+                            <color key="tintColor" name="MainBlack"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal">
+                                <imageReference key="image" image="clear" catalog="system" symbolScale="large"/>
+                            </state>
+                            <connections>
+                                <action selector="closePressed:" destination="-1" eventType="touchUpInside" id="F9t-DO-ozS"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="QR Code Scanner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wos-OY-aIm">
+                            <rect key="frame" x="126.66666666666667" y="56" width="139.66666666666663" height="24"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                            <color key="textColor" name="MainBlack"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="MainYellow"/>
+                    <constraints>
+                        <constraint firstItem="vmZ-Pk-rFE" firstAttribute="centerY" secondItem="wos-OY-aIm" secondAttribute="centerY" id="7NR-4B-cj9"/>
+                        <constraint firstItem="vmZ-Pk-rFE" firstAttribute="leading" secondItem="1nf-nQ-yjd" secondAttribute="leading" constant="16" id="FDR-gX-lB7"/>
+                        <constraint firstItem="wos-OY-aIm" firstAttribute="centerY" secondItem="1nf-nQ-yjd" secondAttribute="centerY" constant="24" id="Isq-2r-hn3"/>
+                        <constraint firstAttribute="height" constant="88" id="ef0-rP-yIP"/>
+                        <constraint firstItem="wos-OY-aIm" firstAttribute="centerX" secondItem="1nf-nQ-yjd" secondAttribute="centerX" id="kbH-d5-OLP"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rje-vt-lUy">
+                    <rect key="frame" x="0.0" y="88" width="393" height="730"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="ENb-oH-8eL"/>
+            <color key="backgroundColor" name="MainGray"/>
+            <constraints>
+                <constraint firstItem="ENb-oH-8eL" firstAttribute="bottom" secondItem="Rje-vt-lUy" secondAttribute="bottom" id="5q3-fM-XO5"/>
+                <constraint firstItem="1nf-nQ-yjd" firstAttribute="leading" secondItem="ENb-oH-8eL" secondAttribute="leading" id="9KN-fm-h1g"/>
+                <constraint firstItem="ENb-oH-8eL" firstAttribute="trailing" secondItem="1nf-nQ-yjd" secondAttribute="trailing" id="Jd6-Lf-0GW"/>
+                <constraint firstItem="Rje-vt-lUy" firstAttribute="top" secondItem="1nf-nQ-yjd" secondAttribute="bottom" id="Kbi-rk-n2R"/>
+                <constraint firstItem="ENb-oH-8eL" firstAttribute="trailing" secondItem="Rje-vt-lUy" secondAttribute="trailing" id="YkB-yC-P4N"/>
+                <constraint firstItem="Rje-vt-lUy" firstAttribute="leading" secondItem="ENb-oH-8eL" secondAttribute="leading" id="YzD-tP-0VR"/>
+                <constraint firstItem="1nf-nQ-yjd" firstAttribute="top" secondItem="mqw-bz-1n0" secondAttribute="top" id="ugq-kN-YLe"/>
+            </constraints>
+            <point key="canvasLocation" x="136.80000000000001" y="92.364532019704441"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="clear" catalog="system" width="128" height="114"/>
+        <namedColor name="MainBlack">
+            <color red="0.14117647058823529" green="0.16470588235294117" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MainGray">
+            <color red="0.94509803921568625" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MainYellow">
+            <color red="0.99607843137254903" green="0.83137254901960789" blue="0.16078431372549021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

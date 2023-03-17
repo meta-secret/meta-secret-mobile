@@ -13,5 +13,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) ask you to use your device camera.</string>
 </dict>
 </plist>

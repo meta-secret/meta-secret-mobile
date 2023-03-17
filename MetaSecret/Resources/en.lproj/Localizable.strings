@@ -30,12 +30,14 @@
 "loginTitle" = "Choose a unique nickname for login.";
 "yourName" = "Your unique nickname";
 "letsgo" = "Let's get started!";
+"scanQR" = "Scan QR code";
 "wannaJoin" = "The name is already taken. If it's your nickname, please add the device to your network.";
 "chooseAnotherName" = "The name is already taken. Would you like to choose another one?";
 "rename" = "Rename";
 "declinedRequest" = "The Join request declined. Please choose another name.";
 "waitingForApproval" = "This device is waiting for approval to join the network.";
 "pleaseAcceptRequest" = "Waiting for approval. Please accept the join request or the other device.";
+"qrScanner" = "QR Code Scanner";
 
 //MARK: - MAIN
 "secrets" = "Secrets";
@@ -118,6 +120,7 @@
 "authErrorMessage" = "You could not be verified; please try again.";
 "notConfirmed" = "Restoring not confirmed";
 "dbNotConsistence" = "We have found that the integrity of the database has been corrupted and will be restored. Please, prepare all your devices to do this!";
+"cameraError" = "You need to grant access to the camera to scan the QR code";
 
 //MARK: - Select device
 "sentShareTitle" = "Share has been sent!";
