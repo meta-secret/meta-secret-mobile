@@ -248,7 +248,8 @@ private extension MainSceneView {
         if viewModel.selectedSegment == .Devices {
             analytic.event(name: AnalyticsEvent.AddDevice)
             
-            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.installInstruction(name: userService.userSignature?.vaultName ?? ""), isClosable: true)
+            let qrString = "\(Constants.Common.appStoreLink)vault=\(userService.mainVault?.vaultName ?? "")"
+            let model = BottomInfoSheetModel(title: Constants.Devices.istallInstructionTitle, message: Constants.Devices.installInstruction(name: userService.userSignature?.vaultName ?? ""), isClosable: true, image: qrString.generateQRCode())
             let controller = factory.popUpHint(with: model)
             popUp(controller)
         } else {

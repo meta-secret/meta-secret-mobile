@@ -64,6 +64,7 @@ enum AnalyticsProperty: String {
 
 enum AnalyticsEvent: String {
     case OnboardingShow = "Onbording Started"
+    case OnboardingSkipPreInstalled = "Preinstallated case"
     case OnboardingSkip = "Onbording Skip Pressed"
     case OnboardingNext = "Onbording Next Pressed"
     case OnboardingFinish = "Onbording Complited"

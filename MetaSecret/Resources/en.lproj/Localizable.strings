@@ -30,12 +30,14 @@
 "loginTitle" = "Choose a unique nickname for login.";
 "yourName" = "Your unique nickname";
 "letsgo" = "Let's get started!";
+"scanQR" = "Scan QR code";
 "wannaJoin" = "The name is already taken. If it's your nickname, please add the device to your network.";
 "chooseAnotherName" = "The name is already taken. Would you like to choose another one?";
 "rename" = "Rename";
 "declinedRequest" = "The Join request declined. Please choose another name.";
 "waitingForApproval" = "This device is waiting for approval to join the network.";
 "pleaseAcceptRequest" = "Waiting for approval. Please accept the join request or the other device.";
+"qrScanner" = "QR Code Scanner";
 
 //MARK: - MAIN
 "secrets" = "Secrets";
@@ -58,8 +60,9 @@
 "pleaseInstall" = "Please install this app on %@ additional devices!";
 
 "howToAdd" = "How to add a device to your network?";
-"stepsToAdd" = "1. Download MetaSecret app on a new device. \n\n2. Register with your nickname: %@ \n\n 3. Accept a join request from a device that already a member of the network. \n\n4. Repeat on other devices.";
+"stepsToAdd" = "1. Download MetaSecret app on a new device. \n2. Register with your nickname: %@ \n3. Accept a join request from a device that already a member of the network. \n4. Repeat on other devices.\n5. Or just scan this QR code";
 "add" = "Add";
+
 
 //MARK: - Pending device
 "deviceAdding" = "Adding device process";
@@ -117,6 +120,7 @@
 "authErrorMessage" = "You could not be verified; please try again.";
 "notConfirmed" = "Restoring not confirmed";
 "dbNotConsistence" = "We have found that the integrity of the database has been corrupted and will be restored. Please, prepare all your devices to do this!";
+"cameraError" = "You need to grant access to the camera to scan the QR code";
 
 //MARK: - Select device
 "sentShareTitle" = "Share has been sent!";
