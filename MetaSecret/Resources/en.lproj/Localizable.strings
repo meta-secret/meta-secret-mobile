@@ -7,12 +7,12 @@
  */
 //MARK: - ONBOARDING
 "welcome" = "Meta Secret";
-"whatIs" = "Distributed, Self-hosted, Passwordless manager of secrets and passwords";
+"whatIs" = "Decentralized, Self-hosted, Passwordless manager of secrets and passwords";
 
 "personalCloud" = "Personal Storage";
 "personalCloudDescription" = "All passwords and secret information is stored only on your devices and securely protected with encryption standards RSA and AES";
 
-"distributedStorage" = "Distributed Storage";
+"distributedStorage" = "Decentralized Storage";
 "distributedStorageDescription" = "By adding more devices, you create your own personal cloud to manage passwords and secrets that consists of your devices";
 
 "backup" = "Easy access and reliable backup";
