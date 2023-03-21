@@ -19,7 +19,6 @@ protocol UsersServiceProtocol {
     var isOwner: Bool {get set}
     var shouldShowOnboarding: Bool {get set}
     var needDBRedistribution: Bool {get set}
-    var preInstallationVault: String? {get set}
 }
 
 class UsersService: NSObject, UsersServiceProtocol {
@@ -127,16 +126,6 @@ class UsersService: NSObject, UsersServiceProtocol {
             UDManager.save(value: newValue, key: UDKeys.needDBRedistribution)
         }
     }
-    
-    var preInstallationVault: String? {
-        get {
-            UDManager.read(key: UDKeys.preInstallationVault) as? String
-        }
-        
-        set {
-            UDManager.save(value: newValue, key: UDKeys.preInstallationVault)
-        }
-    }
 }
 
 //MARK: - KEYS
@@ -150,7 +139,6 @@ struct UDKeys {
     static let isOwner = "isOwner"
     static let shouldShowOnboarding = "shouldShowOnboarding"
     static let needDBRedistribution = "needDBRedistribution"
-    static let preInstallationVault = "preInstallationVault"
 }
 
 //MARK: - UDMANAGER
