@@ -51,7 +51,11 @@ class SplashSceneView: CommonSceneView {
         }.get { success, error in
             guard success else {
                 self.alertManager.showCommonAlert(AlertModel(title: Constants.Errors.error,
-                            message: error?.localizedDescription ?? Constants.BiometricError.unknown, cancelButton: nil))
+                                                             message: error?.localizedDescription ?? Constants.BiometricError.unknown, cancelButton: nil, okHandler: {
+                    if error == BiometricError.userCancel {
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                    }
+                }))
                 return
             }
             

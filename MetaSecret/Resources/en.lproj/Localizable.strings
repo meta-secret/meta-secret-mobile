@@ -139,7 +139,7 @@
 
 //MARK: - Biometric errors
 "authenticationFailed" = "There was a problem verifying your identity.";
-"userCancel" = "You pressed cancel.";
+"userCancel" = "You pressed cancel. We recommend you to turn Biometric access on. Otherwise, your secrets are in danger!";
 "userFallback" = "You pressed password.";
 "biometryNotAvailable" = "Face ID/Touch ID is not available.";
 "biometryNotEnrolled" = "Face ID/Touch ID is not set up.";

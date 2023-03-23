@@ -138,7 +138,7 @@
 
 //MARK: - Biometric errors
 "authenticationFailed" = "Проблема с подтверждением личности.";
-"userCancel" = "Вы нажали Отменить.";
+"userCancel" = "Вы нажали Отменить. Мы рекомендуем вам включить вход по биометрии. Иначе, ваши пароли легко украсть!";
 "userFallback" = "Вы нажали Пароль.";
 "biometryNotAvailable" = "Face ID/Touch ID недоступны.";
 "biometryNotEnrolled" = "Face ID/Touch ID не унастроены.";
