@@ -22,3 +22,7 @@
 11. Switch to `BuildPhases`
 12. In `Link Binary With Libraries` press `+` sign and select added `libmeta_secret_core_swift.a` if it wasn't added automaticaly
 13. Build a project (Cmd+B)
+
+
+***IMPORTANT!!!***
+DO NOT COMMIT THIS LIB!
