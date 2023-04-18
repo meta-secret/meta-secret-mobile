@@ -12,7 +12,7 @@
 4. In terminal do this commands:
   - `cargo clean`
   - `cargo lipo --release`
-  - `cp target/release/libmeta_secret_core_swift.a ..(#choose your destiny)/metasecret-mobile/MetaSecret/RustLib `
+  - `cp target/universal/release/libmeta_secret_core_swift.a ..(#choose your destiny)/metasecret-mobile/MetaSecret/RustLib `
 5. Go to the folder where you downloaded Meta-Secret-Mobile project
 6. In terminal do `pod install` command
 7. Open `MetaSecret.xcworkspace` in XCode
