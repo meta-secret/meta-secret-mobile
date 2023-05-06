@@ -12,14 +12,13 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
     //MARK: - OUTLETS
     @IBOutlet weak var splitRestoreButton: UIButton!
     @IBOutlet weak var addPassTitleLabel: UILabel!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var passwordTextView: UITextView!
     
     @IBOutlet weak var addDescriptionTitle: UILabel!
     @IBOutlet weak var descriptionTextField: UITextField!
-    
-    @IBOutlet weak var instructionLabel: UILabel!
-    @IBOutlet weak var selectSaveInfoLabel: UILabel!
+
     @IBOutlet weak var selectSaveButton: UIButton!
+    @IBOutlet weak var copiedLabel: UILabel!
     
     //MARK: - PROPERTIES
     private struct Config {
@@ -75,7 +74,7 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
         analytic.event(name: AnalyticsEvent.SplitSecret)
         
         firstly {
-            viewModel.split(secret: passwordTextField.text ?? "", descriptionName: descriptionTextField.text ?? "")
+            viewModel.split(secret: passwordTextView.text ?? "", descriptionName: descriptionTextField.text ?? "")
         }.then {
             self.viewModel.encryptAndDistribute()
         }.catch { e in
@@ -105,7 +104,7 @@ class AddSecretSceneView: CommonSceneView, AddSecretProtocol {
             return
         }
         
-        passwordTextField.text = password
+        passwordTextView.text = password
         viewModel.stopRestoring()
     }
 }
@@ -124,10 +123,15 @@ private extension AddSecretSceneView {
         // Texts
         addDescriptionTitle.text = viewModel.descriptionHeaderText
         addPassTitleLabel.text = viewModel.addPasswordHeaderText
-        selectSaveInfoLabel.text = Constants.AddSecret.selectDevice
         selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
-        passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        passwordTextView.delegate = self
         descriptionTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        passwordTextView.isScrollEnabled = false
+        passwordTextView.layer.cornerRadius = 8.0
+        passwordTextView.layer.borderColor = AppColors.mainDarkGray.cgColor
+        passwordTextView.layer.borderWidth = 0.5
+        passwordTextView.textContainerInset = UIEdgeInsets(top: 12.0, left: 4.0, bottom: 12.0, right: 4.0)
     }
     
     func setupNavBar() {
@@ -157,7 +161,7 @@ private extension AddSecretSceneView {
     func split() {
         alertManager.showLoader()
         firstly {
-            viewModel.split(secret: passwordTextField.text ?? "", descriptionName: descriptionTextField.text ?? "")
+            viewModel.split(secret: passwordTextView.text ?? "", descriptionName: descriptionTextField.text ?? "")
         }.catch { e in
             self.alertManager.hideLoader()
             let text = (e as? MetaSecretErrorType)?.message() ?? e.localizedDescription
@@ -179,7 +183,7 @@ private extension AddSecretSceneView {
     
     //MARK: - CHANGING SCREEN MODE
     func resetScreen() {
-        passwordTextField.text = ""
+        passwordTextView.text = ""
         descriptionTextField.text = ""
     }
     
@@ -190,36 +194,34 @@ private extension AddSecretSceneView {
             descriptionTextField.isEnabled = false
             descriptionTextField.text = viewModel.descriptionText
             
-            passwordTextField.isUserInteractionEnabled = false
-            passwordTextField.isEnabled = false
-            passwordTextField.text = nil
-            passwordTextField.placeholder = Constants.AddSecret.password
+            passwordTextView.isUserInteractionEnabled = true
+            passwordTextView.isEditable = false
+            passwordTextView.text = nil
             
             splitRestoreButton.setTitle(Constants.AddSecret.showSecret, for: .normal)
             splitRestoreButton.isUserInteractionEnabled = true
             splitRestoreButton.backgroundColor = AppColors.mainOrange
             splitRestoreButton.isHidden = false
             
-            instructionLabel.isHidden = true
-            selectSaveInfoLabel.isHidden = true
             selectSaveButton.isHidden = true
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyText))
+            passwordTextView.addGestureRecognizer(tapGesture)
+            
         case .edit:
             descriptionTextField.isUserInteractionEnabled = true
             descriptionTextField.isEnabled = true
             descriptionTextField.placeholder = Constants.AddSecret.description
             descriptionTextField.text = viewModel.descriptionText
             
-            passwordTextField.isUserInteractionEnabled = true
-            passwordTextField.isEnabled = true
-            passwordTextField.placeholder = Constants.AddSecret.password
+            passwordTextView.isUserInteractionEnabled = true
+            passwordTextView.isEditable = true
             
             splitRestoreButton.setTitle(Constants.AddSecret.split, for: .normal)
             splitRestoreButton.isUserInteractionEnabled = false
             splitRestoreButton.backgroundColor = .systemGray5
             splitRestoreButton.isHidden = true
             
-            instructionLabel.isHidden = true
-            selectSaveInfoLabel.isHidden = true
             selectSaveButton.isHidden = false
             selectSaveButton.isUserInteractionEnabled = false
             selectSaveButton.backgroundColor = .systemGray5
@@ -227,32 +229,34 @@ private extension AddSecretSceneView {
             descriptionTextField.isUserInteractionEnabled = false
             descriptionTextField.isEnabled = false
             
-            passwordTextField.isUserInteractionEnabled = false
-            passwordTextField.isEnabled = false
+            passwordTextView.isUserInteractionEnabled = true
+            passwordTextView.isEditable = false
             
             splitRestoreButton.setTitle(Constants.AddSecret.split, for: .normal)
             splitRestoreButton.isUserInteractionEnabled = false
             splitRestoreButton.backgroundColor = .systemGray5
             splitRestoreButton.isHidden = true
-            
-            instructionLabel.isHidden = true
-            
+                        
             selectSaveButton.isHidden = false
             selectSaveButton.isUserInteractionEnabled = false
             selectSaveButton.backgroundColor = .systemGray5
-//            if viewModel.vaultsCount() <= Constants.Common.neededMembersCount {
-            selectSaveInfoLabel.isHidden = true
-            instructionLabel.isHidden = true
             selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButtonLocal, for: .normal)
-//            } else {
-//                selectSaveInfoLabel.isHidden = false
-//                selectSaveButton.setTitle(Constants.AddSecret.selectDeviceButton, for: .normal)
-//            }
         }
     }
     
+    @objc func copyText() {
+        UIPasteboard.general.string = passwordTextView.text
+        UIView.animate(withDuration: 0.3, animations: {
+            self.copiedLabel.alpha = 1.0
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.3, delay: 1.5, animations: {
+                self.copiedLabel.alpha = 0.0
+            })
+        })
+    }
+    
     @objc func hideKeyboard() {
-        passwordTextField.resignFirstResponder()
+        passwordTextView.resignFirstResponder()
         descriptionTextField.resignFirstResponder()
     }
     
@@ -262,8 +266,19 @@ private extension AddSecretSceneView {
     
     //MARK: - TEXT FIELD DELEGATE
     @objc func textFieldDidChange(_ textField: UITextField) {
-        instructionLabel.isHidden = true
-        if let pass = passwordTextField.text, !pass.isEmpty, let note = descriptionTextField.text, !note.isEmpty {
+        if let pass = passwordTextView.text, !pass.isEmpty, let note = descriptionTextField.text, !note.isEmpty {
+            selectSaveButton.isUserInteractionEnabled = true
+            selectSaveButton.backgroundColor = AppColors.mainOrange
+        } else {
+            selectSaveButton.isUserInteractionEnabled = false
+            selectSaveButton.backgroundColor = .systemGray5
+        }
+    }
+}
+
+extension AddSecretSceneView: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        if let pass = passwordTextView.text, !pass.isEmpty, let note = descriptionTextField.text, !note.isEmpty {
             selectSaveButton.isUserInteractionEnabled = true
             selectSaveButton.backgroundColor = AppColors.mainOrange
         } else {

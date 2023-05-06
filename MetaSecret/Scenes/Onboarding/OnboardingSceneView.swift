@@ -57,12 +57,6 @@ class OnboardingSceneView: CommonSceneView, UICollectionViewDelegate, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if userService.preInstallationVault != nil {
-            analytics.event(name: AnalyticsEvent.OnboardingSkipPreInstalled)
-            finishOnboarding()
-            return
-        }
-        
         pageControl.numberOfPages = viewModel.pagesCount
         analytics.event(name: AnalyticsEvent.OnboardingShow)
     }
