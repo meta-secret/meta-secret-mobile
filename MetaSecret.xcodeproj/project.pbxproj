@@ -82,7 +82,6 @@
 		E58E3B87292639D50018B136 /* Base64EncodedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B85292639D50018B136 /* Base64EncodedText.swift */; };
 		E58E3B89292649670018B136 /* MetaSecretErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58E3B88292649670018B136 /* MetaSecretErrors.swift */; };
 		E592C8AF28DBB1DD0038458E /* Date+Extenson.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */; };
-		E59AFC6A29EE89A70035AC9B /* libmeta_secret_core_swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E59AFC6929EE89A70035AC9B /* libmeta_secret_core_swift.a */; };
 		E5A64F2B28B26284007982BD /* RootControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A64F2A28B26283007982BD /* RootControllerManager.swift */; };
 		E5AF12AB29C4EC66003FEF19 /* ScannerSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF12AA29C4EC66003FEF19 /* ScannerSceneView.swift */; };
 		E5AF12AF29C4FA17003FEF19 /* ScannerSceneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5AF12AE29C4FA17003FEF19 /* ScannerSceneView.xib */; };
@@ -207,7 +206,6 @@
 		E58E3B85292639D50018B136 /* Base64EncodedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64EncodedText.swift; sourceTree = "<group>"; };
 		E58E3B88292649670018B136 /* MetaSecretErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaSecretErrors.swift; sourceTree = "<group>"; };
 		E592C8AE28DBB1DD0038458E /* Date+Extenson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extenson.swift"; sourceTree = "<group>"; };
-		E59AFC6929EE89A70035AC9B /* libmeta_secret_core_swift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmeta_secret_core_swift.a; sourceTree = "<group>"; };
 		E5A64F2A28B26283007982BD /* RootControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootControllerManager.swift; sourceTree = "<group>"; };
 		E5AF12AA29C4EC66003FEF19 /* ScannerSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerSceneView.swift; sourceTree = "<group>"; };
 		E5AF12AE29C4FA17003FEF19 /* ScannerSceneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScannerSceneView.xib; sourceTree = "<group>"; };
@@ -249,7 +247,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC75F75ACB3C41DDC986EF8F /* Pods_MetaSecret.framework in Frameworks */,
-				E59AFC6A29EE89A70035AC9B /* libmeta_secret_core_swift.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,13 +310,6 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
-		E5184207295E160200B8F3BD /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
 		E51867A7293973B0000DF023 /* InternalModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,7 +337,6 @@
 			isa = PBXGroup;
 			children = (
 				E52686F32901D8570030A542 /* MetaSecret-Bridging-Header.h */,
-				E59AFC6929EE89A70035AC9B /* libmeta_secret_core_swift.a */,
 				E52686F42901D8A90030A542 /* meta-secret-core.h */,
 			);
 			path = RustLib;
@@ -368,6 +357,13 @@
 			children = (
 			);
 			path = MetaSecretTests;
+			sourceTree = "<group>";
+		};
+		E559A35F2A085AC1004E33C0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		E55A226D28B0355B00F5F02B /* Networking */ = {
@@ -483,6 +479,7 @@
 		E5800028288CA4D000E1135C /* MetaSecret */ = {
 			isa = PBXGroup;
 			children = (
+				E559A35F2A085AC1004E33C0 /* Frameworks */,
 				E51841FE295E0C3B00B8F3BD /* Assembly */,
 				E52686F22901D8380030A542 /* RustLib */,
 				E5F0C40428A839AE00902310 /* Utils */,
@@ -565,7 +562,6 @@
 			isa = PBXGroup;
 			children = (
 				E57E6B6128B3F78200906DBD /* Router */,
-				E5184207295E160200B8F3BD /* Helpers */,
 				E5061CEF28CD1F3D00E2787B /* Extensions */,
 				E55A226D28B0355B00F5F02B /* Networking */,
 				E5F0C40728A83ECC00902310 /* AlertManager.swift */,
