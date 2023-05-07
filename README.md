@@ -17,7 +17,7 @@ You'll need installed Android Studio & XCode
 2. Go to the folder where you downloaded Meta-Secret-Mobile project
 3. In terminal do `pod install` command
 4. Open `MetaSecret.xcworkspace` in XCode
-5. 4. Open `MetaSecretCore.xcframework` from `Meta-Secret-Core/target` to the RustLib folder (just drag-n-drop it)
+5. Copy `MetaSecretCore.xcframework` from `Meta-Secret-Core/target` to the RustLib folder (just drag-n-drop it)
 6. Select MetaSecret project file in xcode
 7. In oppened window select `TARGETS: MetaSecret`
 8. Switch to `BuildPhases`
