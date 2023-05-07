@@ -12,15 +12,15 @@
 4. In terminal do this commands:
   - `cargo clean`
   - `cargo lipo --release`
-  - `cp target/universal/release/libmeta_secret_core_swift.a ..(#choose your destiny)/metasecret-mobile/MetaSecret/RustLib `
+  - `cp target/universal/release/libmeta_secret_core_mobile.a ..(#choose your destiny)/metasecret-mobile/MetaSecret/RustLib `
 5. Go to the folder where you downloaded Meta-Secret-Mobile project
 6. In terminal do `pod install` command
 7. Open `MetaSecret.xcworkspace` in XCode
-8. Add file `libmeta_secret_core_swift.a` to the RustLib folder (just drag-n-drop it)
+8. Add file `libmeta_secret_core_mobile.a` to the RustLib folder (just drag-n-drop it)
 9. Select MetaSecret project file in xcode
 10. In oppened window select `TARGETS: MetaSecret`
 11. Switch to `BuildPhases`
-12. In `Link Binary With Libraries` press `+` sign and select added `libmeta_secret_core_swift.a` if it wasn't added automaticaly
+12. In `Link Binary With Libraries` press `+` sign and select added `libmeta_secret_core_mobile.a` if it wasn't added automaticaly
 13. Build a project (Cmd+B)
 
 
