@@ -29,10 +29,10 @@ final class RustTransporterManager: NSObject, RustProtocol {
 
     func generate(for name: String) -> UserSecurityBox? {
         let jsonData = jsonSerializeManager.jsonU8Generation(string: name)
-        guard let libResult = generate_signed_user(jsonData, jsonData.count) else { return nil}
+        let count = jsonData.count
+        guard let libResult = generate_signed_user(jsonData, count) else { return nil}
         let jsonString = String(cString: libResult)
         rust_string_free(libResult)
-        
         let userBox: UserSecurityBox? = try? jsonSerializeManager.objectGeneration(from: jsonString)
         return userBox
     }
